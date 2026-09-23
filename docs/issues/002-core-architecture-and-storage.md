@@ -41,3 +41,7 @@ Put every cross-cutting primitive and both persistent stores in place - DI, time
 ## Required tests
 
 `ArchitectureTest`, `FakeClockTest`, `UiTextTest`, `AppLanguageTest`, `LocaleFormattingTest`, `LoggerTest`, `ObserveEffectsTest`, `DomainInvariantsTest`, `EnumCoverageTest`, `DatabaseCreationTest`, `ConvertersTest`, `MapperTest`, `ResultPayloadTest`, `CopyResolverTest`, `TrainingPlanRepositoryTest`, `ProgressQueryTest`, `DataStorePreferencesRepositoryTest`, `FocusTimerRepositoryTest`, `PreferencesWriteGuardTest`, `LocalAnalyticsTest`, `EventCatalogueTest`.
+
+## Clarifications
+
+See `docs/00-source-of-truth.md` section 11 for approved count corrections, minimal missing contracts, and engine-method deferrals to milestone 004. The database acceptance target is the ten enumerated tables, not an unspecified eleventh table.

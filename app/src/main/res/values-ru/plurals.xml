@@ -1,0 +1,1 @@
+<resources><plurals name="practice_count"><item quantity="one">%1$d практика</item><item quantity="few">%1$d практики</item><item quantity="many">%1$d практик</item><item quantity="other">%1$d практики</item></plurals></resources>

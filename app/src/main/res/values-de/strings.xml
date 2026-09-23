@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Itera</string>
+    <string name="error_generic">Etwas ist schiefgelaufen. Deine Daten sind sicher.</string>
+    <string name="error_transition">Diese Übung kann gerade nicht geändert werden.</string>
+    <string name="error_activity_missing">Diese Übung ist nicht mehr verfügbar.</string>
+    <string name="error_review_missing">Diese Wiederholung ist nicht mehr verfügbar.</string>
+    <string name="error_content_missing">Dieser Inhalt ist nicht verfügbar.</string>
+    <string name="error_export">Export fehlgeschlagen. Prüfe den freien Speicher und versuche es erneut.</string>
+<string name="t_two_name">2-Minuten-Regel</string>
+<string name="t_two_task">Schau auf deine aktuellen To-dos. Finde zwei Aufgaben, die unter zwei Minuten dauern – und erledige sie jetzt.</string>
+<string name="t_pomodoro_name">Pomodoro</string>
+<string name="t_pomodoro_task">Wähle eine Aufgabe. Arbeite 25 Minuten ohne Wechsel daran, dann mach eine echte 5-Minuten-Pause.</string>
+<string name="t_eisenhower_name">Eisenhower-Matrix</string>
+<string name="t_eisenhower_task">Verteile alles, was ansteht, auf vier Felder. Dann wähle eine Aufgabe aus „Sofort erledigen“.</string>
+<string name="t_five_name">5-Sekunden-Regel</string>
+<!-- Spoken countdown, not a numeric range; preserve prototype copy. -->
+    <string name="t_five_task" tools:ignore="TypographyDashes">Wähle etwas, das du aufschiebst. Zähl laut 5-4-3-2-1 und mach bei 1 den ersten körperlichen Schritt.</string>
+<string name="t_stack_name">Habit Stacking</string>
+<string name="t_stack_task">Vervollständige einen Satz: „Nachdem ich [bestehende Gewohnheit], werde ich [winzige neue Gewohnheit].“ Mach es heute.</string>
+<string name="t_feynman_name">Feynman-Methode</string>
+<string name="t_feynman_task">Wähle ein Thema, das du gerade lernst, und erkläre es in einfachen Worten wie einem neugierigen Zwölfjährigen. Ohne Notizen.</string>
+<string name="t_twolist_name">Zwei-Listen-Strategie</string>
+<string name="t_twolist_task">Schreib deine Ziele auf. Behalte die wichtigsten drei. Den Rest verschiebst du auf eine „Nicht jetzt“-Liste und lässt sie diese Woche liegen.</string>
+<string name="t_deep_name">Deep Work</string>
+<string name="t_deep_task">Blocke 50 Minuten für eine anspruchsvolle Aufgabe. Schließ alles andere und stell das Handy stumm.</string>
+<string name="t_pareto_name">80/20-Prinzip</string>
+<string name="t_pareto_task">Nimm deine wichtigste Aufgabe. Liste die Schritte auf und markiere den, der am meisten bewirkt. Fang dort an.</string>
+<string name="t_spaced_name">Verteilte Wiederholung</string>
+<string name="t_spaced_task">Wähle etwas, das du diese Woche gelernt hast. Ruf es jetzt aus dem Gedächtnis ab und prüfe dann, was fehlt.</string>
+<string name="t_diet_name">Informationsdiät</string>
+<string name="t_diet_task">Wähle einen Feed oder eine App, die du heute auslässt. Frag dich vor dem Öffnen: Brauche ich das gerade?</string>
+<string name="t_premortem_name">Premortem</string>
+<string name="t_premortem_task">Stell dir vor, dein Projekt ist in sechs Monaten komplett gescheitert. Schreib die Gründe auf und wähle einen Schritt, der heute das größte Risiko senkt.</string>
+<string name="t_onepct_name" formatted="false">1 % besser</string>
+<string name="t_onepct_task" formatted="false">Wähle eine Fähigkeit oder Gewohnheit. Mach sie heute 1 % besser – mit einer kleinen, konkreten Änderung.</string>
+<string name="t_reflect_name">Tägliche Reflexion</string>
+<string name="t_reflect_task">Beantworte drei Fragen: Was lief gut, was nicht, und was änderst du morgen?</string>
+<string name="activity_program">Jetzt · %1$d Min.</string>
+<string name="activity_combination">Jetzt · ~%1$d Min.</string>
+<string name="activity_review">Heute fällig · %1$d Min. · aus Tag %2$d</string>
+<string name="activity_focus">Vorgeschlagen gegen %1$s</string>
+<string name="activity_focus_now">Jetzt · optional</string>
+<string name="activity_practice">Tippe, wenn du die Technik anwendest</string>
+<string name="activity_reflection">%1$s · 2 Min.</string>
+<string name="activity_focus_generic">%1$d Minuten Fokus</string>
+<string name="activity_combination_title">Kombiniere deine Techniken</string>
 </resources>

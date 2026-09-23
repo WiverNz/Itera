@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Itera</string>
+    <string name="error_generic">Something went wrong. Your data is safe.</string>
+    <string name="error_transition">This activity cannot be changed now.</string>
+    <string name="error_activity_missing">This activity is no longer available.</string>
+    <string name="error_review_missing">This review is no longer available.</string>
+    <string name="error_content_missing">This content is unavailable.</string>
+    <string name="error_export">Could not export. Check available storage and try again.</string>
+<string name="t_two_name">2-minute rule</string>
+<string name="t_two_task">Look at your current to-dos. Find two tasks that take under two minutes — and finish them now.</string>
+<string name="t_pomodoro_name">Pomodoro</string>
+<string name="t_pomodoro_task">Pick one task. Work on it for 25 minutes without switching, then take a real 5-minute break.</string>
+<string name="t_eisenhower_name">Eisenhower matrix</string>
+<string name="t_eisenhower_task">Put everything on your plate into four squares. Then pick one task from “Do now”.</string>
+<string name="t_five_name">5-second rule</string>
+<!-- Spoken countdown, not a numeric range; preserve prototype copy. -->
+    <string name="t_five_task" tools:ignore="TypographyDashes">Pick one thing you’ve been putting off. Count 5-4-3-2-1 out loud and take the first physical step at 1.</string>
+<string name="t_stack_name">Habit stacking</string>
+<string name="t_stack_task">Complete one sentence: “After I [habit I already have], I will [tiny new habit].” Do it today.</string>
+<string name="t_feynman_name">Feynman technique</string>
+<string name="t_feynman_task">Pick a topic you’re learning and explain it in simple words, as if to a curious 12-year-old. No notes.</string>
+<string name="t_twolist_name">Two-list strategy</string>
+<string name="t_twolist_task">Write down your goals. Keep the top three. Move the rest to a “Not now” list and leave it alone this week.</string>
+<string name="t_deep_name">Deep Work</string>
+<string name="t_deep_task">Block 50 minutes for one demanding task. Close everything else and silence your phone.</string>
+<string name="t_pareto_name">80/20 principle</string>
+<string name="t_pareto_task">Take your most important task. List its steps and mark the one that moves it most. Start there.</string>
+<string name="t_spaced_name">Spaced repetition</string>
+<string name="t_spaced_task">Pick something you learned this week. Recall it from memory now, then check what you missed.</string>
+<string name="t_diet_name">Information diet</string>
+<string name="t_diet_task">Pick one feed or app to skip today. Before opening anything, ask: do I need this right now?</string>
+<string name="t_premortem_name">Premortem</string>
+<string name="t_premortem_task">Imagine your project failed completely six months from now. Write down why, then pick one step to reduce the biggest risk today.</string>
+<string name="t_onepct_name" formatted="false">1% improvement</string>
+<string name="t_onepct_task" formatted="false">Choose one skill or habit. Make it 1% better today with one small, specific change.</string>
+<string name="t_reflect_name">Daily reflection</string>
+<string name="t_reflect_task">Answer three questions: what went well, what didn’t, and what you’ll change tomorrow.</string>
+<string name="activity_program">Now · %1$d min</string>
+<string name="activity_combination">Now · ~%1$d min</string>
+<string name="activity_review">Due today · %1$d min · from Day %2$d</string>
+<string name="activity_focus">Suggested around %1$s</string>
+<string name="activity_focus_now">Now · optional</string>
+<string name="activity_practice">Tap to log when you use it</string>
+<string name="activity_reflection">%1$s · 2 min</string>
+<string name="activity_focus_generic">%1$d-minute focus session</string>
+<string name="activity_combination_title">Combine your techniques</string>
 </resources>

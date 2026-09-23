@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Итера</string>
+    <string name="error_generic">Что-то пошло не так. Ваши данные в безопасности.</string>
+    <string name="error_transition">Сейчас это занятие нельзя изменить.</string>
+    <string name="error_activity_missing">Это занятие больше недоступно.</string>
+    <string name="error_review_missing">Это повторение больше недоступно.</string>
+    <string name="error_content_missing">Этот материал недоступен.</string>
+    <string name="error_export">Не удалось экспортировать. Проверьте свободное место и повторите попытку.</string>
+<string name="t_two_name">Правило двух минут</string>
+<string name="t_two_task">Посмотри на свои текущие дела. Найди две задачи меньше чем на две минуты — и выполни их прямо сейчас.</string>
+<string name="t_pomodoro_name">Pomodoro</string>
+<string name="t_pomodoro_task">Выбери одну задачу. Работай над ней 25 минут, ни на что не переключаясь, а потом сделай настоящий 5-минутный перерыв.</string>
+<string name="t_eisenhower_name">Матрица Эйзенхауэра</string>
+<string name="t_eisenhower_task">Разложи все свои дела по четырём квадратам. Потом выбери одну задачу из «Сделать сейчас».</string>
+<string name="t_five_name">Правило 5 секунд</string>
+<!-- Spoken countdown, not a numeric range; preserve prototype copy. -->
+    <string name="t_five_task" tools:ignore="TypographyDashes">Выбери дело, которое откладываешь. Посчитай вслух 5-4-3-2-1 и на «1» сделай первый физический шаг.</string>
+<string name="t_stack_name">Связки привычек</string>
+<string name="t_stack_task">Закончи фразу: «Когда я [привычное действие], я [крошечная новая привычка]». Сделай это сегодня.</string>
+<string name="t_feynman_name">Техника Фейнмана</string>
+<string name="t_feynman_task">Выбери тему, которую изучаешь, и объясни её простыми словами, как любознательному двенадцатилетнему. Без конспектов.</string>
+<string name="t_twolist_name">Стратегия двух списков</string>
+<string name="t_twolist_task">Запиши свои цели. Оставь три главные. Остальные перенеси в список «Не сейчас» и не трогай его всю неделю.</string>
+<string name="t_deep_name">Deep Work</string>
+<string name="t_deep_task">Выдели 50 минут на одну сложную задачу. Закрой всё остальное и выключи звук на телефоне.</string>
+<string name="t_pareto_name">Принцип 80/20</string>
+<string name="t_pareto_task">Возьми самую важную задачу. Распиши шаги и отметь тот, что продвигает её сильнее всего. С него и начни.</string>
+<string name="t_spaced_name">Интервальные повторения</string>
+<string name="t_spaced_task">Выбери что-то новое из этой недели. Вспомни это по памяти, а потом проверь, что упущено.</string>
+<string name="t_diet_name">Информационная диета</string>
+<string name="t_diet_task">Выбери одну ленту или приложение, которые сегодня пропустишь. Прежде чем что-то открыть, спроси себя: мне это нужно прямо сейчас?</string>
+<string name="t_premortem_name">Премортем</string>
+<string name="t_premortem_task">Представь, что через полгода проект полностью провалился. Запиши причины и выбери один шаг, который сегодня снизит самый большой риск.</string>
+<string name="t_onepct_name" formatted="false">Улучшение на 1%</string>
+<string name="t_onepct_task" formatted="false">Выбери один навык или привычку. Сделай их сегодня на 1% лучше — одним небольшим конкретным изменением.</string>
+<string name="t_reflect_name">Ежедневная рефлексия</string>
+<string name="t_reflect_task">Ответь на три вопроса: что получилось, что нет и что изменишь завтра.</string>
+<string name="activity_program">Сейчас · %1$d мин</string>
+<string name="activity_combination">Сейчас · ~%1$d мин</string>
+<string name="activity_review">Повторить сегодня · %1$d мин · из дня %2$d</string>
+<string name="activity_focus">Рекомендуем около %1$s</string>
+<string name="activity_focus_now">Сейчас · по желанию</string>
+<string name="activity_practice">Нажмите, чтобы отметить применение</string>
+<string name="activity_reflection">%1$s · 2 мин</string>
+<string name="activity_focus_generic">Фокус-сессия на %1$d мин</string>
+<string name="activity_combination_title">Объедините техники</string>
 </resources>

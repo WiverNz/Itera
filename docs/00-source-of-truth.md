@@ -280,3 +280,18 @@ Consequences recorded here:
 - **`ReminderScheduler` seam.** The interface and a no-op binding are introduced in milestone `004`; `009` binds the real scheduler. Settings (`008`) no longer depends on notifications.
 - **Focus notification channel.** Milestone `006` creates the `focus_session` channel for the timer's foreground service; `009` adds the other channels to the same registry.
 - **Verification is proportional.** Milestones `002`-`008` verify the changed area; exhaustive accessibility, localisation, golden, regression and release verification is done once, in `009`-`011`.
+
+## 11. Milestone 002 storage-contract clarifications (2026-09-23)
+
+Approved during implementation of milestone 002:
+
+- The schema enumerates **10** application tables and DAOs, not 11. Implement that enumeration; do not invent a table. Domain section 9 enumerates **six** repository interfaces, not nine; add the separately specified FocusTimerRepository as the seventh.
+- `HistoryEntry` is a storage projection of a `PlanActivity` and its calendar `date`. Coach request carries `topicTitle` and `explanation`; response carries `strengths`, `gaps`, and `questions` as lists of strings. These are contracts only, with no coaching implementation or generated feedback.
+- `UserPreferences` includes nullable `lastSeenDayComplete`, matching the sixteenth DataStore key. Defaults belong to the model. Constructor checks enforce local structural bounds; plan composition and result/type matching remain the responsibility of the engine/write boundary.
+- Milestone 002 implements storage reads/simple writes and raw progress queries. Engine-dependent repository methods (plan generation/manual practice, coordinated completion, review scheduling/submission, classified progress summaries) are deferred to milestone 004. No placeholder success, invented plan or invented mastery classification is returned. Narrow storage implementations remain usable without those engines.
+- Entity-to-domain mapping loses persistence-only fields by design. Reverse mapping requires the original entity or explicit persistence metadata, preserving copy keys, creation timestamps, topic links, and generator versions rather than reconstructing them from rendered text.
+- Time formatting explicitly uses Android's 12/24-hour setting with a locale-specific best pattern. `ofLocalizedTime` alone follows locale defaults and does not honor a user's Android override.
+- Reset tiers enumerate all ten tables: program reset deletes six training/review tables and resets technique unlock facts; erase-all additionally deletes topics, habits and analytics. Execution of reset remains milestone 004.
+
+- The concrete 002 repository bindings use `TrainingPlanStorage`, `ReviewStorage`, and `ProgressStorage`; the full repository interfaces extend those contracts for composition in 004. No engine-dependent binding is installed early. `CopyResolver` ports only the 14 technique names/instructions needed to resolve stored rows; catalog assets/loading remain 004. Unknown event strings are prevented with closed parameter enums, including route class names and setting values.
+- Additional indices cover foreign-key child columns so cascades do not scan tables; no columns or additional tables are introduced. Room entities store primitives, with explicit date/time/enum converters available to mappers and future queries.
