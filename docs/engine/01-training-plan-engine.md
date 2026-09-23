@@ -202,7 +202,7 @@ Pick 3 techniques, all at `PRACTICED` or better, one each from three *different*
 
 ## 8. Weekly look-back
 
-`CurriculumDay.weeklyLookBack` is true on Day 7 and every 7th program day after. It does not add an activity; it sets a flag on the reflection activity so the Reflection screen opens with a 7-day summary header (`docs/issues/019-evening-reflection.md`).
+`CurriculumDay.weeklyLookBack` is true on Day 7 and every 7th program day after. It does not add an activity; it sets a flag on the reflection activity so the Reflection screen opens with a 7-day summary header (`docs/history/issues-detailed/019-evening-reflection.md`, now milestone 005).
 
 ## 9. Test fixtures
 

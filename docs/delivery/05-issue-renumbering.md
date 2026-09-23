@@ -1,5 +1,7 @@
 # Issue renumbering
 
+> **Superseded (2026-09-23).** The 40-issue backlog described here was consolidated into eleven milestone issues. The detailed issues are preserved in `docs/history/issues-detailed/`; the current index and old-to-new mapping are in `docs/issues/README.md`. This file remains the record of the first renumbering.
+
 The original backlog had 26 stub issues. `docs/issues/README.md` stated that numbering was "a suggested dependency-friendly implementation sequence, not immutable numbering".
 
 The refined backlog has **40** issues, numbered 001-037 and 039-041. The increase comes from three sources: splitting issues that bundled unrelated work, adding issues for the five surfaces the design shows but the backlog omitted (R-15), and separating cross-cutting hardening into its own issues.

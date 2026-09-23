@@ -2,6 +2,8 @@
 
 Applies to every issue. An issue that does not meet all applicable items is not done, regardless of whether the feature appears to work.
 
+**Which items apply, and how deeply, is set by "Verification scope" in `docs/issues/README.md`.** In short: milestones 002-008 run the build, lint and tests for the changed area, compare new screens with `design/`, and record deviations only; full-app accessibility, localisation, golden, regression and release verification belong to milestones 009-011. "Manual verification steps" and "recorded in the issue" below refer to the milestone file.
+
 ## 1. Function
 
 - [ ] Every acceptance criterion in the issue is satisfied and demonstrated.

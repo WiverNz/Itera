@@ -1,114 +1,64 @@
 # Issue backlog
 
-40 refined issues covering the Itera MVP, numbered 001-037 and 039-041. Each is written so it can be implemented **without making a product or architecture decision** - everything it needs is either in the issue, in a document it names, or in the `design/` prototype.
+Eleven milestone issues cover the Itera MVP. Each milestone is small in text and points to the specification rather than repeating it. The specification - PRD, UX, architecture, data, engines, testing, `design/` - is unchanged and authoritative.
 
-Before starting any issue, read:
-
-1. `docs/00-source-of-truth.md` - the source priority and every resolved conflict;
-2. the issue's own `Depends on` list - none of those may be unmerged;
-3. the spec documents the issue references.
-
-**For any UI issue, run the `design/` prototype and open the file its "Prototype reference" section names.** It is a working Kotlin + Compose app and the source of truth for everything visual and interactive. See `docs/ux/05-prototype-reference.md`.
-
-If implementing an issue forces a decision the documentation does not cover, **stop**, resolve it in `docs/00-source-of-truth.md` or a new ADR, then continue. Do not decide it inside the implementation.
+The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed/). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
 ## Index
 
-### Phase 1 - Foundation
+| # | Milestone | Depends on | Absorbs (detailed) |
+| --- | --- | --- | --- |
+| [001](001-project-bootstrap.md) | Project bootstrap - **complete** | - | 001 |
+| [002](002-core-architecture-and-storage.md) | Core architecture & storage | 001 | 002, 005, 006, 007, analytics core of 036 |
+| [003](003-design-system-and-app-shell.md) | Design system & app shell | 002 | 003, 004, 015 |
+| [004](004-content-and-training-engine.md) | Content & training engine | 002 | 008-014 |
+| [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow | 003, 004 | 016, 017, 019, 020 |
+| [006](006-exercise-system.md) | Exercise system | 005 | 018, 021-027 |
+| [007](007-train-and-technique-library.md) | Train & technique library | 006 | 028-030 |
+| [008](008-progress-history-and-settings.md) | Progress, history & settings | 005 | 031, 032, 034, 035 |
+| [009](009-notifications-and-quality-passes.md) | Notifications & quality passes | 006, 007, 008 | 033, rest of 036, 037, 041 |
+| [010](010-test-hardening.md) | Test hardening | 009 | 039 |
+| [011](011-release-readiness.md) | Release readiness | 010 | 040 |
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [001](001-project-bootstrap.md) | Project bootstrap and dependency baseline | - |
-| [002](002-architecture-foundation.md) | Architecture foundation | 001 |
-| [003](003-design-tokens-and-theme.md) | Design system: tokens and theme | 001 |
-| [004](004-design-system-components.md) | Design system: components | 003 |
-| [005](005-domain-model.md) | Domain model | 002 |
-| [006](006-room-persistence.md) | Room persistence foundation | 005 |
-| [007](007-datastore-preferences.md) | DataStore preferences | 005 |
-| [008](008-technique-catalog.md) | Technique catalog and content | 005, 006 |
+Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007.
 
-### Phase 2 - Engine
+## Old-to-new mapping
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [009](009-exercise-state-machine.md) | Exercise state machine | 005 |
-| [010](010-unlock-rules.md) | Unlock rules | 005, 008 |
-| [011](011-daily-plan-generator.md) | Daily plan generator | 006, 007, 008, 009, 010 |
-| [012](012-spaced-repetition-scheduler.md) | Spaced repetition scheduler | 005, 006 |
-| [013](013-mastery-and-progress.md) | Mastery and progress calculation | 006, 008 |
-| [014](014-day-lifecycle.md) | Day lifecycle and completion effects | 009, 011, 012, 013 |
+| Detailed | New | | Detailed | New |
+| --- | --- | --- | --- | --- |
+| 001 | 001 | | 021-027 | 006 |
+| 002, 005, 006, 007 | 002 | | 028, 029, 030 | 007 |
+| 003, 004, 015 | 003 | | 031, 032, 034, 035 | 008 |
+| 008-014 | 004 | | 033, 037, 041 | 009 |
+| 016, 017, 019, 020 | 005 | | 036 | 002 (interface, catalogue, sink) + 009 (privacy guard, trim, gap-fill) |
+| 018 | 006 | | 039 / 040 | 010 / 011 |
 
-### Phase 3 - Shell and core loop
+038 stays retired. Specification documents (`docs/testing/01-test-matrix.md`, `docs/ux/00-screen-inventory.md`, `docs/ux/05-prototype-reference.md`, `docs/00-source-of-truth.md` and others) still cite detailed numbers; translate them with this table.
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [015](015-navigation-and-shell.md) | Navigation graph and app shell | 004, 007 |
-| [016](016-onboarding.md) | Onboarding | 007, 008, 011, 015 |
-| [017](017-today-screen.md) | Today screen | 011, 014, 015 |
-| [018](018-exercise-runner.md) | Exercise runner and template body | 008, 014, 015 |
-| [019](019-evening-reflection.md) | Evening reflection | 014, 018 |
-| [020](020-day-complete.md) | Day complete | 014, 019 |
+## Seams introduced by the consolidation
 
-### Phase 4 - Specialised exercises
+- **`Analytics`** (interface, catalogue, `event_log` sink) lands in 002, so each milestone instruments its own flows.
+- **`ReminderScheduler`** exists from 004 with a no-op binding. 005, 006 and 008 call it; 009 binds the real implementation.
+- **Notification channels**: 006 creates `focus_session` for the timer's foreground service; 009 adds the rest to the same registry.
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [021](021-focus-timer.md) | Focus timer | 018 |
-| [022](022-eisenhower-matrix.md) | Eisenhower matrix | 018 |
-| [023](023-feynman-exercise.md) | Feynman exercise | 012, 018 |
-| [024](024-premortem-exercise.md) | Premortem exercise | 018 |
-| [025](025-habit-stacking-exercise.md) | Habit stacking | 018 |
-| [026](026-review-screen.md) | Spaced repetition review screen | 012, 018 |
-| [027](027-combination-day.md) | Combination day runner | 018, 021, 022 |
+## Working rules
 
-### Phase 5 - Learning-loop surfaces
+1. Take the lowest-numbered milestone whose dependencies are done. Read it, the detailed issues it absorbs, and the documents it names.
+2. For UI work, run `design/` and open the prototype files the milestone names (`docs/ux/05-prototype-reference.md`). Reproduce; do not redesign.
+3. If a decision is not covered by the documentation, stop and record it in `docs/00-source-of-truth.md` or an ADR.
+4. Strings are added in all four languages by the milestone that introduces them - never deferred to 009.
+5. Commit in small, working increments within a milestone; the app must build after each.
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [028](028-train-tab.md) | Train tab | 010, 012, 015 |
-| [029](029-technique-library.md) | Technique library | 008, 013, 015 |
-| [030](030-technique-detail.md) | Technique detail | 013, 018, 029 |
-| [031](031-progress-screen.md) | Progress screen | 013, 015 |
-| [032](032-history-screen.md) | History screen | 013, 015, 031 |
+## Verification scope
 
-### Phase 6 - Infrastructure
+Keep verification proportional; the exhaustive passes happen once, at the end.
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [033](033-notifications.md) | Notifications and WorkManager | 011, 014, 017 |
-| [034](034-settings-you-tab.md) | Settings / You tab | 007, 033 |
-| [035](035-journal-export.md) | Journal export | 013, 034 |
-| [036](036-analytics-contract.md) | Analytics contract | 002, 006 |
+**Milestones 002-008** - per change:
 
-### Phase 7 - Hardening
+- `./gradlew build` (formatting, lint, unit tests, coverage gate) must pass.
+- Run and write only the tests for the area you changed, plus the milestone's required tests.
+- UI: compare each new screen side by side with `design/` in light and dark. Record **deviations only**, in the milestone file. No comparison log when nothing deviates.
+- Do not re-audit the whole repository, re-run earlier milestones' manual checks, or write verification reports. Write something down only when a failure or deviation needs documenting.
+- The applicable sections of `docs/delivery/02-definition-of-done.md` are 1-6 and 9-11, read with this scope. Sections 7-8 apply as authoring rules (semantics, content descriptions, four-language strings), not as full manual sweeps.
 
-| # | Issue | Depends on |
-| --- | --- | --- |
-| [037](037-accessibility-pass.md) | Accessibility pass | 020, 027, 032, 034 |
-| [041](041-localization-verification.md) | Localisation verification and audit | 037 |
-| [039](039-test-hardening.md) | Test hardening, goldens and CI gates | 035, 036, 041 |
-| [040](040-release-readiness.md) | Release readiness | 039 |
-
-## Localisation is not one issue
-
-The app ships in English, Russian, German and Spanish. That is built **across** issues 001-034, not in a single late issue: platform setup in 001, primitives in 002, fonts in 003, the picker in 004, content in 008, entry points in 016 and 034, and each screen's own strings in its own issue. Issue **041 only audits** the result (D-15).
-
-Every screen issue's definition of done requires its new strings to exist in all four languages. If that is skipped, 041 will find it - but the fix belongs to the issue that skipped it.
-
-## Structure
-
-Every issue has: goal, user value, scope, non-goals, implementation notes, affected layers, dependencies, acceptance criteria, unit test expectations, UI test expectations where relevant, manual verification steps, and a definition of done.
-
-## Related documents
-
-| Topic | Document |
-| --- | --- |
-| Implementation order and parallelisation | `docs/delivery/00-implementation-order.md` |
-| Dependency graph and critical path | `docs/delivery/01-issue-dependency-graph.md` |
-| Definition of done (the full checklist) | `docs/delivery/02-definition-of-done.md` |
-| Milestones | `docs/delivery/04-milestones.md` |
-| Mapping from the original 26 stubs | `docs/delivery/05-issue-renumbering.md` |
-| Test matrix | `docs/testing/01-test-matrix.md` |
-| Using the prototype | `docs/ux/05-prototype-reference.md` |
-| Visual fidelity and goldens | `docs/testing/04-visual-regression.md` |
-| Localisation | `docs/i18n/00-localization.md` |
+**Milestones 009-011** own the exhaustive work: full-app accessibility (TalkBack, font scale, Switch Access), localisation audit and pseudo-locales, the golden-image set, the full regression and instrumented suites, release-build verification and manual QA.

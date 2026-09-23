@@ -1,6 +1,6 @@
 # Release checklist
 
-For an internal distribution build. Executed as part of issue 040 and before every subsequent release.
+For an internal distribution build. Executed as part of milestone 011 (detailed issue 040) and before every subsequent release.
 
 ## 1. Pre-flight
 

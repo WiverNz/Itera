@@ -268,3 +268,15 @@ Issue 001 bundles and smoke-tests them; script-aware typography and glyph covera
 remain issue 003. This replaces the earlier asset-loading instructions.
 
 ADR-0020 records the Compose lint enforcement required by issue 001; buildSrc is build tooling, not a production module. Kotlin runtime 2.2.20 is recorded separately from compiler 2.2.10.
+
+## 12. Backlog consolidation (2026-09-23)
+
+The 40 detailed issues were consolidated into eleven milestone issues (`docs/issues/README.md`); the detailed issues are preserved unchanged in `docs/history/issues-detailed/`. No product, UX or architecture decision changed. Documents in this repository that cite an issue number (including D-15 above and the test matrix) use the **detailed** numbering; translate with the mapping in `docs/issues/README.md`.
+
+Consequences recorded here:
+
+- **D-15 still holds.** Localisation is built by the milestone that introduces each string (001-008); the audit formerly in `041` is part of milestone `009`.
+- **Analytics core moves earlier.** The `Analytics` interface, event catalogue and `event_log` sink are built in milestone `002`; each milestone instruments its own flows. `NoUserTextLoggedTest`, the trim worker and gap-filling remain in `009`.
+- **`ReminderScheduler` seam.** The interface and a no-op binding are introduced in milestone `004`; `009` binds the real scheduler. Settings (`008`) no longer depends on notifications.
+- **Focus notification channel.** Milestone `006` creates the `focus_session` channel for the timer's foreground service; `009` adds the other channels to the same registry.
+- **Verification is proportional.** Milestones `002`-`008` verify the changed area; exhaustive accessibility, localisation, golden, regression and release verification is done once, in `009`-`011`.

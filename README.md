@@ -56,7 +56,7 @@ Missing a day never resets anything. Program days advance when you train, not by
 1. **Run the prototype.** It explains the product faster than any document.
 2. [`docs/00-source-of-truth.md`](docs/00-source-of-truth.md) — source priority and every locked decision. Read before writing code.
 3. [`docs/ux/05-prototype-reference.md`](docs/ux/05-prototype-reference.md) — screen-to-file map and the porting checklist.
-4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) — 40 issues in 7 phases.
+4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) — 11 milestone issues.
 
 ## Requirements
 
@@ -104,11 +104,11 @@ On Windows use `.\gradlew.bat` instead of `./gradlew`.
 adb shell am start -W -n com.wivernz.itera/.MainActivity
 ```
 
-`build` runs formatting, lint, unit tests and the domain coverage gate. `verifyRoborazziDebug` is configured with an empty golden set; issue 039 adds goldens. JVM tests render all four font previews in light/dark under API 34, fixed dimensions, en-US, UTC and disabled animations. Open `BootstrapPreview` in Android Studio for the IDE preview.
+`build` runs formatting, lint, unit tests and the domain coverage gate. `verifyRoborazziDebug` is configured with an empty golden set; milestone 010 adds goldens. JVM tests render all four font previews in light/dark under API 34, fixed dimensions, en-US, UTC and disabled animations. Open `BootstrapPreview` in Android Studio for the IDE preview.
 
 Dependency versions are pinned in `gradle/libs.versions.toml` and resolved artifacts in `app/gradle.lockfile`. Intentional changes require regenerating locks with `./gradlew :app:dependencies --write-locks`, then running the full task set. Built-in Kotlin and the configuration cache stay enabled. No compatibility opt-out is used.
 
-The local instrumentation smoke test is deliberately separate from CI (instrumented CI remains issue 039):
+The local instrumentation smoke test is deliberately separate from CI (instrumented CI remains milestone 010):
 
 ```bash
 ./gradlew installDebug assembleDebugAndroidTest

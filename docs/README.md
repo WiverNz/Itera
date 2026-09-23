@@ -14,7 +14,7 @@ Everything needed to implement the Itera MVP, one issue at a time, without makin
 | --- | --- |
 | [`00-source-of-truth.md`](00-source-of-truth.md) | Authority model, 16 resolved inconsistencies, and the index of architecture decisions. Authoritative over everything else. |
 | [`ux/05-prototype-reference.md`](ux/05-prototype-reference.md) | How to run `design/`, the screen-to-file map, and the porting checklist. Read before any UI issue. |
-| [`delivery/00-implementation-order.md`](delivery/00-implementation-order.md) | The 41 issues in 7 phases, with parallelisation and runnable checkpoints. |
+| [`delivery/00-implementation-order.md`](delivery/00-implementation-order.md) | The 11 milestone issues, their order and exit conditions. |
 | [`issues/README.md`](issues/README.md) | The issue index. |
 
 ### Product (`prd/`)
@@ -112,12 +112,12 @@ Everything needed to implement the Itera MVP, one issue at a time, without makin
 
 | Document | What it is |
 | --- | --- |
-| [`00-implementation-order.md`](delivery/00-implementation-order.md) | 40 issues, 7 phases, parallel tracks, runnable checkpoints. |
-| [`01-issue-dependency-graph.md`](delivery/01-issue-dependency-graph.md) | The graph, the dependency table, and the 14-issue critical path. |
+| [`00-implementation-order.md`](delivery/00-implementation-order.md) | 11 milestones, order and exit conditions. |
+| [`01-issue-dependency-graph.md`](delivery/01-issue-dependency-graph.md) | The milestone graph, critical path and cross-milestone seams. |
 | [`02-definition-of-done.md`](delivery/02-definition-of-done.md) | Twelve sections every issue must satisfy. |
 | [`03-release-checklist.md`](delivery/03-release-checklist.md) | Pre-flight through post-release. |
 | [`04-milestones.md`](delivery/04-milestones.md) | Four demonstrable milestones with their risks. |
-| [`05-issue-renumbering.md`](delivery/05-issue-renumbering.md) | How the original 26 stubs became these 40, and which numbers were retired. |
+| [`05-issue-renumbering.md`](delivery/05-issue-renumbering.md) | Historical: how the original 26 stubs became the 40 detailed issues (since consolidated). |
 
 ### Legacy (`implementation-plan/`)
 

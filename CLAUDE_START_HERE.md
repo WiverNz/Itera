@@ -6,7 +6,7 @@ You are implementing **Itera**, a native Android app built with Kotlin and Jetpa
 
 ## Status
 
-**Documentation phase: complete. All decisions are locked.** No production code has been written.
+**Documentation phase: complete. All decisions are locked.** Issue 001 (bootstrap) is implemented; feature work starts at milestone 002.
 
 ## The most important thing on this page
 
@@ -31,20 +31,20 @@ Where `design/` conflicts with a product rule, the product rule wins and the dis
 1. [`docs/00-source-of-truth.md`](docs/00-source-of-truth.md) - authoritative. Source priority, how to use the prototype, every resolved conflict, and the locked decisions. Read this before anything else.
 2. [`docs/ux/05-prototype-reference.md`](docs/ux/05-prototype-reference.md) - how to run `design/`, the screen-to-file map, and the porting checklist.
 3. [`docs/README.md`](docs/README.md) - the map of the full documentation set.
-4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) - 40 issues in 7 phases.
-5. [`docs/issues/README.md`](docs/issues/README.md) - the issue index.
+4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) - 11 milestone issues.
+5. [`docs/issues/README.md`](docs/issues/README.md) - the issue index, old-to-new mapping and verification scope.
 
 Also read [`AGENTS.md`](AGENTS.md), the short version of the working rules.
 
 ## How to implement
 
-1. Take the lowest-numbered issue whose dependencies are all merged.
-2. Read it in full, plus every document it references.
+1. Take the lowest-numbered milestone issue whose dependencies are all done.
+2. Read it in full, the detailed issues it absorbs (`docs/history/issues-detailed/`), and every document it references.
 3. **If it is a UI issue: run `design/`, walk the screen, open the file its "Prototype reference" section names.**
 4. Implement only what its **Scope** names. Its **Non-goals** are binding.
 5. Satisfy every acceptance criterion and write every test listed.
-6. Compare the result side by side against the prototype, in light and dark, and record the comparison in the issue.
-7. Check against [`docs/delivery/02-definition-of-done.md`](docs/delivery/02-definition-of-done.md).
+6. Compare the result side by side against the prototype, in light and dark, and record **deviations only** in the issue.
+7. Check against [`docs/delivery/02-definition-of-done.md`](docs/delivery/02-definition-of-done.md), within the verification scope in [`docs/issues/README.md`](docs/issues/README.md).
 
 **If an issue forces a decision the documentation does not cover: stop.** Record it in `docs/00-source-of-truth.md` or as a new ADR, then continue.
 
@@ -68,7 +68,7 @@ Product decisions, not preferences. Each is enforced by a test.
 | Decision | Where |
 | --- | --- |
 | Four fonts are bundled. The brand faces are Latin-only, so **Inter Tight / Inter** cover Cyrillic, selected by the locale's script. No uncontrolled system fallback | ADR-0019, D-14 |
-| Localisation is built **across issues 001-034**, not in one late issue. Issue 041 only audits it | D-15 |
+| Localisation is built **across milestones 001-008**, not in one late issue. Milestone 009 only audits it | D-15, section 12 |
 | Time format follows the Android system 12/24-hour preference. No in-app setting | D-16 |
 | Real Material 3 time pickers. The prototype's 30-minute stepping must not ship | D-17 |
 | The generic exercise runner is kept for the four techniques that do not need a bespoke interaction | Q-04 |
@@ -86,4 +86,4 @@ Single activity extending `AppCompatActivity`, single Gradle module with enforce
 
 ## Start
 
-Issue [`001`](docs/issues/001-project-bootstrap.md).
+Issue 001 is complete. Next: [`002`](docs/issues/002-core-architecture-and-storage.md).

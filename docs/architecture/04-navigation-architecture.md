@@ -2,96 +2,130 @@
 
 The route graph itself is specified in `docs/ux/01-navigation-graph.md`. This document covers how it is wired in code.
 
-## 1. `AppNavHost`
+## 1. Shape
 
-`core/navigation/AppNavHost.kt` is the only file that knows about both routes and features.
+Per ADR-0008 and the prototype (`design/app/src/main/java/com/itera/app/ui/IteraApp.kt`):
+
+- **One** `NavHost` and **one** `NavHostController`.
+- A **flat** list of `@Serializable` routes. There are no nested graphs.
+- The bottom bar is visible only when the current destination is one of the four tab routes: `Today`, `Train`, `Progress`, `You`.
+- Every other route is full-screen with no bar, **including `Library`, `History` and `TechniqueDetail`**, which have their own back button.
+- `AppNavHost` is the only component that owns a `NavController`. Screens and components receive lambdas.
+
+## 2. `AppNavHost`
+
+`core/navigation/AppNavHost.kt` is the only file that knows about both routes and features. It owns the `Scaffold`, the bottom bar and the single controller.
 
 ```kotlin
+private val TabRoutes = listOf(Today, Train, Progress, You)
+
 @Composable
 fun AppNavHost(
     startDestination: Any,
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController, startDestination) {
-
-        navigation<OnboardingGraph>(startDestination = OnboardingWelcome) {
-            composable<OnboardingWelcome> {
-                WelcomeRoute(onStart = { navController.navigate(OnboardingGoals) })
-            }
-            // ...
-            composable<OnboardingFirstWeek> {
-                FirstWeekRoute(onFinish = {
-                    navController.navigate(MainGraph) {
-                        popUpTo(OnboardingGraph) { inclusive = true }
-                    }
-                })
-            }
-        }
-
-        composable<MainGraph> { MainShell(rootNavController = navController) }
-
-        composable<ExerciseIntro> { entry ->
-            val args = entry.toRoute<ExerciseIntro>()
-            ExerciseIntroRoute(
-                activityId = args.activityId,
-                onClose = navController::popBackStack,
-                onStart = { navController.navigate(ExerciseRun(args.activityId)) }
-            )
-        }
-        // ... the remaining full-screen routes
-    }
-}
-```
-
-## 2. `MainShell`
-
-`MainShell` owns the `Scaffold`, the bottom bar and an **inner** `NavHostController` for the four tabs. Lambdas that leave the shell (opening an exercise, a review, the timer) are passed the **root** controller.
-
-```kotlin
-@Composable
-fun MainShell(rootNavController: NavHostController) {
-    val tabNav = rememberNavController()
-    val backStack by tabNav.currentBackStackEntryAsState()
+    val entry by navController.currentBackStackEntryAsState()
+    val showBar = TabRoutes.any { entry?.destination?.hasRoute(it::class) == true }
 
     Scaffold(
-        bottomBar = { IteraBottomBar(current = backStack?.destination, onSelect = { tabNav.switchTab(it) }) }
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        bottomBar = {
+            if (showBar) IteraBottomBar(
+                current = entry?.destination,
+                onSelect = { navController.switchTab(it) }
+            )
+        }
     ) { padding ->
-        NavHost(tabNav, startDestination = TodayGraph, modifier = Modifier.padding(padding)) {
-            navigation<TodayGraph>(startDestination = TodayHome) {
-                composable<TodayHome> {
-                    TodayRoute(
-                        onOpenExercise = { rootNavController.navigate(ExerciseIntro(it)) },
-                        onOpenFocus = { rootNavController.navigate(FocusSession(it)) },
-                        onOpenReview = { rootNavController.navigate(ReviewRun(it)) },
-                        onOpenReflection = { rootNavController.navigate(ReflectionRun(it)) }
-                    )
-                }
+        val barPadding = PaddingValues(bottom = padding.calculateBottomPadding())
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = Modifier.padding(barPadding).consumeWindowInsets(barPadding)
+        ) {
+            // onboarding
+            composable<OnboardingWelcome> { WelcomeRoute(onStart = { navController.navigate(OnboardingGoals) }) }
+            // OnboardingGoals, OnboardingRhythm ...
+            composable<OnboardingFirstWeek> {
+                FirstWeekRoute(onStart = {
+                    navController.navigate(Today) { popUpTo<OnboardingWelcome> { inclusive = true } }
+                })
             }
-            // TrainGraph, ProgressGraph, YouGraph
+
+            // tabs
+            composable<Today> {
+                TodayRoute(
+                    onOpenExercise = { navController.navigate(ExerciseIntro(it)) },
+                    onOpenFocus = { navController.navigate(FocusSession(it)) },
+                    onOpenReview = { navController.navigate(ReviewRun(it)) },
+                    onOpenReflection = { navController.navigate(ReflectionRun(it)) }
+                )
+            }
+            composable<Train> {
+                TrainRoute(
+                    onToday = { navController.switchTab(Today) },
+                    onReview = { navController.navigate(ReviewRun(it)) },
+                    onLibrary = { navController.navigate(Library) },
+                    onTechnique = { navController.navigate(TechniqueDetail(it)) }
+                )
+            }
+            composable<Progress> {
+                ProgressRoute(
+                    onHistory = { navController.navigate(History) },
+                    onLibrary = { navController.navigate(Library) }
+                )
+            }
+            composable<You> { YouRoute() }
+
+            // full-screen, no bar
+            composable<Library> { LibraryRoute(onBack = navController::popBackStack /* ... */) }
+            composable<History> { HistoryRoute(onBack = navController::popBackStack) }
+            composable<TechniqueDetail> { TechniqueDetailRoute(onBack = navController::popBackStack /* ... */) }
+            composable<ExerciseIntro> { entry ->
+                val args = entry.toRoute<ExerciseIntro>()
+                ExerciseIntroRoute(
+                    activityId = args.activityId,
+                    onClose = navController::popBackStack,
+                    onStart = { navController.navigate(ExerciseRun(args.activityId)) }
+                )
+            }
+            // ... the remaining full-screen routes from docs/ux/01-navigation-graph.md section 2
         }
     }
 }
 ```
 
-Two controllers is deliberate: tab state is saved and restored inside the shell, while full-screen routes replace the whole shell rather than appearing inside a padded content area.
+The route set and arguments are those in `docs/ux/01-navigation-graph.md` section 2. The bar's presence is a function of the current route only; no screen controls it.
 
-## 3. `switchTab`
+## 3. Tab switching
+
+**Today is the navigation anchor.** Tab switching pops back to Today while saving state:
 
 ```kotlin
 fun NavHostController.switchTab(route: Any) {
     navigate(route) {
-        popUpTo(graph.findStartDestination().id) { saveState = true }
+        popUpTo<Today> { saveState = true }
         launchSingleTop = true
         restoreState = true
     }
 }
 ```
 
-Re-tapping the active tab pops to that tab's root instead:
+- Each tab's state (scroll position, anything above it) is saved when leaving it and restored when returning, via `saveState` / `restoreState` on the single controller.
+- The back stack never grows by switching tabs. System back from Train, Progress or You returns to Today, and back from Today exits.
+- **Re-tapping the active tab is a no-op** (`launchSingleTop`).
+
+Returning to Today from a flow clears everything above it:
 
 ```kotlin
-if (currentTabRoot == route) popBackStack(route, inclusive = false) else switchTab(route)
+fun NavHostController.backToToday() {
+    navigate(Today) {
+        popUpTo<Today> { inclusive = true }
+        launchSingleTop = true
+    }
+}
 ```
+
+It is used by the exercise result ("Done") and by day complete ("Good night").
 
 ## 4. Result routes
 
@@ -103,7 +137,7 @@ navController.navigate(ExerciseResult(id)) {
 }
 ```
 
-so the back stack after completion is `MainGraph -> ExerciseResult`, and its "Done" action pops back to the shell.
+so the back stack after completion is `Today -> ExerciseResult`, and its "Done" action calls `backToToday()`.
 
 ## 5. Deep links
 
@@ -115,7 +149,7 @@ val pending = NavDeepLinkBuilder(context)
     .createPendingIntent()
 ```
 
-Because the graph is Compose-defined, deep links are handled by passing an `Intent` extra (`itera.deeplink` = a serialised route) to `MainActivity`, which reads it in `onNewIntent` and calls `navController.navigate(route)` after the shell is composed. A `pendingDeepLink` state in the activity holds the route until the `NavHost` is ready, then clears it so a rotation does not re-navigate.
+Because the graph is Compose-defined, deep links are handled by passing an `Intent` extra (`itera.deeplink` = a serialised route) to `MainActivity`, which reads it in `onNewIntent` and calls `navController.navigate(route)` after the `NavHost` is composed, building a synthetic stack ending at `Today`. A `pendingDeepLink` state in the activity holds the route until the `NavHost` is ready, then clears it so a rotation does not re-navigate.
 
 ## 6. Back handling
 
