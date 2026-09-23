@@ -2,6 +2,8 @@
 
 Instructions for any agent working in this repository. Read this before touching anything.
 
+If `AGENTS.local.md` exists in this checkout, read it for machine-specific build, run, and verification instructions. It supplements this file and is not committed.
+
 ## What this is
 
 **Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. Documentation is complete; production implementation has not started.
