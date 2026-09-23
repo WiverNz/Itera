@@ -85,7 +85,11 @@ desktop.ini
 # ---------------------------------------------------------------- Misc
 *.log
 *.hprof
-.claude/
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+.claude/hooks/*
+!.claude/hooks/block-git-write.sh
 
 # Roborazzi failure diagnostics; keep goldens outside build/.
 *_compare.png

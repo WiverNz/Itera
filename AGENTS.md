@@ -4,6 +4,16 @@ Instructions for any agent working in this repository. Read this before touching
 
 If `AGENTS.local.md` exists in this checkout, read it for machine-specific build, run, and verification instructions. It supplements this file and is not committed.
 
+## Git ownership — do not commit
+
+- **Do not create Git commits, amend commits, or push changes.** Leave completed work in the working tree for the user to review and commit manually.
+- Do not bypass hooks or use alternate tools, Git aliases, plumbing commands, or scripts to create commits indirectly.
+- Do not merge, rebase, cherry-pick, revert, stash, rewrite history, create/delete tags, publish PRs/releases, or discard uncommitted work. Report what is ready and let the user perform those operations.
+- Read-only Git inspection and staging explicitly required by the task are allowed; staging is not permission to commit.
+- `.claude/hooks/block-git-write.sh`, registered in `.claude/settings.json`, enforces the command guard for Claude Code's Bash tool. Other agents must follow this instruction too; that Claude hook does not intercept their tools or manual Git usage.
+
+- Codex additionally uses `.codex/rules/no-git-commit.rules` in the trusted project layer to forbid direct commit/push/history-write commands. Reload Codex after rule changes. Prefix matching is not a complete shell sandbox; the no-bypass instruction above applies to aliases, wrappers, and alternate tools too. Manual Git commands outside Codex are unaffected.
+
 ## What this is
 
 **Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. Documentation is complete; production implementation has not started.
