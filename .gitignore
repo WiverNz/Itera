@@ -1,0 +1,88 @@
+# ---------------------------------------------------------------- Gradle
+.gradle/
+build/
+# Wrapper jars are intentionally tracked so a clone can build without a
+# preinstalled Gradle. Guarded in case a broad *.jar rule is ever added.
+!gradle/wrapper/gradle-wrapper.jar
+!design/gradle/wrapper/gradle-wrapper.jar
+
+# ---------------------------------------------------------------- Local configuration
+# Holds the absolute Android SDK path for this machine. Never commit.
+local.properties
+
+# ---------------------------------------------------------------- Signing material
+*.jks
+*.keystore
+*.p12
+*.pem
+keystore.properties
+signing.properties
+google-services.json
+play-service-account*.json
+
+# ---------------------------------------------------------------- Android build output
+*.apk
+*.aab
+*.ap_
+*.aar
+*.dex
+*.class
+bin/
+gen/
+out/
+release/
+captures/
+.externalNativeBuild/
+.cxx/
+lint-results*.html
+lint-results*.xml
+lint-baseline.xml
+
+# R8 mapping is archived alongside each release artifact, not tracked here.
+mapping.txt
+
+# ---------------------------------------------------------------- IDE
+# .idea mixes shared project config with per-developer state. Ignore all of it;
+# nothing in it is needed to build.
+.idea/
+*.iml
+*.ipr
+*.iws
+.navigation/
+
+# ---------------------------------------------------------------- Kotlin
+.kotlin/
+
+# ---------------------------------------------------------------- Test and tooling output
+**/build/reports/
+**/build/test-results/
+**/build/outputs/
+.kover/
+
+# Roborazzi: golden images ARE tracked; only the output of a failing comparison
+# is not. Goldens live in app/src/test/screenshots/ (outside any build/ dir),
+# so nothing here excludes them - see docs/testing/04-visual-regression.md.
+**/build/outputs/roborazzi/
+*_compare.png
+*_actual.png
+
+# ---------------------------------------------------------------- OS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------- Editor and temp
+*~
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+
+# ---------------------------------------------------------------- Misc
+*.log
+*.hprof
+.claude/

@@ -1,0 +1,72 @@
+# Git is the authority for line endings.
+#
+# Everything is stored in the repository with LF and checked out with LF,
+# including on Windows, so a Windows checkout can never reintroduce CRLF into
+# the repository. The only exceptions are Windows batch files, which must be
+# CRLF to run correctly.
+#
+# After changing this file, run:  git add --renormalize .
+
+# ---------------------------------------------------------------- default
+* text=auto eol=lf
+
+# ---------------------------------------------------------------- source
+*.kt        text eol=lf diff=java
+*.kts       text eol=lf diff=java
+*.java      text eol=lf diff=java
+*.pro       text eol=lf
+
+# ---------------------------------------------------------------- markup and config
+*.md        text eol=lf diff=markdown
+*.xml       text eol=lf
+*.json      text eol=lf
+*.toml      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.properties text eol=lf
+*.txt       text eol=lf
+*.cfg       text eol=lf
+*.editorconfig text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+*.keep      text eol=lf
+
+# ---------------------------------------------------------------- scripts
+# gradlew is a shell script and breaks on Unix if it is ever checked out CRLF.
+gradlew     text eol=lf
+*.sh        text eol=lf
+
+# Windows batch and command files must keep CRLF.
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# ---------------------------------------------------------------- binary
+# Marked explicitly so Git never tries to normalise or diff them as text.
+*.jar       binary
+*.zip       binary
+*.apk       binary
+*.aab       binary
+*.aar       binary
+*.so        binary
+*.keystore  binary
+*.jks       binary
+
+# fonts
+*.ttf       binary
+*.otf       binary
+*.woff      binary
+*.woff2     binary
+
+# images, including the committed Roborazzi golden screenshots
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.webp      binary
+*.gif       binary
+*.ico       binary
+*.pdf       binary
+
+# ---------------------------------------------------------------- language statistics
+# design/ is the implementation reference and should be counted as real source.
+# It is deliberately NOT marked linguist-vendored or linguist-generated.
+docs/**     linguist-documentation

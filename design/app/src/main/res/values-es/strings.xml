@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_description">Un entrenador práctico de enfoque, planificación, aprendizaje, hábitos y reflexión.</string>
+
+    <string name="action_continue">Continuar</string>
+    <string name="action_done">Listo</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_close">Cerrar</string>
+    <string name="action_next">Siguiente</string>
+    <string name="action_finish">Terminar</string>
+    <string name="minutes_short">%d min</string>
+    <string name="minutes_plus">%d+ min</string>
+
+    <string name="nav_today">Hoy</string>
+    <string name="nav_train">Entrenar</string>
+    <string name="nav_progress">Progreso</string>
+    <string name="nav_you">Perfil</string>
+
+    <string name="skill_focus">Enfoque</string>
+    <string name="skill_planning">Planificación</string>
+    <string name="skill_learning">Aprendizaje</string>
+    <string name="skill_habits">Hábitos</string>
+    <string name="skill_reflection">Reflexión</string>
+    <string name="skill_focus_desc">Empezar antes y mantenerte en una sola cosa</string>
+    <string name="skill_planning_desc">Saber qué importa de verdad hoy</string>
+    <string name="skill_learning_desc">Entender y recordar lo que estudias</string>
+    <string name="skill_habits_desc">Convertir pequeñas acciones útiles en automáticas</string>
+    <string name="skill_reflection_desc">Notar qué funciona y ajustar</string>
+
+    <string name="level_met">Conocida</string>
+    <string name="level_practiced">Practicada</string>
+    <string name="level_applied">Aplicada</string>
+    <string name="level_integrated">Integrada</string>
+    <string name="skill_level_starting">Empezando</string>
+    <string name="skill_level_building">En desarrollo</string>
+    <string name="skill_level_steady">Constante</string>
+    <string name="skill_level_strong">Sólido</string>
+
+    <string name="welcome_title">Entrena tu forma de trabajar.</string>
+    <string name="welcome_get_started">Empezar</string>
+    <string name="welcome_have_account">Ya tengo una cuenta</string>
+    <string name="welcome_demo">Explorar con datos de ejemplo</string>
+    <string name="onb_step">%1$d de %2$d</string>
+    <string name="goals_title">¿Qué quieres entrenar primero?</string>
+    <string name="goals_sub">Elige hasta dos. Lo demás también llegará, solo un poco más tarde.</string>
+    <string name="rhythm_title">¿Cuándo debería aparecer tu entrenador?</string>
+    <string name="rhythm_morning">Entrenamiento de la mañana</string>
+    <string name="rhythm_morning_sub">El ejercicio de hoy está listo</string>
+    <string name="rhythm_evening">Reflexión de la noche</string>
+    <string name="rhythm_evening_sub">Dos minutos, tres preguntas</string>
+    <string name="rhythm_time_q">¿Cuánto tiempo tienes la mayoría de los días?</string>
+    <string name="rhythm_time_hint">El programa diario cabe en 15 minutos. Las sesiones de enfoque son extras opcionales.</string>
+    <string name="week_title">Tu primera semana</string>
+    <string name="week_sub">Una técnica nueva al día. El día 4 repasas una para fijarla.</string>
+    <string name="week_review_suffix">+ repaso</string>
+    <string name="week_every_evening">Cada noche: una reflexión de dos minutos</string>
+    <string name="week_start">Empezar el día 1</string>
+
+    <string name="language_title">Idioma</string>
+    <string name="language_sub">Cambia toda la app al instante, incluidas las técnicas y los recordatorios. Tus notas se quedan tal como las escribiste.</string>
+    <string name="language_match_device">Igual que el dispositivo</string>
+    <string name="language_current">Ahora: %s</string>
+    <string name="language_a11y">Idioma: %s</string>
+
+    <string name="greeting_morning">Buenos días</string>
+    <string name="greeting_afternoon">Buenas tardes</string>
+    <string name="greeting_evening">Buenas noches</string>
+    <string name="day_n">Día %d</string>
+    <string name="today_training">Entrenamiento de hoy</string>
+    <string name="today_combination">Día de combinación</string>
+    <string name="badge_new">Nuevo</string>
+    <string name="today_start_exercise">Empezar el ejercicio</string>
+    <string name="today_section">Hoy</string>
+    <string name="today_count">%1$d / %2$d</string>
+    <string name="today_about">Unos %1$d min · %2$s</string>
+    <string name="today_plan_label">Tu plan de anoche:</string>
+    <string name="step_now">Ahora · %d min</string>
+    <string name="step_done">Hecho</string>
+    <string name="step_focus_title">Sesión de enfoque de %d minutos</string>
+    <string name="step_focus_sub">Sugerida hacia las %s</string>
+    <string name="step_reflection_sub">%s · 2 min</string>
+    <string name="step_optional">opcional</string>
+    <string name="hero_next_optional">A continuación · opcional</string>
+    <string name="hero_focus_title">%d minutos de enfoque</string>
+    <string name="hero_focus_line">Elige una tarea. Móvil boca abajo. Nada más hasta que termine el temporizador.</string>
+    <string name="hero_focus_cta">Empezar sesión de enfoque</string>
+    <string name="hero_evening">Esta noche</string>
+    <string name="hero_reflection_line">Dos minutos, tres preguntas. Cierra el día a propósito.</string>
+    <string name="hero_reflection_cta">Empezar la reflexión</string>
+    <string name="hero_done_title">Entrenamiento de hoy completado</string>
+    <string name="hero_done_line">Descansa. El ejercicio de mañana estará listo por la mañana.</string>
+    <string name="hero_done_cta">Cerrar el día</string>
+
+    <string name="exercise_label">Ejercicio</string>
+    <string name="exercise_meta">%1$s · Día %2$d</string>
+    <string name="exercise_yours">Tu ejercicio</string>
+    <string name="exercise_start">Empezar el ejercicio</string>
+    <string name="exercise_later">Ahora no, recuérdamelo luego</string>
+    <string name="exercise_did_it">Lo hice</string>
+    <string name="two_title">Encuentra dos tareas rápidas</string>
+    <string name="two_sub">Anótalas, hazlas y márcalas. Si una tarda más de dos minutos, también es útil notarlo.</string>
+    <string name="two_sample_1">Responder a Ana sobre el viernes</string>
+    <string name="two_sample_2">Pagar la factura de internet</string>
+    <string name="two_add_hint">Añadir otra tarea rápida</string>
+    <string name="two_finish">Terminar el ejercicio</string>
+    <string name="result_title">Ejercicio hecho.</string>
+    <string name="result_sub">La práctica pequeña y real es lo que hace que una técnica se quede.</string>
+    <string name="result_feel">¿Cómo te fue?</string>
+    <string name="feel_easy">Fácil</string>
+    <string name="feel_okay">Bien</string>
+    <string name="feel_hard">Difícil</string>
+    <string name="result_note_hint">Una nota breve para tu yo del futuro (opcional)</string>
+    <string name="result_level_hint">Practícala 3 días distintos para llegar a «Practicada».</string>
+
+    <string name="focus_label">Sesión de enfoque</string>
+    <string name="focus_silenced">Notificaciones silenciadas</string>
+    <string name="focus_remaining">restantes</string>
+    <string name="focus_paused">en pausa</string>
+    <string name="focus_working_on">Trabajando en</string>
+    <string name="focus_default_task">Esbozar la hoja de ruta del T4</string>
+    <string name="focus_plus5">+5 min</string>
+    <string name="focus_end">Terminar</string>
+    <string name="focus_pause">Pausar</string>
+    <string name="focus_resume">Reanudar</string>
+    <string name="focus_break_hint">Después, descanso: 5 minutos lejos de la pantalla.</string>
+
+    <string name="reflection_label">Reflexión de la noche</string>
+    <string name="reflection_title">¿Qué tal ha ido el día?</string>
+    <string name="reflection_q1">¿Qué salió bien hoy?</string>
+    <string name="reflection_q2">¿Qué no salió bien?</string>
+    <string name="reflection_q3">¿Qué cambiarás mañana?</string>
+    <string name="reflection_one_line">Basta con una línea</string>
+    <string name="reflection_skip">Saltar esta noche</string>
+    <string name="chip_cleared">Tareas pequeñas resueltas</string>
+    <string name="chip_focus_done">Sesión de enfoque completada</string>
+    <string name="chip_learned">Algo nuevo aprendido</string>
+    <string name="chip_started_late">Empecé tarde</string>
+    <string name="chip_email_first">Miré el correo primero</string>
+    <string name="chip_distracted">Me distraje</string>
+    <string name="chip_no_time">Me faltó tiempo</string>
+    <string name="chip_focus_before_email">Empezar la sesión de enfoque antes de abrir el correo</string>
+    <string name="chip_phone_away">Dejar el móvil en otra habitación</string>
+    <string name="chip_start_earlier">Empezar 30 minutos antes</string>
+    <string name="day_complete_title">Día %d completado</string>
+    <string name="day_complete_sub">Ejercicio, enfoque, reflexión. Un día de entrenamiento completo.</string>
+    <string name="day_change_label">Tu cambio para mañana</string>
+    <string name="day_change_hint">Te esperará mañana en la pantalla Hoy.</string>
+    <string name="day_tomorrow">Mañana · Día %d</string>
+    <string name="day_unlocks">Se desbloquea a las %s</string>
+    <string name="good_night">Buenas noches</string>
+
+    <string name="combo_label">Día %d · Combinación</string>
+    <string name="combo_title">Planifica y luego profundiza</string>
+    <string name="combo_sub">Cuatro técnicas que ya conoces, en un solo movimiento.</string>
+    <string name="combo_step1">Lo más importante: hoja de ruta del T4</string>
+    <string name="combo_step1_sub">De «Hacer ya» en la matriz</string>
+    <string name="combo_step2">¿Qué parte la hace avanzar más?</string>
+    <string name="combo_step2_sub">Elige el paso que aporta la mayor parte del resultado.</string>
+    <string name="combo_opt1">Definir las 3 apuestas del T4</string>
+    <string name="combo_opt2">Recopilar peticiones de funciones</string>
+    <string name="combo_opt3">Pulir el diseño de las diapositivas</string>
+    <string name="combo_step3">%d minutos en ese único paso</string>
+    <string name="combo_step3_sub">Móvil lejos, una sola pestaña abierta</string>
+    <string name="combo_step4" formatted="false">Esta noche: ¿funcionó ese 20 %?</string>
+    <string name="combo_step4_sub">Parte de tu reflexión de la noche</string>
+    <string name="combo_cta">Continuar con Trabajo profundo</string>
+
+    <string name="eis_title">Ordena lo que tienes entre manos</string>
+    <string name="eis_to_sort">Por ordenar</string>
+    <string name="eis_tap_task">Toca una tarea</string>
+    <string name="eis_tap_square">Ahora toca un cuadrante</string>
+    <string name="eis_all_sorted">Todo ordenado. Elige una de «Hacer ya».</string>
+    <string name="eis_urgent">URGENTE</string>
+    <string name="eis_not_urgent">NO URGENTE</string>
+    <string name="eis_important">IMPORTANTE</string>
+    <string name="eis_not_important">NO IMPORTANTE</string>
+    <string name="eis_q1">Hacer ya</string>
+    <string name="eis_q1_sub">Urgente + importante</string>
+    <string name="eis_q2">Programar</string>
+    <string name="eis_q2_sub">Importante, no urgente</string>
+    <string name="eis_q3">Delegar</string>
+    <string name="eis_q3_sub">Urgente, no importante</string>
+    <string name="eis_q4">Descartar</string>
+    <string name="eis_q4_sub">Ninguna</string>
+    <string name="eis_cta">Seguir con el 80/20</string>
+    <string name="eis_task_1">Arreglar el bug de login en producción</string>
+    <string name="eis_task_2">Hoja de ruta del T4</string>
+    <string name="eis_task_3">Encuesta del proveedor</string>
+    <string name="eis_task_4">Ordenar marcadores</string>
+    <string name="eis_task_5">Demo del jueves</string>
+    <string name="eis_task_6">Pedir cita con el dentista</string>
+    <string name="eis_task_7">Leer boletines</string>
+
+    <string name="fey_topic">Tema</string>
+    <string name="fey_topic_value">Explica qué es la persistencia en Redis</string>
+    <string name="fey_from_list">De tu lista de aprendizaje</string>
+    <string name="fey_change">Cambiar tema</string>
+    <string name="fey_instruction">Explícaselo a un niño curioso de 12 años. Si usas un término, defínelo.</string>
+    <string name="fey_your_expl">Tu explicación</string>
+    <string name="fey_hint">Empieza con la frase verdadera más simple que puedas.</string>
+    <string name="fey_no_notes">Sin apuntes ni búsquedas</string>
+    <string name="fey_done">He terminado de explicar</string>
+    <string name="fey_back_title">Ahora mira hacia atrás</string>
+    <string name="fey_hardest">¿Qué parte fue más difícil de explicar?</string>
+    <string name="fey_chip_crash">Qué pasa si hay un fallo</string>
+    <string name="fey_chip_which">Cuándo usar cada uno</string>
+    <string name="fey_chip_tradeoffs">Las ventajas y desventajas</string>
+    <string name="fey_note_hint">¿Dónde te atascaste?</string>
+    <string name="coach_feedback">Comentarios del entrenador</string>
+    <string name="coach_later">IA · más adelante</string>
+    <string name="coach_clear">Claro</string>
+    <string name="coach_clear_text">La comparación con guardar una partida hace fácil imaginar las instantáneas.</string>
+    <string name="coach_gap">Punto a revisar</string>
+    <string name="coach_gap_text">¿Qué pasa con los cambios hechos después de la última instantánea?</string>
+    <string name="coach_beginner">Un principiante podría preguntar</string>
+    <string name="coach_beginner_text">«¿Y por qué no usar siempre el registro?»</string>
+    <string name="coach_improve">Mejorar mi explicación</string>
+    <string name="fey_review_note">Dentro de 4 días lo explicarás de nuevo, de memoria.</string>
+
+    <string name="review_label">Repaso</string>
+    <string name="review_topic">Persistencia en Redis</string>
+    <string name="review_again">Explícalo otra vez, sin mirar tu respuesta anterior.</string>
+    <string name="review_field">Tu explicación, de memoria</string>
+    <string name="review_hidden">Tu primera respuesta seguirá oculta hasta que termines</string>
+    <string name="review_compare">Comparar con mi primera respuesta</string>
+    <string name="interval_days">%d d</string>
+    <string name="interval_weeks">%d sem</string>
+    <string name="interval_months">%d m</string>
+
+    <string name="pm_project">Proyecto:</string>
+    <string name="pm_project_value">Lanzar la beta móvil</string>
+    <string name="pm_title">Es %s. El proyecto ha fracasado por completo. ¿Por qué?</string>
+    <string name="pm_reason_1">El alcance no paró de crecer y nunca lanzamos</string>
+    <string name="pm_reason_2">Nadie fuera del equipo lo probó</string>
+    <string name="pm_reason_3">Se llevaron al dev de backend a otro proyecto</string>
+    <string name="pm_likely">Probable</string>
+    <string name="pm_possible">Posible</string>
+    <string name="pm_add">Añadir un motivo</string>
+    <string name="pm_today_q">¿Qué puedes hacer hoy para reducir el riesgo n.º 1?</string>
+    <string name="pm_action_hint">Un paso concreto, posible hoy</string>
+    <string name="pm_idea">Idea: escribe una lista breve de «fuera de la beta»: es la estrategia de las dos listas.</string>
+    <string name="pm_cta">Añadir a hoy</string>
+
+    <string name="hs_sentence">Después de %1$s,\nvoy a %2$s.</string>
+    <string name="hs_sub">Engánchalo a algo que ya haces cada día. Que el hábito nuevo sea tan pequeño que parezca casi ridículo.</string>
+    <string name="hs_existing">Algo que ya haces</string>
+    <string name="hs_new">Un hábito nuevo diminuto</string>
+    <string name="hs_anchor_1">preparar el café</string>
+    <string name="hs_anchor_2">lavarme los dientes</string>
+    <string name="hs_anchor_3">abrir el portátil</string>
+    <string name="hs_anchor_4">sentarme a comer</string>
+    <string name="hs_habit_1">leer una página</string>
+    <string name="hs_habit_2">escribir una línea</string>
+    <string name="hs_habit_3">beber un vaso de agua</string>
+    <string name="hs_habit_4">elegir la tarea clave de mañana</string>
+    <string name="hs_nudge">Avísame justo después</string>
+    <string name="hs_log_hint">Regístralo 3 días para llegar a «Practicada».</string>
+    <string name="hs_save">Guardar mi cadena</string>
+
+    <string name="train_title">Entrenar</string>
+    <string name="train_sub">Tu programa, una técnica cada vez.</string>
+    <string name="train_week">Semana %1$d · %2$s</string>
+    <string name="week_foundations">Bases</string>
+    <string name="week_depth">Profundidad</string>
+    <string name="week_combine">Combinar</string>
+    <string name="train_day_of">Día %1$d de %2$d</string>
+    <string name="train_first_combo">Primera combinación</string>
+    <string name="train_review_due">Repaso pendiente hoy</string>
+    <string name="train_review_item">Volver a explicar la persistencia en Redis</string>
+    <string name="train_library">Biblioteca</string>
+    <string name="train_library_sub">%1$d técnicas · %2$d desbloqueadas</string>
+    <string name="library_title">Biblioteca</string>
+    <string name="library_sub">Las 14 técnicas. Tu programa las desbloquea en orden, pero puedes echar un vistazo a cualquiera.</string>
+    <string name="filter_all">Todas</string>
+    <string name="not_started">Sin empezar</string>
+    <string name="detail_why">Por qué ayuda</string>
+    <string name="detail_level">Tu nivel</string>
+    <string name="detail_level_hint">Practica en días distintos para subir. Úsala en un día de combinación para llegar a «Integrada».</string>
+    <string name="detail_practice">Practicar ahora</string>
+    <string name="detail_history">Tu práctica</string>
+    <string name="detail_no_history">Todavía no hay práctica.</string>
+    <string name="detail_related">Combina bien con</string>
+    <string name="detail_locked">Se desbloquea el día %d de tu programa.</string>
+
+    <string name="progress_title">Progreso</string>
+    <string name="progress_days">%1$d de los últimos %2$d días</string>
+    <string name="progress_since">desde el %s</string>
+    <string name="progress_missed_hint">Los días que faltas no reinician nada. El programa sigue donde lo dejaste.</string>
+    <string name="progress_history">Historial</string>
+    <string name="progress_history_sub">Notas y reflexiones</string>
+    <string name="history_title">Historial</string>
+    <string name="history_rest">Día de descanso. Sin entrenamiento registrado.</string>
+    <string name="history_empty">Aún no hay nada. Tu primer ejercicio aparecerá aquí.</string>
+
+    <string name="you_title">Perfil</string>
+    <string name="your_name">Tu nombre</string>
+    <string name="training_since">Entrenando desde el %1$s · Día %2$d</string>
+    <string name="sec_rhythm">Ritmo diario</string>
+    <string name="time_most_days">Tiempo la mayoría de los días</string>
+    <string name="sec_program">Programa</string>
+    <string name="pace">Ritmo</string>
+    <string name="pace_hint">Estándar: una técnica nueva casi cada día, con repasos entre medias.</string>
+    <string name="pace_gentle">Suave</string>
+    <string name="pace_standard">Estándar</string>
+    <string name="pace_intense">Intenso</string>
+    <string name="focus_areas">Áreas prioritarias</string>
+    <string name="sec_language">Idioma y región</string>
+    <string name="time_format">Formato de hora</string>
+    <string name="time_format_value">Según el idioma</string>
+    <string name="sec_appearance">Apariencia</string>
+    <string name="theme">Tema</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="sec_notifications">Notificaciones</string>
+    <string name="notif_morning">Ejercicio de la mañana</string>
+    <string name="notif_focus">Sugerencias de enfoque</string>
+    <string name="notif_review">Recordatorios de repaso</string>
+    <string name="notif_evening">Reflexión de la noche</string>
+    <string name="sec_coach">Entrenador</string>
+    <string name="coach_ai">Comentarios de IA sobre tus explicaciones</string>
+    <string name="coming_later">Próximamente</string>
+    <string name="sec_data">Datos</string>
+    <string name="export_journal">Exportar diario</string>
+    <string name="privacy">Privacidad</string>
+    <string name="load_demo">Cargar datos de ejemplo (día 9)</string>
+
+    <plurals name="practices">
+        <item quantity="one">%d práctica</item>
+        <item quantity="many">%d prácticas</item>
+        <item quantity="other">%d prácticas</item>
+    </plurals>
+    <plurals name="words">
+        <item quantity="one">%d palabra</item>
+        <item quantity="many">%d palabras</item>
+        <item quantity="other">%d palabras</item>
+    </plurals>
+    <plurals name="review_days_ago">
+        <item quantity="one">Tu primera explicación fue hace %d día:</item>
+        <item quantity="many">Tu primera explicación fue hace %d días:</item>
+        <item quantity="other">Tu primera explicación fue hace %d días:</item>
+    </plurals>
+    <plurals name="review_next">
+        <item quantity="one">Si sale bien, el próximo repaso será dentro de %d día.</item>
+        <item quantity="many">Si sale bien, el próximo repaso será dentro de %d días.</item>
+        <item quantity="other">Si sale bien, el próximo repaso será dentro de %d días.</item>
+    </plurals>
+
+    <string name="t_two_name">Regla de los 2 minutos</string>
+    <string name="t_two_short">Resuelve las tareas pequeñas antes de que se acumulen.</string>
+    <string name="t_two_why">Si algo lleva menos de dos minutos, hazlo ya. Las tareas pequeñas cuestan poco de terminar y mucho de recordar.</string>
+    <string name="t_two_task">Mira tus pendientes. Encuentra dos tareas de menos de dos minutos y termínalas ahora.</string>
+
+    <string name="t_pomodoro_name">Pomodoro</string>
+    <string name="t_pomodoro_short">Trabaja en sprints de 25 minutos con descansos de verdad.</string>
+    <string name="t_pomodoro_why">Un temporizador convierte «trabajar en ello» en una unidad pequeña que puedes terminar. Las pausas cortas mantienen la atención fresca.</string>
+    <string name="t_pomodoro_task">Elige una tarea. Trabaja en ella 25 minutos sin cambiar de tarea y luego tómate un descanso real de 5 minutos.</string>
+
+    <string name="t_eisenhower_name">Matriz de Eisenhower</string>
+    <string name="t_eisenhower_short">Ordena por importancia, no por ruido.</string>
+    <string name="t_eisenhower_why">Lo urgente grita; lo importante casi nunca. Ordenar con ambos criterios muestra qué merece tus mejores horas.</string>
+    <string name="t_eisenhower_task">Reparte todo lo que tienes entre manos en cuatro cuadrantes. Luego elige una tarea de «Hacer ya».</string>
+
+    <string name="t_five_name">Regla de los 5 segundos</string>
+    <string name="t_five_short">Cuenta 5-4-3-2-1 y muévete antes de dudar.</string>
+    <string name="t_five_why">La duda crece con cada segundo. La cuenta atrás da a tu cerebro una señal de salida antes de que lleguen las excusas.</string>
+    <string name="t_five_task">Elige algo que estés posponiendo. Cuenta en voz alta 5-4-3-2-1 y en el 1 da el primer paso físico.</string>
+
+    <string name="t_stack_name">Encadenar hábitos</string>
+    <string name="t_stack_short">Engancha un hábito nuevo a uno que ya tienes.</string>
+    <string name="t_stack_why">Un hábito existente es un disparador fiable. Si le enganchas una acción nueva diminuta, no tendrás que acordarte.</string>
+    <string name="t_stack_task">Completa una frase: «Después de [hábito que ya tengo], voy a [hábito nuevo diminuto]». Hazlo hoy.</string>
+
+    <string name="t_feynman_name">Técnica Feynman</string>
+    <string name="t_feynman_short">Explícalo con sencillez para descubrir lo que no sabes.</string>
+    <string name="t_feynman_why">Explicar con palabras sencillas muestra exactamente dónde hay lagunas en lo que entiendes.</string>
+    <string name="t_feynman_task">Elige un tema que estés aprendiendo y explícalo con palabras sencillas, como a un niño curioso de 12 años. Sin apuntes.</string>
+
+    <string name="t_twolist_name">Estrategia de las dos listas</string>
+    <string name="t_twolist_short">Decide qué no vas a hacer ahora, a propósito.</string>
+    <string name="t_twolist_why">Elegir lo que no harás protege tu atención para las pocas metas que más importan.</string>
+    <string name="t_twolist_task">Escribe tus metas. Quédate con las tres principales. Pasa el resto a una lista de «Ahora no» y no la toques esta semana.</string>
+
+    <string name="t_deep_name">Trabajo profundo</string>
+    <string name="t_deep_short">Bloques largos y protegidos para problemas difíciles.</string>
+    <string name="t_deep_why">Los problemas difíciles necesitan atención larga y sin interrupciones. Protegerla a propósito es una habilidad entrenable.</string>
+    <string name="t_deep_task">Reserva 50 minutos para una tarea exigente. Cierra todo lo demás y silencia el móvil.</string>
+
+    <string name="t_pareto_name">Principio 80/20</string>
+    <string name="t_pareto_short">Encuentra las pocas acciones que dan la mayor parte del resultado.</string>
+    <string name="t_pareto_why">Una pequeña parte de las acciones suele producir la mayor parte del resultado. Encontrarlas primero ahorra horas.</string>
+    <string name="t_pareto_task">Toma tu tarea más importante. Enumera sus pasos y marca el que más la hace avanzar. Empieza por ahí.</string>
+
+    <string name="t_spaced_name">Repetición espaciada</string>
+    <string name="t_spaced_short">Vuelve a lo aprendido en intervalos cada vez mayores.</string>
+    <string name="t_spaced_why">La memoria se desvanece rápido, pero cada recuerdo en el momento justo la hace durar más.</string>
+    <string name="t_spaced_task">Elige algo que hayas aprendido esta semana. Recuérdalo ahora de memoria y luego comprueba qué se te escapó.</string>
+
+    <string name="t_diet_name">Dieta informativa</string>
+    <string name="t_diet_short">Elige a propósito lo que consumes.</string>
+    <string name="t_diet_why">Lo que consumes moldea aquello en lo que piensas. Elegir tus fuentes a propósito libera atención.</string>
+    <string name="t_diet_task">Elige un feed o una app que hoy vas a saltarte. Antes de abrir nada, pregúntate: ¿lo necesito ahora mismo?</string>
+
+    <string name="t_premortem_name">Premortem</string>
+    <string name="t_premortem_short">Imagina primero el fracaso y luego evítalo.</string>
+    <string name="t_premortem_why">Imaginar el fracaso por adelantado vuelve concretos los riesgos mientras aún hay tiempo para actuar.</string>
+    <string name="t_premortem_task">Imagina que dentro de seis meses tu proyecto ha fracasado por completo. Anota por qué y elige un paso para reducir hoy el mayor riesgo.</string>
+
+    <string name="t_onepct_name" formatted="false">Mejora del 1 %</string>
+    <string name="t_onepct_short">Mejora una cosa pequeña cada día.</string>
+    <string name="t_onepct_why">Las mejoras diminutas son fáciles de repetir y se suman con las semanas.</string>
+    <string name="t_onepct_task" formatted="false">Elige una habilidad o un hábito. Hazlo hoy un 1 % mejor con un cambio pequeño y concreto.</string>
+
+    <string name="t_reflect_name">Reflexión diaria</string>
+    <string name="t_reflect_short">Tres preguntas breves para cerrar el día.</string>
+    <string name="t_reflect_why">Una mirada breve hacia atrás convierte la experiencia del día en una lección para mañana.</string>
+    <string name="t_reflect_task">Responde a tres preguntas: qué salió bien, qué no y qué cambiarás mañana.</string>
+</resources>

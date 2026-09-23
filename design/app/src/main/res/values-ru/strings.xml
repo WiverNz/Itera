@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_description">Практический тренер фокуса, планирования, обучения, привычек и рефлексии.</string>
+
+    <string name="action_continue">Продолжить</string>
+    <string name="action_done">Готово</string>
+    <string name="action_back">Назад</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_next">Далее</string>
+    <string name="action_finish">Завершить</string>
+    <string name="minutes_short">%d мин</string>
+    <string name="minutes_plus">%d+ мин</string>
+
+    <string name="nav_today">Сегодня</string>
+    <string name="nav_train">Тренировки</string>
+    <string name="nav_progress">Прогресс</string>
+    <string name="nav_you">Профиль</string>
+
+    <string name="skill_focus">Фокус</string>
+    <string name="skill_planning">Планирование</string>
+    <string name="skill_learning">Обучение</string>
+    <string name="skill_habits">Привычки</string>
+    <string name="skill_reflection">Рефлексия</string>
+    <string name="skill_focus_desc">Быстрее начинать и дольше держать внимание</string>
+    <string name="skill_planning_desc">Понимать, что действительно важно сегодня</string>
+    <string name="skill_learning_desc">Понимать и запоминать то, что изучаешь</string>
+    <string name="skill_habits_desc">Превращать полезные мелочи в автоматизм</string>
+    <string name="skill_reflection_desc">Замечать, что работает, и корректировать курс</string>
+
+    <string name="level_met">Знакомство</string>
+    <string name="level_practiced">Практика</string>
+    <string name="level_applied">Применение</string>
+    <string name="level_integrated">Интеграция</string>
+    <string name="skill_level_starting">Начало</string>
+    <string name="skill_level_building">Рост</string>
+    <string name="skill_level_steady">Стабильно</string>
+    <string name="skill_level_strong">Сильно</string>
+
+    <string name="welcome_title">Тренируй то, как ты работаешь.</string>
+    <string name="welcome_get_started">Начать</string>
+    <string name="welcome_have_account">У меня уже есть аккаунт</string>
+    <string name="welcome_demo">Посмотреть с демо-данными</string>
+    <string name="onb_step">%1$d из %2$d</string>
+    <string name="goals_title">Что хочешь тренировать в первую очередь?</string>
+    <string name="goals_sub">Выбери до двух. Остальное тоже будет — просто чуть позже.</string>
+    <string name="rhythm_title">Когда тренеру выходить на связь?</string>
+    <string name="rhythm_morning">Утренняя тренировка</string>
+    <string name="rhythm_morning_sub">Упражнение дня готово</string>
+    <string name="rhythm_evening">Вечерняя рефлексия</string>
+    <string name="rhythm_evening_sub">Две минуты, три вопроса</string>
+    <string name="rhythm_time_q">Сколько времени есть в обычный день?</string>
+    <string name="rhythm_time_hint">Ежедневная программа укладывается в 15 минут. Фокус-сессии — по желанию.</string>
+    <string name="week_title">Твоя первая неделя</string>
+    <string name="week_sub">Одна новая техника в день. На 4-й день повторишь одну из пройденных, чтобы закрепить.</string>
+    <string name="week_review_suffix">+ повторение</string>
+    <string name="week_every_evening">Каждый вечер: рефлексия на две минуты</string>
+    <string name="week_start">Начать день 1</string>
+
+    <string name="language_title">Язык</string>
+    <string name="language_sub">Меняет всё приложение сразу, включая техники и напоминания. Твои заметки останутся без изменений.</string>
+    <string name="language_match_device">Как на устройстве</string>
+    <string name="language_current">Сейчас: %s</string>
+    <string name="language_a11y">Язык: %s</string>
+
+    <string name="greeting_morning">Доброе утро</string>
+    <string name="greeting_afternoon">Добрый день</string>
+    <string name="greeting_evening">Добрый вечер</string>
+    <string name="day_n">День %d</string>
+    <string name="today_training">Тренировка дня</string>
+    <string name="today_combination">День комбинаций</string>
+    <string name="badge_new">Новое</string>
+    <string name="today_start_exercise">Начать упражнение</string>
+    <string name="today_section">Сегодня</string>
+    <string name="today_count">%1$d / %2$d</string>
+    <string name="today_about">Около %1$d мин · %2$s</string>
+    <string name="today_plan_label">Твой план со вчерашнего вечера:</string>
+    <string name="step_now">Сейчас · %d мин</string>
+    <string name="step_done">Готово</string>
+    <string name="step_focus_title">Фокус-сессия на %d минут</string>
+    <string name="step_focus_sub">Лучше около %s</string>
+    <string name="step_reflection_sub">%s · 2 мин</string>
+    <string name="step_optional">по желанию</string>
+    <string name="hero_next_optional">Дальше · по желанию</string>
+    <string name="hero_focus_title">Фокус на %d минут</string>
+    <string name="hero_focus_line">Выбери одну задачу. Телефон экраном вниз. Больше ничего, пока не закончится таймер.</string>
+    <string name="hero_focus_cta">Начать фокус-сессию</string>
+    <string name="hero_evening">Этим вечером</string>
+    <string name="hero_reflection_line">Две минуты, три вопроса. Заверши день осознанно.</string>
+    <string name="hero_reflection_cta">Начать рефлексию</string>
+    <string name="hero_done_title">На сегодня всё</string>
+    <string name="hero_done_line">Хорошего отдыха. Завтрашнее упражнение будет готово утром.</string>
+    <string name="hero_done_cta">Подвести итог дня</string>
+
+    <string name="exercise_label">Упражнение</string>
+    <string name="exercise_meta">%1$s · День %2$d</string>
+    <string name="exercise_yours">Твоё упражнение</string>
+    <string name="exercise_start">Начать упражнение</string>
+    <string name="exercise_later">Не сейчас — напомнить позже</string>
+    <string name="exercise_did_it">Сделано</string>
+    <string name="two_title">Найди две быстрые задачи</string>
+    <string name="two_sub">Запиши их, выполни и отметь. Если какая-то заняла больше двух минут — это тоже полезно заметить.</string>
+    <string name="two_sample_1">Ответить Ане про пятницу</string>
+    <string name="two_sample_2">Оплатить интернет</string>
+    <string name="two_add_hint">Добавить ещё быструю задачу</string>
+    <string name="two_finish">Завершить упражнение</string>
+    <string name="result_title">Упражнение выполнено.</string>
+    <string name="result_sub">Техники закрепляются через маленькую, но настоящую практику.</string>
+    <string name="result_feel">Как ощущения?</string>
+    <string name="feel_easy">Легко</string>
+    <string name="feel_okay">Нормально</string>
+    <string name="feel_hard">Трудно</string>
+    <string name="result_note_hint">Короткая заметка для себя (необязательно)</string>
+    <string name="result_level_hint">Попрактикуй её в 3 разных дня, чтобы перейти на уровень «Практика».</string>
+
+    <string name="focus_label">Фокус-сессия</string>
+    <string name="focus_silenced">Уведомления выключены</string>
+    <string name="focus_remaining">осталось</string>
+    <string name="focus_paused">пауза</string>
+    <string name="focus_working_on">В работе</string>
+    <string name="focus_default_task">Набросать план на IV квартал</string>
+    <string name="focus_plus5">+5 мин</string>
+    <string name="focus_end">Стоп</string>
+    <string name="focus_pause">Пауза</string>
+    <string name="focus_resume">Продолжить</string>
+    <string name="focus_break_hint">Потом перерыв: 5 минут вдали от экрана.</string>
+
+    <string name="reflection_label">Вечерняя рефлексия</string>
+    <string name="reflection_title">Как прошёл день?</string>
+    <string name="reflection_q1">Что сегодня получилось?</string>
+    <string name="reflection_q2">Что не получилось?</string>
+    <string name="reflection_q3">Что изменишь завтра?</string>
+    <string name="reflection_one_line">Достаточно одной строки</string>
+    <string name="reflection_skip">Пропустить сегодня</string>
+    <string name="chip_cleared">Мелкие дела разобраны</string>
+    <string name="chip_focus_done">Фокус-сессия проведена</string>
+    <string name="chip_learned">Новое знание</string>
+    <string name="chip_started_late">Поздний старт</string>
+    <string name="chip_email_first">Сначала почта</string>
+    <string name="chip_distracted">Отвлечения</string>
+    <string name="chip_no_time">Не хватило времени</string>
+    <string name="chip_focus_before_email">Начать фокус-сессию до того, как открою почту</string>
+    <string name="chip_phone_away">Оставить телефон в другой комнате</string>
+    <string name="chip_start_earlier">Начать на 30 минут раньше</string>
+    <string name="day_complete_title">День %d завершён</string>
+    <string name="day_complete_sub">Упражнение, фокус, рефлексия. Полноценный тренировочный день.</string>
+    <string name="day_change_label">Твоё изменение на завтра</string>
+    <string name="day_change_hint">Оно будет ждать тебя завтра на экране «Сегодня».</string>
+    <string name="day_tomorrow">Завтра · День %d</string>
+    <string name="day_unlocks">Откроется в %s</string>
+    <string name="good_night">Спокойной ночи</string>
+
+    <string name="combo_label">День %d · Комбинация</string>
+    <string name="combo_title">Спланируй — и погрузись</string>
+    <string name="combo_sub">Четыре знакомые техники в одном движении.</string>
+    <string name="combo_step1">Самое важное: план на IV квартал</string>
+    <string name="combo_step1_sub">Из квадрата «Сделать сейчас»</string>
+    <string name="combo_step2">Какая часть двигает задачу сильнее всего?</string>
+    <string name="combo_step2_sub">Выбери один шаг, который даёт основной результат.</string>
+    <string name="combo_opt1">Сформулировать 3 главные ставки</string>
+    <string name="combo_opt2">Собрать запросы на функции</string>
+    <string name="combo_opt3">Отполировать дизайн слайдов</string>
+    <string name="combo_step3">%d минут на этот один шаг</string>
+    <string name="combo_step3_sub">Телефон убран, открыта одна вкладка</string>
+    <string name="combo_step4" formatted="false">Вечером: сработали ли те самые 20%?</string>
+    <string name="combo_step4_sub">Часть вечерней рефлексии</string>
+    <string name="combo_cta">Перейти к Deep Work</string>
+
+    <string name="eis_title">Разложи свои дела</string>
+    <string name="eis_to_sort">Разобрать</string>
+    <string name="eis_tap_task">Выбери задачу</string>
+    <string name="eis_tap_square">Теперь выбери квадрат</string>
+    <string name="eis_all_sorted">Всё разложено. Возьми одну задачу из «Сделать сейчас».</string>
+    <string name="eis_urgent">СРОЧНО</string>
+    <string name="eis_not_urgent">НЕ СРОЧНО</string>
+    <string name="eis_important">ВАЖНО</string>
+    <string name="eis_not_important">НЕ ВАЖНО</string>
+    <string name="eis_q1">Сделать сейчас</string>
+    <string name="eis_q1_sub">Срочно и важно</string>
+    <string name="eis_q2">Запланировать</string>
+    <string name="eis_q2_sub">Важно, но не срочно</string>
+    <string name="eis_q3">Делегировать</string>
+    <string name="eis_q3_sub">Срочно, но не важно</string>
+    <string name="eis_q4">Отказаться</string>
+    <string name="eis_q4_sub">Ни то, ни другое</string>
+    <string name="eis_cta">Дальше — правило 80/20</string>
+    <string name="eis_task_1">Починить баг входа в проде</string>
+    <string name="eis_task_2">План на IV квартал</string>
+    <string name="eis_task_3">Анкета поставщика</string>
+    <string name="eis_task_4">Разобрать закладки</string>
+    <string name="eis_task_5">Демо к четвергу</string>
+    <string name="eis_task_6">Записаться к стоматологу</string>
+    <string name="eis_task_7">Почитать рассылки</string>
+
+    <string name="fey_topic">Тема</string>
+    <string name="fey_topic_value">Объясни, что такое персистентность в Redis</string>
+    <string name="fey_from_list">Из твоего списка для изучения</string>
+    <string name="fey_change">Сменить тему</string>
+    <string name="fey_instruction">Объясни любознательному двенадцатилетнему. Если используешь термин — дай ему определение.</string>
+    <string name="fey_your_expl">Твоё объяснение</string>
+    <string name="fey_hint">Начни с самого простого верного предложения.</string>
+    <string name="fey_no_notes">Без конспектов и подсказок</string>
+    <string name="fey_done">Объяснение готово</string>
+    <string name="fey_back_title">Теперь оглянись назад</string>
+    <string name="fey_hardest">Что было сложнее всего объяснить?</string>
+    <string name="fey_chip_crash">Что будет при сбое</string>
+    <string name="fey_chip_which">Когда что использовать</string>
+    <string name="fey_chip_tradeoffs">Компромиссы</string>
+    <string name="fey_note_hint">Где возникла заминка?</string>
+    <string name="coach_feedback">Отзыв тренера</string>
+    <string name="coach_later">ИИ · позже</string>
+    <string name="coach_clear">Понятно</string>
+    <string name="coach_clear_text">Сравнение с сохранением в игре хорошо объясняет снапшоты.</string>
+    <string name="coach_gap">Стоит проверить</string>
+    <string name="coach_gap_text">Что происходит с изменениями после последнего снапшота?</string>
+    <string name="coach_beginner">Новичок мог бы спросить</string>
+    <string name="coach_beginner_text">«А почему бы тогда всегда не использовать журнал?»</string>
+    <string name="coach_improve">Улучшить объяснение</string>
+    <string name="fey_review_note">Через 4 дня ты объяснишь это снова — по памяти.</string>
+
+    <string name="review_label">Повторение</string>
+    <string name="review_topic">Персистентность в Redis</string>
+    <string name="review_again">Объясни ещё раз — не заглядывая в прошлый ответ.</string>
+    <string name="review_field">Объяснение по памяти</string>
+    <string name="review_hidden">Первый ответ скрыт, пока не закончишь</string>
+    <string name="review_compare">Сравнить с первым ответом</string>
+    <string name="interval_days">%d д</string>
+    <string name="interval_weeks">%d нед</string>
+    <string name="interval_months">%d мес</string>
+
+    <string name="pm_project">Проект:</string>
+    <string name="pm_project_value">Запуск мобильной беты</string>
+    <string name="pm_title">Сейчас %s. Проект полностью провалился. Почему?</string>
+    <string name="pm_reason_1">Объём всё рос, и мы так и не выпустились</string>
+    <string name="pm_reason_2">Никто вне команды его не тестировал</string>
+    <string name="pm_reason_3">Бэкенд-разработчика забрали на другой проект</string>
+    <string name="pm_likely">Вероятно</string>
+    <string name="pm_possible">Возможно</string>
+    <string name="pm_add">Добавить причину</string>
+    <string name="pm_today_q">Что можно сделать сегодня, чтобы снизить риск № 1?</string>
+    <string name="pm_action_hint">Один конкретный шаг, выполнимый сегодня</string>
+    <string name="pm_idea">Идея: составь короткий список «не входит в бету» — это стратегия двух списков.</string>
+    <string name="pm_cta">Добавить на сегодня</string>
+
+    <string name="hs_sentence">Когда я %1$s,\nя %2$s.</string>
+    <string name="hs_sub">Привяжи к тому, что уже делаешь каждый день. Новая привычка должна быть настолько маленькой, что это почти смешно.</string>
+    <string name="hs_existing">То, что ты уже делаешь</string>
+    <string name="hs_new">Крошечная новая привычка</string>
+    <string name="hs_anchor_1">сварю кофе</string>
+    <string name="hs_anchor_2">почищу зубы</string>
+    <string name="hs_anchor_3">открою ноутбук</string>
+    <string name="hs_anchor_4">сяду обедать</string>
+    <string name="hs_habit_1">прочитаю одну страницу</string>
+    <string name="hs_habit_2">напишу одну строку</string>
+    <string name="hs_habit_3">выпью стакан воды</string>
+    <string name="hs_habit_4">выберу главную задачу на завтра</string>
+    <string name="hs_nudge">Напомнить сразу после этого</string>
+    <string name="hs_log_hint">Отметь её в 3 разных дня, чтобы перейти на уровень «Практика».</string>
+    <string name="hs_save">Сохранить связку</string>
+
+    <string name="train_title">Тренировки</string>
+    <string name="train_sub">Твоя программа — по одной технике за раз.</string>
+    <string name="train_week">Неделя %1$d · %2$s</string>
+    <string name="week_foundations">Основы</string>
+    <string name="week_depth">Глубина</string>
+    <string name="week_combine">Комбинации</string>
+    <string name="train_day_of">День %1$d из %2$d</string>
+    <string name="train_first_combo">Первая комбинация</string>
+    <string name="train_review_due">Повторение на сегодня</string>
+    <string name="train_review_item">Снова объяснить персистентность в Redis</string>
+    <string name="train_library">Библиотека</string>
+    <string name="train_library_sub">Всего техник: %1$d · открыто: %2$d</string>
+    <string name="library_title">Библиотека</string>
+    <string name="library_sub">Все 14 техник. Программа открывает их по порядку, но заглянуть можно в любую.</string>
+    <string name="filter_all">Все</string>
+    <string name="not_started">Не начато</string>
+    <string name="detail_why">Зачем это нужно</string>
+    <string name="detail_level">Твой уровень</string>
+    <string name="detail_level_hint">Практикуй в разные дни, чтобы расти. Используй в день комбинаций, чтобы дойти до «Интеграции».</string>
+    <string name="detail_practice">Практиковать сейчас</string>
+    <string name="detail_history">Твоя практика</string>
+    <string name="detail_no_history">Практики пока не было.</string>
+    <string name="detail_related">Хорошо сочетается с</string>
+    <string name="detail_locked">Откроется на %d-й день программы.</string>
+
+    <string name="progress_title">Прогресс</string>
+    <string name="progress_days">%1$d из последних %2$d дней</string>
+    <string name="progress_since">с %s</string>
+    <string name="progress_missed_hint">Пропущенные дни ничего не сбрасывают. Программа просто продолжится с того же места.</string>
+    <string name="progress_history">История</string>
+    <string name="progress_history_sub">Заметки и рефлексии</string>
+    <string name="history_title">История</string>
+    <string name="history_rest">День отдыха. Тренировок нет.</string>
+    <string name="history_empty">Пока пусто. Здесь появится твоё первое упражнение.</string>
+
+    <string name="you_title">Профиль</string>
+    <string name="your_name">Твоё имя</string>
+    <string name="training_since">Тренируешься с %1$s · День %2$d</string>
+    <string name="sec_rhythm">Ритм дня</string>
+    <string name="time_most_days">Время в обычный день</string>
+    <string name="sec_program">Программа</string>
+    <string name="pace">Темп</string>
+    <string name="pace_hint">Стандартный: новая техника почти каждый день, между ними — повторения.</string>
+    <string name="pace_gentle">Мягкий</string>
+    <string name="pace_standard">Стандартный</string>
+    <string name="pace_intense">Интенсивный</string>
+    <string name="focus_areas">Приоритетные навыки</string>
+    <string name="sec_language">Язык и регион</string>
+    <string name="time_format">Формат времени</string>
+    <string name="time_format_value">По языку</string>
+    <string name="sec_appearance">Оформление</string>
+    <string name="theme">Тема</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="sec_notifications">Уведомления</string>
+    <string name="notif_morning">Утреннее упражнение</string>
+    <string name="notif_focus">Предложения фокус-сессий</string>
+    <string name="notif_review">Напоминания о повторении</string>
+    <string name="notif_evening">Вечерняя рефлексия</string>
+    <string name="sec_coach">Тренер</string>
+    <string name="coach_ai">ИИ-отзыв на объяснения</string>
+    <string name="coming_later">Появится позже</string>
+    <string name="sec_data">Данные</string>
+    <string name="export_journal">Экспорт дневника</string>
+    <string name="privacy">Конфиденциальность</string>
+    <string name="load_demo">Загрузить демо-данные (день 9)</string>
+
+    <plurals name="practices">
+        <item quantity="one">%d практика</item>
+        <item quantity="few">%d практики</item>
+        <item quantity="many">%d практик</item>
+        <item quantity="other">%d практики</item>
+    </plurals>
+    <plurals name="words">
+        <item quantity="one">%d слово</item>
+        <item quantity="few">%d слова</item>
+        <item quantity="many">%d слов</item>
+        <item quantity="other">%d слова</item>
+    </plurals>
+    <plurals name="review_days_ago">
+        <item quantity="one">Первое объяснение было %d день назад:</item>
+        <item quantity="few">Первое объяснение было %d дня назад:</item>
+        <item quantity="many">Первое объяснение было %d дней назад:</item>
+        <item quantity="other">Первое объяснение было %d дня назад:</item>
+    </plurals>
+    <plurals name="review_next">
+        <item quantity="one">Если всё получится, следующее повторение через %d день.</item>
+        <item quantity="few">Если всё получится, следующее повторение через %d дня.</item>
+        <item quantity="many">Если всё получится, следующее повторение через %d дней.</item>
+        <item quantity="other">Если всё получится, следующее повторение через %d дня.</item>
+    </plurals>
+
+    <string name="t_two_name">Правило двух минут</string>
+    <string name="t_two_short">Разбирай мелкие дела, пока они не накопились.</string>
+    <string name="t_two_why">Если дело занимает меньше двух минут, сделай его сразу. Мелочь легко закончить и дорого держать в голове.</string>
+    <string name="t_two_task">Посмотри на свои текущие дела. Найди две задачи меньше чем на две минуты — и выполни их прямо сейчас.</string>
+
+    <string name="t_pomodoro_name">Pomodoro</string>
+    <string name="t_pomodoro_short">Работай спринтами по 25 минут с настоящими перерывами.</string>
+    <string name="t_pomodoro_why">Таймер превращает «поработать над этим» в маленький отрезок, который можно закончить. Короткие перерывы сохраняют внимание свежим весь день.</string>
+    <string name="t_pomodoro_task">Выбери одну задачу. Работай над ней 25 минут, ни на что не переключаясь, а потом сделай настоящий 5-минутный перерыв.</string>
+
+    <string name="t_eisenhower_name">Матрица Эйзенхауэра</string>
+    <string name="t_eisenhower_short">Сортируй дела по важности, а не по шуму.</string>
+    <string name="t_eisenhower_why">Срочное кричит, важное — почти никогда. Сортировка по обоим признакам показывает, чему отдать лучшие часы.</string>
+    <string name="t_eisenhower_task">Разложи все свои дела по четырём квадратам. Потом выбери одну задачу из «Сделать сейчас».</string>
+
+    <string name="t_five_name">Правило 5 секунд</string>
+    <string name="t_five_short">Считай 5-4-3-2-1 и начинай раньше, чем появятся сомнения.</string>
+    <string name="t_five_why">Нерешительность растёт с каждой секундой. Обратный отсчёт даёт мозгу чёткий сигнал старта до того, как придут отговорки.</string>
+    <string name="t_five_task">Выбери дело, которое откладываешь. Посчитай вслух 5-4-3-2-1 и на «1» сделай первый физический шаг.</string>
+
+    <string name="t_stack_name">Связки привычек</string>
+    <string name="t_stack_short">Привязывай новую привычку к уже существующей.</string>
+    <string name="t_stack_why">Существующая привычка — надёжный триггер. Если привязать к ней крошечное новое действие, помнить о нём не придётся.</string>
+    <string name="t_stack_task">Закончи фразу: «Когда я [привычное действие], я [крошечная новая привычка]». Сделай это сегодня.</string>
+
+    <string name="t_feynman_name">Техника Фейнмана</string>
+    <string name="t_feynman_short">Объясни просто — и увидишь, чего не знаешь.</string>
+    <string name="t_feynman_why">Объяснение простыми словами точно показывает, где в понимании пробелы.</string>
+    <string name="t_feynman_task">Выбери тему, которую изучаешь, и объясни её простыми словами, как любознательному двенадцатилетнему. Без конспектов.</string>
+
+    <string name="t_twolist_name">Стратегия двух списков</string>
+    <string name="t_twolist_short">Реши, чем ты сознательно сейчас не занимаешься.</string>
+    <string name="t_twolist_why">Решение, чего не делать, защищает внимание для немногих по-настоящему важных целей.</string>
+    <string name="t_twolist_task">Запиши свои цели. Оставь три главные. Остальные перенеси в список «Не сейчас» и не трогай его всю неделю.</string>
+
+    <string name="t_deep_name">Deep Work</string>
+    <string name="t_deep_short">Длинные защищённые блоки для сложных задач.</string>
+    <string name="t_deep_why">Сложным задачам нужно долгое непрерывное внимание. Защищать его — навык, который можно натренировать.</string>
+    <string name="t_deep_task">Выдели 50 минут на одну сложную задачу. Закрой всё остальное и выключи звук на телефоне.</string>
+
+    <string name="t_pareto_name">Принцип 80/20</string>
+    <string name="t_pareto_short">Найди немногие действия, которые дают основной результат.</string>
+    <string name="t_pareto_why">Обычно небольшая доля действий даёт большую часть результата. Найти их заранее — значит сэкономить часы.</string>
+    <string name="t_pareto_task">Возьми самую важную задачу. Распиши шаги и отметь тот, что продвигает её сильнее всего. С него и начни.</string>
+
+    <string name="t_spaced_name">Интервальные повторения</string>
+    <string name="t_spaced_short">Возвращайся к изученному через растущие интервалы.</string>
+    <string name="t_spaced_why">Память быстро выцветает, но каждое вовремя сделанное вспоминание продлевает её жизнь.</string>
+    <string name="t_spaced_task">Выбери что-то новое из этой недели. Вспомни это по памяти, а потом проверь, что упущено.</string>
+
+    <string name="t_diet_name">Информационная диета</string>
+    <string name="t_diet_short">Осознанно выбирай, что потребляешь.</string>
+    <string name="t_diet_why">То, что ты потребляешь, определяет, о чём ты думаешь. Осознанный выбор источников освобождает внимание.</string>
+    <string name="t_diet_task">Выбери одну ленту или приложение, которые сегодня пропустишь. Прежде чем что-то открыть, спроси себя: мне это нужно прямо сейчас?</string>
+
+    <string name="t_premortem_name">Премортем</string>
+    <string name="t_premortem_short">Представь провал заранее — и предотврати его.</string>
+    <string name="t_premortem_why">Если представить провал заранее, риски становятся конкретными, пока ещё есть время действовать.</string>
+    <string name="t_premortem_task">Представь, что через полгода проект полностью провалился. Запиши причины и выбери один шаг, который сегодня снизит самый большой риск.</string>
+
+    <string name="t_onepct_name" formatted="false">Улучшение на 1%</string>
+    <string name="t_onepct_short">Каждый день улучшай одну небольшую вещь.</string>
+    <string name="t_onepct_why">Крошечные улучшения легко повторять, а за недели они складываются.</string>
+    <string name="t_onepct_task" formatted="false">Выбери один навык или привычку. Сделай их сегодня на 1% лучше — одним небольшим конкретным изменением.</string>
+
+    <string name="t_reflect_name">Ежедневная рефлексия</string>
+    <string name="t_reflect_short">Три коротких вопроса, чтобы завершить день.</string>
+    <string name="t_reflect_why">Короткий взгляд назад превращает опыт дня в урок на завтра.</string>
+    <string name="t_reflect_task">Ответь на три вопроса: что получилось, что нет и что изменишь завтра.</string>
+</resources>
