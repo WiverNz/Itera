@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_done">Готово</string>
+    <string name="action_back">Назад</string>
+    <string name="action_close">Закрыть</string>
+    <string name="nav_today">Сегодня</string>
+    <string name="nav_train">Тренировки</string>
+    <string name="nav_progress">Прогресс</string>
+    <string name="nav_you">Профиль</string>
+    <string name="level_met">Знакомство</string>
+    <string name="level_practiced">Практика</string>
+    <string name="level_applied">Применение</string>
+    <string name="level_integrated">Интеграция</string>
+    <string name="language_title">Язык</string>
+    <string name="language_sub">Меняет всё приложение сразу, включая техники и напоминания. Твои заметки останутся без изменений.</string>
+    <string name="language_match_device">Как на устройстве</string>
+    <string name="language_current">Сейчас: %s</string>
+    <string name="language_a11y">Язык: %s</string>
+    <string name="step_now">Сейчас · %d мин</string>
+    <string name="step_done">Готово</string>
+    <string name="interval_days">%d д</string>
+    <string name="interval_weeks">%d нед</string>
+    <string name="interval_months">%d мес</string>
+    <string name="not_started">Не начато</string>
+    <string name="mastery_a11y">Уровень %1$s, %2$d из 4</string>
+    <string name="review_stage_a11y">Этап повторения %1$d из 5</string>
+    <string name="shell_placeholder">%1$s</string>
+    <string name="shell_load_failed">Не удалось загрузить настройки. Ваши данные сохранены.</string>
+    <string name="step_next">Далее</string>
+</resources>

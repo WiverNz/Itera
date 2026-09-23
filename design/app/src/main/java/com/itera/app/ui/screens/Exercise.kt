@@ -204,11 +204,12 @@ fun ExerciseResultScreen(vm: AppViewModel, technique: Technique, onDone: () -> U
 /** Circle pops in with a spring, then the check mark draws itself. */
 @Composable
 fun AnimatedCheck(container: androidx.compose.ui.graphics.Color, stroke: androidx.compose.ui.graphics.Color, modifier: Modifier = Modifier) {
-    val pop = remember { Animatable(0.5f) }
-    val draw = remember { Animatable(0f) }
+    val reduced = com.itera.app.ui.theme.LocalReduceMotion.current
+    val pop = remember { Animatable(if (reduced) 1f else 0.5f) }
+    val draw = remember { Animatable(if (reduced) 1f else 0f) }
     LaunchedEffect(Unit) {
-        pop.animateTo(1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow))
-        draw.animateTo(1f, tween(450))
+        pop.animateTo(1f, com.itera.app.ui.theme.IteraMotion.pop(reduced, true))
+        draw.animateTo(1f, com.itera.app.ui.theme.IteraMotion.check(reduced))
     }
     Box(modifier.size(96.dp).scale(pop.value).clip(CircleShape).background(container), contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(48.dp)) {

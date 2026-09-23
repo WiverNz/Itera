@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_done">Done</string>
+    <string name="action_back">Back</string>
+    <string name="action_close">Close</string>
+    <string name="nav_today">Today</string>
+    <string name="nav_train">Train</string>
+    <string name="nav_progress">Progress</string>
+    <string name="nav_you">You</string>
+    <string name="level_met">Met</string>
+    <string name="level_practiced">Practiced</string>
+    <string name="level_applied">Applied</string>
+    <string name="level_integrated">Integrated</string>
+    <string name="language_title">Language</string>
+    <string name="language_sub">Changes the whole app instantly, including techniques and reminders. Your own notes stay exactly as you wrote them.</string>
+    <string name="language_match_device">Match device</string>
+    <string name="language_current">Currently %s</string>
+    <string name="language_a11y">Language: %s</string>
+    <string name="step_now">Now · %d min</string>
+    <string name="step_done">Done</string>
+    <string name="interval_days">%d d</string>
+    <string name="interval_weeks">%d wk</string>
+    <string name="interval_months">%d mo</string>
+    <string name="not_started">Not started</string>
+    <string name="mastery_a11y">Level %1$s, %2$d of 4</string>
+    <string name="review_stage_a11y">Review stage %1$d of 5</string>
+    <string name="shell_placeholder">%1$s</string>
+    <string name="shell_load_failed">Couldn\'t load your preferences. Your data is safe.</string>
+    <string name="step_next">Next</string>
+</resources>

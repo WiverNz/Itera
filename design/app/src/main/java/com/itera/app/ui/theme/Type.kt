@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 /** Variable fonts are bundled in res/font; no optional external font installation. */
 @OptIn(ExperimentalTextApi::class)
-private fun resourceFamily(resource: Int): FontFamily = FontFamily(
+internal fun resourceFamily(resource: Int): FontFamily = FontFamily(
     listOf(FontWeight.Normal, FontWeight.Medium, FontWeight.SemiBold, FontWeight.Bold).map { weight ->
         Font(resource, weight = weight, variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)))
     }
@@ -35,16 +35,28 @@ data class IteraType(
     val caption: TextStyle,    // 13
     val label: TextStyle,      // 17 semibold — buttons, row titles
     val eyebrow: TextStyle,    // 13 caps
+    val userText: TextStyle,
+    val userTextLarge: TextStyle,
     val timer: TextStyle,      // 80 — focus timer
 )
 
 @Composable
 fun rememberIteraType(): IteraType {
-    return remember {
-        val display = resourceFamily(R.font.bricolage_grotesque)
-        val body = resourceFamily(R.font.instrument_sans)
+    val locale = com.itera.app.ui.screens.currentLocale()
+    return remember(locale) { createIteraType(locale) }
+}
+
+fun fontResources(locale: java.util.Locale): Pair<Int, Int> =
+    if (android.icu.util.ULocale.addLikelySubtags(android.icu.util.ULocale.forLocale(locale)).script == "Cyrl") {
+        R.font.inter_tight to R.font.inter
+    } else { R.font.bricolage_grotesque to R.font.instrument_sans }
+
+fun createIteraType(locale: java.util.Locale): IteraType {
+        val (displayResource, bodyResource) = fontResources(locale)
+        val display = resourceFamily(displayResource)
+        val body = resourceFamily(bodyResource)
         val tight = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
-        IteraType(
+        return IteraType(
             hero = TextStyle(fontFamily = display, fontWeight = FontWeight.Bold, fontSize = 42.sp, lineHeight = 44.sp, letterSpacing = (-0.02).em, lineHeightStyle = tight),
             display = TextStyle(fontFamily = display, fontWeight = FontWeight.Bold, fontSize = 34.sp, lineHeight = 36.sp, letterSpacing = (-0.02).em, lineHeightStyle = tight),
             title = TextStyle(fontFamily = display, fontWeight = FontWeight.Bold, fontSize = 30.sp, lineHeight = 33.sp, letterSpacing = (-0.02).em, lineHeightStyle = tight),
@@ -55,9 +67,11 @@ fun rememberIteraType(): IteraType {
             caption = TextStyle(fontFamily = body, fontWeight = FontWeight.Normal, fontSize = 13.sp, lineHeight = 18.sp),
             label = TextStyle(fontFamily = body, fontWeight = FontWeight.SemiBold, fontSize = 17.sp, lineHeight = 22.sp),
             eyebrow = TextStyle(fontFamily = body, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, lineHeight = 16.sp, letterSpacing = 0.06.em),
+            userText = TextStyle(fontFamily = resourceFamily(R.font.inter), fontSize = 16.sp, lineHeight = 23.sp),
+            userTextLarge = TextStyle(fontFamily = resourceFamily(R.font.inter), fontSize = 18.sp, lineHeight = 26.sp),
             timer = TextStyle(fontFamily = display, fontWeight = FontWeight.SemiBold, fontSize = 80.sp, lineHeight = 84.sp, letterSpacing = (-0.04).em),
         )
-    }
 }
 
 val LocalIteraType = staticCompositionLocalOf<IteraType> { error("IteraType not provided") }
+

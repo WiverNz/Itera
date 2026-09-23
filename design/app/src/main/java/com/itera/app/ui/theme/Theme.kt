@@ -24,6 +24,7 @@ fun ThemeMode.isDark(): Boolean = when (this) {
 
 @Composable
 fun IteraTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val reduced = rememberReduceMotion()
     val colors = if (dark) DarkColors else LightColors
     val scheme = if (dark) {
         darkColorScheme(
@@ -41,7 +42,7 @@ fun IteraTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () ->
         )
     }
     val type = rememberIteraType()
-    CompositionLocalProvider(LocalIteraColors provides colors, LocalIteraType provides type) {
+    CompositionLocalProvider(LocalIteraColors provides colors, LocalIteraType provides type, LocalReduceMotion provides reduced) {
         MaterialTheme(colorScheme = scheme, content = content)
     }
 }

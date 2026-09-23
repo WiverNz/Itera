@@ -65,6 +65,9 @@ import androidx.compose.ui.unit.dp
 import com.itera.app.R
 import com.itera.app.model.Mastery
 import com.itera.app.model.Technique
+import com.itera.app.ui.theme.LocalReduceMotion
+import com.itera.app.ui.theme.IteraMotion
+import androidx.compose.ui.platform.LocalDensity
 import com.itera.app.ui.theme.Itera
 import com.itera.app.ui.theme.colors
 
@@ -235,7 +238,7 @@ fun ChoiceChip(text: String, selected: Boolean, onClick: () -> Unit, modifier: M
     val c = Itera.colors
     Box(
         modifier
-            .heightIn(min = 40.dp)
+            .heightIn(min = 44.dp)
             .clip(CircleShape)
             .border(BorderStroke(1.5.dp, if (selected) c.ink else c.line), CircleShape)
             .background(if (selected) c.ink else Color.Transparent)
@@ -250,24 +253,27 @@ fun ChoiceChip(text: String, selected: Boolean, onClick: () -> Unit, modifier: M
 @Composable
 fun <T> Segmented(options: List<Pair<T, String>>, selected: T, onSelect: (T) -> Unit, modifier: Modifier = Modifier) {
     val c = Itera.colors
-    Row(
-        modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(c.surface2).padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        options.forEach { (value, label) ->
-            val on = value == selected
-            Box(
-                Modifier
-                    .weight(1f)
-                    .heightIn(min = 44.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(if (on) c.surface else Color.Transparent)
-                    .selectable(selected = on, role = Role.Tab, onClick = { onSelect(value) }),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(label, style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold), color = if (on) c.ink else c.ink2, maxLines = 1)
-            }
+    val container = modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(c.surface2).padding(4.dp)
+    if (LocalDensity.current.fontScale > 1.6f) {
+        Column(container, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            options.forEach { (value, label) -> Segment(label, value == selected, { onSelect(value) }, Modifier.fillMaxWidth()) }
         }
+    } else {
+        Row(container, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            options.forEach { (value, label) -> Segment(label, value == selected, { onSelect(value) }, Modifier.weight(1f)) }
+        }
+    }
+}
+
+@Composable
+private fun Segment(label: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val c = Itera.colors
+    Box(modifier.heightIn(min = 44.dp).clip(RoundedCornerShape(12.dp))
+        .background(if (selected) c.surface else Color.Transparent)
+        .selectable(selected = selected, role = Role.Tab, onClick = onClick).padding(4.dp),
+        contentAlignment = Alignment.Center) {
+        Text(label, style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+            color = if (selected) c.ink else c.ink2, textAlign = TextAlign.Center)
     }
 }
 
@@ -301,29 +307,33 @@ fun StepRow(state: StepState, title: String, subtitle: String, accent: Color, on
 }
 
 @Composable
-fun StepDot(state: StepState, accent: Color, size: Dp = 28.dp) {
+fun StepDot(state: StepState, accent: Color, size: Dp = 28.dp, modifier: Modifier = Modifier) {
     val c = Itera.colors
+    val reduced = LocalReduceMotion.current
     when (state) {
-        StepState.Done -> Box(Modifier.size(size).clip(CircleShape).background(accent), contentAlignment = Alignment.Center) {
-            var shown by remember { mutableStateOf(false) }
-            LaunchedEffect(Unit) { shown = true }
-            AnimatedVisibility(shown, enter = scaleIn(spring(dampingRatio = Spring.DampingRatioMediumBouncy)) + fadeIn()) {
+        StepState.Done -> Box(modifier.size(size).clip(CircleShape).background(accent), contentAlignment = Alignment.Center) {
+            if (reduced) {
                 Icon(IteraIcons.Check, null, tint = c.surface, modifier = Modifier.size(size * 0.57f))
+            } else {
+                var shown by remember { mutableStateOf(false) }
+                LaunchedEffect(Unit) { shown = true }
+                AnimatedVisibility(shown, enter = scaleIn(IteraMotion.pop(false)) + fadeIn()) {
+                    Icon(IteraIcons.Check, null, tint = c.surface, modifier = Modifier.size(size * 0.57f))
+                }
             }
         }
         StepState.Now -> {
-            val transition = rememberInfiniteTransition(label = "pulse")
-            val pulse by transition.animateFloat(
-                initialValue = 0.35f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(tween(1200), RepeatMode.Reverse),
-                label = "pulseAlpha",
-            )
-            Box(Modifier.size(size).border(2.dp, accent, CircleShape), contentAlignment = Alignment.Center) {
+            val pulse = if (reduced) 1f else {
+                val transition = rememberInfiniteTransition(label = "pulse")
+                val alpha by transition.animateFloat(0.35f, 1f,
+                    infiniteRepeatable(tween(IteraMotion.PulseMillis), RepeatMode.Reverse), label = "pulseAlpha")
+                alpha
+            }
+            Box(modifier.size(size).border(2.dp, accent, CircleShape), contentAlignment = Alignment.Center) {
                 Box(Modifier.size(10.dp).graphicsLayer { alpha = pulse }.clip(CircleShape).background(accent))
             }
         }
-        StepState.Next -> Box(Modifier.size(size).border(2.dp, c.line, CircleShape))
+        StepState.Next -> Box(modifier.size(size).border(2.dp, c.line, CircleShape))
     }
 }
 
@@ -336,7 +346,7 @@ fun MasteryLadder(level: Mastery?, color: Color, modifier: Modifier = Modifier) 
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Mastery.entries.forEachIndexed { i, m ->
             val target = if (i < reached) 1f else 0f
-            val fill by animateFloatAsState(target, animationSpec = tween(700, delayMillis = 150 * i), label = "ladder$i")
+            val fill by animateFloatAsState(target, animationSpec = IteraMotion.mastery(i, LocalReduceMotion.current), label = "ladder$i")
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box(
                     Modifier.fillMaxWidth().height(8.dp).clip(CircleShape).background(c.surface2)
@@ -356,7 +366,7 @@ fun MasteryLadder(level: Mastery?, color: Color, modifier: Modifier = Modifier) 
 /** Thin animated progress bar. */
 @Composable
 fun ProgressBar(fraction: Float, color: Color, modifier: Modifier = Modifier, height: Dp = 6.dp) {
-    val f by animateFloatAsState(fraction.coerceIn(0f, 1f), animationSpec = tween(800), label = "bar")
+    val f by animateFloatAsState(fraction.coerceIn(0f, 1f), animationSpec = IteraMotion.progress(LocalReduceMotion.current), label = "bar")
     Box(
         modifier.fillMaxWidth().height(height).clip(CircleShape).background(Itera.colors.surface2)
             .drawBehind { drawRect(color, size = size.copy(width = size.width * f)) },
@@ -372,7 +382,7 @@ fun NoteField(
     placeholder: String,
     modifier: Modifier = Modifier,
     minLines: Int = 2,
-    textStyle: TextStyle = Itera.type.body,
+    textStyle: TextStyle = Itera.type.userText,
     bordered: Boolean = false,
 ) {
     val c = Itera.colors
@@ -380,7 +390,7 @@ fun NoteField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth(),
-        textStyle = textStyle.copy(color = c.ink),
+        textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
         minLines = minLines,
         cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
         decorationBox = { inner ->
