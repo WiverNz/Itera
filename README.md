@@ -2,8 +2,8 @@
 
 A native Android app that teaches productivity techniques through daily practice, not through another list of things to do.
 
-> **Status: specification and prototype complete; production implementation has not started.**
-> `design/` is a working prototype you can run today. `app/` is still the unmodified Android Studio template. Implementation begins at [issue 001](docs/issues/001-project-bootstrap.md).
+> **Status: issue 001 bootstrap implemented; acceptance evidence is recorded in the issue.**
+> `design/` is a working prototype you can run today. `app/` contains only the themed bootstrap placeholder. No product features have been implemented. See [issue 001](docs/issues/001-project-bootstrap.md).
 
 ## What it is
 
@@ -46,8 +46,8 @@ Missing a day never resets anything. Program days advance when you train, not by
 | Path | What it is |
 | --- | --- |
 | [`design/`](design/) | **A runnable Compose prototype of the whole app** — 24 screens, theme, components, icons, navigation, four languages. The source of truth for all UI and interaction. |
-| [`docs/`](docs/README.md) | The specification: 65 documents, 19 ADRs and 40 issues. |
-| `app/` | The production app. Currently the untouched Android Studio template; issue 001 replaces it. |
+| [`docs/`](docs/README.md) | The specification: the product documents, ADRs and implementation issues. |
+| `app/` | The production app. Issue 001 bootstrap; feature implementation has not started. |
 | [`AGENTS.md`](AGENTS.md) | Working rules for anyone — human or agent — implementing this. |
 | [`CLAUDE_START_HERE.md`](CLAUDE_START_HERE.md) | Entry point for implementation. |
 
@@ -61,7 +61,7 @@ Missing a day never resets anything. Program days advance when you train, not by
 ## Requirements
 
 - Android Studio Ladybug (2024.2) or newer
-- JDK 17 or newer
+- JDK 25 for production (the committed daemon JVM criteria select it); JDK 17+ for the independent prototype
 - Android SDK; both modules download their own Gradle distribution on first sync
 - A device or emulator running Android 8.0 (API 26) or newer
 
@@ -80,7 +80,7 @@ Or open the `design/` folder as its own Android Studio project.
 
 Two things make exploring it fast: **"Explore with demo data"** on the Welcome screen jumps to day 9 with realistic history, and the **language pill** switches between the four languages at runtime.
 
-The prototype was authored without an Android SDK available, so its first Gradle sync may need a few trivial import fixes — Android Studio will point at them. See [`design/README.md`](design/README.md) (written in Russian) for its own notes.
+The prototype builds and runs independently. See [`design/README.md`](design/README.md) (written in Russian) for its own notes.
 
 ### The production app
 
@@ -89,7 +89,39 @@ The prototype was authored without an Android SDK available, so its first Gradle
 ./gradlew installDebug
 ```
 
-This currently builds the Android Studio template, not Itera.
+This builds a single centered, localized app-name placeholder. The four fonts are bundled in `app/src/main/res/font/`; licenses and pinned source hashes are in [licenses/fonts](licenses/fonts/README.md).
+
+Set `ANDROID_HOME` to your SDK, or add `sdk.dir=/path/to/sdk` in the ignored `local.properties`. Install platform `android-37.0` and build tools `36.0.0`. The wrapper downloads Gradle 9.7.1 and checks its SHA-256. The daemon JDK can be provisioned automatically. Dependencies need network access on the first build; the app itself has no INTERNET permission.
+
+On Windows use `.\gradlew.bat` instead of `./gradlew`.
+
+```bash
+./gradlew clean build
+./gradlew testDebugUnitTest lintDebug spotlessCheck koverVerify verifyRoborazziDebug
+./gradlew -p buildSrc test
+./gradlew spotlessApply                       # format production Kotlin/build scripts
+./gradlew installDebug
+adb shell am start -W -n com.wivernz.itera/.MainActivity
+```
+
+`build` runs formatting, lint, unit tests and the domain coverage gate. `verifyRoborazziDebug` is configured with an empty golden set; issue 039 adds goldens. JVM tests render all four font previews in light/dark under API 34, fixed dimensions, en-US, UTC and disabled animations. Open `BootstrapPreview` in Android Studio for the IDE preview.
+
+Dependency versions are pinned in `gradle/libs.versions.toml` and resolved artifacts in `app/gradle.lockfile`. Intentional changes require regenerating locks with `./gradlew :app:dependencies --write-locks`, then running the full task set. Built-in Kotlin and the configuration cache stay enabled. No compatibility opt-out is used.
+
+The local instrumentation smoke test is deliberately separate from CI (instrumented CI remains issue 039):
+
+```bash
+./gradlew installDebug assembleDebugAndroidTest
+adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+adb shell am instrument -w -e class com.wivernz.itera.LocaleSmokeTest -e phase select com.wivernz.itera.test/androidx.test.runner.AndroidJUnitRunner
+adb shell am force-stop com.wivernz.itera
+adb shell am instrument -w -e class com.wivernz.itera.LocaleSmokeTest -e phase assert com.wivernz.itera.test/androidx.test.runner.AndroidJUnitRunner
+adb shell am instrument -w -e class com.wivernz.itera.LocaleSmokeTest -e phase restore com.wivernz.itera.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+Without a `phase` argument, `connectedDebugAndroidTest` performs a self-contained locale round trip. The `select` phase calls `AppCompatDelegate.setApplicationLocales` and checks the translated name; `assert` verifies it after process death; `restore` returns to the system language.
+
+CI runs on every push and pull request. Reports are uploaded even when checks fail. Custom Compose lint checks are build-only tooling described in [ADR-0020](docs/architecture/adr/0020-bootstrap-lint.md).
 
 ### Side by side
 

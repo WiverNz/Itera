@@ -253,3 +253,18 @@ Every R-series item above that is "still in force" is independently confirmed by
 ## 10. Changing a decision
 
 If an implementation forces a change to anything here, update this file **and** the affected documents in the same change. That is part of the definition of done.
+
+## 11. Issue 001 compatibility corrections (2026-09-23)
+
+User-approved: KSP2 has independent versioning; remove the Kotlin-prefix constraint.
+Use KSP 2.3.12 with AGP 9.4.1 built-in Kotlin and Kotlin/Compose compiler 2.2.10.
+The old KSP 2.2.10-2.0.2 fails while registering generated Kotlin source sets.
+Do not disable built-in Kotlin or the new DSL. The source-set compatibility escape
+hatch is a last resort, not part of this baseline. Hilt 2.59.2 supplies AGP 9 support;
+Room 2.8.4 and Roborazzi 1.61.0 replace the older illustrative catalog versions.
+
+All four variable fonts live in `res/font/`, loaded by resource ID, in both projects.
+Issue 001 bundles and smoke-tests them; script-aware typography and glyph coverage
+remain issue 003. This replaces the earlier asset-loading instructions.
+
+ADR-0020 records the Compose lint enforcement required by issue 001; buildSrc is build tooling, not a production module. Kotlin runtime 2.2.20 is recorded separately from compiler 2.2.10.

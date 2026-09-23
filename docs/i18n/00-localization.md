@@ -205,7 +205,8 @@ Localisation is **not** one late issue. Each part lands in the earliest issue th
 | --- | --- |
 | `AppCompatActivity`, `locales_config.xml`, `AppLocalesMetadataHolderService`, the four `values-*` directories | `001` |
 | `AppLanguage`, `currentLocale()`, `formatTime()`, locale-aware formatter helpers | `002` |
-| The four bundled fonts, script-aware family selection, `FontCoverageTest` | `003` |
+| Four font files in `res/font/` and loading smoke check | `001` |
+| Script-aware family selection and `FontCoverageTest` | `003` |
 | `LanguageSheet`, `LanguagePill`, `RadioDot` | `004` |
 | The 14 techniques' content in all four languages | `008` |
 | The Welcome language entry point | `016` |

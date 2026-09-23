@@ -86,3 +86,7 @@ desktop.ini
 *.log
 *.hprof
 .claude/
+
+# Roborazzi failure diagnostics; keep goldens outside build/.
+*_compare.png
+*_actual.png

@@ -10,7 +10,8 @@ Localisation is **not** implemented here. By the time this issue runs, the app i
 | --- | --- |
 | `AppCompatActivity`, `locales_config.xml`, `AppLocalesMetadataHolderService`, the four `values-*` directories | `001` |
 | `AppLanguage`, `currentLocale()`, the locale-aware formatter helpers, `is24Hour()` | `002` |
-| The four bundled fonts, script-aware family selection, `FontCoverageTest` | `003` |
+| Four font files in `res/font/` and loading smoke check | `001` |
+| Script-aware family selection and `FontCoverageTest` | `003` |
 | `LanguageSheet`, `LanguagePill`, `RadioDot`, `TimePickerSheet` | `004` |
 | The 14 techniques' content in all four languages | `008` |
 | The Welcome language entry point | `016` |

@@ -21,7 +21,7 @@ The product's visual identity - calm, flat, warm - applied consistently and corr
 
 - `core/designsystem/theme/Color.kt`: port `IteraColors` (11 tokens x 2 themes), `SkillColors`, `Skill.colors(dark)` and `LocalIteraColors` verbatim.
 - `core/designsystem/theme/Type.kt`: port `IteraType` (11 styles) and `LocalIteraType`, and implement the **script-aware family selection** in `rememberIteraType()` (ADR-0019):
-  - bundle four faces - Bricolage Grotesque + Instrument Sans (Latin), Inter Tight + Inter (Cyrillic-capable);
+  - use the four faces already bundled in `res/font/` by issue 001 - Bricolage Grotesque + Instrument Sans (Latin), Inter Tight + Inter (Cyrillic-capable);
   - chrome resolves its family from the active locale's script;
   - **user-authored text styles always use Inter**, in every locale;
   - **remove the prototype's system-font fallback** - a missing bundled font is a build failure, not a silent degradation.
@@ -32,7 +32,7 @@ The product's visual identity - calm, flat, warm - applied consistently and corr
 - **Add** a `NightSurface` wrapper for the three always-dark screens - the prototype only does this inline in `FocusScreen`.
 - **Add** edge-to-edge setup and status-bar icon appearance from the effective surface (the prototype does this in `MainActivity` and `FocusScreen`; generalise it).
 - **Add** `core/designsystem/preview/`: a `@PreviewLightDark` wrapper and a token gallery preview showing every colour, type style, shape and icon.
-- Ship all four font files. Verify coverage rather than assuming it.
+- Use all four font files bundled by issue 001. Verify coverage rather than assuming it.
 
 ## Non-goals
 

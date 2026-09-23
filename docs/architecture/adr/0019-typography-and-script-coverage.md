@@ -59,4 +59,4 @@ Rule 2 is the less obvious half. Without it, an English UI showing a Russian not
 
 ## Migration implications
 
-None - nothing is implemented yet. Issue 003 bundles the four files, implements the selection rule and writes the coverage test.
+None - nothing is implemented yet. Issue 001 bundles the four files in `res/font/` and verifies loading. Issue 003 implements the selection rule and writes the glyph-coverage test.

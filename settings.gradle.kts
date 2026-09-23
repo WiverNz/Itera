@@ -24,4 +24,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Itera"
 include(":app")
- 

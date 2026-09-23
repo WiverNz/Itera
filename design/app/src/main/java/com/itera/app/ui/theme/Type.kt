@@ -1,45 +1,27 @@
 package com.itera.app.ui.theme
 
-import android.content.res.AssetManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontVariation
+import com.itera.app.R
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
-/**
- * Fonts are loaded from app/src/main/assets/fonts/ when present (see README),
- * otherwise the system font is used. Cyrillic falls back to the system font
- * automatically, because both brand fonts are Latin-only.
- */
-private val DISPLAY_FILES = listOf(
-    "BricolageGrotesque-Medium.ttf" to FontWeight.Medium,
-    "BricolageGrotesque-SemiBold.ttf" to FontWeight.SemiBold,
-    "BricolageGrotesque-Bold.ttf" to FontWeight.Bold,
-)
-private val BODY_FILES = listOf(
-    "InstrumentSans-Regular.ttf" to FontWeight.Normal,
-    "InstrumentSans-Medium.ttf" to FontWeight.Medium,
-    "InstrumentSans-SemiBold.ttf" to FontWeight.SemiBold,
-    "InstrumentSans-Bold.ttf" to FontWeight.Bold,
-)
-
+/** Variable fonts are bundled in res/font; no optional external font installation. */
 @OptIn(ExperimentalTextApi::class)
-private fun assetFamily(assets: AssetManager, files: List<Pair<String, FontWeight>>): FontFamily? {
-    val present = runCatching { assets.list("fonts")?.toSet() }.getOrNull().orEmpty()
-    val fonts = files.filter { it.first in present }.map { (file, weight) ->
-        Font(path = "fonts/$file", assetManager = assets, weight = weight)
+private fun resourceFamily(resource: Int): FontFamily = FontFamily(
+    listOf(FontWeight.Normal, FontWeight.Medium, FontWeight.SemiBold, FontWeight.Bold).map { weight ->
+        Font(resource, weight = weight, variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)))
     }
-    return if (fonts.isEmpty()) null else FontFamily(fonts)
-}
+)
 
 @Immutable
 data class IteraType(
@@ -58,10 +40,9 @@ data class IteraType(
 
 @Composable
 fun rememberIteraType(): IteraType {
-    val assets = LocalContext.current.assets
-    return remember(assets) {
-        val display = assetFamily(assets, DISPLAY_FILES) ?: FontFamily.Default
-        val body = assetFamily(assets, BODY_FILES) ?: FontFamily.Default
+    return remember {
+        val display = resourceFamily(R.font.bricolage_grotesque)
+        val body = resourceFamily(R.font.instrument_sans)
         val tight = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
         IteraType(
             hero = TextStyle(fontFamily = display, fontWeight = FontWeight.Bold, fontSize = 42.sp, lineHeight = 44.sp, letterSpacing = (-0.02).em, lineHeightStyle = tight),

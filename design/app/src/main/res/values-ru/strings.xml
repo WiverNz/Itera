@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Итера</string>
     <string name="app_description">Практический тренер фокуса, планирования, обучения, привычек и рефлексии.</string>
 
     <string name="action_continue">Продолжить</string>

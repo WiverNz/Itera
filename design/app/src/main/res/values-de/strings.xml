@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Itera</string>
     <string name="app_description">Ein praktischer Trainer für Fokus, Planung, Lernen, Gewohnheiten und Reflexion.</string>
 
     <string name="action_continue">Weiter</string>

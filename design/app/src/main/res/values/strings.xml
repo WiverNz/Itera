@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Itera</string>
+    <string name="app_name">Itera</string>
     <string name="app_description">A practical trainer for focus, planning, learning, habits, and reflection.</string>
 
     <!-- Common -->

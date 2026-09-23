@@ -101,6 +101,7 @@ fun ScreenColumn(
 }
 
 /** Status bar, cutout, navigation bar and keyboard insets for a full-screen page. */
+@Composable
 fun Modifier.screenInsets(): Modifier = this.windowInsetsPadding(WindowInsets.safeDrawing)
 
 @Composable

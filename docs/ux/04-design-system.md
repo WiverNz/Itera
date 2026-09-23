@@ -79,7 +79,7 @@ Applied once, in `rememberIteraType()`:
 1. **Chrome** - resolve from the active locale's script. Cyrillic script uses Inter Tight / Inter; everything else uses the brand faces.
 2. **User-authored text** - **always Inter**, in every locale. The app cannot know what script someone types in, so note fields, reflection answers, explanations, task labels and history entries always use the widest-coverage face.
 
-The prototype's `Type.kt` loads fonts from `assets/fonts/` and falls back to the system font when they are absent. Keep the asset-loading mechanism; **remove the silent fallback** - a missing bundled font is a build error, caught by the coverage test, not a runtime degradation.
+Both projects load bundled variable fonts from `res/font/` by resource ID. Missing resources fail the build. Issue 003 implements script-aware selection and `FontCoverageTest`; no silent fallback is permitted in production.
 
 ### 2.3 The scale
 
