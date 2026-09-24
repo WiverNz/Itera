@@ -2,6 +2,8 @@
 
 **Depends on** 002 | **Blocks** 005, 006, 007, 008
 
+**Status (2026-09-24): ready to start; not started.** Milestone 002 is complete. Milestone 003's pending visual acceptance does not block this independent domain milestone.
+
 ## Goal
 
 Load the technique catalogue and curriculum, and implement every product rule of the daily loop - state machine, unlocks, plan generation, spaced repetition, mastery/progress and the transactional day lifecycle - as pure, tested domain code with no UI.

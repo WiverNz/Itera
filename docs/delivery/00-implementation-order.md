@@ -1,6 +1,6 @@
 # Implementation order
 
-Eleven milestones (`docs/issues/README.md`). The previous 40-issue ordering is preserved in `docs/history/issues-detailed/`.
+Eleven milestones ([milestone index](../issues/README.md)). Current implementation status and acceptance gaps live in that index; the table below describes the dependency order and exit conditions, not completion status. The previous 40-issue ordering is preserved in `docs/history/issues-detailed/`.
 
 **Rule: do not start a milestone until every milestone in its `Depends on` list is done.** If a decision the documentation does not cover is needed, stop and update `docs/00-source-of-truth.md` first.
 

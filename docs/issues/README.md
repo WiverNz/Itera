@@ -4,14 +4,25 @@ Eleven milestone issues cover the Itera MVP. Each milestone is small in text and
 
 The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed/). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
+## Current status (2026-09-24)
+
+This index is the implementation status entry point; each milestone owns its acceptance checklist and evidence.
+
+- **001 and 002: complete.** Milestone 002's acceptance checklist is reconciled with its passing host and device results.
+- **003: implemented; final visual acceptance pending.** Required tests and build checks pass. The remaining component parity and gallery/shell sign-off are tracked in [003](003-design-system-and-app-shell.md#verification-gap-2026-09-24).
+- **004: ready to start; not started.** It depends only on completed 002, so the remaining 003 visual check does not block it.
+- **005-011: not started.** The UI contracts for 005 are implemented, but starting 005 still requires 004 and closure of 003's acceptance gap.
+
+Next implementation milestone: **004** when requested. Keep the remaining 003 visual verification open; readiness is not authorization to start another milestone.
+
 ## Index
 
 | # | Milestone | Depends on | Absorbs (detailed) |
 | --- | --- | --- | --- |
 | [001](001-project-bootstrap.md) | Project bootstrap - **complete** | - | 001 |
-| [002](002-core-architecture-and-storage.md) | Core architecture & storage | 001 | 002, 005, 006, 007, analytics core of 036 |
-| [003](003-design-system-and-app-shell.md) | Design system & app shell | 002 | 003, 004, 015 |
-| [004](004-content-and-training-engine.md) | Content & training engine | 002 | 008-014 |
+| [002](002-core-architecture-and-storage.md) | Core architecture & storage - **complete** | 001 | 002, 005, 006, 007, analytics core of 036 |
+| [003](003-design-system-and-app-shell.md) | Design system & app shell - **implemented; visual acceptance pending** | 002 | 003, 004, 015 |
+| [004](004-content-and-training-engine.md) | Content & training engine - **ready; not started** | 002 | 008-014 |
 | [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow | 003, 004 | 016, 017, 019, 020 |
 | [006](006-exercise-system.md) | Exercise system | 005 | 018, 021-027 |
 | [007](007-train-and-technique-library.md) | Train & technique library | 006 | 028-030 |
@@ -47,7 +58,7 @@ Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 009 -> 010 -> 011`. 00
 2. For UI work, run `design/` and open the prototype files the milestone names (`docs/ux/05-prototype-reference.md`). Reproduce; do not redesign.
 3. If a decision is not covered by the documentation, stop and record it in `docs/00-source-of-truth.md` or an ADR.
 4. Strings are added in all four languages by the milestone that introduces them - never deferred to 009.
-5. Commit in small, working increments within a milestone; the app must build after each.
+5. Work in small, working increments within a milestone; the app must build after each. Leave changes for the user to review and commit, following `AGENTS.md`.
 
 ## Verification scope
 

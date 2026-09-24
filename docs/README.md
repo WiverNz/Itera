@@ -6,6 +6,10 @@ Everything needed to implement the Itera MVP, one issue at a time, without makin
 
 **The `design/` folder is a running Kotlin + Compose prototype and the source of truth for all UI and interaction.** See [`ux/05-prototype-reference.md`](ux/05-prototype-reference.md). The earlier `Itera.html` artboard bundle has been removed from the repository.
 
+## Implementation status
+
+See the [milestone index](issues/README.md#current-status-2026-09-24) for current status and acceptance evidence. Milestones 001-002 are complete; 003 is implemented with final visual acceptance pending. Milestone 004 is ready to start and has not been started.
+
 ## Map
 
 ### Start here

@@ -2,6 +2,8 @@
 
 **Depends on** 001 | **Blocks** 003, 004
 
+**Status (2026-09-24): complete.** Acceptance reconciled against the existing test results; milestone 004 is unblocked.
+
 ## Goal
 
 Put every cross-cutting primitive and both persistent stores in place - DI, time, dispatchers, logging, localisation helpers, the domain model, Room, DataStore and the analytics sink - so no later milestone has to invent infrastructure.
@@ -30,17 +32,23 @@ Put every cross-cutting primitive and both persistent stores in place - DI, time
 
 ## Acceptance criteria
 
-- [ ] The app launches with Hilt; `Clock`, dispatchers and `Logger` are injectable; `ReleaseLogger` drops v/d.
-- [ ] `ArchitectureTest` passes and fails on a deliberate violation of each rule, including `DateTimeFormatter.ofPattern` outside `core/common/time`.
-- [ ] Formatter helpers are locale-correct for en/ru/de/es, including the Russian standalone month.
-- [ ] Domain invariants are enforced; `domain` has no Android/Room/Compose import.
-- [ ] The database creates from scratch, the schema JSON is exported to `app/schemas/`, and every table is assigned to a reset tier (ADR-0014).
-- [ ] Preferences round-trip; only the permitted writer can change `current_program_day`.
-- [ ] `Analytics.track` writes to `event_log` off the main thread and swallows failures; events carry no user text.
+- [x] The app launches with Hilt; `Clock`, dispatchers and `Logger` are injectable; `ReleaseLogger` drops v/d.
+- [x] `ArchitectureTest` passes and fails on a deliberate violation of each rule, including `DateTimeFormatter.ofPattern` outside `core/common/time`.
+- [x] Formatter helpers are locale-correct for en/ru/de/es, including the Russian standalone month.
+- [x] Domain invariants are enforced; `domain` has no Android/Room/Compose import.
+- [x] The database creates from scratch, the schema JSON is exported to `app/schemas/`, and every table is assigned to a reset tier (ADR-0014).
+- [x] Preferences round-trip; only the permitted writer can change `current_program_day`.
+- [x] `Analytics.track` writes to `event_log` off the main thread and swallows failures; events carry no user text.
 
 ## Required tests
 
 `ArchitectureTest`, `FakeClockTest`, `UiTextTest`, `AppLanguageTest`, `LocaleFormattingTest`, `LoggerTest`, `ObserveEffectsTest`, `DomainInvariantsTest`, `EnumCoverageTest`, `DatabaseCreationTest`, `ConvertersTest`, `MapperTest`, `ResultPayloadTest`, `CopyResolverTest`, `TrainingPlanRepositoryTest`, `ProgressQueryTest`, `DataStorePreferencesRepositoryTest`, `FocusTimerRepositoryTest`, `PreferencesWriteGuardTest`, `LocalAnalyticsTest`, `EventCatalogueTest`.
+
+## Acceptance evidence
+
+All 21 required host test suites pass in the 2026-09-24 production test results (`app/build/test-results/testDebugUnitTest/`), with no failures, errors or skipped tests. `ArchitectureTest` includes deliberate violating fixtures for every enforced rule. The device `StorageLaunchTest.hiltLaunchStorageAndOnDemandWorkManager` passed on 2026-09-23, covering Hilt launch, injected primitives, seeded Room storage, preferences and on-demand WorkManager (`app/build/outputs/androidTest-results/connected/debug/`). Production build, lint, formatting and coverage checks also passed during milestone 003 verification. These are existing results, not a new test run for this documentation update.
+
+The approved storage-only contracts below define completion of 002; engine-dependent operations remain in 004.
 
 ## Clarifications
 

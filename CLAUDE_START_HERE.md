@@ -6,7 +6,7 @@ You are implementing **Itera**, a native Android app built with Kotlin and Jetpa
 
 ## Status
 
-**Documentation phase: complete. All decisions are locked.** Issue 001 (bootstrap) is implemented; feature work starts at milestone 002.
+**Documentation phase: complete. All decisions are locked.** Milestones 001 and 002 are complete. Milestone 003 is implemented with passing tests/build checks; final visual acceptance remains pending. Milestone 004 is ready to start and has not been started. See the [current milestone status](docs/issues/README.md#current-status-2026-09-24).
 
 ## The most important thing on this page
 
@@ -86,4 +86,4 @@ Single activity extending `AppCompatActivity`, single Gradle module with enforce
 
 ## Start
 
-Issue 001 is complete. Next: [`002`](docs/issues/002-core-architecture-and-storage.md).
+Next implementation milestone: [`004`](docs/issues/004-content-and-training-engine.md), when requested. It depends on completed 002, independently of 003. Keep [003's final visual acceptance](docs/issues/003-design-system-and-app-shell.md#verification-gap-2026-09-24) open until the remaining device comparison is verified. Milestone 005 requires both 004 and closure of 003's acceptance gap.

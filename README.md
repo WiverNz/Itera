@@ -2,8 +2,8 @@
 
 A native Android app that teaches productivity techniques through daily practice, not through another list of things to do.
 
-> **Status: issue 001 bootstrap implemented; acceptance evidence is recorded in the issue.**
-> `design/` is a working prototype you can run today. `app/` contains only the themed bootstrap placeholder. No product features have been implemented. See [issue 001](docs/issues/001-project-bootstrap.md).
+> **Status: milestones 001-002 complete; 003 implemented with final visual acceptance pending.**
+> `app/` contains core architecture/storage, the design system and navigation shell with placeholder feature destinations. Milestone 004 is ready to start; 004 and later milestones have not been started. See the [milestone status and acceptance gaps](docs/issues/README.md#current-status-2026-09-24).
 
 ## What it is
 
@@ -47,7 +47,7 @@ Missing a day never resets anything. Program days advance when you train, not by
 | --- | --- |
 | [`design/`](design/) | **A runnable Compose prototype of the whole app** — 24 screens, theme, components, icons, navigation, four languages. The source of truth for all UI and interaction. |
 | [`docs/`](docs/README.md) | The specification: the product documents, ADRs and implementation issues. |
-| `app/` | The production app. Issue 001 bootstrap; feature implementation has not started. |
+| `app/` | The production app: core architecture/storage, design system and navigation shell. Feature destinations remain placeholders. |
 | [`AGENTS.md`](AGENTS.md) | Working rules for anyone — human or agent — implementing this. |
 | [`CLAUDE_START_HERE.md`](CLAUDE_START_HERE.md) | Entry point for implementation. |
 

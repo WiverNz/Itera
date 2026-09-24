@@ -16,7 +16,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 
 ## What this is
 
-**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. Documentation is complete; issue 001 (bootstrap) is done.
+**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001 and 002 are complete; 003 is implemented with final visual acceptance pending. See `docs/issues/README.md` for current status.
 
 ## Repository layout
 
@@ -24,7 +24,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 | --- | --- | --- |
 | `docs/` | The full specification - the PRD, UX specs, architecture, data model, engines, testing,  delivery, and 11 milestone issues (the detailed 40-issue backlog is kept in `docs/history/issues-detailed/`) | Authoritative |
 | `design/` | **A running Kotlin + Compose prototype of the app.** 24 screens, theme, components, icons, navigation, four languages | The UI/UX source of truth |
-| `app/` | The production Android app | Bootstrap only (issue 001) |
+| `app/` | The production Android app | Core architecture/storage and design system/app shell implemented; feature destinations are placeholders |
 | `CLAUDE_START_HERE.md` | Entry point for implementation | |
 
 ## Source priority
@@ -99,4 +99,4 @@ Both apps can be installed at once: `com.itera.app` and `com.wivernz.itera` are 
 
 ## Where to start
 
-`CLAUDE_START_HERE.md`, then `docs/00-source-of-truth.md`, then `docs/issues/README.md`, then the next open milestone (002).
+`CLAUDE_START_HERE.md`, then `docs/00-source-of-truth.md`, then `docs/issues/README.md`, then the requested milestone. Next implementation milestone is 004 (ready, not started); 003's final visual acceptance remains open. Do not start a milestone without a user request.

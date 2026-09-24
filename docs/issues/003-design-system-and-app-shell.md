@@ -2,6 +2,8 @@
 
 **Depends on** 002 | **Blocks** 005, 006, 007, 008
 
+**Status (2026-09-24): implemented; final visual acceptance pending.** Tests and build checks pass. The two open acceptance items are explained under Verification gap. Milestone 004 is independent and ready; milestone 005's UI implementation dependencies are available, but formal acceptance of 003 remains open.
+
 ## Goal
 
 Port the prototype's theme, tokens, fonts, icons and component library, and build the navigation graph and four-tab shell, so every screen milestone only composes existing pieces.
