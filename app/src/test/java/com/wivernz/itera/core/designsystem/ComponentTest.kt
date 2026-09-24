@@ -109,10 +109,16 @@ class ComponentTest {
         ).fetchSemanticsNodes().forEach { node ->
             val layouts = mutableListOf<TextLayoutResult>()
             node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(layouts)
+            // Paragraph width may retain the parent constraint after intrinsic text measurement.
+            // Check the rendered line bounds, not that unused paragraph space.
             layouts.forEach {
                 assertTrue(
-                    "$sample text overflows at 2x: ${it.layoutInput.text}",
-                    !it.hasVisualOverflow
+                    "$sample text clips at 2x: ${it.layoutInput.text}; size=${it.size}",
+                    !it.multiParagraph.didExceedMaxLines &&
+                        it.multiParagraph.height <= it.size.height + 1 &&
+                        (0 until it.lineCount).all { line ->
+                            it.getLineRight(line) - it.getLineLeft(line) <= it.size.width + 1f
+                        }
                 )
             }
         }

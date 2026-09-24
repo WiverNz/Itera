@@ -92,7 +92,7 @@ fun IntervalLadder(stageIndex: Int, accent: Color, modifier: Modifier = Modifier
                     } else {
                         c.ink2
                     },
-                    maxLines = 1
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
             }
             if (i <

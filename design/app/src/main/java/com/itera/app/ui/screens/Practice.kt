@@ -402,7 +402,7 @@ fun IntervalLadder(accent: Color, stageIndex: Int = 1) {
                     i == stageIndex -> Box(mod.background(c.surface).border(3.dp, accent, CircleShape))
                     else -> Box(mod.border(2.dp, c.line, CircleShape))
                 }
-                Text(label, style = Itera.type.caption.copy(fontWeight = if (i == stageIndex) FontWeight.Bold else FontWeight.Normal), color = if (i <= stageIndex) c.ink else c.ink2, maxLines = 1)
+                Text(label, style = Itera.type.caption.copy(fontWeight = if (i == stageIndex) FontWeight.Bold else FontWeight.Normal), color = if (i <= stageIndex) c.ink else c.ink2, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             }
             if (i < steps.lastIndex) Box(Modifier.weight(1f).padding(top = 10.dp).height(2.dp).background(if (i < stageIndex) accent else c.line))
         }

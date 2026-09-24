@@ -25,12 +25,12 @@ Port the prototype's theme, tokens, fonts, icons and component library, and buil
 
 ## Acceptance criteria
 
-- [ ] Every token in `docs/ux/04-design-system.md` exists with the prototype's exact values and names; no hex literal outside `Color.kt`.
-- [ ] Russian resolves to Inter Tight / Inter; en, de, es to the brand faces; user-authored text styles use Inter in every locale.
+- [x] Every token in `docs/ux/04-design-system.md` exists with the prototype's exact values and names; no hex literal outside `Color.kt`.
+- [x] Russian resolves to Inter Tight / Inter; en, de, es to the brand faces; user-authored text styles use Inter in every locale.
 - [ ] Each component matches its prototype original and has light/dark previews (plus `fontScale = 2f` where text wraps); with reduce-motion on, nothing animates.
-- [ ] No component takes a ViewModel, `NavController` or `Context`.
-- [ ] Start destination follows `onboardingCompleted`; four tabs in order Today, Train, Progress, You; switching tabs restores each tab's saved state and never grows the back stack; system back from any tab lands on Today; re-tapping the active tab is a no-op.
-- [ ] The bar shows only on the four tab routes; `AppNavHost` is the only holder of a `NavController`; finishing onboarding cannot be undone with back; a deep-link extra navigates once.
+- [x] No component takes a ViewModel, `NavController` or `Context`.
+- [x] Start destination follows `onboardingCompleted`; four tabs in order Today, Train, Progress, You; switching tabs restores each tab's saved state and never grows the back stack; system back from any tab lands on Today; re-tapping the active tab is a no-op.
+- [x] The bar shows only on the four tab routes; `AppNavHost` is the only holder of a `NavController`; finishing onboarding cannot be undone with back; a deep-link extra navigates once.
 - [ ] The component gallery and shell were compared against the prototype in light and dark; only deviations are recorded.
 
 ## Required tests
@@ -44,3 +44,11 @@ Port the prototype's theme, tokens, fonts, icons and component library, and buil
 - Components take plain data/callbacks, including the language selector. Its owning feature applies AppLanguage; no settings/onboarding feature implementation is introduced here.
 - The repository's last-defaulted-parameter convention conflicts with Compose's `ModifierParameter` preference. Only that lint rule is suppressed on the three affected component files.
 - Debug-only gallery activities provide synthetic fixtures in both apps and are excluded from release.
+
+## Verification gap (2026-09-24)
+
+The 35 synthetic gallery pages (33 components, tokens, shell) were compared on Medium Phone API 36.1 in light and dark. The shell and static components matched apart from issues corrected during comparison: long ValueRow values now preserve label space, interval labels wrap at large text sizes, and the prototype TimeRow title makes its existing semibold weight explicit. The first two adaptations implement the existing accessibility requirement and are mirrored in `design/`.
+
+Final screenshot refresh after these corrections remains incomplete: repeated emulator launch timeouts and competing ADB server versions prevented reliable captures; a separate read-only emulator was rejected by the active AVD lock. Component parity and final visual sign-off therefore remain open. Earlier successful comparisons and the passing native text-layout checks do not replace that final device check.
+
+All nine required test suites plus ShellViewModelTest pass. Final production build, lint (zero issues), formatting and coverage checks pass: 106 host tests, zero failures. Prototype build passes. The UI contracts needed by milestone 005 are implemented; milestone 003's final visual acceptance is still pending.

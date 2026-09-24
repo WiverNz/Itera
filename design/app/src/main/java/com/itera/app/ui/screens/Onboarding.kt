@@ -353,7 +353,7 @@ fun TimeRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String
             Icon(icon, null, tint = c.ink, modifier = Modifier.size(20.dp))
         }
         Column(Modifier.weight(1f)) {
-            Text(title, style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink)
+            Text(title, style = Itera.type.body, fontWeight = FontWeight.SemiBold, color = c.ink)
             Text(sub, style = Itera.type.bodySmall, color = c.ink2)
         }
         Box(

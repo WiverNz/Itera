@@ -302,3 +302,5 @@ Approved during implementation of milestone 002:
 - ADR-0019 also applies to mixed-script language names: native language names use bundled Inter so Russian remains covered in a Latin UI. Both implementations share that treatment.
 - Required accessibility adaptations (44 dp targets, selected/toggle semantics, vertical segmented controls above font scale 1.6, scrollable language sheet, reduced-motion handling) follow detailed 004 / accessibility requirements and are reflected in the prototype.
 - Added empty/error/skeleton and D-17 real time-picker components also live in the prototype for comparison. Material typography uses app tokens in both projects. Feature screen wiring remains with its designated milestone.
+
+- Milestone 003 large-text checks additionally require ValueRow to reserve label space when its value wraps and IntervalLadder labels to wrap instead of truncating. Both implementations include these accessibility corrections; ordinary short-value layouts retain prototype geometry.
