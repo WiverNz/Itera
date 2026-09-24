@@ -295,3 +295,10 @@ Approved during implementation of milestone 002:
 
 - The concrete 002 repository bindings use `TrainingPlanStorage`, `ReviewStorage`, and `ProgressStorage`; the full repository interfaces extend those contracts for composition in 004. No engine-dependent binding is installed early. `CopyResolver` ports only the 14 technique names/instructions needed to resolve stored rows; catalog assets/loading remain 004. Unknown event strings are prevented with closed parameter enums, including route class names and setting values.
 - Additional indices cover foreign-key child columns so cascades do not scan tables; no columns or additional tables are introduced. Room entities store primitives, with explicit date/time/enum converters available to mappers and future queries.
+
+## Milestone 003 prototype reconciliation (2026-09-24)
+
+- The prototype contains **31 named icon vectors and 24 routes**. Older counts of 33 icons / 20 routes are transcription errors; port the complete enumerated set without inventing additions.
+- ADR-0019 also applies to mixed-script language names: native language names use bundled Inter so Russian remains covered in a Latin UI. Both implementations share that treatment.
+- Required accessibility adaptations (44 dp targets, selected/toggle semantics, vertical segmented controls above font scale 1.6, scrollable language sheet, reduced-motion handling) follow detailed 004 / accessibility requirements and are reflected in the prototype.
+- Added empty/error/skeleton and D-17 real time-picker components also live in the prototype for comparison. Material typography uses app tokens in both projects. Feature screen wiring remains with its designated milestone.

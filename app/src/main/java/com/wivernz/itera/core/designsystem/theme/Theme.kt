@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import com.wivernz.itera.domain.model.ThemePreference
 
+private val LocalThemeInstalled = androidx.compose.runtime.staticCompositionLocalOf { false }
+
 object Itera {
     val colors: IteraColors
         @Composable get() = LocalIteraColors.current
@@ -24,7 +26,11 @@ fun ThemePreference.isDark(): Boolean = when (this) {
 
 @Composable
 fun IteraTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = if (LocalThemeInstalled.current) {
+        LocalReduceMotion.current
+    } else {
+        rememberReduceMotion()
+    }
     SystemBarAppearance(dark)
     val colors = if (dark) DarkColors else LightColors
     val scheme = if (dark) {
@@ -66,6 +72,7 @@ fun IteraTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () ->
     }
     val type = rememberIteraType()
     CompositionLocalProvider(
+        LocalThemeInstalled provides true,
         LocalIteraColors provides colors,
         LocalIteraType provides type,
         LocalReduceMotion provides reduceMotion

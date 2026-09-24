@@ -43,6 +43,13 @@ fun IteraTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () ->
     }
     val type = rememberIteraType()
     CompositionLocalProvider(LocalIteraColors provides colors, LocalIteraType provides type, LocalReduceMotion provides reduced) {
-        MaterialTheme(colorScheme = scheme, content = content)
+        MaterialTheme(
+            colorScheme = scheme,
+            typography = androidx.compose.material3.Typography(
+                bodyLarge = type.body, bodyMedium = type.bodySmall, bodySmall = type.caption,
+                labelLarge = type.label, titleLarge = type.headline, headlineLarge = type.display
+            ),
+            content = content
+        )
     }
 }

@@ -1,7 +1,4 @@
-// Repository convention deliberately puts modifier last (03-compose-conventions.md).
-@file:Suppress("ModifierParameter")
-
-package com.wivernz.itera.core.designsystem.component
+package com.itera.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +18,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.wivernz.itera.R
-import com.wivernz.itera.core.designsystem.icon.IteraIcons
-import com.wivernz.itera.core.designsystem.theme.Itera
-import com.wivernz.itera.core.designsystem.theme.colors
-import com.wivernz.itera.domain.model.MasteryLevel
+import com.itera.app.R
+import com.itera.app.ui.theme.Itera
+import com.itera.app.ui.theme.colors
 import kotlinx.coroutines.delay
 @Composable
 fun EmptyState(

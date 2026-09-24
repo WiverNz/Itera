@@ -1,4 +1,4 @@
-package com.wivernz.itera.core.designsystem.preview
+package com.itera.app.ui.preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,49 +16,49 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.wivernz.itera.R
-import com.wivernz.itera.core.designsystem.component.AnimatedCheck
-import com.wivernz.itera.core.designsystem.component.ButtonKind
-import com.wivernz.itera.core.designsystem.component.CheckCircle
-import com.wivernz.itera.core.designsystem.component.ChoiceChip
-import com.wivernz.itera.core.designsystem.component.CircleIconButton
-import com.wivernz.itera.core.designsystem.component.Divider
-import com.wivernz.itera.core.designsystem.component.EmptyState
-import com.wivernz.itera.core.designsystem.component.ErrorState
-import com.wivernz.itera.core.designsystem.component.Eyebrow
-import com.wivernz.itera.core.designsystem.component.Group
-import com.wivernz.itera.core.designsystem.component.IntervalLadder
-import com.wivernz.itera.core.designsystem.component.IteraButton
-import com.wivernz.itera.core.designsystem.component.IteraCard
-import com.wivernz.itera.core.designsystem.component.LanguagePill
-import com.wivernz.itera.core.designsystem.component.LanguageSheet
-import com.wivernz.itera.core.designsystem.component.LinkRow
-import com.wivernz.itera.core.designsystem.component.MasteryDots
-import com.wivernz.itera.core.designsystem.component.MasteryLadder
-import com.wivernz.itera.core.designsystem.component.NoteField
-import com.wivernz.itera.core.designsystem.component.Pill
-import com.wivernz.itera.core.designsystem.component.ProgressBar
-import com.wivernz.itera.core.designsystem.component.RadioDot
-import com.wivernz.itera.core.designsystem.component.ScreenColumn
-import com.wivernz.itera.core.designsystem.component.SectionTitle
-import com.wivernz.itera.core.designsystem.component.Segmented
-import com.wivernz.itera.core.designsystem.component.Skeleton
-import com.wivernz.itera.core.designsystem.component.StepDot
-import com.wivernz.itera.core.designsystem.component.StepRow
-import com.wivernz.itera.core.designsystem.component.StepState
-import com.wivernz.itera.core.designsystem.component.SwitchRow
-import com.wivernz.itera.core.designsystem.component.TechniqueToken
-import com.wivernz.itera.core.designsystem.component.TimePickerSheet
-import com.wivernz.itera.core.designsystem.component.TimeRow
-import com.wivernz.itera.core.designsystem.component.TopBar
-import com.wivernz.itera.core.designsystem.component.ValueRow
-import com.wivernz.itera.core.designsystem.component.title
-import com.wivernz.itera.core.designsystem.icon.IteraIcons
-import com.wivernz.itera.core.designsystem.theme.Itera
-import com.wivernz.itera.core.designsystem.theme.IteraTheme
-import com.wivernz.itera.core.designsystem.theme.colors
-import com.wivernz.itera.domain.model.MasteryLevel
-import com.wivernz.itera.domain.model.Skill
+import com.itera.app.R
+import com.itera.app.ui.screens.AnimatedCheck
+import com.itera.app.ui.components.ButtonKind
+import com.itera.app.ui.screens.CheckCircle
+import com.itera.app.ui.components.ChoiceChip
+import com.itera.app.ui.components.CircleIconButton
+import com.itera.app.ui.components.Divider
+import com.itera.app.ui.components.EmptyState
+import com.itera.app.ui.components.ErrorState
+import com.itera.app.ui.components.Eyebrow
+import com.itera.app.ui.screens.Group
+import com.itera.app.ui.screens.IntervalLadder
+import com.itera.app.ui.components.IteraButton
+import com.itera.app.ui.components.IteraCard
+import com.itera.app.ui.screens.LanguagePill
+import com.itera.app.ui.screens.LanguageSheet
+import com.itera.app.ui.screens.LinkRow
+import com.itera.app.ui.screens.MasteryDots
+import com.itera.app.ui.components.MasteryLadder
+import com.itera.app.ui.components.NoteField
+import com.itera.app.ui.components.Pill
+import com.itera.app.ui.components.ProgressBar
+import com.itera.app.ui.screens.RadioDot
+import com.itera.app.ui.components.ScreenColumn
+import com.itera.app.ui.components.SectionTitle
+import com.itera.app.ui.components.Segmented
+import com.itera.app.ui.components.Skeleton
+import com.itera.app.ui.components.StepDot
+import com.itera.app.ui.components.StepRow
+import com.itera.app.ui.components.StepState
+import com.itera.app.ui.screens.SwitchRow
+import com.itera.app.ui.components.TechniqueToken
+import com.itera.app.ui.components.TimePickerSheet
+import com.itera.app.ui.screens.TimeRow
+import com.itera.app.ui.components.TopBar
+import com.itera.app.ui.screens.ValueRow
+import com.itera.app.ui.components.IteraIcons
+import com.itera.app.ui.theme.Itera
+import com.itera.app.ui.theme.IteraTheme
+import com.itera.app.ui.theme.colors
+import com.itera.app.model.Mastery
+import com.itera.app.model.Skill
+import com.itera.app.model.Technique
 import java.time.LocalTime
 
 @PreviewLightDark
@@ -102,8 +102,7 @@ fun ComponentGallery(sample: ComponentSample, modifier: Modifier = Modifier) {
                 64
             ).forEach {
                 TechniqueToken(
-                    Skill.HABITS,
-                    IteraIcons.TwoMinute,
+                    Technique.TwoMinute,
                     it.dp
                 )
             }
@@ -133,7 +132,7 @@ fun ComponentGallery(sample: ComponentSample, modifier: Modifier = Modifier) {
                 )
             }
             ComponentSample.StepDot -> StepState.entries.forEach { StepDot(it, c.accent) }
-            ComponentSample.MasteryLadder -> MasteryLevel.entries.forEach {
+            ComponentSample.MasteryLadder -> (listOf(null) + Mastery.entries).forEach {
                 MasteryLadder(
                     it,
                     c.accent
@@ -157,13 +156,13 @@ fun ComponentGallery(sample: ComponentSample, modifier: Modifier = Modifier) {
                 RadioDot(false)
             }
             ComponentSample.LinkRow -> LinkRow(IteraIcons.Today, label, description, {})
-            ComponentSample.MasteryDots -> MasteryLevel.entries.forEach {
+            ComponentSample.MasteryDots -> (listOf(null) + Mastery.entries).forEach {
                 MasteryDots(
                     it,
                     c.accent
                 )
             }
-            ComponentSample.IntervalLadder -> (0..4).forEach { IntervalLadder(it, c.accent) }
+            ComponentSample.IntervalLadder -> (0..4).forEach { IntervalLadder(c.accent, it) }
             ComponentSample.AnimatedCheck -> AnimatedCheck(c.accentSoft, c.accent)
             ComponentSample.Group -> Group(label) { ValueRow(label, description, {}) }
             ComponentSample.ValueRow -> ValueRow(label, description, {})
@@ -176,7 +175,7 @@ fun ComponentGallery(sample: ComponentSample, modifier: Modifier = Modifier) {
                 }
             )
             ComponentSample.TimeRow -> TimeRow(IteraIcons.Today, label, description, "08:30", {})
-            ComponentSample.LanguageSheet -> LanguageSheet("", {}, {})
+            ComponentSample.LanguageSheet -> LanguageSheet({})
             ComponentSample.LanguagePill -> LanguagePill({})
             ComponentSample.TimePickerSheet -> TimePickerSheet(label, LocalTime.of(8, 30), {}, {})
             ComponentSample.EmptyState -> EmptyState(description)

@@ -1,3 +1,6 @@
+// Repository convention deliberately puts modifier last (03-compose-conventions.md).
+@file:Suppress("ModifierParameter")
+
 package com.wivernz.itera.core.designsystem.component
 
 import androidx.compose.animation.AnimatedVisibility

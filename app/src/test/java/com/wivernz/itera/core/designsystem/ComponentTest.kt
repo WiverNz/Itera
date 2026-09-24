@@ -7,8 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsOff
@@ -20,6 +22,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
@@ -71,7 +74,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.GraphicsMode
 
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 @RunWith(RobolectricTestRunner::class)
 class ComponentTest {
     @get:Rule val compose = createComposeRule()
@@ -85,13 +90,32 @@ class ComponentTest {
     }
     private fun render(sample: ComponentSample) {
         val dark = mutableStateOf(false)
+        val scale = mutableStateOf(1f)
         compose.setContent {
-            IteraTheme(dark.value) { ComponentGallery(sample, Modifier.testTag("gallery")) }
+            IteraTheme(dark.value) {
+                CompositionLocalProvider(
+                    LocalDensity provides Density(LocalDensity.current.density, scale.value)
+                ) { ComponentGallery(sample, Modifier.testTag("gallery")) }
+            }
         }
         compose.onNodeWithTag("gallery").assertExists()
         compose.runOnIdle { dark.value = true }
         compose.onNodeWithTag("gallery").assertExists()
+        compose.runOnIdle { scale.value = 2f }
         compose.waitForIdle()
+        compose.onAllNodes(
+            SemanticsMatcher.keyIsDefined(SemanticsActions.GetTextLayoutResult),
+            useUnmergedTree = true
+        ).fetchSemanticsNodes().forEach { node ->
+            val layouts = mutableListOf<TextLayoutResult>()
+            node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(layouts)
+            layouts.forEach {
+                assertTrue(
+                    "$sample text overflows at 2x: ${it.layoutInput.text}",
+                    !it.hasVisualOverflow
+                )
+            }
+        }
     }
 
     @Test fun screenColumnRendersInBothThemes() = render(ComponentSample.ScreenColumn)
@@ -203,6 +227,25 @@ class ComponentTest {
         assertTrue(second.top >= first.bottom)
     }
 
+    @Test fun longValuesLeaveRoomForLabelsAtLargeFontScale() {
+        compose.setContent {
+            IteraTheme {
+                CompositionLocalProvider(LocalDensity provides Density(1f, 2f)) {
+                    ValueRow("Language", "A long translated setting value that must wrap", {})
+                }
+            }
+        }
+        val label = compose.onNodeWithText("Language", useUnmergedTree = true)
+            .fetchSemanticsNode().boundsInRoot
+        val value = compose.onNodeWithText(
+            "A long translated setting value that must wrap",
+            useUnmergedTree = true
+        ).fetchSemanticsNode().boundsInRoot
+        assertTrue(label.width > 80f)
+        assertTrue(label.right <= value.left)
+        assertTrue(value.width > 80f)
+    }
+
     @Test fun doneAndIntegratedExposeState() {
         compose.setContent {
             IteraTheme {
@@ -235,6 +278,32 @@ class ComponentTest {
         }
         compose.onNodeWithText("Done").performClick()
         compose.runOnIdle { assertEquals(LocalTime.of(8, 37), result) }
+    }
+
+    @Test fun timePickerUsesTwelveHourDeviceSetting() {
+        Settings.System.putString(
+            ApplicationProvider.getApplicationContext<Application>().contentResolver,
+            Settings.System.TIME_12_24,
+            "12"
+        )
+        compose.setContent {
+            IteraTheme { TimePickerSheet("Time", LocalTime.of(20, 37), {}, {}) }
+        }
+        compose.onNodeWithText("AM").assertExists()
+        compose.onNodeWithText("PM").assertExists()
+    }
+
+    @Test fun timePickerUsesTwentyFourHourDeviceSetting() {
+        Settings.System.putString(
+            ApplicationProvider.getApplicationContext<Application>().contentResolver,
+            Settings.System.TIME_12_24,
+            "24"
+        )
+        compose.setContent {
+            IteraTheme { TimePickerSheet("Time", LocalTime.of(20, 37), {}, {}) }
+        }
+        compose.onNodeWithText("AM").assertDoesNotExist()
+        compose.onNodeWithText("PM").assertDoesNotExist()
     }
 
     @Test fun reducedMotionDoesNotScheduleInfiniteFrames() {

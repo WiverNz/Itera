@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wivernz.itera.core.designsystem.component.ErrorState
+import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.theme.IteraTheme
 import com.wivernz.itera.core.designsystem.theme.isDark
 import com.wivernz.itera.core.navigation.AppNavHost
@@ -54,7 +55,9 @@ class MainActivity : AppCompatActivity() {
                     AppNavHost(preferences.onboardingCompleted, pending, shell::consumeDeepLink)
                 }
             } else if (state.failed) {
-                IteraTheme { ErrorState(stringResource(R.string.shell_load_failed)) }
+                IteraTheme {
+                    ScreenColumn { ErrorState(stringResource(R.string.shell_load_failed)) }
+                }
             }
         }
     }
@@ -70,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-/** Temporary bootstrap surface. The product theme is implemented in issue 003. */
+/** Font smoke-test fixture retained for the bootstrap preview tests. */
 @Composable
 fun BootstrapPlaceholder(fontResource: Int = R.font.inter) {
     MaterialTheme(

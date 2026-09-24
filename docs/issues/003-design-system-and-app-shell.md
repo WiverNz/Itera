@@ -8,7 +8,7 @@ Port the prototype's theme, tokens, fonts, icons and component library, and buil
 
 ## Included scope
 
-- **Tokens and theme** (old 003): colours (light/dark), 11 type styles, script-aware font selection (ADR-0019), 33 `IteraIcons`, motion specs, `IteraTheme`, `NightSurface`, `LocalReduceMotion`, token gallery preview.
+- **Tokens and theme** (old 003): colours (light/dark), 11 type styles, script-aware font selection (ADR-0019), 31 `IteraIcons` (complete prototype set; older count corrected below), motion specs, `IteraTheme`, `NightSurface`, `LocalReduceMotion`, token gallery preview.
 - **Components** (old 004): every shared component in the prototype's `Components.kt`, including `LanguageSheet`, `LanguagePill`, `RadioDot`, `TimePickerSheet` (real M3 pickers, D-17), with previews.
 - **Navigation and shell** (old 015): one `NavHost` and one `NavHostController` with a flat list of type-safe routes (ADR-0008, D-02), start destination from `onboardingCompleted`, bottom bar shown only on the four tab routes (Library, History and Technique detail are full-screen), tab switching via `switchTab` with `saveState`/`restoreState` anchored on Today, `backToToday()`, theme preference applied live, edge-to-edge, deep-link extra handling. Tabs and routes render placeholders until their milestones land.
 
@@ -36,3 +36,11 @@ Port the prototype's theme, tokens, fonts, icons and component library, and buil
 ## Required tests
 
 `ColorTokenTest`, `TypeTokenTest`, `MotionTest`, `ThemeTest`, `NightSurfaceTest`, `FontCoverageTest`, `ComponentTest`, `NavigationTest`, `RouteSerializationTest`.
+
+## Implementation notes
+
+- Ports the prototype's complete 31-vector / 24-route enumeration; older counts were inaccurate. See the milestone 003 reconciliation in `docs/00-source-of-truth.md`.
+- Feature destinations intentionally remain placeholders. One flat typed graph; DataStore drives initial routing and live theme; SavedStateHandle retains a pending deep link until onboarding permits navigation.
+- Components take plain data/callbacks, including the language selector. Its owning feature applies AppLanguage; no settings/onboarding feature implementation is introduced here.
+- The repository's last-defaulted-parameter convention conflicts with Compose's `ModifierParameter` preference. Only that lint rule is suppressed on the three affected component files.
+- Debug-only gallery activities provide synthetic fixtures in both apps and are excluded from release.

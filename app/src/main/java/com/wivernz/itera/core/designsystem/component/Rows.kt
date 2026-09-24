@@ -1,3 +1,6 @@
+// Repository convention deliberately puts modifier last (03-compose-conventions.md).
+@file:Suppress("ModifierParameter")
+
 package com.wivernz.itera.core.designsystem.component
 
 import androidx.compose.foundation.background
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -62,21 +66,30 @@ fun Group(
 @Composable
 fun ValueRow(label: String, value: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val c = Itera.colors
-    Row(
-        modifier.fillMaxWidth().heightIn(
-            min = 56.dp
-        ).clickable(role = Role.Button, onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Text(
-            label,
-            style = Itera.type.body.copy(fontWeight = FontWeight.Medium),
-            color = c.ink,
-            modifier = Modifier.weight(1f)
-        )
-        if (value.isNotEmpty()) Text(value, style = Itera.type.bodySmall, color = c.ink2)
-        Icon(IteraIcons.Chevron, null, tint = c.ink3, modifier = Modifier.size(16.dp))
+    androidx.compose.foundation.layout.BoxWithConstraints(modifier.fillMaxWidth()) {
+        val valueMaxWidth = maxWidth * 0.55f
+        Row(
+            Modifier.fillMaxWidth().heightIn(min = 56.dp)
+                .clickable(role = Role.Button, onClick = onClick),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                label,
+                style = Itera.type.body.copy(fontWeight = FontWeight.Medium),
+                color = c.ink,
+                modifier = Modifier.weight(1f)
+            )
+            if (value.isNotEmpty()) {
+                Text(
+                    value,
+                    style = Itera.type.bodySmall,
+                    color = c.ink2,
+                    modifier = Modifier.widthIn(max = valueMaxWidth)
+                )
+            }
+            Icon(IteraIcons.Chevron, null, tint = c.ink3, modifier = Modifier.size(16.dp))
+        }
     }
 }
 

@@ -215,7 +215,7 @@ All from the prototype. Reproduce the specs, not approximations.
 
 ## 8. Iconography
 
-`ui/components/IteraIcons.kt`: 33 hand-authored `ImageVector`s on a 24x24 grid, stroke width **1.9**, round caps and joins, no fill except `Play`.
+`ui/components/IteraIcons.kt`: 31 hand-authored `ImageVector`s on a 24x24 grid, stroke width **1.9**, round caps and joins, no fill except `Play`.
 
 Technique icons: `TwoMinute, Pomodoro, Eisenhower, Feynman, FiveSecond, InfoDiet, OnePercent, DeepWork, Premortem, HabitStack, Pareto, TwoList, Reflection, Spaced`.
 Navigation and UI: `Today, Train, Progress, You, Close, Back, Chevron, Check, Plus, Lock, Play, Pause, Spark, Bell, ArrowDown, Eye, Globe`.

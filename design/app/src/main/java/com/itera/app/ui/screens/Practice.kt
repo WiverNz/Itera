@@ -387,7 +387,7 @@ fun ReviewScreen(onClose: () -> Unit, onDone: () -> Unit) {
 }
 
 @Composable
-private fun IntervalLadder(accent: Color) {
+fun IntervalLadder(accent: Color, stageIndex: Int = 1) {
     val c = Itera.colors
     val steps = listOf(
         stringResource(R.string.interval_days, 1), stringResource(R.string.interval_days, 4), stringResource(R.string.interval_days, 9),
@@ -398,13 +398,13 @@ private fun IntervalLadder(accent: Color) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.width(48.dp)) {
                 val mod = Modifier.size(22.dp).clip(CircleShape)
                 when {
-                    i == 0 -> Box(mod.background(accent), contentAlignment = Alignment.Center) { Icon(IteraIcons.Check, null, tint = c.surface, modifier = Modifier.size(13.dp)) }
-                    i == 1 -> Box(mod.background(c.surface).border(3.dp, accent, CircleShape))
+                    i < stageIndex -> Box(mod.background(accent), contentAlignment = Alignment.Center) { Icon(IteraIcons.Check, null, tint = c.surface, modifier = Modifier.size(13.dp)) }
+                    i == stageIndex -> Box(mod.background(c.surface).border(3.dp, accent, CircleShape))
                     else -> Box(mod.border(2.dp, c.line, CircleShape))
                 }
-                Text(label, style = Itera.type.caption.copy(fontWeight = if (i == 1) FontWeight.Bold else FontWeight.Normal), color = if (i <= 1) c.ink else c.ink2, maxLines = 1)
+                Text(label, style = Itera.type.caption.copy(fontWeight = if (i == stageIndex) FontWeight.Bold else FontWeight.Normal), color = if (i <= stageIndex) c.ink else c.ink2, maxLines = 1)
             }
-            if (i < steps.lastIndex) Box(Modifier.weight(1f).padding(top = 10.dp).height(2.dp).background(if (i == 0) accent else c.line))
+            if (i < steps.lastIndex) Box(Modifier.weight(1f).padding(top = 10.dp).height(2.dp).background(if (i < stageIndex) accent else c.line))
         }
     }
 }

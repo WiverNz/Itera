@@ -337,3 +337,23 @@ private fun BottomBar(current: String?, onSelect: (String) -> Unit) {
         }
     }
 }
+
+/** Synthetic shell fixture for milestone 003 side-by-side comparison. */
+@Composable
+fun PrototypeShellGallery() {
+    Scaffold(
+        containerColor = Itera.colors.bg,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        bottomBar = { BottomBar(Routes.TODAY, {}) }
+    ) { padding ->
+        com.itera.app.ui.components.ScreenColumn(
+            modifier = Modifier.padding(bottom = padding.calculateBottomPadding())
+        ) {
+            Text(
+                stringResource(R.string.nav_today),
+                style = Itera.type.display,
+                color = Itera.colors.ink
+            )
+        }
+    }
+}

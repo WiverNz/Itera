@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.Spring
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -114,8 +116,8 @@ fun LanguageSheet(onDismiss: () -> Unit) {
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val locale = currentLocale()
     var selected by remember { mutableStateOf(AppLanguage.current()) }
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = state, containerColor = c.surface, scrimColor = c.scrim) {
-        Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = state, tonalElevation = 0.dp, containerColor = c.surface, scrimColor = c.scrim) {
+        Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).padding(bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(stringResource(R.string.language_title), style = Itera.type.title, color = c.ink)
             Text(stringResource(R.string.language_sub), style = Itera.type.bodySmall, color = c.ink2)
             Column {
@@ -143,7 +145,7 @@ fun LanguageSheet(onDismiss: () -> Unit) {
                             else Text(tag.uppercase(), style = Itera.type.caption.copy(fontWeight = FontWeight.Bold), color = c.ink)
                         }
                         Column(Modifier.weight(1f)) {
-                            Text(title, style = Itera.type.label, color = c.ink)
+                            Text(title, style = Itera.type.label.copy(fontFamily = Itera.type.userText.fontFamily), color = c.ink)
                             Text(sub, style = Itera.type.bodySmall, color = c.ink2)
                         }
                         RadioDot(on)
