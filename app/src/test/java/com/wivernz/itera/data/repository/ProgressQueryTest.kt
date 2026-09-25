@@ -40,7 +40,7 @@ class ProgressQueryTest {
                     activityEntity(
                         d2,
                         "COMPLETED"
-                    ).copy(copyKey = "activity_focus_generic")
+                    ).copy(source = "FOCUS_SUGGESTION", copyKey = "activity_focus_generic")
                 )
             )
             assertEquals(2, dao.countDistinctPracticeDays("two_minute_rule").first())

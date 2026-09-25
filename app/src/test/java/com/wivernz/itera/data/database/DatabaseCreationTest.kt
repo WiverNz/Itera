@@ -3,7 +3,9 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.wivernz.itera.core.common.FakeClock
+import com.wivernz.itera.data.catalog.seedTechniques
 import com.wivernz.itera.data.dayEntity
+import com.wivernz.itera.data.fileAssets
 import com.wivernz.itera.data.fixtureDate
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -25,7 +27,7 @@ class DatabaseCreationTest {
             IteraDatabase::class.java,
             path
         )
-            .addCallback(SeedCallback(FakeClock()))
+            .addCallback(SeedCallback(FakeClock()) { seedTechniques(fileAssets) })
             .build()
         val db = open()
         val id = db.trainingDayDao().insert(dayEntity())

@@ -199,9 +199,9 @@ class DomainInvariantsTest {
             null,
             null,
             false,
-            "hint"
+            LevelHint.ToPracticed(3)
         )
-        val skill = SkillProgress(Skill.HABITS, SkillLevel.STARTING, 1, 1, 14, "detail")
+        val skill = SkillProgress(Skill.HABITS, SkillLevel.STARTING, 1, 1, 14)
         val summary = ProgressSummary(
             1,
             14,

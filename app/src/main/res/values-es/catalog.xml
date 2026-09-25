@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Technique catalogue content (milestone 004). Ported from design/ (D-04); keys are derived by data/catalog. -->
+<resources>
+    <string name="t_two_short">Resuelve las tareas pequeñas antes de que se acumulen.</string>
+    <string name="t_two_why">Si algo lleva menos de dos minutos, hazlo ya. Las tareas pequeñas cuestan poco de terminar y mucho de recordar.</string>
+    <string name="t_pomodoro_short">Trabaja en sprints de 25 minutos con descansos de verdad.</string>
+    <string name="t_pomodoro_why">Un temporizador convierte «trabajar en ello» en una unidad pequeña que puedes terminar. Las pausas cortas mantienen la atención fresca.</string>
+    <string name="t_eisenhower_short">Ordena por importancia, no por ruido.</string>
+    <string name="t_eisenhower_why">Lo urgente grita; lo importante casi nunca. Ordenar con ambos criterios muestra qué merece tus mejores horas.</string>
+    <string name="t_five_short">Cuenta 5-4-3-2-1 y muévete antes de dudar.</string>
+    <string name="t_five_why">La duda crece con cada segundo. La cuenta atrás da a tu cerebro una señal de salida antes de que lleguen las excusas.</string>
+    <string name="t_stack_short">Engancha un hábito nuevo a uno que ya tienes.</string>
+    <string name="t_stack_why">Un hábito existente es un disparador fiable. Si le enganchas una acción nueva diminuta, no tendrás que acordarte.</string>
+    <string name="t_feynman_short">Explícalo con sencillez para descubrir lo que no sabes.</string>
+    <string name="t_feynman_why">Explicar con palabras sencillas muestra exactamente dónde hay lagunas en lo que entiendes.</string>
+    <string name="t_twolist_short">Decide qué no vas a hacer ahora, a propósito.</string>
+    <string name="t_twolist_why">Elegir lo que no harás protege tu atención para las pocas metas que más importan.</string>
+    <string name="t_deep_short">Bloques largos y protegidos para problemas difíciles.</string>
+    <string name="t_deep_why">Los problemas difíciles necesitan atención larga y sin interrupciones. Protegerla a propósito es una habilidad entrenable.</string>
+    <string name="t_pareto_short">Encuentra las pocas acciones que dan la mayor parte del resultado.</string>
+    <string name="t_pareto_why">Una pequeña parte de las acciones suele producir la mayor parte del resultado. Encontrarlas primero ahorra horas.</string>
+    <string name="t_spaced_short">Vuelve a lo aprendido en intervalos cada vez mayores.</string>
+    <string name="t_spaced_why">La memoria se desvanece rápido, pero cada recuerdo en el momento justo la hace durar más.</string>
+    <string name="t_diet_short">Elige a propósito lo que consumes.</string>
+    <string name="t_diet_why">Lo que consumes moldea aquello en lo que piensas. Elegir tus fuentes a propósito libera atención.</string>
+    <string name="t_premortem_short">Imagina primero el fracaso y luego evítalo.</string>
+    <string name="t_premortem_why">Imaginar el fracaso por adelantado vuelve concretos los riesgos mientras aún hay tiempo para actuar.</string>
+    <string name="t_onepct_short">Mejora una cosa pequeña cada día.</string>
+    <string name="t_onepct_why">Las mejoras diminutas son fáciles de repetir y se suman con las semanas.</string>
+    <string name="t_reflect_short">Tres preguntas breves para cerrar el día.</string>
+    <string name="t_reflect_why">Una mirada breve hacia atrás convierte la experiencia del día en una lección para mañana.</string>
+    <string name="skill_focus">Enfoque</string>
+    <string name="skill_focus_desc">Empezar antes y mantenerte en una sola cosa</string>
+    <string name="skill_planning">Planificación</string>
+    <string name="skill_planning_desc">Saber qué importa de verdad hoy</string>
+    <string name="skill_learning">Aprendizaje</string>
+    <string name="skill_learning_desc">Entender y recordar lo que estudias</string>
+    <string name="skill_habits">Hábitos</string>
+    <string name="skill_habits_desc">Convertir pequeñas acciones útiles en automáticas</string>
+    <string name="skill_reflection">Reflexión</string>
+    <string name="skill_reflection_desc">Notar qué funciona y ajustar</string>
+    <string name="skill_level_starting">Empezando</string>
+    <string name="skill_level_building">En desarrollo</string>
+    <string name="skill_level_steady">Constante</string>
+    <string name="skill_level_strong">Sólido</string>
+    <string name="exercise_two_minute_rule_how_label">Anótalas, hazlas y márcalas. Si una tarda más de dos minutos, también es útil notarlo.</string>
+    <string name="exercise_two_minute_rule_tasks_label">Encuentra dos tareas rápidas</string>
+    <string name="exercise_two_minute_rule_tasks_placeholder">Añadir otra tarea rápida</string>
+    <string name="exercise_pareto_principle_steps_label">¿Qué parte la hace avanzar más?</string>
+    <string name="combination_day14_step2_prompt">¿Qué parte la hace avanzar más?</string>
+    <string name="combination_day14_step2_hint">Elige el paso que aporta la mayor parte del resultado.</string>
+    <string name="combination_day14_step3_prompt">%1$d minutos en ese único paso</string>
+    <string name="combination_day14_step3_hint">Móvil lejos, una sola pestaña abierta</string>
+    <string name="combination_day14_step4_prompt" formatted="false">Esta noche: ¿funcionó ese 20 %?</string>
+    <string name="combination_day14_step4_hint">Parte de tu reflexión de la noche</string>
+    <string name="combination_day14_step1_prompt">¿Qué es lo más importante ahora?</string>
+    <string name="combination_day14_step1_hint">Ordena lo que tienes pendiente y elige de «Hacer ya».</string>
+    <string name="exercise_spaced_repetition_item_label">¿Qué quieres recordar?</string>
+    <string name="exercise_spaced_repetition_item_placeholder">Un dato o una idea, con tus palabras</string>
+    <string name="activity_mitigation">De tu premortem</string>
+</resources>

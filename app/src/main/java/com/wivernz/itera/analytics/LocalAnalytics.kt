@@ -21,33 +21,32 @@ class LocalAnalytics @Inject constructor(
 ) : Analytics {
     private val scope = CoroutineScope(SupervisorJob() + io)
     override fun track(event: Event) {
-        scope.launch {
-            try {
-                val params = JsonObject(
-                    event.params.mapValues { (_, value) ->
-                        when (value) {
-                            null -> JsonNull
-                            is Boolean -> JsonPrimitive(value)
-                            is Number -> JsonPrimitive(value)
-                            is String -> JsonPrimitive(value)
-                            else -> error("Unsupported analytics scalar")
-                        }
+        scope.launch { append(event) }
+    }
+    override suspend fun append(event: Event) {
+        try {
+            val params = JsonObject(
+                event.params.mapValues { (_, value) ->
+                    when (value) {
+                        null -> JsonNull
+                        is Boolean -> JsonPrimitive(value)
+                        is Number -> JsonPrimitive(value)
+                        is String -> JsonPrimitive(value)
+                        else -> error("Unsupported analytics scalar")
                     }
+                }
+            )
+            dao.insert(
+                EventLogEntity(
+                    timestamp = clock.millis(),
+                    name = event.name,
+                    params = params.toString()
                 )
-                dao.insert(
-                    EventLogEntity(
-                        timestamp = clock.millis(),
-                        name = event.name,
-                        params = params.toString()
-                    )
-                )
-            } catch (
-                cancelled: CancellationException
-            ) {
-                throw cancelled
-            } catch (_: Exception) {
-                /* Analytics never changes application behavior. */
-            }
+            )
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            /* Analytics never changes application behavior. */
         }
     }
 }

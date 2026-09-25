@@ -26,4 +26,20 @@ interface ReviewItemDao {
     suspend fun updateStage(id: Long, stage: Int, dueOn: Long, reviewedOn: Long?, state: String)
 
     @Insert suspend fun insert(row: ReviewItemEntity): Long
+
+    @Query("SELECT * FROM review_item WHERE state != 'RETIRED' ORDER BY dueOn, id")
+    suspend fun active(): List<ReviewItemEntity>
+
+    @Query(
+        "SELECT * FROM review_item WHERE state != 'RETIRED' AND techniqueId = :techniqueId AND topicId IS :topicId ORDER BY id LIMIT 1"
+    )
+    suspend fun activeFor(techniqueId: String, topicId: Long?): ReviewItemEntity?
+
+    @Query(
+        "UPDATE review_item SET prompt = :prompt, sourceAnswer = :answer, sourceActivityId = :activityId WHERE id = :id"
+    )
+    suspend fun replaceAnswer(id: Long, prompt: String, answer: String, activityId: Long)
+
+    @Query("SELECT sourceAnswer FROM review_item WHERE id = :id")
+    suspend fun answer(id: Long): String?
 }

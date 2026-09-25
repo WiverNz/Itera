@@ -19,4 +19,7 @@ interface ReflectionDao {
     suspend fun latestIntent(): String?
 
     @Insert suspend fun insert(row: ReflectionEntity): Long
+
+    @Query("SELECT * FROM reflection_entry WHERE trainingDayId = :id")
+    suspend fun byDay(id: Long): ReflectionEntity?
 }

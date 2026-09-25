@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Technique catalogue content (milestone 004). Ported from design/ (D-04); keys are derived by data/catalog. -->
+<resources>
+    <string name="t_two_short">Разбирай мелкие дела, пока они не накопились.</string>
+    <string name="t_two_why">Если дело занимает меньше двух минут, сделай его сразу. Мелочь легко закончить и дорого держать в голове.</string>
+    <string name="t_pomodoro_short">Работай спринтами по 25 минут с настоящими перерывами.</string>
+    <string name="t_pomodoro_why">Таймер превращает «поработать над этим» в маленький отрезок, который можно закончить. Короткие перерывы сохраняют внимание свежим весь день.</string>
+    <string name="t_eisenhower_short">Сортируй дела по важности, а не по шуму.</string>
+    <string name="t_eisenhower_why">Срочное кричит, важное — почти никогда. Сортировка по обоим признакам показывает, чему отдать лучшие часы.</string>
+    <string name="t_five_short">Считай 5-4-3-2-1 и начинай раньше, чем появятся сомнения.</string>
+    <string name="t_five_why">Нерешительность растёт с каждой секундой. Обратный отсчёт даёт мозгу чёткий сигнал старта до того, как придут отговорки.</string>
+    <string name="t_stack_short">Привязывай новую привычку к уже существующей.</string>
+    <string name="t_stack_why">Существующая привычка — надёжный триггер. Если привязать к ней крошечное новое действие, помнить о нём не придётся.</string>
+    <string name="t_feynman_short">Объясни просто — и увидишь, чего не знаешь.</string>
+    <string name="t_feynman_why">Объяснение простыми словами точно показывает, где в понимании пробелы.</string>
+    <string name="t_twolist_short">Реши, чем ты сознательно сейчас не занимаешься.</string>
+    <string name="t_twolist_why">Решение, чего не делать, защищает внимание для немногих по-настоящему важных целей.</string>
+    <string name="t_deep_short">Длинные защищённые блоки для сложных задач.</string>
+    <string name="t_deep_why">Сложным задачам нужно долгое непрерывное внимание. Защищать его — навык, который можно натренировать.</string>
+    <string name="t_pareto_short">Найди немногие действия, которые дают основной результат.</string>
+    <string name="t_pareto_why">Обычно небольшая доля действий даёт большую часть результата. Найти их заранее — значит сэкономить часы.</string>
+    <string name="t_spaced_short">Возвращайся к изученному через растущие интервалы.</string>
+    <string name="t_spaced_why">Память быстро выцветает, но каждое вовремя сделанное вспоминание продлевает её жизнь.</string>
+    <string name="t_diet_short">Осознанно выбирай, что потребляешь.</string>
+    <string name="t_diet_why">То, что ты потребляешь, определяет, о чём ты думаешь. Осознанный выбор источников освобождает внимание.</string>
+    <string name="t_premortem_short">Представь провал заранее — и предотврати его.</string>
+    <string name="t_premortem_why">Если представить провал заранее, риски становятся конкретными, пока ещё есть время действовать.</string>
+    <string name="t_onepct_short">Каждый день улучшай одну небольшую вещь.</string>
+    <string name="t_onepct_why">Крошечные улучшения легко повторять, а за недели они складываются.</string>
+    <string name="t_reflect_short">Три коротких вопроса, чтобы завершить день.</string>
+    <string name="t_reflect_why">Короткий взгляд назад превращает опыт дня в урок на завтра.</string>
+    <string name="skill_focus">Фокус</string>
+    <string name="skill_focus_desc">Быстрее начинать и дольше держать внимание</string>
+    <string name="skill_planning">Планирование</string>
+    <string name="skill_planning_desc">Понимать, что действительно важно сегодня</string>
+    <string name="skill_learning">Обучение</string>
+    <string name="skill_learning_desc">Понимать и запоминать то, что изучаешь</string>
+    <string name="skill_habits">Привычки</string>
+    <string name="skill_habits_desc">Превращать полезные мелочи в автоматизм</string>
+    <string name="skill_reflection">Рефлексия</string>
+    <string name="skill_reflection_desc">Замечать, что работает, и корректировать курс</string>
+    <string name="skill_level_starting">Начало</string>
+    <string name="skill_level_building">Рост</string>
+    <string name="skill_level_steady">Стабильно</string>
+    <string name="skill_level_strong">Сильно</string>
+    <string name="exercise_two_minute_rule_how_label">Запиши их, выполни и отметь. Если какая-то заняла больше двух минут — это тоже полезно заметить.</string>
+    <string name="exercise_two_minute_rule_tasks_label">Найди две быстрые задачи</string>
+    <string name="exercise_two_minute_rule_tasks_placeholder">Добавить ещё быструю задачу</string>
+    <string name="exercise_pareto_principle_steps_label">Какая часть двигает задачу сильнее всего?</string>
+    <string name="combination_day14_step2_prompt">Какая часть двигает задачу сильнее всего?</string>
+    <string name="combination_day14_step2_hint">Выбери один шаг, который даёт основной результат.</string>
+    <string name="combination_day14_step3_prompt">%1$d минут на этот один шаг</string>
+    <string name="combination_day14_step3_hint">Телефон убран, открыта одна вкладка</string>
+    <string name="combination_day14_step4_prompt" formatted="false">Вечером: сработали ли те самые 20%?</string>
+    <string name="combination_day14_step4_hint">Часть вечерней рефлексии</string>
+    <string name="combination_day14_step1_prompt">Что сейчас самое важное?</string>
+    <string name="combination_day14_step1_hint">Разложи текущие дела и выбери из «Сделать сейчас».</string>
+    <string name="exercise_spaced_repetition_item_label">Что ты хочешь запомнить?</string>
+    <string name="exercise_spaced_repetition_item_placeholder">Один факт или мысль — своими словами</string>
+    <string name="activity_mitigation">Действие из премортема</string>
+</resources>

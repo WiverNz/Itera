@@ -4,6 +4,7 @@ import com.wivernz.itera.BuildConfig
 import com.wivernz.itera.R
 import com.wivernz.itera.core.common.Logger
 import com.wivernz.itera.core.common.time.formatTime
+import com.wivernz.itera.data.catalog.CatalogKeys
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Clock
 import java.time.DateTimeException
@@ -23,7 +24,7 @@ class CopyResolver @Inject constructor(
     fun resolve(key: String, args: String, techniqueId: String): ResolvedCopy = try {
         val values = Json.parseToJsonElement(args).jsonObject
         val technique = values["technique"]?.jsonPrimitive?.content ?: techniqueId
-        val resources = techniqueResources[technique] ?: error("Unknown technique")
+        val resources = techniqueResources(technique) ?: error("Unknown technique")
         val title = context.getString(resources.first)
         val instruction = context.getString(resources.second)
         val minutes = values["minutes"]?.jsonPrimitive?.int ?: 5
@@ -65,6 +66,7 @@ class CopyResolver @Inject constructor(
                 }
             }
             "activity_practice" -> context.getString(R.string.activity_practice)
+            "activity_mitigation" -> context.getString(R.string.activity_mitigation)
             "activity_reflection" -> context.getString(
                 R.string.activity_reflection,
                 formatted(
@@ -103,21 +105,18 @@ class CopyResolver @Inject constructor(
         logger.w(TAG, "Activity copy unavailable")
         return ResolvedCopy(context.getString(R.string.error_content_missing), "", "")
     }
-    private val techniqueResources = mapOf(
-        "two_minute_rule" to (R.string.t_two_name to R.string.t_two_task),
-        "pomodoro" to (R.string.t_pomodoro_name to R.string.t_pomodoro_task),
-        "eisenhower_matrix" to (R.string.t_eisenhower_name to R.string.t_eisenhower_task),
-        "five_second_rule" to (R.string.t_five_name to R.string.t_five_task),
-        "habit_stacking" to (R.string.t_stack_name to R.string.t_stack_task),
-        "feynman" to (R.string.t_feynman_name to R.string.t_feynman_task),
-        "two_list_strategy" to (R.string.t_twolist_name to R.string.t_twolist_task),
-        "deep_work" to (R.string.t_deep_name to R.string.t_deep_task),
-        "pareto_principle" to (R.string.t_pareto_name to R.string.t_pareto_task),
-        "spaced_repetition" to (R.string.t_spaced_name to R.string.t_spaced_task),
-        "information_diet" to (R.string.t_diet_name to R.string.t_diet_task),
-        "premortem" to (R.string.t_premortem_name to R.string.t_premortem_task),
-        "one_percent_improvement" to (R.string.t_onepct_name to R.string.t_onepct_task),
-        "daily_reflection" to (R.string.t_reflect_name to R.string.t_reflect_task)
-    )
+    private val ids = java.util.concurrent.ConcurrentHashMap<String, Int>()
+
+    /** Name and task resources derived from the catalogue slug (docs/data/04 section 4). */
+    @android.annotation.SuppressLint("DiscouragedApi")
+    private fun techniqueResources(technique: String): Pair<Int, Int>? {
+        if (technique !in CatalogKeys.SLUGS) return null
+        fun id(key: String) = ids.getOrPut(key) {
+            context.resources.getIdentifier(key, "string", context.packageName)
+        }
+        val name = id(CatalogKeys.name(technique))
+        val task = id(CatalogKeys.task(technique))
+        return if (name == 0 || task == 0) null else name to task
+    }
 }
 private const val TAG = "CopyResolver"

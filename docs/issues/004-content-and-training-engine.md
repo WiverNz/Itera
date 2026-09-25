@@ -2,7 +2,7 @@
 
 **Depends on** 002 | **Blocks** 005, 006, 007, 008
 
-**Status (2026-09-24): ready to start; not started.** Milestone 002 is complete. Milestone 003's pending visual acceptance does not block this independent domain milestone.
+**Status (2026-09-25): complete.** All acceptance criteria are met and every required test passes (`./gradlew build`). Decisions and deviations are recorded in `docs/00-source-of-truth.md`, "Milestone 004 implementation decisions". One item is flagged for product review: Gentle pace keeps the curriculum rate.
 
 ## Goal
 
@@ -34,15 +34,15 @@ Load the technique catalogue and curriculum, and implement every product rule of
 
 ## Acceptance criteria
 
-- [ ] Both assets parse and validate; 14 techniques with complete content in en/ru/de/es; curriculum days 1-14 match the spec.
-- [ ] The state machine produces every documented transition and rejects every other pair without throwing; rollover is correct.
-- [ ] `unlockedSet` for days 1-20 matches the table; unlocks are idempotent and never reverse.
-- [ ] The four worked plan examples (Days 1, 2, 9, 14) are reproduced exactly; generation is idempotent and deterministic; no locked technique ever appears.
-- [ ] The review ladder, retirement, overdue and ordering rules hold; replayed submits write once.
-- [ ] Mastery and skill-level truth tables hold, including boundaries; nothing derived is persisted.
-- [ ] Completion is atomic and idempotent; `programDay` advances exactly once per completed day and never after an abandoned day.
-- [ ] Both reset paths cover every table (`ResetCoverageTest`).
-- [ ] The full daily loop runs from a seeded database under `FakeClock`, with no Activity.
+- [x] Both assets parse and validate; 14 techniques with complete content in en/ru/de/es; curriculum days 1-14 match the spec.
+- [x] The state machine produces every documented transition and rejects every other pair without throwing; rollover is correct.
+- [x] `unlockedSet` for days 1-20 matches the table; unlocks are idempotent and never reverse.
+- [x] The four worked plan examples (Days 1, 2, 9, 14) are reproduced exactly; generation is idempotent and deterministic; no locked technique ever appears.
+- [x] The review ladder, retirement, overdue and ordering rules hold; replayed submits write once.
+- [x] Mastery and skill-level truth tables hold, including boundaries; nothing derived is persisted.
+- [x] Completion is atomic and idempotent; `programDay` advances exactly once per completed day and never after an abandoned day.
+- [x] Both reset paths cover every table (`ResetCoverageTest`).
+- [x] The full daily loop runs from a seeded database under `FakeClock`, with no Activity.
 
 ## Required tests
 

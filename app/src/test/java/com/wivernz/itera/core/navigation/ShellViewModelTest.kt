@@ -40,6 +40,7 @@ class ShellViewModelTest {
     private class Preferences(override val preferences: Flow<UserPreferences>) :
         PreferencesRepository {
         override suspend fun update(transform: (UserPreferences) -> UserPreferences) = Unit
+        override suspend fun clear() = Unit
     }
 
     @Test fun startsLoadingThenFollowsPreferencesLive() = runTest(dispatcher) {

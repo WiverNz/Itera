@@ -149,6 +149,8 @@ Frozen. Any change is a breaking content change.
 
 Missing keys are a build-time failure via the catalog validation test.
 
+Slugs are fixed per frozen id in `data/catalog/CatalogKeys.SLUGS`. Block keys derive `exercise_{techniqueId}_{blockKey}_label` (every block), `_placeholder` (`textInput`, `checklist`), and `_secondary_label` (`twoLists`). `pickOne.suggestionsKey` and `chipSelect.optionsKey` name `<string-array>` resources. Combination steps use `combination_day{day}_step{n}_prompt` / `_hint`; a `%1$d` in a prompt is filled with the step technique's focus minutes. The shipped template bodies are recorded in `docs/00-source-of-truth.md`, "Milestone 004 implementation decisions". `CatalogCompatibilityTest` compares the assets with the snapshot committed at `app/src/test/resources/catalog-snapshot/`; refresh that snapshot only when a catalogue version ships.
+
 ## 5. Loading
 
 ```kotlin

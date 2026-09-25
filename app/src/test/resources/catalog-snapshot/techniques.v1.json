@@ -1,0 +1,167 @@
+{
+  "contentVersion": 1,
+  "techniques": [
+    {
+      "id": "daily_reflection",
+      "skill": "REFLECTION",
+      "exerciseType": "REFLECTION",
+      "estimatedMinutes": 2,
+      "reviewEligible": false,
+      "related": ["premortem", "one_percent_improvement", "feynman_technique"],
+      "defaults": {}
+    },
+    {
+      "id": "two_minute_rule",
+      "skill": "HABITS",
+      "introDay": 1,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 5,
+      "reviewEligible": false,
+      "related": ["five_second_rule", "habit_stacking", "eisenhower_matrix"],
+      "defaults": {},
+      "template": {
+        "completionRule": { "type": "requireChecked", "key": "tasks", "count": 2 },
+        "blocks": [
+          { "type": "instruction", "key": "how", "emphasis": true },
+          { "type": "checklist", "key": "tasks", "minItems": 2, "maxItems": 5, "withStopwatch": true }
+        ]
+      }
+    },
+    {
+      "id": "pomodoro",
+      "skill": "FOCUS",
+      "introDay": 2,
+      "exerciseType": "FOCUS_TIMER",
+      "estimatedMinutes": 30,
+      "reviewEligible": false,
+      "related": ["deep_work", "five_second_rule", "eisenhower_matrix"],
+      "defaults": { "focusMinutes": 25, "breakMinutes": 5 }
+    },
+    {
+      "id": "eisenhower_matrix",
+      "skill": "PLANNING",
+      "introDay": 3,
+      "exerciseType": "EISENHOWER",
+      "estimatedMinutes": 10,
+      "reviewEligible": false,
+      "related": ["pareto_principle", "two_list_strategy", "two_minute_rule"],
+      "defaults": {}
+    },
+    {
+      "id": "five_second_rule",
+      "skill": "FOCUS",
+      "introDay": 4,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 2,
+      "reviewEligible": false,
+      "related": ["two_minute_rule", "pomodoro", "habit_stacking"],
+      "defaults": {},
+      "template": { "completionRule": { "type": "always" }, "blocks": [] }
+    },
+    {
+      "id": "habit_stacking",
+      "skill": "HABITS",
+      "introDay": 5,
+      "exerciseType": "HABIT_STACK",
+      "estimatedMinutes": 5,
+      "reviewEligible": false,
+      "related": ["one_percent_improvement", "two_minute_rule", "daily_reflection"],
+      "defaults": {}
+    },
+    {
+      "id": "feynman_technique",
+      "skill": "LEARNING",
+      "introDay": 6,
+      "exerciseType": "FEYNMAN",
+      "estimatedMinutes": 15,
+      "reviewEligible": true,
+      "related": ["spaced_repetition", "deep_work", "daily_reflection"],
+      "defaults": {}
+    },
+    {
+      "id": "two_list_strategy",
+      "skill": "PLANNING",
+      "introDay": 7,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 10,
+      "reviewEligible": false,
+      "related": ["pareto_principle", "eisenhower_matrix", "premortem"],
+      "defaults": {},
+      "template": { "completionRule": { "type": "always" }, "blocks": [] }
+    },
+    {
+      "id": "deep_work",
+      "skill": "FOCUS",
+      "introDay": 8,
+      "exerciseType": "FOCUS_TIMER",
+      "estimatedMinutes": 50,
+      "reviewEligible": false,
+      "related": ["pomodoro", "information_diet", "pareto_principle"],
+      "defaults": { "focusMinutes": 50 }
+    },
+    {
+      "id": "pareto_principle",
+      "skill": "PLANNING",
+      "introDay": 9,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 10,
+      "reviewEligible": false,
+      "related": ["eisenhower_matrix", "deep_work", "two_list_strategy"],
+      "defaults": {},
+      "template": {
+        "completionRule": { "type": "requireBlocks", "keys": ["steps"] },
+        "blocks": [
+          { "type": "pickOne", "key": "steps", "itemCount": 3 }
+        ]
+      }
+    },
+    {
+      "id": "spaced_repetition",
+      "skill": "LEARNING",
+      "introDay": 10,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 5,
+      "reviewEligible": true,
+      "related": ["feynman_technique", "habit_stacking", "daily_reflection"],
+      "defaults": {},
+      "template": {
+        "completionRule": { "type": "requireBlocks", "keys": ["item"] },
+        "blocks": [
+          { "type": "textInput", "key": "item", "minLines": 2, "maxLines": 6 }
+        ]
+      }
+    },
+    {
+      "id": "information_diet",
+      "skill": "FOCUS",
+      "introDay": 11,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 5,
+      "reviewEligible": false,
+      "related": ["deep_work", "two_list_strategy", "pomodoro"],
+      "defaults": {},
+      "template": { "completionRule": { "type": "always" }, "blocks": [] }
+    },
+    {
+      "id": "premortem",
+      "skill": "REFLECTION",
+      "introDay": 12,
+      "exerciseType": "PREMORTEM",
+      "estimatedMinutes": 10,
+      "reviewEligible": false,
+      "related": ["two_list_strategy", "daily_reflection", "pareto_principle"],
+      "defaults": {}
+    },
+    {
+      "id": "one_percent_improvement",
+      "skill": "HABITS",
+      "introDay": 13,
+      "exerciseType": "TEMPLATE",
+      "estimatedMinutes": 5,
+      "reviewEligible": false,
+      "related": ["habit_stacking", "daily_reflection", "two_minute_rule"],
+      "defaults": {},
+      "template": { "completionRule": { "type": "always" }, "blocks": [] }
+    }
+  ]
+}

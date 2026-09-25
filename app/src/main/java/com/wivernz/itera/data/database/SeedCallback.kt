@@ -1,39 +1,30 @@
 package com.wivernz.itera.data.database
+
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import java.time.Clock
-/** Temporary catalogue coupling required by detailed issue 006; replace in milestone 004. */
-class SeedCallback(private val clock: Clock) : RoomDatabase.Callback() {
+
+/** One catalogue technique as the seed needs it. */
+data class SeedTechnique(val id: String, val introDay: Int?)
+
+/**
+ * Seeds `technique_state` from the catalogue (docs/data/01-room-schema.md section 7): one locked row per
+ * technique, then Daily reflection (no intro day) and the Day-1 technique unlocked on program day 1.
+ */
+class SeedCallback(private val clock: Clock, private val techniques: () -> List<SeedTechnique>) :
+    RoomDatabase.Callback() {
     override fun onCreate(db: SupportSQLiteDatabase) {
         val now = clock.millis()
-        techniqueIds.forEach { id ->
-            val unlocked = id == "two_minute_rule" || id == "daily_reflection"
+        techniques().forEach { technique ->
+            val unlocked = technique.introDay == null || technique.introDay <= 1
             db.execSQL(
                 "INSERT INTO technique_state (techniqueId, unlockedAt, unlockedOnProgramDay, introCompletedAt) VALUES (?, ?, ?, NULL)",
                 arrayOf<Any?>(
-                    id,
+                    technique.id,
                     if (unlocked) now else null,
                     if (unlocked) 1 else null
                 )
             )
         }
-    }
-    companion object {
-        val techniqueIds = listOf(
-            "two_minute_rule",
-            "pomodoro",
-            "eisenhower_matrix",
-            "feynman",
-            "habit_stacking",
-            "five_second_rule",
-            "daily_reflection",
-            "spaced_repetition",
-            "deep_work",
-            "premortem",
-            "two_list_strategy",
-            "information_diet",
-            "one_percent_improvement",
-            "pareto_principle"
-        )
     }
 }

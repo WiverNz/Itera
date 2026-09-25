@@ -1,6 +1,7 @@
 package com.wivernz.itera.data.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.wivernz.itera.data.database.entity.TechniqueStateEntity
 import com.wivernz.itera.data.database.relation.TrainingDayWithActivities
@@ -13,12 +14,23 @@ interface TechniqueStateDao {
     @Query(
         "UPDATE technique_state SET unlockedAt = :at, unlockedOnProgramDay = :day WHERE techniqueId = :id AND unlockedAt IS NULL"
     )
-    suspend fun unlock(id: String, at: Long, day: Int)
+    suspend fun unlock(id: String, at: Long, day: Int): Int
 
     @Query(
         "UPDATE technique_state SET introCompletedAt = :at WHERE techniqueId = :id AND introCompletedAt IS NULL"
     )
-    suspend fun markIntroComplete(id: String, at: Long)
+    suspend fun markIntroComplete(id: String, at: Long): Int
+
+    @Query("SELECT * FROM technique_state ORDER BY techniqueId")
+    suspend fun all(): List<TechniqueStateEntity>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertMissing(rows: List<TechniqueStateEntity>)
+
+    @Query(
+        "UPDATE technique_state SET unlockedAt = NULL, unlockedOnProgramDay = NULL, introCompletedAt = NULL"
+    )
+    suspend fun clearAll()
 
     @Query("SELECT * FROM technique_state WHERE techniqueId = :id")
     suspend fun byId(id: String): TechniqueStateEntity?

@@ -13,4 +13,7 @@ interface ReviewAttemptDao {
     fun observeForItem(id: Long): Flow<List<ReviewAttemptEntity>>
 
     @Insert suspend fun insert(row: ReviewAttemptEntity): Long
+
+    @Query("SELECT COUNT(*) FROM review_attempt WHERE activityId = :activityId")
+    suspend fun countForActivity(activityId: Long): Int
 }

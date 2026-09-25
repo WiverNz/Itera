@@ -82,7 +82,8 @@ fun PlanActivityEntity.toDomain(copy: CopyResolver, codec: ResultPayloadCodec): 
             id,
             exerciseType
         ),
-        reviewItemId
+        reviewItemId,
+        weeklyLookBack = copyArgs.contains("\"weeklyLookBack\":true")
     )
 }
 fun PlanActivity.toEntity(

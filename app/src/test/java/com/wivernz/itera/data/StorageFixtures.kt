@@ -4,6 +4,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.wivernz.itera.TestLogger
 import com.wivernz.itera.core.common.FakeClock
+import com.wivernz.itera.data.catalog.CatalogAssetSource
+import com.wivernz.itera.data.catalog.seedTechniques
 import com.wivernz.itera.data.copy.CopyResolver
 import com.wivernz.itera.data.database.IteraDatabase
 import com.wivernz.itera.data.database.SeedCallback
@@ -54,7 +56,10 @@ fun activityEntity(
 fun testDatabase(): IteraDatabase = Room.inMemoryDatabaseBuilder(
     ApplicationProvider.getApplicationContext(),
     IteraDatabase::class.java
-).addCallback(SeedCallback(FakeClock())).build()
+).addCallback(SeedCallback(FakeClock()) { seedTechniques(fileAssets) }).build()
+
+/** The real bundled catalogue, read from the source tree (JVM tests run in the module directory). */
+val fileAssets = CatalogAssetSource { java.io.File("src/main/assets/$it").readText() }
 fun testCopy(): CopyResolver = CopyResolver(
     ApplicationProvider.getApplicationContext<Context>(),
     FakeClock(),

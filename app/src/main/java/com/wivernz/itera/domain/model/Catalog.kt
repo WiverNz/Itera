@@ -25,7 +25,9 @@ data class Technique(
     // required when exerciseType == TEMPLATE
     val template: ExerciseTemplate?,
     // type-specific seed data (focus length, chips, ...)
-    val defaults: TechniqueDefaults
+    val defaults: TechniqueDefaults,
+    // hidden from curriculum and library; history still resolves (ADR-0015)
+    val retired: Boolean = false
 )
 
 /** Domain model, docs/data/00-domain-model.md section 2. */

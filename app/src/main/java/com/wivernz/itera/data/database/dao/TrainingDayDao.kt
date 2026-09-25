@@ -33,4 +33,24 @@ interface TrainingDayDao {
     suspend fun delete(id: Long)
 
     @Insert suspend fun insert(row: TrainingDayEntity): Long
+
+    @Transaction
+    @Query("SELECT * FROM training_day WHERE id = :id")
+    suspend fun byId(id: Long): TrainingDayWithActivities?
+
+    @Transaction
+    @Query("SELECT * FROM training_day WHERE date = :date")
+    suspend fun byDate(date: Long): TrainingDayWithActivities?
+
+    @Transaction
+    @Query("SELECT * FROM training_day WHERE date < :date ORDER BY date")
+    suspend fun before(date: Long): List<TrainingDayWithActivities>
+
+    @Query("SELECT generatorVersion FROM training_day WHERE id = :id")
+    suspend fun generatorVersion(id: Long): Int?
+
+    @Query(
+        "SELECT d.programDay FROM training_day d JOIN plan_activity a ON a.trainingDayId = d.id WHERE a.id = :activityId"
+    )
+    suspend fun programDayOfActivity(activityId: Long): Int?
 }

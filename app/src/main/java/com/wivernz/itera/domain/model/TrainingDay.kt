@@ -50,12 +50,16 @@ data class PlanActivity(
     val note: String?,
     val result: ActivityResult?,
     // set when source == REVIEW
-    val reviewItemId: Long?
+    val reviewItemId: Long?,
+    // reflection only: open with the 7-day look-back header (engine 01 section 8)
+    val weeklyLookBack: Boolean = false
 ) {
     init {
         require(reviewItemId == null || source == ActivitySource.REVIEW)
         require(estimatedMinutes >= 0)
     }
     val countsTowardDay: Boolean get() = !optional
+    val isCombinationStep: Boolean
+        get() = source == ActivitySource.COMBINATION && exerciseType != ExerciseType.COMBINATION
     val isCountedComplete: Boolean get() = state == ActivityState.COMPLETED
 }

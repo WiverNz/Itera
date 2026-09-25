@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Technique catalogue content (milestone 004). Ported from design/ (D-04); keys are derived by data/catalog. -->
+<resources>
+    <string name="t_two_short">Clear small tasks before they accumulate.</string>
+    <string name="t_two_why">If something takes less than two minutes, do it now. Small tasks are cheap to finish and expensive to keep remembering.</string>
+    <string name="t_pomodoro_short">Work in 25-minute sprints with real breaks.</string>
+    <string name="t_pomodoro_why">A timer turns “work on it” into a small unit you can finish. Short breaks keep attention fresh across the day.</string>
+    <string name="t_eisenhower_short">Sort tasks by importance, not by noise.</string>
+    <string name="t_eisenhower_why">Urgent things shout; important things rarely do. Sorting both ways shows what deserves your best hours.</string>
+    <string name="t_five_short">Count 5-4-3-2-1 and move before doubt starts.</string>
+    <string name="t_five_why">Hesitation grows with every second. Counting down gives your brain a clear start signal before excuses arrive.</string>
+    <string name="t_stack_short">Attach a new habit to one you already have.</string>
+    <string name="t_stack_why">An existing habit is a reliable trigger. Tying a tiny new action to it removes the need to remember.</string>
+    <string name="t_feynman_short">Explain it simply to find what you don’t know.</string>
+    <string name="t_feynman_why">Explaining in plain words shows exactly where your understanding has gaps.</string>
+    <string name="t_twolist_short">Decide what you’re deliberately not doing now.</string>
+    <string name="t_twolist_why">Choosing what you won’t do protects your focus for the few goals that matter most.</string>
+    <string name="t_deep_short">Long, protected blocks for hard problems.</string>
+    <string name="t_deep_why">Hard problems need long, unbroken attention. Protecting it on purpose is a skill you can train.</string>
+    <string name="t_pareto_short">Find the few actions that drive most of the result.</string>
+    <string name="t_pareto_why">A small share of actions usually drives most of the result. Finding them first saves hours.</string>
+    <string name="t_spaced_short">Return to what you learned at growing intervals.</string>
+    <string name="t_spaced_why">Memory fades fast, but each well-timed recall makes it last longer.</string>
+    <string name="t_diet_short">Choose what you consume on purpose.</string>
+    <string name="t_diet_why">What you consume shapes what you think about. Choosing inputs on purpose frees attention.</string>
+    <string name="t_premortem_short">Imagine the failure first, then prevent it.</string>
+    <string name="t_premortem_why">Imagining failure in advance makes risks concrete while there’s still time to act.</string>
+    <string name="t_onepct_short">Improve one small thing, every day.</string>
+    <string name="t_onepct_why">Tiny improvements are easy to repeat, and they add up over weeks.</string>
+    <string name="t_reflect_short">Three short questions to close the day.</string>
+    <string name="t_reflect_why">A short look back turns a day of experience into a lesson for tomorrow.</string>
+    <string name="skill_focus">Focus</string>
+    <string name="skill_focus_desc">Start faster, stay on one thing longer</string>
+    <string name="skill_planning">Planning</string>
+    <string name="skill_planning_desc">Know what actually matters today</string>
+    <string name="skill_learning">Learning</string>
+    <string name="skill_learning_desc">Understand and remember what you study</string>
+    <string name="skill_habits">Habits</string>
+    <string name="skill_habits_desc">Make small useful actions automatic</string>
+    <string name="skill_reflection">Reflection</string>
+    <string name="skill_reflection_desc">Notice what works and adjust</string>
+    <string name="skill_level_starting">Starting</string>
+    <string name="skill_level_building">Building</string>
+    <string name="skill_level_steady">Steady</string>
+    <string name="skill_level_strong">Strong</string>
+    <string name="exercise_two_minute_rule_how_label">Write them down, do them, tap when finished. If one runs over two minutes, that’s useful to notice too.</string>
+    <string name="exercise_two_minute_rule_tasks_label">Find two quick tasks</string>
+    <string name="exercise_two_minute_rule_tasks_placeholder">Add another quick task</string>
+    <string name="exercise_pareto_principle_steps_label">Which part moves it most?</string>
+    <string name="combination_day14_step2_prompt">Which part moves it most?</string>
+    <string name="combination_day14_step2_hint">Pick the one step that gives most of the result.</string>
+    <string name="combination_day14_step3_prompt">%1$d minutes on that one step</string>
+    <string name="combination_day14_step3_hint">Phone away, one tab open</string>
+    <string name="combination_day14_step4_prompt" formatted="false">Tonight: did the 20% hold?</string>
+    <string name="combination_day14_step4_hint">Part of your evening reflection</string>
+    <string name="combination_day14_step1_prompt">Most important right now?</string>
+    <string name="combination_day14_step1_hint">Sort what’s on your plate, then pick from Do now.</string>
+    <string name="exercise_spaced_repetition_item_label">What do you want to remember?</string>
+    <string name="exercise_spaced_repetition_item_placeholder">One fact or idea, in your own words</string>
+    <string name="activity_mitigation">From your premortem</string>
+</resources>

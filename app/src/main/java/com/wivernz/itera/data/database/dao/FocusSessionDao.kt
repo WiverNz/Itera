@@ -18,4 +18,7 @@ interface FocusSessionDao {
     fun totalSecondsSince(epochDay: Long): Flow<Long>
 
     @Insert suspend fun insert(row: FocusSessionEntity): Long
+
+    @Query("SELECT COALESCE(SUM(actualSeconds), 0) FROM focus_session")
+    fun totalSeconds(): Flow<Long>
 }

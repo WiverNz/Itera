@@ -27,8 +27,7 @@ class TrainingPlanRepositoryTest {
                     .insertAll(listOf(activityEntity(day)))
                     .single()
             val repository = RoomTrainingPlanRepository(
-                db.trainingDayDao(),
-                db.planActivityDao(),
+                db,
                 testCopy(),
                 ResultPayloadCodec(TestLogger()),
                 FakeClock(),

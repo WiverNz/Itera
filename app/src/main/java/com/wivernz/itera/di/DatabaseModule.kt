@@ -2,6 +2,8 @@ package com.wivernz.itera.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.wivernz.itera.data.catalog.CatalogAssetSource
+import com.wivernz.itera.data.catalog.seedTechniques
 import com.wivernz.itera.data.database.IteraDatabase
 import com.wivernz.itera.data.database.SeedCallback
 import dagger.Module
@@ -15,14 +17,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
     @Provides @Singleton
-    fun database(@ApplicationContext context: Context, clock: Clock): IteraDatabase =
-        Room.databaseBuilder(
-            context,
-            IteraDatabase::class.java,
-            "itera.db"
-        ).addCallback(
-            SeedCallback(clock)
-        ).setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING).build()
+    fun database(
+        @ApplicationContext context: Context,
+        clock: Clock,
+        assets: CatalogAssetSource
+    ): IteraDatabase = Room.databaseBuilder(
+        context,
+        IteraDatabase::class.java,
+        "itera.db"
+    ).addCallback(
+        SeedCallback(clock) { seedTechniques(assets) }
+    ).setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING).build()
 
     @Provides fun trainingDayDao(db: IteraDatabase) = db.trainingDayDao()
 
@@ -43,4 +48,6 @@ object DatabaseModule {
     @Provides fun habitStackDao(db: IteraDatabase) = db.habitStackDao()
 
     @Provides fun eventLogDao(db: IteraDatabase) = db.eventLogDao()
+
+    @Provides fun resetDao(db: IteraDatabase) = db.resetDao()
 }

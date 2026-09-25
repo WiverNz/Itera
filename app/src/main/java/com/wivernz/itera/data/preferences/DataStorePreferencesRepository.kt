@@ -62,6 +62,9 @@ class DataStorePreferencesRepository @Inject constructor(
                 ?: prefs.remove(lastSeenDayCompleteKey)
         }
     }
+    override suspend fun clear() {
+        store.edit { it.clear() }
+    }
     private fun read(prefs: Preferences): UserPreferences = UserPreferences(
         onboardingCompleted = prefs[onboardingCompletedKey] ?: false,
         focusAreas =

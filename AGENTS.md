@@ -16,7 +16,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 
 ## What this is
 
-**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001 and 002 are complete; 003 is implemented with final visual acceptance pending. See `docs/issues/README.md` for current status.
+**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001, 002 and 004 are complete; 003 is implemented with final visual acceptance pending. See `docs/issues/README.md` for current status.
 
 ## Repository layout
 
@@ -99,4 +99,4 @@ Both apps can be installed at once: `com.itera.app` and `com.wivernz.itera` are 
 
 ## Where to start
 
-`CLAUDE_START_HERE.md`, then `docs/00-source-of-truth.md`, then `docs/issues/README.md`, then the requested milestone. Next implementation milestone is 004 (ready, not started); 003's final visual acceptance remains open. Do not start a milestone without a user request.
+`CLAUDE_START_HERE.md`, then `docs/00-source-of-truth.md`, then `docs/issues/README.md`, then the requested milestone. Milestone 004 is complete. Next is 005, which also needs 003's final visual acceptance, still open. Do not start a milestone without a user request.

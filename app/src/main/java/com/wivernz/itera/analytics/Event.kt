@@ -368,7 +368,7 @@ enum class AnalyticsTechnique(val id: String) {
     EISENHOWER_MATRIX("eisenhower_matrix"),
     FIVE_SECOND_RULE("five_second_rule"),
     HABIT_STACKING("habit_stacking"),
-    FEYNMAN("feynman"),
+    FEYNMAN("feynman_technique"),
     TWO_LIST_STRATEGY("two_list_strategy"),
     DEEP_WORK("deep_work"),
     PARETO_PRINCIPLE("pareto_principle"),
@@ -376,7 +376,11 @@ enum class AnalyticsTechnique(val id: String) {
     INFORMATION_DIET("information_diet"),
     PREMORTEM("premortem"),
     ONE_PERCENT_IMPROVEMENT("one_percent_improvement"),
-    DAILY_REFLECTION("daily_reflection")
+    DAILY_REFLECTION("daily_reflection");
+
+    companion object {
+        fun of(id: String): AnalyticsTechnique? = entries.firstOrNull { it.id == id }
+    }
 }
 enum class ScreenRoute(val className: String) {
     WELCOME("Welcome"),

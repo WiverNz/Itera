@@ -7,6 +7,7 @@ import com.wivernz.itera.data.database.dao.HabitStackDao
 import com.wivernz.itera.data.database.dao.LearningTopicDao
 import com.wivernz.itera.data.database.dao.PlanActivityDao
 import com.wivernz.itera.data.database.dao.ReflectionDao
+import com.wivernz.itera.data.database.dao.ResetDao
 import com.wivernz.itera.data.database.dao.ReviewAttemptDao
 import com.wivernz.itera.data.database.dao.ReviewItemDao
 import com.wivernz.itera.data.database.dao.TechniqueStateDao
@@ -48,4 +49,5 @@ abstract class IteraDatabase : RoomDatabase() {
     abstract fun techniqueStateDao(): TechniqueStateDao
     abstract fun habitStackDao(): HabitStackDao
     abstract fun eventLogDao(): EventLogDao
+    abstract fun resetDao(): ResetDao
 }

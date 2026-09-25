@@ -1,0 +1,28 @@
+{
+  "contentVersion": 1,
+  "days": [
+    { "day": 1, "newTechnique": "two_minute_rule" },
+    { "day": 2, "newTechnique": "pomodoro" },
+    { "day": 3, "newTechnique": "eisenhower_matrix" },
+    { "day": 4, "newTechnique": "five_second_rule" },
+    { "day": 5, "newTechnique": "habit_stacking" },
+    { "day": 6, "newTechnique": "feynman_technique" },
+    { "day": 7, "newTechnique": "two_list_strategy", "weeklyLookBack": true },
+    { "day": 8, "newTechnique": "deep_work" },
+    { "day": 9, "newTechnique": "pareto_principle" },
+    { "day": 10, "newTechnique": "spaced_repetition" },
+    { "day": 11, "newTechnique": "information_diet" },
+    { "day": 12, "newTechnique": "premortem" },
+    { "day": 13, "newTechnique": "one_percent_improvement" },
+    {
+      "day": 14,
+      "combination": [
+        { "technique": "eisenhower_matrix" },
+        { "technique": "pareto_principle" },
+        { "technique": "deep_work" },
+        { "technique": "daily_reflection" }
+      ],
+      "weeklyLookBack": true
+    }
+  ]
+}
