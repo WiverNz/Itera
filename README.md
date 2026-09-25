@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="preview.png" width="100%"
+       alt="Itera: Practice. Reflect. Improve. Guided productivity training for Android.">
+</p>
+
 # Itera
 
 A native Android app that teaches productivity techniques through daily practice, not through another list of things to do.
