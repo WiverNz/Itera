@@ -77,7 +77,7 @@ class CompleteOnboardingUseCase @Inject constructor(
             block()
         } catch (e: CancellationException) {
             throw e
-        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+        } catch (@Suppress("TooGenericExceptionCaught") _: Exception) {
             logger.w(TAG, failure)
         }
     }

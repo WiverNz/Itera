@@ -17,6 +17,7 @@ import com.wivernz.itera.domain.training.SkipActivityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -221,7 +222,7 @@ class ReflectionViewModel @Inject constructor(
         if (mutable.value.loading || mutable.value.saving) return
         draftJob?.cancel()
         draftJob = viewModelScope.launch {
-            if (!immediate) delay(DRAFT_DEBOUNCE_MILLIS)
+            if (!immediate) delay(DRAFT_DEBOUNCE)
             saveDraft(activityId, currentResult())
         }
     }
@@ -235,7 +236,7 @@ class ReflectionViewModel @Inject constructor(
         private const val KEY_STEP = "reflection.step"
         private const val WEEK_DAYS = 7L
         private const val SECONDS_PER_MINUTE = 60
-        private const val DRAFT_DEBOUNCE_MILLIS = 400L
+        private val DRAFT_DEBOUNCE = 400.milliseconds
         private const val REFLECTION_ID = "daily_reflection"
     }
 }

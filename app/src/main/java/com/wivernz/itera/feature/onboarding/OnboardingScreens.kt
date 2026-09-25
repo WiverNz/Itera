@@ -49,7 +49,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -82,6 +81,7 @@ import com.wivernz.itera.core.designsystem.theme.colors
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.TimeBudget
 import java.time.LocalTime
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 
 // ------------------------------------------------------------------ welcome
@@ -196,7 +196,7 @@ private fun RisingPath() {
         nodes.forEachIndexed { i, (skill, id, pos) ->
             var shown by remember { mutableStateOf(reduced) }
             LaunchedEffect(Unit) {
-                delay(POP_STAGGER_MILLIS * i)
+                delay(POP_STAGGER * i)
                 shown = true
             }
             val scale by animateFloatAsState(
@@ -548,6 +548,6 @@ fun FirstWeekScreen(
 }
 
 private const val STEPS = 3
-private const val POP_STAGGER_MILLIS = 120L
+private val POP_STAGGER = 120.milliseconds
 private const val PICK_MORNING = "morning"
 private const val PICK_EVENING = "evening"

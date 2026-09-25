@@ -64,7 +64,6 @@ fun TodayScreen(
     onUndoPractice: (Long) -> Unit = {},
     onPracticeMessageShown: () -> Unit = {}
 ) {
-    val c = Itera.colors
     val snackbar = remember { SnackbarHostState() }
     val logged = state.loggedPractice
     val loggedText = logged?.let { stringResource(R.string.today_practice_logged, it.name) }

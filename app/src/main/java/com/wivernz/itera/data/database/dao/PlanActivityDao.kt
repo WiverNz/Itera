@@ -6,7 +6,6 @@ import androidx.room.Transaction
 import com.wivernz.itera.data.database.entity.PlanActivityEntity
 import com.wivernz.itera.data.database.relation.CompletionRow
 import com.wivernz.itera.data.database.relation.TechniqueFactsRow
-import com.wivernz.itera.data.database.relation.TrainingDayWithActivities
 import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class PlanActivityDao {

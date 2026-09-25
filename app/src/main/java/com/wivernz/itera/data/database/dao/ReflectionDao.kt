@@ -4,7 +4,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import com.wivernz.itera.data.database.entity.ReflectionEntity
-import com.wivernz.itera.data.database.relation.TrainingDayWithActivities
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface ReflectionDao {

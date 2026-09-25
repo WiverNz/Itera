@@ -53,7 +53,6 @@ import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.LocalReduceMotion
 import com.wivernz.itera.core.designsystem.theme.NightSurface
-import com.wivernz.itera.core.designsystem.theme.colors
 
 /** Screens receive commands only; this file exclusively owns the navigation controller. */
 class NavigationActions(
@@ -242,7 +241,7 @@ fun IteraBottomBar(current: AppRoute, onSelect: (AppRoute) -> Unit, modifier: Mo
         Triple(You, R.string.nav_you, IteraIcons.You)
     )
     Column(modifier.fillMaxWidth().background(c.bg).testTag("BottomBar")) {
-        com.wivernz.itera.core.designsystem.component.Divider()
+        Divider()
         Row(
             Modifier.fillMaxWidth().navigationBarsPadding().height(
                 68.dp

@@ -24,6 +24,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -137,7 +138,7 @@ class TodayViewModel @Inject constructor(
         if (target.activityId in local.value.pending) return
         local.update { it.copy(pending = it.pending + target.activityId, logged = target) }
         undo[target.activityId] = viewModelScope.launch {
-            delay(UNDO_WINDOW_MILLIS)
+            delay(UNDO_WINDOW)
             commitPractice(target.activityId)
         }
     }
@@ -171,7 +172,7 @@ class TodayViewModel @Inject constructor(
                 dayId.value = ensureToday().id
             } catch (e: CancellationException) {
                 throw e
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch (@Suppress("TooGenericExceptionCaught") _: Exception) {
                 // Keep any stored checklist visible under the error card.
                 dayId.value = runCatching { plans.dayByDate(LocalDate.now(clock))?.id }.getOrNull()
                     ?: dayId.value
@@ -190,6 +191,6 @@ class TodayViewModel @Inject constructor(
 
     private companion object {
         const val STOP_MILLIS = 5_000L
-        const val UNDO_WINDOW_MILLIS = 5_000L
+        val UNDO_WINDOW = 5.seconds
     }
 }
