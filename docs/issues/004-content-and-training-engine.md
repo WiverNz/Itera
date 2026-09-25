@@ -2,7 +2,7 @@
 
 **Depends on** 002 | **Blocks** 005, 006, 007, 008
 
-**Status (2026-09-25): complete.** All acceptance criteria are met and every required test passes (`./gradlew build`). Decisions and deviations are recorded in `docs/00-source-of-truth.md`, "Milestone 004 implementation decisions". One item is flagged for product review: Gentle pace keeps the curriculum rate.
+**Status (2026-09-25): complete.** All acceptance criteria are met and every required test passes (`./gradlew build`). Decisions and deviations are recorded in `docs/00-source-of-truth.md`, "Milestone 004 implementation decisions". Gentle pace keeping the curriculum rate is now the final product decision (pace affects review workload and focus suggestions only).
 
 ## Goal
 

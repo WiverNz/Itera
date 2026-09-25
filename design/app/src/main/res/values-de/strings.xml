@@ -412,4 +412,21 @@
     <string name="t_reflect_short">Drei kurze Fragen zum Tagesabschluss.</string>
     <string name="t_reflect_why">Ein kurzer Blick zurück macht aus der Erfahrung eines Tages eine Lektion für morgen.</string>
     <string name="t_reflect_task">Beantworte drei Fragen: Was lief gut, was nicht, und was änderst du morgen?</string>
+    <!-- Production additions (milestone 005): notification rationale and weekly look-back. -->
+    <string name="rhythm_notif_title">Erinnerungen brauchen deine Erlaubnis</string>
+    <string name="rhythm_notif_body">Itera schickt eine Erinnerung am Morgen und eine am Abend. Sonst nichts, und du kannst sie später abschalten.</string>
+    <string name="reflection_week_title">Deine Woche</string>
+    <string name="reflection_week_changes">Änderungen, die du diese Woche geplant hast</string>
+    <plurals name="reflection_week_days">
+        <item quantity="one">%d Trainingstag</item>
+        <item quantity="other">%d Trainingstage</item>
+    </plurals>
+    <plurals name="reflection_week_techniques">
+        <item quantity="one">%d Technik geübt</item>
+        <item quantity="other">%d Techniken geübt</item>
+    </plurals>
+    <plurals name="reflection_week_focus">
+        <item quantity="one">%d Minute Fokus</item>
+        <item quantity="other">%d Minuten Fokus</item>
+    </plurals>
 </resources>

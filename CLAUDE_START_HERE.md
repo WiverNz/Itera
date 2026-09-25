@@ -86,4 +86,4 @@ Single activity extending `AppCompatActivity`, single Gradle module with enforce
 
 ## Start
 
-Milestone [`004`](docs/issues/004-content-and-training-engine.md) is complete. Next implementation milestone: `005`, when requested. Keep [003's final visual acceptance](docs/issues/003-design-system-and-app-shell.md#verification-gap-2026-09-24) open until the remaining device comparison is verified. Milestone 005 requires both 004 and closure of 003's acceptance gap.
+Milestone [`005`](docs/issues/005-onboarding-and-daily-flow.md) is implemented. Next implementation milestone: `006`, when requested. Keep [003's final visual acceptance](docs/issues/003-design-system-and-app-shell.md#verification-gap-2026-09-24) and 005's prototype comparison open until verified on a device.

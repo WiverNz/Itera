@@ -57,6 +57,10 @@ class RoomTrainingPlanRepository @Inject constructor(
         require(resultTypeOf(draft).name == row.exerciseType)
         activities.updateDraft(activityId, codec.encode(draft))
     }
+    override suspend fun draft(activityId: Long): ActivityResult? = withContext(io) {
+        val row = activities.byId(activityId) ?: return@withContext null
+        codec.decode(activities.draft(activityId), activityId, row.exerciseType)
+    }
     override suspend fun snoozeActivity(activityId: Long, until: Instant) =
         withContext(io) { activities.snooze(activityId, until.toEpochMilli()) }
     override suspend fun skipActivity(activityId: Long) =

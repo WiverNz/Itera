@@ -61,11 +61,11 @@ Pace changes the **optional** parts, never the curriculum order.
 
 | Pace | Effect |
 | --- | --- |
-| Gentle | At most 1 review per day surfaced on Today. A new technique every other day: intervening days are a deepening practice of the previous technique |
-| Standard | At most 2 reviews. A new technique on most days, as the table above |
-| Intense | At most 3 reviews. A new technique daily, and the focus suggestion prefers Deep Work once unlocked |
+| Gentle | At most 1 review per day surfaced on Today. Techniques are introduced at the curriculum rate, as for every pace |
+| Standard | At most 2 reviews |
+| Intense | At most 3 reviews. The focus suggestion prefers Deep Work once unlocked |
 
-Gentle pace stretches the 14 days across roughly 21 calendar days of training. `programDay` still counts training days, not calendar days.
+Pace never changes when techniques are introduced or unlocked: every pace follows the curriculum table (`programDay >= introDay`). Pace changes only the review workload (the cap above, plus one on a long time budget) and the focus suggestion. `programDay` counts training days, not calendar days. Decided 2026-09-25; see `docs/00-source-of-truth.md`, "Milestone 004 implementation decisions".
 
 ## 6. Weekly look-back
 

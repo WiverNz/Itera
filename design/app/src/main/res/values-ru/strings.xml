@@ -420,4 +420,27 @@
     <string name="t_reflect_short">Три коротких вопроса, чтобы завершить день.</string>
     <string name="t_reflect_why">Короткий взгляд назад превращает опыт дня в урок на завтра.</string>
     <string name="t_reflect_task">Ответь на три вопроса: что получилось, что нет и что изменишь завтра.</string>
+    <!-- Production additions (milestone 005): notification rationale and weekly look-back. -->
+    <string name="rhythm_notif_title">Для напоминаний нужно разрешение</string>
+    <string name="rhythm_notif_body">Itera присылает одно напоминание утром и одно вечером. Больше ничего, и их можно отключить позже.</string>
+    <string name="reflection_week_title">Ваша неделя</string>
+    <string name="reflection_week_changes">Изменения, запланированные на неделе</string>
+    <plurals name="reflection_week_days">
+        <item quantity="one">%d день тренировок</item>
+        <item quantity="few">%d дня тренировок</item>
+        <item quantity="many">%d дней тренировок</item>
+        <item quantity="other">%d дня тренировок</item>
+    </plurals>
+    <plurals name="reflection_week_techniques">
+        <item quantity="one">%d техника в практике</item>
+        <item quantity="few">%d техники в практике</item>
+        <item quantity="many">%d техник в практике</item>
+        <item quantity="other">%d техники в практике</item>
+    </plurals>
+    <plurals name="reflection_week_focus">
+        <item quantity="one">%d минута фокуса</item>
+        <item quantity="few">%d минуты фокуса</item>
+        <item quantity="many">%d минут фокуса</item>
+        <item quantity="other">%d минуты фокуса</item>
+    </plurals>
 </resources>

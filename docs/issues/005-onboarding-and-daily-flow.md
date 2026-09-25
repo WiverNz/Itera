@@ -2,6 +2,8 @@
 
 **Depends on** 003, 004 | **Blocks** 006, 008
 
+**Status (2026-09-25): implemented.** All required tests pass (`./gradlew build`). Open items: the side-by-side prototype comparison in light and dark (below), and the Day-1-to-Day-2 path through a real exercise, which waits on 006's runner as planned. Decisions are recorded in `docs/00-source-of-truth.md`, "Milestone 005 implementation decisions".
+
 ## Goal
 
 A clean install can be onboarded and driven through a complete Day 1 - Today, a template exercise, the evening reflection, Day complete - and into Day 2 with the carry-over banner.
@@ -41,3 +43,18 @@ The exercise **runner** is in 006. Until then, Today's hero and step rows naviga
 ## Required tests
 
 `OnboardingViewModelTest`, `OnboardingScreenTest`, `FirstRunIntegrationTest`, `TodayMapperTest`, `TodayViewModelTest`, `TodayScreenTest`, `ProgressHonestyTest` (Today cases), `ReflectionPrefillTest`, `ReflectionViewModelTest`, `ReflectionScreenTest`, `ReflectionIntegrationTest`, `DayCompleteViewModelTest`, `DayCompleteScreenTest`, `DayCompleteIntegrationTest`.
+
+## Deviations (2026-09-25)
+
+Recorded per "Verification scope"; each is required by a product or engine rule, and new visual elements were added to `design/` in the same change.
+
+- **Engine availability wins over the prototype's always-tappable rows.** Rows map from `ActivityState` per `docs/engine/00` section 1 (SCHEDULED/SNOOZED -> `Next`, SKIPPED -> `Done` in the line colour with "Skipped"). A hero whose activity is still SCHEDULED (the focus block before its daytime slot, the reflection before evening - 60 min) keeps its card but its button is disabled.
+- **A completed day stops producing work.** Once the day is COMPLETE the hero is the day-done card regardless of the hour; after Day complete has been seen (`last_seen_day_complete`) it is the quiet card with no button.
+- **Day complete generalises to the real plan (P-01).** The ring draws one arc per row of the day with that row's skill colour and shows `{done}/{total}`; the prototype's full-day line is shown only when exercise, focus and reflection were all done, otherwise "Done today: ..." (with "Reflection skipped tonight" when it was).
+- **Practice prompts complete in place with a 5 s undo window**; the completion is committed after the window, so undo writes nothing. Completed rows are not clickable (prototype and screen spec), superseding detailed 017's "opens its result read-only".
+- **Added to both apps:** the notification rationale card on Rhythm and the weekly look-back card on the reflection (Days 7, 14, 21).
+- **Onboarding view model** is scoped to the Welcome back-stack entry (the route set is flat, ADR-0008) rather than a nested `OnboardingGraph`.
+
+## Verification gap
+
+The production screens were exercised on an emulator (Welcome -> Goals -> Rhythm with permission request -> First week -> Today, Day 1), but the side-by-side comparison against `design/` in light and dark has not been done for these screens. It stays open alongside 003's pending visual acceptance.

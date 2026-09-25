@@ -416,4 +416,24 @@
     <string name="t_reflect_short">Tres preguntas breves para cerrar el día.</string>
     <string name="t_reflect_why">Una mirada breve hacia atrás convierte la experiencia del día en una lección para mañana.</string>
     <string name="t_reflect_task">Responde a tres preguntas: qué salió bien, qué no y qué cambiarás mañana.</string>
+    <!-- Production additions (milestone 005): notification rationale and weekly look-back. -->
+    <string name="rhythm_notif_title">Los recordatorios necesitan tu permiso</string>
+    <string name="rhythm_notif_body">Itera envía un recordatorio por la mañana y otro por la noche. Nada más, y puedes desactivarlos después.</string>
+    <string name="reflection_week_title">Tu semana</string>
+    <string name="reflection_week_changes">Cambios que planeaste esta semana</string>
+    <plurals name="reflection_week_days">
+        <item quantity="one">%d día de entrenamiento</item>
+        <item quantity="many">%d días de entrenamiento</item>
+        <item quantity="other">%d días de entrenamiento</item>
+    </plurals>
+    <plurals name="reflection_week_techniques">
+        <item quantity="one">%d técnica practicada</item>
+        <item quantity="many">%d técnicas practicadas</item>
+        <item quantity="other">%d técnicas practicadas</item>
+    </plurals>
+    <plurals name="reflection_week_focus">
+        <item quantity="one">%d minuto de enfoque</item>
+        <item quantity="many">%d minutos de enfoque</item>
+        <item quantity="other">%d minutos de enfoque</item>
+    </plurals>
 </resources>

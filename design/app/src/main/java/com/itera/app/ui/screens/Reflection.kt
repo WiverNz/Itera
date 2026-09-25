@@ -103,6 +103,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
             Pill(stringResource(R.string.minutes_short, 2), c.surface2, c.ink2)
         }
         Text(stringResource(R.string.reflection_title), style = Itera.type.display, color = c.ink)
+        if (vm.programDay % 7 == 0) WeeklyLookBack(vm, accent)
 
         questions.forEachIndexed { i, q ->
             val state = when {
@@ -140,6 +141,27 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
                     }
                 }
             }
+        }
+    }
+}
+
+/** Production addition: on Days 7, 14, 21 the reflection opens with a summary of the week. No extra tap. */
+@Composable
+private fun WeeklyLookBack(vm: AppViewModel, accent: androidx.compose.ui.graphics.Color) {
+    val c = Itera.colors
+    val since = java.time.LocalDate.now().minusDays(6)
+    val week = vm.log.filter { !it.date.isBefore(since) }
+    val days = week.map { it.date }.distinct().size
+    val techniques = week.map { it.technique }.filter { it != Technique.DailyReflection }.distinct().size
+    val focus = week.count { it.technique == Technique.Pomodoro } * 25 + week.count { it.technique == Technique.DeepWork } * 50
+    IteraCard(gap = 8.dp) {
+        Eyebrow(stringResource(R.string.reflection_week_title), accent)
+        Text(androidx.compose.ui.res.pluralStringResource(R.plurals.reflection_week_days, days, days), style = Itera.type.body, fontWeight = FontWeight.SemiBold, color = c.ink)
+        Text(androidx.compose.ui.res.pluralStringResource(R.plurals.reflection_week_techniques, techniques, techniques), style = Itera.type.bodySmall, color = c.ink2)
+        Text(androidx.compose.ui.res.pluralStringResource(R.plurals.reflection_week_focus, focus, focus), style = Itera.type.bodySmall, color = c.ink2)
+        if (vm.carriedChange.isNotBlank()) {
+            Text(stringResource(R.string.reflection_week_changes), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, modifier = Modifier.padding(top = 6.dp))
+            Text("“${vm.carriedChange}”", style = Itera.type.bodySmall, color = c.ink)
         }
     }
 }

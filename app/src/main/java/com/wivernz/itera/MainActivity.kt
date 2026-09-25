@@ -31,6 +31,7 @@ import com.wivernz.itera.core.designsystem.component.ErrorState
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.theme.IteraTheme
 import com.wivernz.itera.core.designsystem.theme.isDark
+import com.wivernz.itera.core.navigation.AppDestination
 import com.wivernz.itera.core.navigation.AppNavHost
 import com.wivernz.itera.core.navigation.RouteCodec
 import com.wivernz.itera.core.navigation.ShellViewModel
@@ -52,7 +53,12 @@ class MainActivity : AppCompatActivity() {
             val preferences = state.preferences
             if (preferences != null) {
                 IteraTheme(dark = preferences.theme.isDark()) {
-                    AppNavHost(preferences.onboardingCompleted, pending, shell::consumeDeepLink)
+                    AppNavHost(
+                        preferences.onboardingCompleted,
+                        pending,
+                        shell::consumeDeepLink,
+                        destination = { route, actions -> AppDestination(route, actions) }
+                    )
                 }
             } else if (state.failed) {
                 IteraTheme {

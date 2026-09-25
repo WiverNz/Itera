@@ -22,10 +22,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -130,10 +134,18 @@ fun AppNavHost(
             popEnterTransition = { if (reduced) EnterTransition.None else fadeIn() },
             popExitTransition = { if (reduced) ExitTransition.None else fadeOut() }
         ) {
-            composable<Welcome> { destination(Welcome, actions) }
-            composable<Goals> { destination(Goals, actions) }
-            composable<Rhythm> { destination(Rhythm, actions) }
-            composable<FirstWeek> { destination(FirstWeek, actions) }
+            composable<Welcome> { entry ->
+                OnboardingScope(nav, entry) { destination(Welcome, actions) }
+            }
+            composable<Goals> { entry ->
+                OnboardingScope(nav, entry) { destination(Goals, actions) }
+            }
+            composable<Rhythm> { entry ->
+                OnboardingScope(nav, entry) { destination(Rhythm, actions) }
+            }
+            composable<FirstWeek> { entry ->
+                OnboardingScope(nav, entry) { destination(FirstWeek, actions) }
+            }
             composable<Today> { destination(Today, actions) }
             composable<Train> { destination(Train, actions) }
             composable<Progress> { destination(Progress, actions) }
@@ -186,6 +198,21 @@ fun AppNavHost(
             }
         }
     }
+}
+
+/** The onboarding flow shares one view model, owned by the Welcome entry at the bottom of the flow. */
+val LocalOnboardingOwner = staticCompositionLocalOf<ViewModelStoreOwner?> { null }
+
+@Composable
+private fun OnboardingScope(
+    nav: NavHostController,
+    entry: NavBackStackEntry,
+    content: @Composable () -> Unit
+) {
+    val owner = remember(entry) {
+        runCatching { nav.getBackStackEntry<Welcome>() }.getOrNull() ?: entry
+    }
+    CompositionLocalProvider(LocalOnboardingOwner provides owner, content = content)
 }
 
 private fun NavHostController.switchTab(route: AppRoute) {
@@ -254,7 +281,7 @@ fun IteraBottomBar(current: AppRoute, onSelect: (AppRoute) -> Unit, modifier: Mo
 }
 
 @Composable
-private fun PlaceholderRoute(route: AppRoute, actions: NavigationActions) {
+internal fun PlaceholderRoute(route: AppRoute, actions: NavigationActions) {
     val name = route::class.simpleName.orEmpty()
     ScreenColumn(modifier = Modifier.testTag(name)) {
         if (route !in listOf(Welcome, Today, Train, Progress, You)) {

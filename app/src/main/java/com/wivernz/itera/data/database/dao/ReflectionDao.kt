@@ -14,7 +14,7 @@ interface ReflectionDao {
     fun observeForDay(id: Long): Flow<ReflectionEntity?>
 
     @Query(
-        "SELECT tomorrowChange FROM reflection_entry WHERE skipped = 0 AND tomorrowChange IS NOT NULL ORDER BY date DESC LIMIT 1"
+        "SELECT CASE WHEN skipped = 0 THEN tomorrowChange END FROM reflection_entry ORDER BY date DESC, id DESC LIMIT 1"
     )
     suspend fun latestIntent(): String?
 

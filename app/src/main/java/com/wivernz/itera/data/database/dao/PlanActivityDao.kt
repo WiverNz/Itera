@@ -21,6 +21,9 @@ abstract class PlanActivityDao {
     @Query("UPDATE plan_activity SET state = :state WHERE id = :id")
     abstract suspend fun updateState(id: Long, state: String)
 
+    @Query("SELECT draftPayload FROM plan_activity WHERE id = :id")
+    abstract suspend fun draft(id: Long): String?
+
     @Query(
         "UPDATE plan_activity SET draftPayload = :payload WHERE id = :id"
     )

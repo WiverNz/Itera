@@ -334,6 +334,7 @@ fun RhythmScreen(vm: AppViewModel, onBack: () -> Unit, onNext: () -> Unit) {
                 vm.eveningTime = vm.eveningTime.plusMinutes(30)
             }
         }
+        if (!notificationsGranted()) NotificationRationaleCard()
         Text(stringResource(R.string.rhythm_time_q), style = Itera.type.label, color = c.ink)
         Segmented(
             options = listOf(5 to stringResource(R.string.minutes_short, 5), 15 to stringResource(R.string.minutes_short, 15), 30 to stringResource(R.string.minutes_plus, 30)),
@@ -341,6 +342,29 @@ fun RhythmScreen(vm: AppViewModel, onBack: () -> Unit, onNext: () -> Unit) {
             onSelect = { vm.dailyMinutes = it },
         )
         Text(stringResource(R.string.rhythm_time_hint), style = Itera.type.bodySmall, color = c.ink2)
+    }
+}
+
+/** Production addition: Android 13+ asks for POST_NOTIFICATIONS on Continue; this card explains why first. */
+@Composable
+private fun notificationsGranted(): Boolean {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU ||
+        androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) ==
+        android.content.pm.PackageManager.PERMISSION_GRANTED
+}
+
+@Composable
+fun NotificationRationaleCard() {
+    val c = Itera.colors
+    IteraCard(color = c.surface2, padding = androidx.compose.foundation.layout.PaddingValues(16.dp), gap = 6.dp) {
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Icon(IteraIcons.Bell, null, tint = c.ink, modifier = Modifier.size(18.dp).padding(top = 1.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(stringResource(R.string.rhythm_notif_title), style = Itera.type.body, fontWeight = FontWeight.SemiBold, color = c.ink)
+                Text(stringResource(R.string.rhythm_notif_body), style = Itera.type.bodySmall, color = c.ink2)
+            }
+        }
     }
 }
 

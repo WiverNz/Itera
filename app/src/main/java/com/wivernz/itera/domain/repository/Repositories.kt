@@ -28,6 +28,9 @@ interface TrainingPlanRepository : TrainingPlanStorage {
     override fun observeDay(id: Long): Flow<TrainingDay?>
     override suspend fun updateActivityState(activityId: Long, state: ActivityState): Unit
     override suspend fun saveDraft(activityId: Long, draft: ActivityResult): Unit
+
+    /** The autosaved draft of an open activity, if any. */
+    suspend fun draft(activityId: Long): ActivityResult?
     override suspend fun snoozeActivity(activityId: Long, until: Instant): Unit
 
     /** Sets SKIPPED and clears the draft. */
@@ -66,7 +69,7 @@ interface TrainingPlanRepository : TrainingPlanStorage {
     /** Program day of the training day holding [activityId]; null if it no longer exists. */
     suspend fun programDayOfActivity(activityId: Long): Int?
 
-    /** The most recent "What will you change tomorrow?" answer. */
+    /** The latest reflection's "What will you change tomorrow?" answer; null when that reflection was skipped. */
     suspend fun latestIntent(): String?
     suspend fun saveReflection(
         dayId: Long,
