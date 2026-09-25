@@ -121,7 +121,7 @@ adb shell am instrument -w -e class com.wivernz.itera.LocaleSmokeTest -e phase r
 
 Without a `phase` argument, `connectedDebugAndroidTest` performs a self-contained locale round trip. The `select` phase calls `AppCompatDelegate.setApplicationLocales` and checks the translated name; `assert` verifies it after process death; `restore` returns to the system language.
 
-CI runs on every push and pull request. Reports are uploaded even when checks fail. Custom Compose lint checks are build-only tooling described in [ADR-0020](docs/architecture/adr/0020-bootstrap-lint.md).
+CI runs on branch pushes and pull requests, uploads a debug APK, and retains reports even when checks fail. Windows version/release scripts and signed tag builds are documented in [scripts/README.md](scripts/README.md). Pushed vX.Y.Z tags run the checks and create a draft GitHub Release with signed APK/AAB assets. Custom Compose lint checks are build-only tooling described in [ADR-0020](docs/architecture/adr/0020-bootstrap-lint.md).
 
 ### Side by side
 

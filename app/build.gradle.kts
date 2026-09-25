@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -7,6 +9,40 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.kover)
     alias(libs.plugins.roborazzi)
+}
+
+val appVersion = Properties().apply {
+    load(
+        providers.fileContents(
+            rootProject.layout.projectDirectory.file("version.properties")
+        ).asText.get().reader()
+    )
+}
+val appVersionName = appVersion.getProperty("versionName")
+val appVersionCode = appVersion.getProperty("versionCode")?.toIntOrNull()
+require(
+    appVersionName != null &&
+        Regex("(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)").matches(appVersionName)
+) {
+    "version.properties must contain a stable versionName (X.Y.Z)"
+}
+require(appVersionCode != null && appVersionCode in 1..2100000000) {
+    "version.properties must contain versionCode in 1..2100000000"
+}
+val signingEnvironment = listOf(
+    "ITERA_KEYSTORE_PATH",
+    "ITERA_STORE_PASSWORD",
+    "ITERA_KEY_ALIAS",
+    "ITERA_KEY_PASSWORD"
+).associateWith { providers.environmentVariable(it).orNull }
+val hasReleaseSigning = signingEnvironment.values.all { !it.isNullOrBlank() }
+require(signingEnvironment.values.all { it.isNullOrBlank() } || hasReleaseSigning) {
+    "Provide all four ITERA signing environment variables or none"
+}
+require(
+    providers.environmentVariable("ITERA_REQUIRE_SIGNING").orNull != "true" || hasReleaseSigning
+) {
+    "Release signing credentials are required"
 }
 
 android {
@@ -19,14 +55,26 @@ android {
         applicationId = "com.wivernz.itera"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = rootProject.file(signingEnvironment.getValue("ITERA_KEYSTORE_PATH")!!)
+                storePassword = signingEnvironment.getValue("ITERA_STORE_PASSWORD")
+                keyAlias = signingEnvironment.getValue("ITERA_KEY_ALIAS")
+                keyPassword = signingEnvironment.getValue("ITERA_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (hasReleaseSigning) signingConfig = signingConfigs.getByName("release")
             optimization {
                 enable = false
             }

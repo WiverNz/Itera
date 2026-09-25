@@ -1,10 +1,21 @@
 name: Android
 on:
   push:
+    branches: ['**']
   pull_request:
+  workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
 jobs:
+  scripts:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/tests/test_release.py
   build:
     runs-on: ubuntu-latest
     steps:
@@ -15,19 +26,20 @@ jobs:
           java-version: '25'
       - uses: android-actions/setup-android@v3
         with:
-          # Avoid the action's default legacy tools package, which is no longer available.
           packages: platform-tools
       - run: sdkmanager "platforms;android-37.0" "build-tools;36.0.0"
       - uses: gradle/actions/setup-gradle@v4
       - run: bash ./gradlew -p buildSrc --no-daemon test
-      - run: bash ./gradlew --no-daemon spotlessCheck
-      - run: bash ./gradlew --no-daemon lintDebug
-      - run: bash ./gradlew --no-daemon testDebugUnitTest
-      - run: bash ./gradlew --no-daemon verifyRoborazziDebug
-      - run: bash ./gradlew --no-daemon koverVerify
-      - run: bash ./gradlew --no-daemon assembleDebug
+      - run: bash ./gradlew --no-daemon spotlessCheck lintDebug testDebugUnitTest verifyRoborazziDebug koverVerify assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Itera-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: reports
-          path: app/build/reports/**
+          path: |
+            app/build/reports/**
+            buildSrc/build/reports/**

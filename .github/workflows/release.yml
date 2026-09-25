@@ -1,0 +1,107 @@
+name: Android release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate tag against committed version
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: .\scripts\version.ps1 -Tag $env:RELEASE_TAG
+  checks:
+    needs: validate
+    uses: ./.github/workflows/android.yml
+  release:
+    needs: checks
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - run: sdkmanager "platforms;android-37.0" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
+      - name: Build signed APK and AAB
+        env:
+          ITERA_KEYSTORE_BASE64: ${{ secrets.ITERA_KEYSTORE_BASE64 }}
+          ITERA_STORE_PASSWORD: ${{ secrets.ITERA_STORE_PASSWORD }}
+          ITERA_KEY_ALIAS: ${{ secrets.ITERA_KEY_ALIAS }}
+          ITERA_KEY_PASSWORD: ${{ secrets.ITERA_KEY_PASSWORD }}
+          ITERA_REQUIRE_SIGNING: 'true'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          foreach ($name in 'ITERA_KEYSTORE_BASE64', 'ITERA_STORE_PASSWORD', 'ITERA_KEY_ALIAS', 'ITERA_KEY_PASSWORD') {
+            if (![Environment]::GetEnvironmentVariable($name)) { throw "Missing signing secret: $name" }
+          }
+          $env:ITERA_KEYSTORE_PATH = Join-Path $env:RUNNER_TEMP 'itera-release.jks'
+          try {
+            [IO.File]::WriteAllBytes($env:ITERA_KEYSTORE_PATH, [Convert]::FromBase64String($env:ITERA_KEYSTORE_BASE64))
+            .\gradlew.bat --no-daemon --no-configuration-cache assembleRelease bundleRelease lintRelease
+            if ($LASTEXITCODE -ne 0) { throw 'Signed release build failed.' }
+            & "$env:ANDROID_HOME\build-tools\36.0.0\apksigner.bat" verify --verbose app/build/outputs/apk/release/app-release.apk
+            if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
+            $signature = & "$env:JAVA_HOME\bin\jarsigner.exe" -verify app/build/outputs/bundle/release/app-release.aab
+            if ($LASTEXITCODE -ne 0 -or ($signature -join ' ') -notmatch 'jar verified\.') {
+              throw 'AAB signature verification failed.'
+            }
+          } finally {
+            if (Test-Path -LiteralPath $env:ITERA_KEYSTORE_PATH) {
+              Remove-Item -LiteralPath $env:ITERA_KEYSTORE_PATH -Force
+            }
+          }
+      - name: Package release assets
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          $version = .\scripts\version.ps1 -Tag $env:RELEASE_TAG
+          New-Item -ItemType Directory -Path release -Force | Out-Null
+          Copy-Item app/build/outputs/apk/release/app-release.apk "release/Itera-$($version.Tag).apk"
+          Copy-Item app/build/outputs/bundle/release/app-release.aab "release/Itera-$($version.Tag).aab"
+          Compress-Archive -Path app/schemas -DestinationPath "release/Itera-$($version.Tag)-schemas.zip"
+          Copy-Item version.properties release/version.properties
+          if (Test-Path app/build/outputs/mapping/release/mapping.txt) {
+            Copy-Item app/build/outputs/mapping/release/mapping.txt release/mapping.txt
+          }
+          $hashes = Get-ChildItem release -File | Sort-Object Name | ForEach-Object {
+            '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          }
+          $hashes | Set-Content release/SHA256SUMS.txt -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Itera-${{ github.ref_name }}
+          path: release/*
+          if-no-files-found: error
+      - name: Create draft GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          $assets = @(Get-ChildItem release -File | ForEach-Object FullName)
+          gh release create $env:RELEASE_TAG @assets --verify-tag --draft --title "Itera $env:RELEASE_TAG" --generate-notes
+          if ($LASTEXITCODE -ne 0) { throw 'Draft release creation failed. Build artifacts remain available in Actions.' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-reports
+          path: app/build/reports/**
