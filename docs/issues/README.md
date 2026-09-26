@@ -4,7 +4,7 @@ Eleven milestone issues cover the Itera MVP. Each milestone is small in text and
 
 The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed/). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
-## Current status (2026-09-24)
+## Current status (2026-09-26)
 
 This index is the implementation status entry point; each milestone owns its acceptance checklist and evidence.
 
@@ -13,9 +13,10 @@ This index is the implementation status entry point; each milestone owns its acc
 - **004: complete (2026-09-25).** Catalogue, engine and lifecycle are implemented with all required tests passing; see its decisions in `docs/00-source-of-truth.md`.
 - **005: implemented (2026-09-25).** Required tests pass; the prototype comparison in light and dark remains open with 003's visual acceptance. See [005](005-onboarding-and-daily-flow.md#verification-gap).
 - **006: implemented (2026-09-26).** Required tests pass; the prototype comparison in light and dark and the oldest-device timer check remain open. See [006](006-exercise-system.md#verification-gap).
-- **007-011: not started.**
+- **007: complete (2026-09-26).** Train, Library and Technique Detail use the real catalog, progress, history and exercise flows. Required tests, build, lint and formatting pass; prototype comparisons completed in light and dark. See [007](007-train-and-technique-library.md#reconciled-differences).
+- **008-011: not started.**
 
-Next implementation milestone: **007** when requested. Keep the remaining 003 visual verification open; readiness is not authorization to start another milestone.
+Next implementation milestone: **008** when requested. Keep the remaining 003, 005 and 006 verification open; readiness is not authorization to start another milestone.
 
 ## Index
 
@@ -27,7 +28,7 @@ Next implementation milestone: **007** when requested. Keep the remaining 003 vi
 | [004](004-content-and-training-engine.md) | Content & training engine - **complete** | 002 | 008-014 |
 | [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow - **implemented; visual comparison pending** | 003, 004 | 016, 017, 019, 020 |
 | [006](006-exercise-system.md) | Exercise system - **implemented; visual comparison pending** | 005 | 018, 021-027 |
-| [007](007-train-and-technique-library.md) | Train & technique library | 006 | 028-030 |
+| [007](007-train-and-technique-library.md) | Train & technique library - **complete** | 006 | 028-030 |
 | [008](008-progress-history-and-settings.md) | Progress, history & settings | 005 | 031, 032, 034, 035 |
 | [009](009-notifications-and-quality-passes.md) | Notifications & quality passes | 006, 007, 008 | 033, rest of 036, 037, 041 |
 | [010](010-test-hardening.md) | Test hardening | 009 | 039 |

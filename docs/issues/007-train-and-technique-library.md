@@ -27,10 +27,16 @@ The user can see the curriculum they are on and browse every technique: the Trai
 
 ## Acceptance criteria
 
-- [ ] Train shows the correct week and node states; today's node opens the day's exercise; future nodes are not tappable and are announced as locked; the review card appears only when a review is due.
-- [ ] The library lists all 14 techniques from Day 1, with the documented locked styling, mastery strip and Day-9 sort order; the filter is sticky, single-select, default All.
-- [ ] Detail renders the full explanation for locked and unlocked techniques; "Practice now" creates one `MANUAL` activity and opens the runner (skipping the intro) or the pre-timer sheet.
-- [ ] New strings exist in en/ru/de/es; each screen was compared against the prototype in light and dark, with only deviations recorded.
+- [x] Train shows the correct week and node states; today's node opens the day's exercise; future nodes are not tappable and are announced as locked; the review card appears only when a review is due.
+- [x] The library lists all 14 techniques from Day 1, with the documented locked styling, mastery strip and Day-9 sort order; the filter is sticky, single-select, default All.
+- [x] Detail renders the full explanation for locked and unlocked techniques; "Practice now" creates one `MANUAL` activity and opens the runner (skipping the intro) or the pre-timer sheet.
+- [x] New strings exist in en/ru/de/es; each screen was compared against the prototype in light and dark, with only deviations recorded.
+
+## Reconciled differences
+
+- Follow the current prototype's four mastery dots and unlock-day ordering, rather than the older artboard's six segments and mastery-first ordering. Daily reflection makes two techniques unlocked on Day 1.
+- Updated the prototype alongside production for sticky single-select filters, locked semantics and detail controls, factual mastery counts, actual timer duration, and the header after Day 14. Production history summaries use saved exercise results rather than demo content.
+- Past nodes intentionally retain the History placeholder until 008. See the implementation decisions in `docs/00-source-of-truth.md`.
 
 ## Required tests
 

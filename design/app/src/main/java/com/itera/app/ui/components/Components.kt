@@ -234,7 +234,7 @@ fun TechniqueToken(technique: Technique, size: Dp = 48.dp, radius: Dp = size * 0
 // ---------------------------------------------------------------- chips & segmented
 
 @Composable
-fun ChoiceChip(text: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun ChoiceChip(text: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier, singleSelect: Boolean = false) {
     val c = Itera.colors
     Box(
         modifier
@@ -242,7 +242,8 @@ fun ChoiceChip(text: String, selected: Boolean, onClick: () -> Unit, modifier: M
             .clip(CircleShape)
             .border(BorderStroke(1.5.dp, if (selected) c.ink else c.line), CircleShape)
             .background(if (selected) c.ink else Color.Transparent)
-            .toggleable(value = selected, role = Role.Checkbox, onValueChange = { onClick() })
+            .then(if (singleSelect) Modifier.selectable(selected, role = Role.RadioButton, onClick = onClick)
+                else Modifier.toggleable(value = selected, role = Role.Checkbox, onValueChange = { onClick() }))
             .padding(horizontal = 14.dp, vertical = 9.dp),
         contentAlignment = Alignment.Center,
     ) {

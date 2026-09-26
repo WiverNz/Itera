@@ -45,4 +45,39 @@
 <string name="activity_reflection">%1$s · 2 Min.</string>
 <string name="activity_focus_generic">%1$d Minuten Fokus</string>
 <string name="activity_combination_title">Kombiniere deine Techniken</string>
+    <string name="train_title">Training</string>
+    <string name="train_sub">Dein Programm – eine Technik nach der anderen.</string>
+    <string name="train_week">Woche %1$d · %2$s</string>
+    <string name="week_foundations">Grundlagen</string>
+    <string name="week_depth">Vertiefung</string>
+    <string name="week_combine">Kombinieren</string>
+    <string name="train_day_of">Tag %1$d von %2$d</string>
+    <string name="train_first_combo">Erste Kombination</string>
+    <string name="train_library">Bibliothek</string>
+    <string name="train_library_sub">Alle %1$d Techniken · %2$d freigeschaltet</string>
+    <string name="library_title">Bibliothek</string>
+    <string name="library_sub">Alle 14 Techniken. Dein Programm schaltet sie der Reihe nach frei – reinschauen kannst du in jede.</string>
+    <string name="filter_all">Alle</string>
+    <string name="detail_why">Warum es hilft</string>
+    <string name="detail_level">Dein Level</string>
+    <string name="detail_level_hint">Übe an verschiedenen Tagen, um aufzusteigen. Nutze sie an einem Kombinationstag, um „Verinnerlicht“ zu erreichen.</string>
+    <string name="detail_practice">Jetzt üben</string>
+    <string name="detail_history">Deine Praxis</string>
+    <string name="detail_no_history">Noch keine Praxis.</string>
+    <string name="detail_related">Passt gut zu</string>
+    <string name="detail_locked">Wird an Tag %d deines Programms freigeschaltet.</string>
+    <string name="train_today_skill">Heute · %1$s</string>
+    <string name="train_locked">Gesperrt</string>
+    <string name="library_locked">%1$s, gesperrt, verfügbar ab Tag %2$d</string>
+    <string name="detail_practice_minutes">Jetzt üben · %1$d Min.</string>
+    <string name="detail_facts">%1$d Anwendungen an %2$d Tagen.</string>
+    <string name="detail_explained">Erklärt: %1$s</string>
+    <string name="detail_habit_summary">Nach %1$s werde ich %2$s.</string>
+    <string name="detail_note">„%1$s“</string>
+    <plurals name="train_more_reviews"><item quantity="one">+%d weitere</item><item quantity="other">+%d weitere</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%d Fokusminute</item><item quantity="other">%d Fokusminuten</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">%d Aufgabe sortiert</item><item quantity="other">%d Aufgaben sortiert</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">%d Risiko betrachtet</item><item quantity="other">%d Risiken betrachtet</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">%d Schritt abgeschlossen</item><item quantity="other">%d Schritte abgeschlossen</item></plurals>
+    <plurals name="detail_items"><item quantity="one">%d Aufgabe erledigt</item><item quantity="other">%d Aufgaben erledigt</item></plurals>
 </resources>

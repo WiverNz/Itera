@@ -285,6 +285,7 @@ fun ChoiceChip(
     text: String,
     selected: Boolean,
     onClick: () -> Unit,
+    singleSelect: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val c = Itera.colors
@@ -294,7 +295,15 @@ fun ChoiceChip(
             .clip(CircleShape)
             .border(BorderStroke(1.5.dp, if (selected) c.ink else c.line), CircleShape)
             .background(if (selected) c.ink else Color.Transparent)
-            .toggleable(value = selected, role = Role.Checkbox, onValueChange = { onClick() })
+            .then(
+                if (singleSelect) {
+                    Modifier.selectable(selected, role = Role.RadioButton, onClick = onClick)
+                } else {
+                    Modifier.toggleable(value = selected, role = Role.Checkbox, onValueChange = {
+                        onClick()
+                    })
+                }
+            )
             .padding(horizontal = 14.dp, vertical = 9.dp),
         contentAlignment = Alignment.Center
     ) {

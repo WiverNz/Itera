@@ -111,6 +111,7 @@ interface ReviewRepository : ReviewStorage {
 }
 
 interface ProgressRepository : ProgressStorage {
+    fun observeRecentPractice(id: TechniqueId): Flow<List<HistoryEntry>>
     fun observeTechniqueFacts(): Flow<List<TechniqueFacts>>
     suspend fun techniqueFacts(): List<TechniqueFacts>
 

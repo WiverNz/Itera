@@ -45,4 +45,39 @@
 <string name="activity_reflection">%1$s · 2 мин</string>
 <string name="activity_focus_generic">Фокус-сессия на %1$d мин</string>
 <string name="activity_combination_title">Объедините техники</string>
+    <string name="train_title">Тренировки</string>
+    <string name="train_sub">Твоя программа — по одной технике за раз.</string>
+    <string name="train_week">Неделя %1$d · %2$s</string>
+    <string name="week_foundations">Основы</string>
+    <string name="week_depth">Глубина</string>
+    <string name="week_combine">Комбинации</string>
+    <string name="train_day_of">День %1$d из %2$d</string>
+    <string name="train_first_combo">Первая комбинация</string>
+    <string name="train_library">Библиотека</string>
+    <string name="train_library_sub">Всего техник: %1$d · открыто: %2$d</string>
+    <string name="library_title">Библиотека</string>
+    <string name="library_sub">Все 14 техник. Программа открывает их по порядку, но заглянуть можно в любую.</string>
+    <string name="filter_all">Все</string>
+    <string name="detail_why">Зачем это нужно</string>
+    <string name="detail_level">Твой уровень</string>
+    <string name="detail_level_hint">Практикуй в разные дни, чтобы расти. Используй в день комбинаций, чтобы дойти до «Интеграции».</string>
+    <string name="detail_practice">Практиковать сейчас</string>
+    <string name="detail_history">Твоя практика</string>
+    <string name="detail_no_history">Практики пока не было.</string>
+    <string name="detail_related">Хорошо сочетается с</string>
+    <string name="detail_locked">Откроется на %d-й день программы.</string>
+    <string name="train_today_skill">Сегодня · %1$s</string>
+    <string name="train_locked">Недоступно</string>
+    <string name="library_locked">%1$s, недоступно, откроется в день %2$d</string>
+    <string name="detail_practice_minutes">Практиковать · %1$d мин</string>
+    <string name="detail_facts">Практик: %1$d. Дней: %2$d.</string>
+    <string name="detail_explained">Объяснение: %1$s</string>
+    <string name="detail_habit_summary">После %1$s я буду %2$s.</string>
+    <string name="detail_note">«%1$s»</string>
+    <plurals name="train_more_reviews"><item quantity="one">Ещё %d</item><item quantity="few">Ещё %d</item><item quantity="many">Ещё %d</item><item quantity="other">Ещё %d</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%d минута фокуса</item><item quantity="few">%d минуты фокуса</item><item quantity="many">%d минут фокуса</item><item quantity="other">%d минуты фокуса</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Распределена %d задача</item><item quantity="few">Распределены %d задачи</item><item quantity="many">Распределено %d задач</item><item quantity="other">Распределено %d задачи</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Рассмотрен %d риск</item><item quantity="few">Рассмотрены %d риска</item><item quantity="many">Рассмотрено %d рисков</item><item quantity="other">Рассмотрено %d риска</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Выполнен %d шаг</item><item quantity="few">Выполнены %d шага</item><item quantity="many">Выполнено %d шагов</item><item quantity="other">Выполнено %d шага</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Выполнена %d задача</item><item quantity="few">Выполнены %d задачи</item><item quantity="many">Выполнено %d задач</item><item quantity="other">Выполнено %d задачи</item></plurals>
 </resources>

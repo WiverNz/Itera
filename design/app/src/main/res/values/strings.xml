@@ -450,4 +450,31 @@
         <item quantity="one">%d minute of focus</item>
         <item quantity="other">%d minutes of focus</item>
     </plurals>
+
+    <string name="train_today_skill">Today · %1$s</string>
+    <string name="train_locked">Locked</string>
+    <string name="library_locked">%1$s, locked, unlocks on day %2$d</string>
+    <string name="detail_practice_minutes">Practice now · %1$d min</string>
+    <string name="detail_facts">%1$d uses on %2$d days.</string>
+    <string name="detail_explained">Explained %1$s</string>
+    <string name="detail_habit_summary">After %1$s, I will %2$s.</string>
+    <string name="detail_note">“%1$s”</string>
+    <plurals name="train_more_reviews"><item quantity="one">+%d more</item><item quantity="other">+%d more</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%d focus minute</item><item quantity="other">%d focus minutes</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Sorted %d task</item><item quantity="other">Sorted %d tasks</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Considered %d risk</item><item quantity="other">Considered %d risks</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Completed %d step</item><item quantity="other">Completed %d steps</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Completed %d task</item><item quantity="other">Completed %d tasks</item></plurals>
+
+<string name="level_hint_applied_span">Keep using it across two weeks to reach %s.</string>
+<string name="level_hint_integrated">Use it on a combination day to reach %s.</string>
+<string name="level_hint_top">You use it together with other techniques.</string>
+<plurals name="level_hint_days">
+        <item quantity="one">Practice it on %1$d more day to reach %2$s.</item>
+        <item quantity="other">Practice it on %1$d more days to reach %2$s.</item>
+    </plurals>
+<plurals name="level_hint_uses">
+        <item quantity="one">Use it %1$d more time, across two weeks, to reach %2$s.</item>
+        <item quantity="other">Use it %1$d more times, across two weeks, to reach %2$s.</item>
+    </plurals>
 </resources>

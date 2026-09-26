@@ -208,6 +208,14 @@ class ExerciseRunnerViewModel @Inject constructor(
 
     // ------------------------------------------------------------------ run (template body)
 
+    /** A direct Library run has no intro to start it. Keep this idempotent across recomposition. */
+    fun enterRun() {
+        if (mutable.value.loading || mutable.value.missing) return
+        viewModelScope.launch {
+            ensureStarted().onFailure { mutable.update { it.copy(failed = true) } }
+        }
+    }
+
     fun setText(key: String, text: String) = edit(key, BlockValue.Text(capped(text)))
 
     fun setChoiceOption(key: String, index: Int, text: String) {

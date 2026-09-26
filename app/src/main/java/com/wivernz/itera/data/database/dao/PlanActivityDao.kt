@@ -10,6 +10,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class PlanActivityDao {
     @Query(
+        "SELECT * FROM plan_activity WHERE techniqueId = :techniqueId AND state = 'COMPLETED' ORDER BY completedAt DESC, id DESC LIMIT 5"
+    )
+    abstract fun observeRecentPractice(techniqueId: String): Flow<List<PlanActivityEntity>>
+
+    @Query(
         "SELECT * FROM plan_activity WHERE trainingDayId = :dayId ORDER BY orderIndex, id"
     )
     abstract fun observeForDay(dayId: Long): Flow<List<PlanActivityEntity>>

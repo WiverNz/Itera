@@ -1,5 +1,17 @@
 package com.itera.app.ui.screens
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -25,6 +37,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -84,13 +98,14 @@ fun TrainScreen(
         Text(stringResource(R.string.train_title), style = Itera.type.display, color = c.ink)
         Text(stringResource(R.string.train_sub), style = Itera.type.body, color = c.ink2)
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            SectionTitle(stringResource(R.string.train_week, week, weekName), stringResource(R.string.train_day_of, vm.programDay, Program.COMBINATION_DAY))
-            ProgressBar(vm.programDay.toFloat() / Program.COMBINATION_DAY, c.ink)
+            SectionTitle(stringResource(R.string.train_week, week, weekName), if (vm.programDay <= 14) stringResource(R.string.train_day_of, vm.programDay, Program.COMBINATION_DAY) else stringResource(R.string.day_n, vm.programDay))
+            if (vm.programDay <= 14) ProgressBar(vm.programDay.toFloat() / Program.COMBINATION_DAY, c.ink)
         }
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             for (day in firstDay until firstDay + Program.WEEK_LENGTH) {
                 val t = Program.techniqueFor(day)
                 val label = stringResource(R.string.day_n, day)
+                val lockedLabel = stringResource(R.string.train_locked)
                 when {
                     day == vm.programDay -> Row(
                         Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface)
@@ -107,7 +122,7 @@ fun TrainScreen(
                     }
                     else -> Row(
                         Modifier.fillMaxWidth().heightIn(min = 44.dp)
-                            .then(if (t != null && day < vm.programDay) Modifier.clickable(role = Role.Button) { onTechnique(t) } else Modifier)
+                            .then(if (t != null && day < vm.programDay) Modifier.clickable(role = Role.Button) { onTechnique(t) } else Modifier.semantics(mergeDescendants = true) { stateDescription = lockedLabel; disabled() })
                             .padding(horizontal = 14.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
                     ) {
@@ -165,6 +180,7 @@ fun LinkRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String
 
 // ------------------------------------------------------------------ library
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun LibraryScreen(vm: AppViewModel, onBack: () -> Unit, onTechnique: (Technique) -> Unit) {
     val c = Itera.colors
@@ -172,41 +188,44 @@ fun LibraryScreen(vm: AppViewModel, onBack: () -> Unit, onTechnique: (Technique)
     val list = Technique.entries
         .filter { filter == null || it.skill == filter }
         .sortedWith(compareBy<Technique>({ !vm.isUnlocked(it) }, { Program.unlockDay(it) ?: 0 }))
-    ScreenColumn(gap = 18.dp) {
-        TopBar("", onBack, IteraIcons.Back)
-        Text(stringResource(R.string.library_title), style = Itera.type.display, color = c.ink)
-        Text(stringResource(R.string.library_sub), style = Itera.type.body, color = c.ink2)
-        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            ChoiceChip(stringResource(R.string.filter_all), filter == null, onClick = { filter = null })
-            Skill.entries.forEach { s -> ChoiceChip(stringResource(s.title), filter == s, onClick = { filter = s }) }
+    LazyColumn(Modifier.fillMaxSize().background(c.bg).windowInsetsPadding(WindowInsets.safeDrawing), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 24.dp)) {
+        item { TopBar("", onBack, IteraIcons.Back); Spacer(Modifier.height(18.dp)) }
+        item { Text(stringResource(R.string.library_title), style = Itera.type.display, color = c.ink); Spacer(Modifier.height(18.dp)) }
+        item { Text(stringResource(R.string.library_sub), style = Itera.type.body, color = c.ink2); Spacer(Modifier.height(18.dp)) }
+        stickyHeader { Row(Modifier.fillMaxWidth().background(c.bg).horizontalScroll(rememberScrollState()).padding(bottom = 18.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            ChoiceChip(stringResource(R.string.filter_all), filter == null, onClick = { filter = null }, singleSelect = true)
+            Skill.entries.forEach { s -> ChoiceChip(stringResource(s.title), filter == s, onClick = { filter = s }, singleSelect = true) }
         }
-        Column {
-            list.forEach { t ->
+        }
+        items(list, key = { it.name }) { t ->
                 val locked = !vm.isUnlocked(t)
                 val level = vm.masteryOf(t)
+                val announcement = if (locked) stringResource(R.string.library_locked, stringResource(t.title), Program.unlockDay(t) ?: 1) else null
                 Row(
                     Modifier.fillMaxWidth().heightIn(min = 72.dp).clickable(role = Role.Button) { onTechnique(t) }
-                        .alpha(if (locked) 0.62f else 1f).padding(vertical = 10.dp),
+                        .semantics(mergeDescendants = true) { if (announcement != null) contentDescription = announcement }.alpha(if (locked) 0.62f else 1f).padding(vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
                     TechniqueToken(t, 44.dp)
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Text(stringResource(t.title), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink)
                         Text(stringResource(t.short), style = Itera.type.caption, color = c.ink2)
+                        if (LocalDensity.current.fontScale > 1.6f) LibraryState(t, locked, level)
                     }
-                    if (locked) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Icon(IteraIcons.Lock, null, tint = c.ink2, modifier = Modifier.size(14.dp))
-                            Text(stringResource(R.string.day_n, Program.unlockDay(t) ?: 1), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2)
-                        }
-                    } else {
-                        MasteryDots(level, t.skill.colors(c.isDark).content)
-                    }
+                    if (LocalDensity.current.fontScale <= 1.6f) LibraryState(t, locked, level)
                 }
                 Divider()
-            }
         }
     }
+}
+
+@Composable
+private fun LibraryState(t: Technique, locked: Boolean, level: Mastery?) {
+    val c = Itera.colors
+    if (locked) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        Icon(IteraIcons.Lock, null, tint = c.ink2, modifier = Modifier.size(14.dp))
+        Text(stringResource(R.string.day_n, Program.unlockDay(t) ?: 1), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2)
+    } else MasteryDots(level, t.skill.colors(c.isDark).content)
 }
 
 @Composable
@@ -254,18 +273,28 @@ fun TechniqueDetailScreen(
                 Text(stringResource(R.string.detail_level), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))
                 Pill(level?.let { stringResource(it.title) } ?: stringResource(R.string.not_started), sc.container, sc.content)
             }
-            MasteryLadder(level, sc.content)
+            MasteryLadder(if (locked) null else level, sc.content)
+            if (!locked) Text(stringResource(R.string.detail_facts, vm.log.count { it.technique == technique }, vm.log.filter { it.technique == technique }.map { it.date }.distinct().size), style = Itera.type.caption, color = c.ink2)
             Text(
-                if (locked) stringResource(R.string.detail_locked, Program.unlockDay(technique) ?: 1) else stringResource(R.string.detail_level_hint),
+                if (locked) stringResource(R.string.detail_locked, Program.unlockDay(technique) ?: 1) else when (level) {
+                    Mastery.Met -> pluralStringResource(R.plurals.level_hint_days, (3 - vm.log.filter { it.technique == technique }.map { it.date }.distinct().size).coerceAtLeast(0), (3 - vm.log.filter { it.technique == technique }.map { it.date }.distinct().size).coerceAtLeast(0), stringResource(Mastery.Practiced.title))
+                    Mastery.Practiced -> stringResource(R.string.level_hint_applied_span, stringResource(Mastery.Applied.title))
+                    Mastery.Applied -> stringResource(R.string.level_hint_integrated, stringResource(Mastery.Integrated.title))
+                    Mastery.Integrated -> stringResource(R.string.level_hint_top)
+                    null -> ""
+                },
                 style = Itera.type.caption, color = c.ink2,
             )
         }
         IteraButton(
-            stringResource(R.string.detail_practice) + " · " + stringResource(R.string.minutes_short, technique.minutes),
+            if (locked) stringResource(R.string.detail_locked, Program.unlockDay(technique) ?: 1)
+            else if (technique == Technique.Pomodoro || technique == Technique.DeepWork) stringResource(R.string.detail_practice_minutes, if (technique == Technique.Pomodoro) 25 else 50)
+            else stringResource(R.string.detail_practice),
             onPractice,
-            icon = IteraIcons.Play,
+            icon = if (locked) IteraIcons.Lock else IteraIcons.Play,
+            enabled = !locked,
         )
-        Column {
+        if (!locked) Column {
             Text(stringResource(R.string.detail_history), style = Itera.type.label, color = c.ink, modifier = Modifier.padding(bottom = 4.dp))
             if (history.isEmpty()) {
                 Text(stringResource(R.string.detail_no_history), style = Itera.type.bodySmall, color = c.ink2, modifier = Modifier.padding(vertical = 8.dp))
@@ -273,7 +302,10 @@ fun TechniqueDetailScreen(
             history.forEach { e ->
                 Row(Modifier.fillMaxWidth().padding(vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                     Text(e.date.format(dateFormat), style = Itera.type.bodySmall, color = c.ink2, modifier = Modifier.width(110.dp))
-                    Text(e.note.ifBlank { "—" }, style = Itera.type.bodySmall, color = c.ink, modifier = Modifier.weight(1f))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(e.technique.title), style = Itera.type.bodySmall, color = c.ink)
+                        if (e.note.isNotBlank()) Text(stringResource(R.string.detail_note, e.note), style = Itera.type.bodySmall, color = c.ink2)
+                    }
                 }
                 Divider()
             }

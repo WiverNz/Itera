@@ -45,4 +45,39 @@
 <string name="activity_reflection">%1$s · 2 min</string>
 <string name="activity_focus_generic">%1$d-minute focus session</string>
 <string name="activity_combination_title">Combine your techniques</string>
+    <string name="train_title">Train</string>
+    <string name="train_sub">Your program, one technique at a time.</string>
+    <string name="train_week">Week %1$d · %2$s</string>
+    <string name="week_foundations">Foundations</string>
+    <string name="week_depth">Depth</string>
+    <string name="week_combine">Combine</string>
+    <string name="train_day_of">Day %1$d of %2$d</string>
+    <string name="train_first_combo">First combination</string>
+    <string name="train_library">Library</string>
+    <string name="train_library_sub">All %1$d techniques · %2$d unlocked</string>
+    <string name="library_title">Library</string>
+    <string name="library_sub">All 14 techniques. Your program unlocks them in order — you can open any of them to peek.</string>
+    <string name="filter_all">All</string>
+    <string name="detail_why">Why it helps</string>
+    <string name="detail_level">Your level</string>
+    <string name="detail_level_hint">Keep practicing on different days to move up. Use it on a combination day to reach Integrated.</string>
+    <string name="detail_practice">Practice now</string>
+    <string name="detail_history">Your practice</string>
+    <string name="detail_no_history">No practice yet.</string>
+    <string name="detail_related">Works well with</string>
+    <string name="detail_locked">Unlocks on Day %d of your program.</string>
+    <string name="train_today_skill">Today · %1$s</string>
+    <string name="train_locked">Locked</string>
+    <string name="library_locked">%1$s, locked, unlocks on day %2$d</string>
+    <string name="detail_practice_minutes">Practice now · %1$d min</string>
+    <string name="detail_facts">%1$d uses on %2$d days.</string>
+    <string name="detail_explained">Explained %1$s</string>
+    <string name="detail_habit_summary">After %1$s, I will %2$s.</string>
+    <string name="detail_note">“%1$s”</string>
+    <plurals name="train_more_reviews"><item quantity="one">+%d more</item><item quantity="other">+%d more</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%d focus minute</item><item quantity="other">%d focus minutes</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Sorted %d task</item><item quantity="other">Sorted %d tasks</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Considered %d risk</item><item quantity="other">Considered %d risks</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Completed %d step</item><item quantity="other">Completed %d steps</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Completed %d task</item><item quantity="other">Completed %d tasks</item></plurals>
 </resources>

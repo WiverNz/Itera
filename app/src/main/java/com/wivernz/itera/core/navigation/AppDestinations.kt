@@ -3,6 +3,8 @@ package com.wivernz.itera.core.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import com.wivernz.itera.domain.model.ActivityState
+import com.wivernz.itera.domain.model.ExerciseType
 import com.wivernz.itera.feature.daycomplete.DayCompleteRoute
 import com.wivernz.itera.feature.exercise.combination.CombinationRoute
 import com.wivernz.itera.feature.exercise.eisenhower.EisenhowerRoute
@@ -25,6 +27,11 @@ import com.wivernz.itera.feature.onboarding.WelcomeRoute
 import com.wivernz.itera.feature.reflection.ReflectionRoute
 import com.wivernz.itera.feature.today.TodayRoute
 import com.wivernz.itera.feature.today.TodayTarget
+import com.wivernz.itera.feature.train.LibraryRoute
+import com.wivernz.itera.feature.train.TechniqueDetailEffect
+import com.wivernz.itera.feature.train.TechniqueDetailRoute
+import com.wivernz.itera.feature.train.TrainEffect
+import com.wivernz.itera.feature.train.TrainRoute
 
 /** Production destination content. Routes owned by later milestones keep the milestone 003 placeholder. */
 @Composable
@@ -39,6 +46,40 @@ fun AppDestination(route: AppRoute, actions: NavigationActions) {
         Rhythm -> RhythmRoute(onboardingViewModel(), actions.back) { actions.navigate(FirstWeek) }
         FirstWeek -> FirstWeekRoute(onboardingViewModel(), actions.back, actions.finishOnboarding)
         Today -> TodayRoute(hiltViewModel()) { actions.navigate(it.toRoute()) }
+        Train -> TrainRoute(hiltViewModel()) { effect ->
+            actions.navigate(
+                when (effect) {
+                    TrainEffect.Library -> Library
+                    TrainEffect.History -> History
+                    is TrainEffect.Exercise -> {
+                        val a = effect.activity
+                        when {
+                            a.state == ActivityState.COMPLETED -> ExerciseResult(
+                                a.id,
+                                a.techniqueId.value
+                            )
+                            a.exerciseType == ExerciseType.REVIEW -> Review(a.id)
+                            a.exerciseType == ExerciseType.COMBINATION -> Combination(a.id)
+                            else -> ExerciseIntro(a.id, a.techniqueId.value)
+                        }
+                    }
+                }
+            )
+        }
+        Library -> LibraryRoute(hiltViewModel(), actions.back) {
+            actions.navigate(TechniqueDetail(it.value))
+        }
+        is TechniqueDetail -> TechniqueDetailRoute(hiltViewModel(), actions.back) { effect ->
+            actions.navigate(
+                when (effect) {
+                    is TechniqueDetailEffect.Related -> TechniqueDetail(effect.id.value)
+                    is TechniqueDetailEffect.Practice -> effect.body.route(
+                        effect.activityId,
+                        effect.technique
+                    )
+                }
+            )
+        }
         is Reflection -> ReflectionRoute(
             hiltViewModel(),
             onClose = actions.back,

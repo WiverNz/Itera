@@ -30,6 +30,13 @@ class RoomProgressRepository @Inject constructor(
     private val codec: ResultPayloadCodec,
     @param:IoDispatcher private val io: CoroutineDispatcher
 ) : ProgressRepository {
+    override fun observeRecentPractice(id: TechniqueId) = dao.observeRecentPractice(id.value)
+        .map { rows ->
+            rows.map {
+                HistoryEntry(LocalDate.ofEpochDay(it.practiceDate), it.toDomain(copy, codec))
+            }
+        }
+
     override fun observeHistory(month: YearMonth) = dao.observeHistory(
         month.atDay(1)
             .toEpochDay(),

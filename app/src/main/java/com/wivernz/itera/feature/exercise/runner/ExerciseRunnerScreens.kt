@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,6 +64,7 @@ fun ExerciseIntroRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNa
 @Composable
 fun ExerciseRunRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNavigation) {
     val state by vm.state.collectAsStateWithLifecycle()
+    LaunchedEffect(state.loading) { if (!state.loading) vm.enterRun() }
     ObserveRunnerEffects(vm, navigation)
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
     ExerciseRunScreen(state, vm.templateActions(), onFinish = vm::finish, onLeave = vm::leave)
@@ -189,7 +191,9 @@ fun ExerciseRunScreen(
         modifier = Modifier.testTag("ExerciseRun"),
         bottom = {
             IteraButton(
-                stringResource(R.string.two_finish),
+                stringResource(
+                    if (state.blocks.isEmpty()) R.string.exercise_did_it else R.string.two_finish
+                ),
                 onFinish,
                 enabled = reason == null && !state.busy && !state.loading,
                 modifier = Modifier.testTag("RunPrimary").gated(reason)
@@ -210,6 +214,9 @@ fun ExerciseRunScreen(
             state.skill,
             actions
         )
+        if (state.blocks.isEmpty() && !state.loading) {
+            Text(state.task, style = Itera.type.headline, color = c.ink)
+        }
         if (state.failed) {
             Text(
                 stringResource(R.string.error_generic),

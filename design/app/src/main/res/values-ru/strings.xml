@@ -443,4 +443,35 @@
         <item quantity="many">%d минут фокуса</item>
         <item quantity="other">%d минуты фокуса</item>
     </plurals>
+
+    <string name="train_today_skill">Сегодня · %1$s</string>
+    <string name="train_locked">Недоступно</string>
+    <string name="library_locked">%1$s, недоступно, откроется в день %2$d</string>
+    <string name="detail_practice_minutes">Практиковать · %1$d мин</string>
+    <string name="detail_facts">Практик: %1$d. Дней: %2$d.</string>
+    <string name="detail_explained">Объяснение: %1$s</string>
+    <string name="detail_habit_summary">После %1$s я буду %2$s.</string>
+    <string name="detail_note">«%1$s»</string>
+    <plurals name="train_more_reviews"><item quantity="one">Ещё %d</item><item quantity="few">Ещё %d</item><item quantity="many">Ещё %d</item><item quantity="other">Ещё %d</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%d минута фокуса</item><item quantity="few">%d минуты фокуса</item><item quantity="many">%d минут фокуса</item><item quantity="other">%d минуты фокуса</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Распределена %d задача</item><item quantity="few">Распределены %d задачи</item><item quantity="many">Распределено %d задач</item><item quantity="other">Распределено %d задачи</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Рассмотрен %d риск</item><item quantity="few">Рассмотрены %d риска</item><item quantity="many">Рассмотрено %d рисков</item><item quantity="other">Рассмотрено %d риска</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Выполнен %d шаг</item><item quantity="few">Выполнены %d шага</item><item quantity="many">Выполнено %d шагов</item><item quantity="other">Выполнено %d шага</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Выполнена %d задача</item><item quantity="few">Выполнены %d задачи</item><item quantity="many">Выполнено %d задач</item><item quantity="other">Выполнено %d задачи</item></plurals>
+
+<string name="level_hint_applied_span">Продолжай применять её две недели, чтобы дойти до уровня «%s».</string>
+<string name="level_hint_integrated">Используй её в день комбинации, чтобы дойти до уровня «%s».</string>
+<string name="level_hint_top">Ты применяешь её вместе с другими техниками.</string>
+<plurals name="level_hint_days">
+        <item quantity="one">Практикуй её ещё %1$d день, чтобы дойти до уровня «%2$s».</item>
+        <item quantity="few">Практикуй её ещё %1$d дня, чтобы дойти до уровня «%2$s».</item>
+        <item quantity="many">Практикуй её ещё %1$d дней, чтобы дойти до уровня «%2$s».</item>
+        <item quantity="other">Практикуй её ещё %1$d дня, чтобы дойти до уровня «%2$s».</item>
+    </plurals>
+<plurals name="level_hint_uses">
+        <item quantity="one">Примени её ещё %1$d раз за две недели, чтобы дойти до уровня «%2$s».</item>
+        <item quantity="few">Примени её ещё %1$d раза за две недели, чтобы дойти до уровня «%2$s».</item>
+        <item quantity="many">Примени её ещё %1$d раз за две недели, чтобы дойти до уровня «%2$s».</item>
+        <item quantity="other">Примени её ещё %1$d раза за две недели, чтобы дойти до уровня «%2$s».</item>
+    </plurals>
 </resources>

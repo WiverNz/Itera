@@ -436,4 +436,31 @@
         <item quantity="many">%d minutos de enfoque</item>
         <item quantity="other">%d minutos de enfoque</item>
     </plurals>
+
+    <string name="train_today_skill">Hoy · %1$s</string>
+    <string name="train_locked">Bloqueado</string>
+    <string name="library_locked">%1$s, bloqueado, disponible el día %2$d</string>
+    <string name="detail_practice_minutes">Practicar ahora · %1$d min</string>
+    <string name="detail_facts">%1$d usos en %2$d días.</string>
+    <string name="detail_explained">Explicación de %1$s</string>
+    <string name="detail_habit_summary">Después de %1$s, haré %2$s.</string>
+    <string name="detail_note">«%1$s»</string>
+    <plurals name="train_more_reviews"><item quantity="one">+%d más</item><item quantity="other">+%d más</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%d minuto de concentración</item><item quantity="other">%d minutos de concentración</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">%d tarea ordenada</item><item quantity="other">%d tareas ordenadas</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">%d riesgo considerado</item><item quantity="other">%d riesgos considerados</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">%d paso completado</item><item quantity="other">%d pasos completados</item></plurals>
+    <plurals name="detail_items"><item quantity="one">%d tarea completada</item><item quantity="other">%d tareas completadas</item></plurals>
+
+<string name="level_hint_applied_span">Sigue usándola durante dos semanas para llegar a «%s».</string>
+<string name="level_hint_integrated">Úsala en un día de combinación para llegar a «%s».</string>
+<string name="level_hint_top">La usas junto con otras técnicas.</string>
+<plurals name="level_hint_days">
+        <item quantity="one">Practícala %1$d día más para llegar a «%2$s».</item>
+        <item quantity="other">Practícala %1$d días más para llegar a «%2$s».</item>
+    </plurals>
+<plurals name="level_hint_uses">
+        <item quantity="one">Úsala %1$d vez más en dos semanas para llegar a «%2$s».</item>
+        <item quantity="other">Úsala %1$d veces más en dos semanas para llegar a «%2$s».</item>
+    </plurals>
 </resources>
