@@ -1,6 +1,6 @@
 # 008 - Progress, history & settings
 
-**Depends on** 003, 004, 005 | **Blocks** 009
+**Depends on** 003, 004, 005 | **Blocks** 009, 012
 
 ## Goal
 

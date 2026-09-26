@@ -4,7 +4,7 @@ For an internal distribution build. Executed as part of milestone 011 (detailed 
 
 ## 1. Pre-flight
 
-- [ ] Every MVP issue (001-040) is merged and closed.
+- [ ] Every MVP milestone (001-012, with 012 before 009) meets its acceptance criteria and is closed by the user; historical detailed numbers are mapped in `docs/issues/README.md`.
 - [ ] `docs/prd/09-mvp-acceptance-criteria.md` passes in full, signed and dated.
 - [ ] `docs/testing/02-manual-qa-checklist.md` passes on two devices, signed and dated.
 - [ ] No open issue is labelled blocking.
@@ -30,7 +30,7 @@ Scheme: `versionName = MAJOR.MINOR.PATCH`, `versionCode` a monotonically increas
 - [ ] ProGuard/R8 keep rules exist for: Room entities, `kotlinx.serialization` serializers, Hilt-generated classes, `@HiltWorker` workers, and every `@Serializable` route type.
 - [ ] `isDebuggable = false`; no debug-only code path reachable.
 - [ ] The merged release manifest declares **no `INTERNET` permission** (`OfflineTest` asserts this, but check the merged output too).
-- [ ] Declared permissions are exactly: `POST_NOTIFICATIONS`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `RECEIVE_BOOT_COMPLETED`.
+- [ ] After milestone 012, declared permissions are exactly: `POST_NOTIFICATIONS`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `RECEIVE_BOOT_COMPLETED`, `RECORD_AUDIO`. Microphone is requested only on voice use, never onboarding; no microphone foreground service. ADR-0022 is the permission decision.
 - [ ] `FOREGROUND_SERVICE_SPECIAL_USE` carries its `PROPERTY_SPECIAL_USE_FGS_SUBTYPE` declaration.
 - [ ] Only `MainActivity` is exported.
 - [ ] `allowBackup` is true with `data_extraction_rules.xml` excluding the database and DataStore from cloud backup and including them in device transfer.
@@ -53,6 +53,7 @@ The release build, not a debug build, because R8 is a real source of failure.
 - [ ] A notification fires and deep-links correctly.
 - [ ] Journal export produces a valid file.
 - [ ] Both reset tiers work.
+- [ ] Voice dictation/commands pass in EN/RU/DE/ES on a capable device; absent service/model, API 26–30 and denied/revoked permission keep all manual paths usable. No generic platform fallback, background listening or transcript logging. Privacy copy describes on-device use and normal local draft storage accurately.
 - [ ] Cold start under 1.5 s on the reference device.
 - [ ] APK/AAB under 12 MB.
 

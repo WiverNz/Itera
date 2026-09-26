@@ -31,7 +31,7 @@ Where `design/` conflicts with a product rule, the product rule wins and the dis
 1. [`docs/00-source-of-truth.md`](docs/00-source-of-truth.md) - authoritative. Source priority, how to use the prototype, every resolved conflict, and the locked decisions. Read this before anything else.
 2. [`docs/ux/05-prototype-reference.md`](docs/ux/05-prototype-reference.md) - how to run `design/`, the screen-to-file map, and the porting checklist.
 3. [`docs/README.md`](docs/README.md) - the map of the full documentation set.
-4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) - 11 milestone issues.
+4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) - 12 milestone issues; planned voice milestone 012 follows 006/007/008 and precedes 009.
 5. [`docs/issues/README.md`](docs/issues/README.md) - the issue index, old-to-new mapping and verification scope.
 
 Also read [`AGENTS.md`](AGENTS.md), the short version of the working rules.
@@ -68,7 +68,7 @@ Product decisions, not preferences. Each is enforced by a test.
 | Decision | Where |
 | --- | --- |
 | Four fonts are bundled. The brand faces are Latin-only, so **Inter Tight / Inter** cover Cyrillic, selected by the locale's script. No uncontrolled system fallback | ADR-0019, D-14 |
-| Localisation is built **across milestones 001-008**, not in one late issue. Milestone 009 only audits it | D-15, section 12 |
+| Localisation is built **across milestones 001-008 and 012**, not in one late issue. Milestone 009 only audits it | D-15, section 12; planned voice contract |
 | Time format follows the Android system 12/24-hour preference. No in-app setting | D-16 |
 | Real Material 3 time pickers. The prototype's 30-minute stepping must not ship | D-17 |
 | The generic exercise runner is kept for the four techniques that do not need a bespoke interaction | Q-04 |

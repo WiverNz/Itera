@@ -1,6 +1,6 @@
 # Implementation order
 
-Eleven milestones ([milestone index](../issues/README.md)). Current implementation status and acceptance gaps live in that index; the table below describes the dependency order and exit conditions, not completion status. The previous 40-issue ordering is preserved in `docs/history/issues-detailed/`.
+Twelve milestones ([milestone index](../issues/README.md)). Current implementation status and acceptance gaps live in that index; the table below describes the dependency order and exit conditions, not completion status. The previous 40-issue ordering is preserved in `docs/history/issues-detailed/`.
 
 **Rule: do not start a milestone until every milestone in its `Depends on` list is done.** If a decision the documentation does not cover is needed, stop and update `docs/00-source-of-truth.md` first.
 
@@ -16,10 +16,11 @@ Eleven milestones ([milestone index](../issues/README.md)). Current implementati
 | 006 | Exercise system | 005 | Complete Days 1-14 with every technique's real experience |
 | 007 | Train & technique library | 006 | Browse the curriculum and every technique |
 | 008 | Progress, history & settings | 005 | Show progress and history, configure, switch language, export, reset |
-| 009 | Notifications & quality passes | 006, 007, 008 | Remind; pass the accessibility and localisation sweeps |
+| 012 | Voice input & commands | 006, 007, 008 | Dictate and use contextual commands in four languages; safely degrade without on-device recognition |
+| 009 | Notifications & quality passes | 006, 007, 008, 012 | Remind; pass the accessibility and localisation sweeps including voice |
 | 010 | Test hardening | 009 | Pass the full test matrix, goldens and instrumented CI |
 | 011 | Release readiness | 010 | Be released internally |
 
-Recommended solo sequence: `002, 003, 004, 005, 006, 007, 008, 009, 010, 011`. 003 and 004 are interchangeable; 007 and 008 are interchangeable.
+Recommended solo sequence: `002, 003, 004, 005, 006, 007, 008, 012, 009, 010, 011`. 003 and 004 are interchangeable; 007 and 008 are interchangeable. 012 is appended without renumbering and starts after core features and outstanding visual acceptance, before the quality sweeps.
 
-Verification scope per milestone is defined in `docs/issues/README.md` ("Verification scope"): build + lint + tests for the changed area during 002-008; exhaustive passes in 009-011.
+Verification scope per milestone is defined in `docs/issues/README.md` ("Verification scope"): build + lint + tests for the changed area during 002-008 and 012; exhaustive passes in 009-011.

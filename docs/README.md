@@ -18,7 +18,7 @@ See the [milestone index](issues/README.md#current-status-2026-09-24) for curren
 | --- | --- |
 | [`00-source-of-truth.md`](00-source-of-truth.md) | Authority model, 16 resolved inconsistencies, and the index of architecture decisions. Authoritative over everything else. |
 | [`ux/05-prototype-reference.md`](ux/05-prototype-reference.md) | How to run `design/`, the screen-to-file map, and the porting checklist. Read before any UI issue. |
-| [`delivery/00-implementation-order.md`](delivery/00-implementation-order.md) | The 11 milestone issues, their order and exit conditions. |
+| [`delivery/00-implementation-order.md`](delivery/00-implementation-order.md) | The 12 milestone issues, their order and exit conditions; 012 voice runs before 009. |
 | [`issues/README.md`](issues/README.md) | The issue index. |
 
 ### Product (`prd/`)
@@ -28,7 +28,7 @@ See the [milestone index](issues/README.md#current-status-2026-09-24) for curren
 | [`00-product-brief.md`](prd/00-product-brief.md) | What Itera is, the daily loop, the four tabs, the anti-streak stance. |
 | [`01-mvp-scope.md`](prd/01-mvp-scope.md) | What ships, what does not, and what is partially built. |
 | [`02-user-flows.md`](prd/02-user-flows.md) | Ten flows, including missing days and starting over. |
-| [`03-functional-requirements.md`](prd/03-functional-requirements.md) | FR-01 to FR-43, each linked to its spec. |
+| [`03-functional-requirements.md`](prd/03-functional-requirements.md) | FR-01 to FR-49, including planned voice input, each linked to its spec. |
 | [`04-nonfunctional-requirements.md`](prd/04-nonfunctional-requirements.md) | Offline, performance budgets, reliability, privacy, compatibility. |
 | [`05-content-and-technique-model.md`](prd/05-content-and-technique-model.md) | The 14 techniques, the one-to-one skill mapping, the exercise types. |
 | [`06-personas-and-assumptions.md`](prd/06-personas-and-assumptions.md) | Who it is for, eight stated assumptions, anti-goals. |
@@ -53,6 +53,7 @@ See the [milestone index](issues/README.md#current-status-2026-09-24) for curren
 | [`07-accessibility.md`](ux/07-accessibility.md) | Semantics per screen, font scaling, the TalkBack script, localisation readiness. |
 | [`08-notification-ux.md`](ux/08-notification-ux.md) | The six notifications, suppression rules, copy rules, permission handling. |
 | [`09-copy-deck.md`](ux/09-copy-deck.md) | Voice, terminology, the key scheme, and the rules enforced by tests. The copy itself lives in `design/`. |
+| [`10-voice-input.md`](ux/10-voice-input.md) | Planned dictation, contextual commands, confirmation, states and minimal prototype additions (milestone 012). |
 
 ### Architecture (`architecture/`)
 
@@ -65,6 +66,7 @@ See the [milestone index](issues/README.md#current-status-2026-09-24) for curren
 | [`04-navigation-architecture.md`](architecture/04-navigation-architecture.md) | How the graph is wired in code. |
 | [`05-error-handling-and-logging.md`](architecture/05-error-handling-and-logging.md) | Error classes, presentation, logging policy, what must never be logged. |
 | [`06-dependency-catalog.md`](architecture/06-dependency-catalog.md) | Every dependency, why, and what is deliberately excluded. |
+| [`07-voice-input.md`](architecture/07-voice-input.md) | Planned recognition adapter, typed commands, deterministic parsing and existing-action dispatch; [ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md) defines on-device privacy/permission policy. |
 | [`adr/`](architecture/adr/) | 19 architecture decision records. |
 
 ### Data (`data/`)
@@ -116,7 +118,7 @@ See the [milestone index](issues/README.md#current-status-2026-09-24) for curren
 
 | Document | What it is |
 | --- | --- |
-| [`00-implementation-order.md`](delivery/00-implementation-order.md) | 11 milestones, order and exit conditions. |
+| [`00-implementation-order.md`](delivery/00-implementation-order.md) | 12 milestones, order and exit conditions. |
 | [`01-issue-dependency-graph.md`](delivery/01-issue-dependency-graph.md) | The milestone graph, critical path and cross-milestone seams. |
 | [`02-definition-of-done.md`](delivery/02-definition-of-done.md) | Twelve sections every issue must satisfy. |
 | [`03-release-checklist.md`](delivery/03-release-checklist.md) | Pre-flight through post-release. |

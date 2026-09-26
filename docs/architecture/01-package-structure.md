@@ -2,6 +2,8 @@
 
 Root: `com.wivernz.itera`. Single Gradle module (`:app`).
 
+Planned milestone 012 adds only `core/voice` (Android recognition adapter), `domain/voice` (typed commands, pure parser/matching) and shared `feature/voice` presentation. Existing feature ViewModels dispatch to current use cases/repository interfaces. No voice DAO, new module or speech-to-storage dependency; details in [voice architecture](07-voice-input.md).
+
 ## 1. Tree
 
 ```

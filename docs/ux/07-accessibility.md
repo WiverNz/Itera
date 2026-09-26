@@ -99,3 +99,11 @@ Four languages ship in the MVP. Full specification in `docs/i18n/00-localization
 - `start`/`end` padding only. `supportsRtl="true"` is set and `en-XB` is run as a safety net, though no shipping language is RTL.
 - The language picker names each language **in its own language**, so someone who has switched to a script they cannot read can still switch back.
 - Screen-reader announcements are localised along with everything else; the `contentDescription`s specified in section 3 are string resources, not literals.
+
+## 10. Voice input (milestone 012)
+
+Voice is an optional input method, never the only way to act. All dictation/commands retain keyboard, touch, TalkBack and Switch Access equivalents. Mic targets are at least 44 dp and labelled “Dictate {field}” or “Voice command”; expose listening state and a reachable Stop/Cancel. Tap-to-start avoids a press-and-hold requirement.
+
+Announce listening, final result, failure and confirmation politely; do not announce every partial token or depend on colour, animation, sound or vibration. Keep interim text readable without stealing input focus. Confirmation traps focus, names the target and returns focus to its opener on cancel; successful dictation restores field focus/caret. Do not start recognition automatically after a screen-reader announcement. Validate that TalkBack output cannot silently confirm a command.
+
+Extend the TalkBack/Switch Access script: dictate/edit an answer, cancel listening, deny permission, inspect unavailable-language state, select among duplicate checklist labels, cancel/confirm an end-session action. Run light/dark and font scale 2.0 with EN/RU/DE/ES labels; reduced motion uses static listening text. See [voice UX](10-voice-input.md).

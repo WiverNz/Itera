@@ -55,6 +55,8 @@ Walk the whole loop once before writing any UI code: onboarding -> exercise -> r
 
 ## 3. How to port a screen
 
+**Planned milestone 012:** voice is not in the prototype yet. Before implementing it, run the existing inputs/actions in `Today.kt`, `Exercise.kt`, `Practice.kt`, `Reflection.kt` and `Focus.kt`. Add only the mic affordance and shared listening/transcript/failure/permission/unavailable/ambiguity/confirmation/cancel states in [voice UX](10-voice-input.md), reusing `Components.kt`, `IteraIcons.kt` and the existing sheet/dialog treatment. Update `Profile.kt` privacy copy and all four string catalogues. No new screen route or conversational surface; prototype and production changes land together in 012. This documentation pass adds no prototype code.
+
 1. **Run the prototype screen.** Interact with it. Note what changes on tap, what animates, what is disabled and when.
 2. **Read its composable end to end**, including the private helpers below it.
 3. **Reproduce the layout tree** - the same containers, in the same order, with the same `Arrangement`, `Alignment`, padding and size values.

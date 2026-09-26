@@ -1,6 +1,6 @@
 # 007 - Train & technique library
 
-**Depends on** 003, 004, 006 | **Blocks** 009
+**Depends on** 003, 004, 006 | **Blocks** 009, 012
 
 ## Goal
 

@@ -195,7 +195,7 @@ German is the length stress case; Russian is the second. Both are in the MVP, so
 3. Add the tag to `AppLanguage.tags`.
 4. Declare the right plural categories for that language.
 
-Nothing else. The picker builds its rows from `tags` and names them through `Locale`.
+The picker builds its rows from `tags` and names them through `Locale`. After milestone 012, also add the voice vocabulary, duration forms and parser/recognition-locale tests; device speech-model availability must be checked separately.
 
 ## 11. Where each part is built
 
@@ -229,3 +229,27 @@ Localisation is **not** one late issue. Each part lands in the earliest issue th
 | `en-XA` / `en-XB` render | UI |
 
 Issue `041` owns the port and these tests; every screen issue is responsible for its own strings being externalised and non-clipping.
+
+## 13. Voice language and command vocabulary (milestone 012)
+
+Recognition uses the **effective Itera UI language**, not an unrelated system recognizer default: explicit en/ru/de/es selection wins; Match device resolves through supported app resources, falling back to English as the UI does. Send its BCP-47 tag in `EXTRA_LANGUAGE` and use the same language's parser table. Retain a compatible regional variant only when the service requires it; if no supported variant exists or the service cannot honour the language, show language unavailable rather than silently using another language. Disable automatic language switching/detection.
+
+Changing language cancels recognition and pending confirmation, rejects late callbacks, and starts the next explicit session in the new language. Committed user text stays verbatim. Model availability is a platform limitation, not a reason to omit translated UI or parser support.
+
+Minimum vocabulary below is normative; `{text}` and `{query}` are the untouched argument suffix. Slash-separated entries are explicit aliases, not arbitrary synonyms.
+
+| Command | English | Russian | German | Spanish |
+| --- | --- | --- | --- | --- |
+| AddItem | add task {text} / add item {text} | добавь задачу {text} / добавь пункт {text} | füge Aufgabe hinzu {text} / füge Eintrag hinzu {text} | añade tarea {text} / añade elemento {text} |
+| CompleteItem | complete {query} | заверши {query} | erledige {query} | completa {query} |
+| StartFocus | start focus | начни фокус | starte Fokus | inicia enfoque |
+| StartFocus with duration | start focus for {n} minutes | начни фокус на {n} минут | starte Fokus für {n} Minuten | inicia enfoque durante {n} minutos |
+| PauseFocus | pause / pause focus | пауза / приостанови фокус | Pause / pausiere Fokus | pausa / pausa el enfoque |
+| ResumeFocus | resume / resume focus | продолжить / продолжи фокус | weiter / setze Fokus fort | continúa / reanuda el enfoque |
+| EndFocus | end focus | закончи фокус | beende Fokus | termina el enfoque |
+| CompleteCurrentExercise | complete exercise | заверши упражнение | schließe Übung ab | completa el ejercicio |
+| ShowCurrentRecommendation | what should I do now? | что мне делать сейчас? | was soll ich jetzt tun? | ¿qué debo hacer ahora? |
+
+Reserve the full CompleteCurrentExercise phrases before the shorter CompleteItem prefix. Accepted minute units: `minute/minutes`, `минута/минуту/минуты/минут`, `Minute/Minuten`, `minuto/minutos`. Accept digits and explicit spoken forms for setup choices, including `fifteen/twenty five/fifty`, `пятнадцать/двадцать пять/пятьдесят`, `fünfzehn/fünfundzwanzig/fünfzig`, `quince/veinticinco/cincuenta`, plus spelled forms of seeded suggestions. Conventional number-word hyphens may normalise to spaces. Do not infer hours, fractions or missing units.
+
+Fixtures include “Добавь задачу купить корм” -> `AddItem("купить корм")`, “Заверши купить корм” -> `CompleteItem("купить корм")`, “Начни фокус на 25 минут” -> `StartFocus(25 minutes)`, and equivalent examples in all four languages. All status/error/confirmation/permission copy and accessible descriptions use `voice_*` resources in four catalogues in 012; vocabulary lives in pure parser data, not translated UI resource keys. No transcript translation or AI parsing.

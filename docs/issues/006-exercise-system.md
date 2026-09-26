@@ -1,6 +1,6 @@
 # 006 - Exercise system
 
-**Depends on** 003, 004, 005 | **Blocks** 007, 009
+**Depends on** 003, 004, 005 | **Blocks** 007, 009, 012
 
 ## Goal
 

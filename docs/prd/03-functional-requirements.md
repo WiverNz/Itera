@@ -77,6 +77,15 @@ Each requirement links to the document that specifies it fully. `FR-` ids are re
 
 ## Constraints that are requirements
 
-- **FR-41** Every feature works with no network. The app declares no `INTERNET` permission.
+- **FR-41** Every training interaction works with no network via touch/keyboard. Optional voice requires an available on-device recognizer and language model; unavailable voice never blocks training. The app declares no `INTERNET` permission.
 - **FR-42** No account, no backend, no subscription, no AI dependency.
 - **FR-43** No user-authored text is ever logged or transmitted.
+
+## Voice input (milestone 012)
+
+- **FR-44** Explicit push-to-talk dictation in Feynman, Premortem, Reflection, Eisenhower/2-minute task entry, Habit stacking and other appropriate exercise free-text fields inserts editable final text; dictation never executes commands. [UX contract](../ux/10-voice-input.md).
+- **FR-45** Support `AddItem(text)`, `CompleteItem(query)`, `StartFocus(duration?)`, `PauseFocus`, `ResumeFocus`, `EndFocus`, `CompleteCurrentExercise`, `ShowCurrentRecommendation` using existing contexts/business rules; no global task store or inbox.
+- **FR-46** A deterministic EN/RU/DE/ES parser extracts arguments; no AI, conversation, background listening or hotword. Recognition follows the selected app language.
+- **FR-47** Ambiguous/destructive actions require confirmation. Unsupported, invalid and out-of-context commands change nothing; recognition cannot write Room or bypass use cases.
+- **FR-48** Listening, optional partial/final transcript, failure, permission, service/language unavailable, ambiguity, confirmation and cancellation states remain accessible, localised and consistent with `design/`.
+- **FR-49** Use Android on-device recognition only, request microphone permission on explicit use, and preserve manual input on denial/unavailability. Platform recognizer fallback is documented but blocked by ADR-0022 until privacy policy changes.

@@ -9,7 +9,7 @@
 5. **Step 3 of 3 - First week**: a read-only preview of Days 1-7 from the curriculum, plus "Every evening: a two-minute reflection".
 6. "Start Day 1" writes preferences, seeds unlocks, generates the plan, schedules reminders, and lands on Today.
 
-No name, no email, no account, no permissions beyond notifications.
+No name, no email, no account, no permissions beyond notifications during onboarding. Microphone permission is requested only on later explicit voice use (milestone 012).
 
 ## Flow 2 - Morning training
 

@@ -3,6 +3,17 @@
 Status: **authoritative**. Every other document in `docs/` conforms to this one.
 Last reconciled: 2026-09-23 (prototype pass).
 
+## Planned voice capability (2026-09-26)
+
+Milestone [012](issues/012-voice-input-and-commands.md) is appended without renumbering and runs after 006/007/008 plus outstanding core visual acceptance, before 009/010/011. Documentation/backlog only: no implementation is started by this change.
+
+- Dictation uses focused editable exercise fields; a separate command mode supports eight typed commands through existing business actions. No global inbox/task model, AI parser, chat assistant, background listening or hotword.
+- Item commands are context-bound. Eisenhower supports Add but has sorting/selection rather than item completion. Only existing checklists support CompleteItem; Premortem's reason list supports Add. Dictation handles other free-text fields.
+- Focus commands preserve the controller, setup task, unlock and completion rules. Specified minutes use the existing setup choices plus the seeded suggestion; unsupported durations return to setup without silent substitution. This milestone does not expand duration choices.
+- **Privacy decision explicitly selected by the user:** strictly on-device recognition; generic platform fallback remains blocked until product/privacy policy changes. No new `INTERNET` permission and no transmitted/logged user speech. ADR-0022 documents the real permission/platform boundary decision for `RECORD_AUDIO`; no other ADR is needed.
+- UI follows [voice UX](ux/10-voice-input.md). Minimal prototype affordances/states are pending milestone 012 and must be added together with production, not silently assumed present in `design/` today.
+- No unresolved MVP product decisions. Future permission to enable platform fallback is outside the approved scope, not a prerequisite for on-device voice.
+
 ## 1. Source priority
 
 | # | Source | Authority over |

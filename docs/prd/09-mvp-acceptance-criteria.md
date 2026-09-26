@@ -2,7 +2,7 @@
 
 The MVP is complete when every criterion below passes on a physical device running the release build. Each maps to issues and to the test matrix.
 
-Twelve groups: A first run, B daily loop, C reliability, D program mechanics, E progress honesty, F surfaces, G settings, H notifications, L localisation, P prototype parity, I accessibility, J quality gates.
+Thirteen groups: A first run, B daily loop, C reliability, D program mechanics, E progress honesty, F surfaces, G settings, H notifications, L localisation, P prototype parity, I accessibility, J quality gates, V voice.
 
 ## A. First run
 
@@ -30,7 +30,7 @@ Twelve groups: A first run, B daily loop, C reliability, D program mechanics, E 
 - [ ] **C2** A focus session survives force-stop and resumes with the correct remaining time (within 2 s).
 - [ ] **C3** A focus session survives a device reboot mid-session by completing correctly on next open.
 - [ ] **C4** Rotating the device on every screen loses nothing.
-- [ ] **C5** Airplane mode for an entire session changes nothing anywhere.
+- [ ] **C5** Airplane mode preserves the entire training session; voice works with an installed on-device model or degrades to manual input without blocking training.
 - [ ] **C6** Changing the device timezone does not shift a running timer or corrupt the day.
 - [ ] **C7** Crossing midnight with the app open rolls the day over correctly on next interaction.
 
@@ -132,3 +132,13 @@ Twelve groups: A first run, B daily loop, C reliability, D program mechanics, E 
 - [ ] **J7** Release APK is under 12 MB, including four string catalogues and the bundled fonts.
 - [ ] **J8** Cold start to Today's first frame is under 1.5 s on a mid-range device; warm start under 500 ms.
 - [ ] **J9** No crash in a 30-minute exploratory session across all screens, in at least two languages.
+
+## V. Voice (milestone 012)
+
+- [ ] **V1** Every dictation target in `docs/ux/10-voice-input.md` inserts final text once, preserves selection/editing/limits and never executes dictated commands.
+- [ ] **V2** All eight commands parse in EN/RU/DE/ES, including omitted and specified focus durations; unsupported/invalid commands and ambiguous matching cannot silently mutate data.
+- [ ] **V3** Add/Complete affect only the active compatible exercise list; EndFocus and exercise completion require confirmation and retain all business gates.
+- [ ] **V4** No service/model, denied/revoked permission and recognition failure leave all manual controls usable; there is no platform/network fallback or background listening.
+- [ ] **V5** Locale changes cancel old recognition/confirmation and use the new language on the next tap without changing saved text.
+- [ ] **V6** Focus start/pause/resume/confirmed end preserve single-session, early-end, lifecycle and completion rules; duplicate/late callbacks never replay actions.
+- [ ] **V7** All voice states match the prototype and work with TalkBack, Switch Access and large text; raw audio/transcripts never reach logs or analytics.

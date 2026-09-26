@@ -71,6 +71,8 @@
 
 Every new sheet reuses `LanguageSheet`'s container treatment so they look like one family.
 
+Planned **milestone 012** adds input microphones and one shared voice sheet on Today/current exercise/focus, with listening, transcript, failure, permission, unavailable, ambiguous-choice and confirmation states. These reuse existing components and add no top-level route or screen count. See [voice input](10-voice-input.md); prototype states are built in 012, not this documentation pass.
+
 ## 3. Screens that exist in the product but not the prototype
 
 | Screen | Why | Issue |

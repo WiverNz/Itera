@@ -1,6 +1,6 @@
 # 009 - Notifications & quality passes
 
-**Depends on** 005, 006, 007, 008 | **Blocks** 010
+**Depends on** 005, 006, 007, 008, 012 | **Blocks** 010
 
 ## Goal
 
@@ -11,8 +11,9 @@ Make the app remind the user at the right times, complete the analytics privacy 
 - **Notifications and WorkManager** (old 033): the remaining channels (`training`, `reflection`, `habits`) added to the registry 006 created, `IteraNotifier`, all workers, the real `ReminderScheduler` replacing 004's no-op binding, boot/package-replaced/timezone receivers, every suppression rule (including during a running focus session), deep-link intents and stale-target fallbacks.
 - **Analytics completion** (remainder of old 036): gap-fill any catalogue event whose call site is still missing, notification events, `EventLogTrimWorker` logic, `NoUserTextLoggedTest`, reset behaviour of `event_log`.
 - **Accessibility pass** (old 037): audit every screen against `docs/ux/07-accessibility.md`, run the TalkBack script, font scales 1.0-2.0 in English and German, reduced motion, Switch Access; add `FontScaleTest` and `AccessibilityAuditTest`; fix findings.
-- **Localisation audit** (old 041): integration and audit only. Strings, plurals, formatters and entry points were built by 001-008; this milestone diffs catalogues, checks plurals/concatenation/formatting, walks the app in German and Russian, checks pseudo-locales, runtime switching and persistence. A missing translation found here is fixed here, but is a defect of the milestone that introduced the string.
+- **Localisation audit** (old 041): integration and audit only. Strings, plurals, formatters and entry points were built by 001-008 and 012; this milestone diffs catalogues, checks plurals/concatenation/formatting, walks the app in German and Russian, checks pseudo-locales, runtime switching and persistence. A missing translation found here is fixed here, but is a defect of the milestone that introduced the string.
 - Build and smoke-test a minified release build once here, so R8 problems surface before 011.
+- Include 012's voice states, `voice_*` catalogues, permission-denied/unavailable paths, locale switching and no-transcript logging in the accessibility, localisation and privacy sweeps. Platform fallback must remain disabled.
 
 ## Source documents
 
@@ -21,7 +22,7 @@ Make the app remind the user at the right times, complete the analytics privacy 
 
 ## Key dependencies
 
-- Needs every screen (005-008). Accessibility precedes the localisation walk because it can move layouts.
+- Needs every screen (005-008) and voice (012). Accessibility precedes the localisation walk because it can move layouts.
 - Replaces the no-op `ReminderScheduler` binding; onboarding (005), habit stacking (006), day complete (005) and settings (008) start producing real reminders here without code changes on their side.
 
 ## Acceptance criteria

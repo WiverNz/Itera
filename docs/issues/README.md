@@ -1,6 +1,6 @@
 # Issue backlog
 
-Eleven milestone issues cover the Itera MVP. Each milestone is small in text and points to the specification rather than repeating it. The specification - PRD, UX, architecture, data, engines, testing, `design/` - is unchanged and authoritative.
+Twelve milestone issues cover the Itera MVP. Each milestone points to the specification rather than repeating it. The specification - PRD, UX, architecture, data, engines, testing, `design/` - remains authoritative. Milestone 012 adds the planned voice capability; existing milestone numbers are preserved.
 
 The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed/). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
@@ -14,7 +14,7 @@ This index is the implementation status entry point; each milestone owns its acc
 - **005: implemented (2026-09-25).** Required tests pass; the prototype comparison in light and dark remains open with 003's visual acceptance. See [005](005-onboarding-and-daily-flow.md#verification-gap).
 - **006: implemented (2026-09-26).** Required tests pass; the prototype comparison in light and dark and the oldest-device timer check remain open. See [006](006-exercise-system.md#verification-gap).
 - **007: complete (2026-09-26).** Train, Library and Technique Detail use the real catalog, progress, history and exercise flows. Required tests, build, lint and formatting pass; prototype comparisons completed in light and dark. See [007](007-train-and-technique-library.md#reconciled-differences).
-- **008-011: not started.**
+- **008-012: not started.** 012 is documentation/backlog only; its execution precedes 009.
 
 Next implementation milestone: **008** when requested. Keep the remaining 003, 005 and 006 verification open; readiness is not authorization to start another milestone.
 
@@ -30,11 +30,12 @@ Next implementation milestone: **008** when requested. Keep the remaining 003, 0
 | [006](006-exercise-system.md) | Exercise system - **implemented; visual comparison pending** | 005 | 018, 021-027 |
 | [007](007-train-and-technique-library.md) | Train & technique library - **complete** | 006 | 028-030 |
 | [008](008-progress-history-and-settings.md) | Progress, history & settings | 005 | 031, 032, 034, 035 |
-| [009](009-notifications-and-quality-passes.md) | Notifications & quality passes | 006, 007, 008 | 033, rest of 036, 037, 041 |
+| [009](009-notifications-and-quality-passes.md) | Notifications & quality passes | 006, 007, 008, 012 | 033, rest of 036, 037, 041 |
 | [010](010-test-hardening.md) | Test hardening | 009 | 039 |
 | [011](011-release-readiness.md) | Release readiness | 010 | 040 |
+| [012](012-voice-input-and-commands.md) | Voice input & commands | 006, 007, 008 | New scope; none |
 
-Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007.
+Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 012 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007 and must finish before 012. The solo sequence after 007 is **008, 012, 009, 010, 011**. Finish outstanding core visual acceptance before 012; numbering is not execution order.
 
 ## Old-to-new mapping
 
@@ -48,6 +49,8 @@ Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 009 -> 010 -> 011`. 00
 | 018 | 006 | | 039 / 040 | 010 / 011 |
 
 038 stays retired. Specification documents (`docs/testing/01-test-matrix.md`, `docs/ux/00-screen-inventory.md`, `docs/ux/05-prototype-reference.md`, `docs/00-source-of-truth.md` and others) still cite detailed numbers; translate them with this table.
+
+New voice references explicitly say **milestone 012**; historical detailed issue 012 remains spaced repetition and still maps to milestone 004.
 
 ## Seams introduced by the consolidation
 
@@ -67,7 +70,7 @@ Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 009 -> 010 -> 011`. 00
 
 Keep verification proportional; the exhaustive passes happen once, at the end.
 
-**Milestones 002-008** - per change:
+**Milestones 002-008 and 012** - per change:
 
 - `./gradlew build` (formatting, lint, unit tests, coverage gate) must pass.
 - Run and write only the tests for the area you changed, plus the milestone's required tests.

@@ -15,15 +15,21 @@ graph TD
   M006 --> M009[009 Notifications & quality passes]
   M007 --> M009
   M008 --> M009
+  M006 --> M012[012 Voice input & commands]
+  M007 --> M012
+  M008 --> M012
+  M012 --> M009
   M009 --> M010[010 Test hardening]
   M010 --> M011[011 Release readiness]
 ```
 
 ## Critical path
 
-`001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 009 -> 010 -> 011`
+`001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 012 -> 009 -> 010 -> 011`
 
 003 is off the path only if done alongside 004; 008 is off the path if done alongside 006-007.
+
+012 is a new appended number, executed after core UI/features and before the final quality passes. 009 audits voice accessibility/localisation; 010 and 011 harden and release the full scope.
 
 ## Cross-milestone seams
 

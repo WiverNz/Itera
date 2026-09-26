@@ -22,7 +22,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 
 | Path | What it is | Status |
 | --- | --- | --- |
-| `docs/` | The full specification - the PRD, UX specs, architecture, data model, engines, testing,  delivery, and 11 milestone issues (the detailed 40-issue backlog is kept in `docs/history/issues-detailed/`) | Authoritative |
+| `docs/` | The full specification - the PRD, UX specs, architecture, data model, engines, testing, delivery, and 12 milestone issues (the detailed 40-issue backlog is kept in `docs/history/issues-detailed/`) | Authoritative |
 | `design/` | **A running Kotlin + Compose prototype of the app.** 24 screens, theme, components, icons, navigation, four languages | The UI/UX source of truth |
 | `app/` | The production Android app | Core, design system, engine, onboarding, the daily flow and the exercise system implemented; other feature destinations are placeholders |
 | `CLAUDE_START_HERE.md` | Entry point for implementation | |
@@ -54,7 +54,7 @@ When `design/` and a product rule conflict, the product rule wins and the discre
 - **Read the issue and every document it names before writing code.** Issues are written so no product or architecture decision is needed while implementing.
 - **If a decision is needed anyway, stop.** Record it in `docs/00-source-of-truth.md` or as a new ADR, then continue. Do not decide it silently inside an implementation.
 - **Implement only what the issue's Scope names.** Non-goals in the detailed issues it absorbs are binding.
-- **Keep verification proportional.** Follow "Verification scope" in `docs/issues/README.md`: build, lint and the tests for the changed area during 002-008; no repository-wide re-audits or verification reports unless a failure or deviation needs documenting. Exhaustive passes belong to 009-011.
+- **Keep verification proportional.** Follow "Verification scope" in `docs/issues/README.md`: build, lint and the tests for the changed area during 002-008 and 012; no repository-wide re-audits or verification reports unless a failure or deviation needs documenting. Exhaustive passes belong to 009-011.
 - **Check against `docs/delivery/02-definition-of-done.md`** before calling anything done.
 - **If you change anything visual, change `design/` to match, in the same change.** A prototype that has drifted from the app makes every future comparison worthless.
 - **Never import from `design/` in production code.** It is a reference, not a dependency, and is not part of the production Gradle build.

@@ -86,7 +86,7 @@ Summarised here, detailed in `05-error-handling-and-logging.md`.
 
 ## 7. Offline-first
 
-There is no online. No network permission is declared in the manifest. Every feature works in airplane mode by construction. Fonts, the technique catalog and all copy are bundled.
+There is no online. No network permission is declared in the manifest. Every training interaction works in airplane mode through manual input. Optional voice (012) uses only an available on-device recognizer/model and otherwise leaves manual input intact (ADR-0022). Fonts, the technique catalog and all copy are bundled.
 
 ## 8. Startup
 
@@ -127,4 +127,5 @@ AGP 9 provides built-in Kotlin support, so no separate `org.jetbrains.kotlin.and
 | Navigation wiring | `04-navigation-architecture.md`, `docs/ux/01-navigation-graph.md` |
 | Errors and logging | `05-error-handling-and-logging.md` |
 | Exact dependency list and versions | `06-dependency-catalog.md` |
+| Planned voice adapter, deterministic parser and dispatch boundaries | `07-voice-input.md`, ADR-0022 |
 | Individual decisions | `adr/` |

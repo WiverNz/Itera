@@ -4,6 +4,27 @@ Per-area coverage. Each row names the subject, the test type, the file, and the 
 
 Legend: **U** unit (JVM), **R** Robolectric, **C** Compose UI, **I** instrumented integration.
 
+## Voice input (new milestone 012, not historical detailed issue 012)
+
+These are test requirements for future implementation, not tests added by this documentation change. Use an injectable fake recognizer for deterministic CI; real microphone/service checks belong to device QA.
+
+| Subject | Type | Test | Issue |
+| --- | --- | --- | --- |
+| Eight commands and documented aliases in EN/RU/DE/ES; original arguments; anchored matching; unsupported/negated/chained inputs, empty arguments and trailing garbage | U | `VoiceCommandParserTest` | Milestone 012 |
+| Omitted duration; digits/number words in four languages; minute variants; setup choices/suggestions; malformed, zero, negative, fractional, overflow, multiple and unavailable durations never default/round silently | U | `VoiceDurationTest` | Milestone 012 |
+| Exact/partial query, duplicate exact labels, multiple/no match, already-done items, current-list scope; partial/duplicate matches require confirmation | U | `VoiceItemMatchingTest` | Milestone 012 |
+| API 26–30, missing service/model, unsupported language, busy/timeout/no-match/error, missing partials, stop/cancel/destroy, duplicate/late callbacks and competing alternatives | R | `VoiceRecognitionTest` | Milestone 012 |
+| First-use request, denial, permanent denial/settings, revocation; no onboarding prompt, default-platform fallback, automatic retry or blocked manual input | R/C | `VoicePermissionTest` | Milestone 012 |
+| Select/Confirm/Cancel/Back, EndFocus and valid exercise completion; changed/deleted target or draft, duplicate confirm, background/locale change cannot execute stale action | C/R | `VoiceConfirmationTest` | Milestone 012 |
+| Every target, caret/selection insertion once, editing/autosave, partial preview, caps, cancel, changed field/text/selection; command-looking dictation never executes | C/R | `VoiceDictationTest` | Milestone 012 |
+| App vs device language, Match device, regional limitation, missing model, switch while listening/confirming; next-session locale and saved-text preservation in four languages | R/C | `VoiceLocaleTest` | Milestone 012 |
+| Default/specified start, missing setup/task, unlock gates, active-session protection, pause/resume/confirmed end, under-60-second rule, natural completion race, restore and single completion through controller | R | `VoiceFocusIntegrationTest` | Milestone 012 |
+| Existing add/complete actions; no Eisenhower completion/global inbox; required fields, checklist threshold, review grading and combination gates; recommendation equals Today hero including rest/day-complete | R | `VoiceExerciseIntegrationTest` | Milestone 012 |
+| Speech sentinels never reach logger/event log; uncommitted transcripts/alternatives/arguments never reach saved state/export; accepted text follows normal draft/result/export rules; no audio storage, network/default fallback/background capture | U/R | `VoicePrivacyTest` | Milestone 012 |
+| Domain/recognizer boundaries, four-locale copy/examples, TalkBack/Switch Access semantics, large-text states | U/C | Extend `ArchitectureTest`, translation and accessibility tests | Milestone 012; full sweep 009 |
+
+010 includes these in regression/goldens; 011 checks real recognition and unavailable/denied paths on release devices. Sections below retain historical detailed numbering.
+
 ## Domain engines
 
 | Subject | Type | Test | Issue |

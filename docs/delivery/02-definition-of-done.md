@@ -1,6 +1,6 @@
 # Definition of done
 
-Applies to every issue. An issue that does not meet all applicable items is not done, regardless of whether the feature appears to work.
+Applies to every issue. An issue that does not meet all applicable items is not done, regardless of whether the feature appears to work. Milestone 012 follows the scoped 002-008 verification rules below; 009-011 include voice in the exhaustive passes.
 
 **Which items apply, and how deeply, is set by "Verification scope" in `docs/issues/README.md`.** In short: milestones 002-008 run the build, lint and tests for the changed area, compare new screens with `design/`, and record deviations only; full-app accessibility, localisation, golden, regression and release verification belong to milestones 009-011. "Manual verification steps" and "recorded in the issue" below refer to the milestone file.
 
@@ -9,7 +9,7 @@ Applies to every issue. An issue that does not meet all applicable items is not 
 - [ ] Every acceptance criterion in the issue is satisfied and demonstrated.
 - [ ] Every item in the issue's manual verification steps has been executed on a device or emulator.
 - [ ] Behaviour matches the referenced spec documents exactly; any deviation is either fixed or recorded as a documentation change (section 6).
-- [ ] The feature works with no network, with notifications denied, and after a process kill.
+- [ ] The feature works with no network, with notifications denied, and after a process kill. Optional voice safely returns to manual input when microphone permission/service/model is unavailable; process death never restores listening or pending commands (ADR-0022).
 
 ## 2. Architecture
 

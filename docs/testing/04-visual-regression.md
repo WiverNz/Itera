@@ -2,6 +2,8 @@
 
 The goal is that the production app **visually and behaviourally matches `design/` as closely as practical**. This document says how that is checked.
 
+Milestone 012 adds voice before 009's quality passes. Include idle/listening/partial/failure/denied/unavailable/ambiguous/confirmation fixtures in 010's final golden set using fake recognition, with normal and always-dark hosts, large text and the existing locale matrix. Compare against the minimal prototype additions in `docs/ux/10-voice-input.md`; never capture live recognition timing in goldens.
+
 ## 1. Three layers
 
 | Layer | Catches | Cost | When |

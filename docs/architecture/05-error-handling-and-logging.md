@@ -85,6 +85,7 @@ Enforced by review and by a `LoggingPolicyTest` that greps sources for the banne
 
 - reflection text, exercise notes, Feynman explanations, premortem reasons, habit names, learning-topic titles, task labels - **any user-authored string**;
 - full result payloads.
+- voice audio, partial/final transcripts, recognition alternatives, command arguments and recognizer bundles/exceptions that might contain user speech (milestone 012). Log only sanitised error categories; extend the existing privacy tests.
 
 Log identifiers and types instead: `"activity 412 (FEYNMAN) payload undecodable"`, never the payload.
 

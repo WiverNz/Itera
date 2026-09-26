@@ -83,11 +83,13 @@ There is no offline state, because there is no online. No screen shows a connect
 | --- | --- |
 | `POST_NOTIFICATIONS` | Every feature still works. Settings toggles read off and disabled with a route to system settings. The focus timer runs without a notification and shows a one-time inline note that it may be interrupted in the background |
 
-No permission is required for the app to function. None is requested outside onboarding and the first focus session.
+No permission is required for the app's manual interactions. Notifications follow onboarding/first-focus rules; milestone 012 requests `RECORD_AUDIO` only on a mic tap. Denial leaves typing/touch available; permanent denial offers system settings without repeated prompts.
 
 ## 8. Process death
 
 Every screen re-derives from Room or DataStore. Drafts are in `plan_activity.draftPayload`; the timer is in its own DataStore. Restoring mid-exercise returns the user to the same route with their text intact. There is no state that is lost, and therefore no "restoring..." UI.
+
+Voice is an intentional exception: only committed field text/results use normal persistence. Listening, partial transcripts and pending confirmations are cancelled, never restored/replayed. The complete listening/final/failure/service-unavailable/ambiguity/confirmation/cancel state table is in [Voice input](10-voice-input.md).
 
 ## 9. Large font and small screens
 

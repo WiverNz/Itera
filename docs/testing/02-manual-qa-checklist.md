@@ -2,6 +2,17 @@
 
 Run before each internal release, on **two devices**: one recent (API 34+) and one at or near `minSdk 26`. Record device, OS, build number and result.
 
+## Voice input (milestone 012; repeat at release)
+
+- [ ] On API 31+ with installed on-device models, dictate/edit each supported field and run every command in EN/RU/DE/ES, including the Russian examples and 25-minute focus. Repeat offline.
+- [ ] Check default/specified durations, missing task, already-active focus, pause/resume and confirmed end above/below 60 seconds; touch/notification controls retain the same state.
+- [ ] Confirm duplicate/partial item matches, cancel confirmation, try invalid exercise completion/unsupported commands; no unintended writes or global item search.
+- [ ] Deny/revoke microphone permission; test missing service/model and API 26–30. Manual input remains complete; no platform fallback or repeated prompting.
+- [ ] Cancel, navigate, background, kill and switch locale while listening/confirming. No late insertion, replay or resumed listening; saved text survives and the next tap uses the new language.
+- [ ] Stop/final results without partial support, selection replacement, text limits and service failure preserve editing; command-looking dictation only inserts text.
+- [ ] Run voice states with TalkBack, Switch Access, reduced motion and 2.0 font scale in light/dark. Compare labels, Cancel access and four-language copy against `design/`.
+- [ ] Inspect privacy copy and synthetic-data logs: no stored audio, transcript logging or background capture. Record device/service/model availability separately from parser coverage.
+
 Automated coverage is in `01-test-matrix.md`; this list covers what automation cannot judge.
 
 ## 1. Setup

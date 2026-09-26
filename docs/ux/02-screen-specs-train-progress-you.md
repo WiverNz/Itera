@@ -134,4 +134,6 @@ Production adds bounded month navigation (P-06) - previous/next chevrons in the 
 
 Production adds: real Material 3 time pickers (D-17), a focus-areas picker, the Reset program and Erase everything rows in the Data section, the denied-notification-permission state, and a working export and privacy screen. Everything keeps the row styling above.
 
+Planned milestone 012 extends the existing Privacy screen with on-device microphone use, transient speech handling, local storage of accepted text and manual input when voice is unavailable. No platform recognizer fallback or additional voice-settings screen; see [voice UX](10-voice-input.md) and ADR-0022.
+
 The **Language** row is the primary runtime language switch and is built in issue `034`, not deferred to the audit issue (D-15).

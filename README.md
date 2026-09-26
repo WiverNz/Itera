@@ -61,7 +61,7 @@ Missing a day never resets anything. Program days advance when you train, not by
 1. **Run the prototype.** It explains the product faster than any document.
 2. [`docs/00-source-of-truth.md`](docs/00-source-of-truth.md) — source priority and every locked decision. Read before writing code.
 3. [`docs/ux/05-prototype-reference.md`](docs/ux/05-prototype-reference.md) — screen-to-file map and the porting checklist.
-4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) — 11 milestone issues.
+4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) — 12 milestone issues; planned voice milestone 012 runs before 009's quality passes.
 
 ## Requirements
 
