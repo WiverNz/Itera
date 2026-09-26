@@ -139,7 +139,8 @@ class CompleteActivityUseCase @Inject constructor(
                     now
                 )
             )
-            id.takeIf { stack.nudgeEnabled }
+            // Scheduled either way: the scheduler reads the row and cancels a disabled or replaced nudge.
+            id
         }
         // 5. Premortem carry-over.
         if (result is ActivityResult.Premortem && result.mitigationAddedToToday) {

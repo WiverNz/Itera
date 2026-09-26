@@ -14,6 +14,7 @@ class IteraApplication :
         get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
     override fun onCreate() {
         super.onCreate()
+        com.wivernz.itera.core.notifications.NotificationChannels.register(this)
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(
                 StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build()

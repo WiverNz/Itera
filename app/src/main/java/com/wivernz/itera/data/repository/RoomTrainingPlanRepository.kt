@@ -126,6 +126,8 @@ class RoomTrainingPlanRepository @Inject constructor(
             durationSeconds
         )
     }
+    override suspend fun updateFeedback(activityId: Long, difficulty: Difficulty?, note: String?) =
+        withContext(io) { activities.updateFeedback(activityId, difficulty?.name, note) }
     override suspend fun expire(activityIds: List<Long>) = withContext(io) {
         if (activityIds.isNotEmpty()) activities.expire(activityIds)
     }

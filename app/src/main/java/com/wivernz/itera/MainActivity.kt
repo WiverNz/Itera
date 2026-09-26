@@ -33,19 +33,32 @@ import com.wivernz.itera.core.designsystem.theme.IteraTheme
 import com.wivernz.itera.core.designsystem.theme.isDark
 import com.wivernz.itera.core.navigation.AppDestination
 import com.wivernz.itera.core.navigation.AppNavHost
+import com.wivernz.itera.core.navigation.AppRoute
+import com.wivernz.itera.core.navigation.Combination
+import com.wivernz.itera.core.navigation.ExerciseResult
+import com.wivernz.itera.core.navigation.FocusSession
 import com.wivernz.itera.core.navigation.RouteCodec
 import com.wivernz.itera.core.navigation.ShellViewModel
+import com.wivernz.itera.feature.focus.FocusRestoreTarget
+import com.wivernz.itera.feature.focus.FocusRestoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val shell: ShellViewModel by viewModels()
+    private val focusRestore: FocusRestoreViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
         splash.setKeepOnScreenCondition { shell.state.value.loading }
-        if (savedInstanceState == null) takeDeepLink(intent)
+        if (savedInstanceState == null) {
+            takeDeepLink(intent)
+            // A notification tap already names its destination; otherwise re-attach a stored timer.
+            if (intent.getStringExtra(RouteCodec.EXTRA) == null) {
+                focusRestore.restore { shell.acceptDeepLink(RouteCodec.encode(it.toRoute())) }
+            }
+        }
         enableEdgeToEdge()
         setContent {
             val state by shell.state.collectAsStateWithLifecycle()
@@ -71,6 +84,12 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         takeDeepLink(intent)
+    }
+
+    private fun FocusRestoreTarget.toRoute(): AppRoute = when (this) {
+        is FocusRestoreTarget.Session -> FocusSession(activityId, minutes, techniqueId)
+        is FocusRestoreTarget.Result -> ExerciseResult(activityId, techniqueId)
+        is FocusRestoreTarget.Chain -> Combination(parentActivityId)
     }
 
     private fun takeDeepLink(intent: Intent) {

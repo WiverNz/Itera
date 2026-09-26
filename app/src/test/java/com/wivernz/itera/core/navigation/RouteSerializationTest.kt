@@ -29,6 +29,7 @@ class RouteSerializationTest {
                 42,
                 "two_minute_rule"
             ),
+            ExerciseRun(42, "pareto_principle"),
             ExerciseResult(
                 42,
                 "two_minute_rule"

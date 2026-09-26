@@ -97,11 +97,9 @@ fun AppNavHost(
                 }
             },
             backToToday = { nav.backToToday() },
-            showResult = { result ->
-                nav.navigate(result) {
-                    popUpTo(ExerciseIntro(result.activityId, result.technique)) { inclusive = true }
-                }
-            }
+            // The result sits directly on Today, whether the exercise came through its intro or not, so back
+            // never re-enters the exercise.
+            showResult = { result -> nav.navigate(result) { popUpTo<Today> { inclusive = false } } }
         )
     }
     LaunchedEffect(pendingDeepLink, onboardingCompleted, entry != null) {
@@ -183,6 +181,9 @@ fun AppNavHost(
             }
             composable<ExerciseIntro> { entry ->
                 destination(entry.toRoute<ExerciseIntro>(), actions)
+            }
+            composable<ExerciseRun> { entry ->
+                destination(entry.toRoute<ExerciseRun>(), actions)
             }
             composable<ExerciseResult> { entry ->
                 BackHandler { actions.backToToday() }

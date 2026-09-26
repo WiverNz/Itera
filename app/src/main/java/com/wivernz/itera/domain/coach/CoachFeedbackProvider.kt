@@ -14,3 +14,10 @@ data class CoachFeedback(
     val gaps: List<String>,
     val questions: List<String>
 )
+
+/** The only provider in the MVP (ADR-0016): never available, never produces text. */
+class NoOpCoachFeedbackProvider @javax.inject.Inject constructor() : CoachFeedbackProvider {
+    override val isAvailable: Boolean = false
+    override suspend fun feedback(request: CoachFeedbackRequest): Result<CoachFeedback> =
+        Result.failure(UnsupportedOperationException("No coach provider"))
+}

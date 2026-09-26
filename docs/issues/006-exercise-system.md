@@ -42,3 +42,18 @@ Every technique has its real experience: the generic runner and template body, t
 `TemplateBodyTest`, `CompletionRuleTest`, `BlockValueSerializationTest`, `ExerciseRunnerViewModelTest`, `ExerciseRunnerScreenTest`, `ExerciseCompletionIntegrationTest`, `FocusTimerStateTest`, `FocusViewModelTest`, `FocusScreenTest`, `FocusTimerServiceTest`, `EisenhowerViewModelTest`, `EisenhowerScreenTest`, `FeynmanViewModelTest`, `FeynmanScreenTest`, `PremortemViewModelTest`, `PremortemScreenTest`, `PremortemMitigationTest`, `HabitStackViewModelTest`, `HabitStackScreenTest`, `ReviewViewModelTest`, `ReviewScreenTest`, `ReviewIntegrationTest`, `CombinationViewModelTest`, `CombinationScreenTest`, `CombinationIntegrationTest`.
 
 Process-death behaviour of the timer is checked manually on the oldest supported device during this milestone, not deferred.
+
+## Deviations (2026-09-26)
+
+Recorded per "Verification scope". Decisions that resolve gaps are in `docs/00-source-of-truth.md` ("Milestone 006 implementation decisions").
+
+- **Review compare is ungated**, unlike the prototype, so an empty answer can be graded (issue 026 acceptance).
+- **The 2-minute rule's Finish needs two ticked tasks** (the catalogue rule), where the prototype enables it at one.
+- **Production additions not drawn in the prototype:** the Eisenhower entry step, the Feynman topic picker and inline creation, the review comparison with its three grades, premortem reason focus controls and "Finish without adding", habit-stack custom chips and the nudge time row, the focus pre-timer sheet and end confirmation, the focus/review result variants. They reuse existing components and tokens; `design/` was not changed.
+- **The chain has three step rows, not four** (the 004 row shape); `CombinationIntegrationTest` asserts parent + three steps.
+
+## Verification gap
+
+- The side-by-side comparison with `design/` in light and dark was not done for these screens (no device session in this change). It stays open with 003's and 005's visual acceptance.
+- The timer's process-death behaviour on the oldest supported device was not checked manually; `FocusTimerServiceTest` covers restore on the JVM.
+- `HabitNudgeTest` and the `NotificationSuppressionTest` additions need the real `ReminderScheduler` and belong to 009.

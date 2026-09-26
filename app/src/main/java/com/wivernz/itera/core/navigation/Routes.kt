@@ -90,6 +90,11 @@ data class TechniqueDetail(val technique: String) : AppRoute
 @SerialName("ExerciseIntro")
 data class ExerciseIntro(val activityId: Long, val technique: String) : AppRoute
 
+/** The template body's run step (ADR-0007); the 2-minute rule's `TwoMinute` route renders the same body. */
+@Serializable
+@SerialName("ExerciseRun")
+data class ExerciseRun(val activityId: Long, val technique: String) : AppRoute
+
 @Serializable
 @SerialName("ExerciseResult")
 data class ExerciseResult(val activityId: Long, val technique: String) : AppRoute

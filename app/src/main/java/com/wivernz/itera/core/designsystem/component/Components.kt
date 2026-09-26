@@ -554,7 +554,8 @@ fun NoteField(
     minLines: Int = 2,
     textStyle: TextStyle = Itera.type.userText,
     bordered: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDone: (() -> Unit)? = null
 ) {
     val c = Itera.colors
     androidx.compose.foundation.text.BasicTextField(
@@ -566,6 +567,11 @@ fun NoteField(
             capitalization = KeyboardCapitalization.Sentences,
             imeAction = ImeAction.Done
         ),
+        keyboardActions = if (onDone != null) {
+            androidx.compose.foundation.text.KeyboardActions(onDone = { onDone() })
+        } else {
+            androidx.compose.foundation.text.KeyboardActions.Default
+        },
         minLines = minLines,
         cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
         decorationBox = { inner ->

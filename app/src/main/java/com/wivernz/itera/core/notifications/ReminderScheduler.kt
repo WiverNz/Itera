@@ -21,7 +21,10 @@ interface ReminderScheduler {
     /** An activity completed, was skipped or expired: cancel its pending reminders. */
     suspend fun cancelForActivity(activityId: Long)
 
-    /** A habit stack was saved: (re)schedule its nudge. */
+    /**
+     * A habit stack was saved, replacing (archiving) the previous one: schedule its nudge when enabled, cancel
+     * it when disabled, and cancel the nudge of any archived stack.
+     */
     suspend fun scheduleHabitNudge(habitStackId: Long)
 }
 

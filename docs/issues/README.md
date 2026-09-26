@@ -12,9 +12,10 @@ This index is the implementation status entry point; each milestone owns its acc
 - **003: implemented; final visual acceptance pending.** Required tests and build checks pass. The remaining component parity and gallery/shell sign-off are tracked in [003](003-design-system-and-app-shell.md#verification-gap-2026-09-24).
 - **004: complete (2026-09-25).** Catalogue, engine and lifecycle are implemented with all required tests passing; see its decisions in `docs/00-source-of-truth.md`.
 - **005: implemented (2026-09-25).** Required tests pass; the prototype comparison in light and dark remains open with 003's visual acceptance. See [005](005-onboarding-and-daily-flow.md#verification-gap).
-- **006-011: not started.**
+- **006: implemented (2026-09-26).** Required tests pass; the prototype comparison in light and dark and the oldest-device timer check remain open. See [006](006-exercise-system.md#verification-gap).
+- **007-011: not started.**
 
-Next implementation milestone: **006** when requested. Keep the remaining 003 visual verification open; readiness is not authorization to start another milestone.
+Next implementation milestone: **007** when requested. Keep the remaining 003 visual verification open; readiness is not authorization to start another milestone.
 
 ## Index
 
@@ -25,7 +26,7 @@ Next implementation milestone: **006** when requested. Keep the remaining 003 vi
 | [003](003-design-system-and-app-shell.md) | Design system & app shell - **implemented; visual acceptance pending** | 002 | 003, 004, 015 |
 | [004](004-content-and-training-engine.md) | Content & training engine - **complete** | 002 | 008-014 |
 | [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow - **implemented; visual comparison pending** | 003, 004 | 016, 017, 019, 020 |
-| [006](006-exercise-system.md) | Exercise system | 005 | 018, 021-027 |
+| [006](006-exercise-system.md) | Exercise system - **implemented; visual comparison pending** | 005 | 018, 021-027 |
 | [007](007-train-and-technique-library.md) | Train & technique library | 006 | 028-030 |
 | [008](008-progress-history-and-settings.md) | Progress, history & settings | 005 | 031, 032, 034, 035 |
 | [009](009-notifications-and-quality-passes.md) | Notifications & quality passes | 006, 007, 008 | 033, rest of 036, 037, 041 |

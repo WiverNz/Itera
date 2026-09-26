@@ -78,6 +78,7 @@ class RoomPracticeRecordRepository @Inject constructor(
         )
     }
     override suspend fun insertHabitStack(record: HabitStackRecord) = withContext(io) {
+        habits.archiveActive()
         habits.insert(
             HabitStackEntity(
                 activityId = record.activityId,

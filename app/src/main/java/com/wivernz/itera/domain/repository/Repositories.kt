@@ -66,6 +66,9 @@ interface TrainingPlanRepository : TrainingPlanStorage {
     ): Unit
     suspend fun expire(activityIds: List<Long>): Unit
 
+    /** The result screen's "How did it feel?" and note, saved on every change after completion. */
+    suspend fun updateFeedback(activityId: Long, difficulty: Difficulty?, note: String?): Unit
+
     /** Program day of the training day holding [activityId]; null if it no longer exists. */
     suspend fun programDayOfActivity(activityId: Long): Int?
 

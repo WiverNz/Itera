@@ -40,6 +40,9 @@ abstract class PlanActivityDao {
         duration: Int?
     )
 
+    @Query("UPDATE plan_activity SET difficulty = :difficulty, note = :note WHERE id = :id")
+    abstract suspend fun updateFeedback(id: Long, difficulty: String?, note: String?)
+
     @Query(
         "UPDATE plan_activity SET state = 'SNOOZED', snoozedUntil = :until WHERE id = :id"
     )

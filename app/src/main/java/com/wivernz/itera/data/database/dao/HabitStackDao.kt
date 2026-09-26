@@ -15,5 +15,9 @@ interface HabitStackDao {
     @Query("UPDATE habit_stack SET archived = 1 WHERE id = :id")
     suspend fun archive(id: Long)
 
+    /** Saving a stack replaces the active one; the old row is archived, never deleted. */
+    @Query("UPDATE habit_stack SET archived = 1 WHERE archived = 0")
+    suspend fun archiveActive()
+
     @Insert suspend fun insert(row: HabitStackEntity): Long
 }

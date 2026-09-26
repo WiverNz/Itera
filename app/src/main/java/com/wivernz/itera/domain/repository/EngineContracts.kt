@@ -103,6 +103,8 @@ data class ReviewAttemptRecord(
 /** Fact rows written by completion effects 3 and 4. */
 interface PracticeRecordRepository {
     suspend fun insertFocusSession(record: FocusSessionRecord): Long
+
+    /** Archives the active stack, then inserts [record] as the only active one. */
     suspend fun insertHabitStack(record: HabitStackRecord): Long
 }
 
