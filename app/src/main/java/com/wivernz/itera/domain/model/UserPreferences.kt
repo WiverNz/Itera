@@ -19,7 +19,8 @@ data class UserPreferences(
     val programStartedOn: LocalDate? = null,
     val currentProgramDay: Int = 1,
     val contentVersion: Int = 0,
-    val lastSeenDayComplete: LocalDate? = null
+    val lastSeenDayComplete: LocalDate? = null,
+    val displayName: String = ""
 ) {
     init {
         require(currentProgramDay >= 1)

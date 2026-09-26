@@ -450,7 +450,7 @@ sealed interface SettingValue {
 }
 enum class LanguageChoice { SYSTEM, EN, RU, DE, ES }
 enum class ResetTier { PROGRAM, ALL }
-enum class ExportRange { MONTH, ALL }
+enum class ExportRange { MONTH, YEAR, ALL }
 enum class NotificationType { MORNING, FOCUS, REVIEW, EVENING, HABIT }
 enum class SuppressionReason {
     PERMISSION_DENIED,

@@ -24,6 +24,8 @@ import com.wivernz.itera.feature.onboarding.GoalsRoute
 import com.wivernz.itera.feature.onboarding.OnboardingViewModel
 import com.wivernz.itera.feature.onboarding.RhythmRoute
 import com.wivernz.itera.feature.onboarding.WelcomeRoute
+import com.wivernz.itera.feature.progress.HistoryRoute
+import com.wivernz.itera.feature.progress.ProgressRoute
 import com.wivernz.itera.feature.reflection.ReflectionRoute
 import com.wivernz.itera.feature.today.TodayRoute
 import com.wivernz.itera.feature.today.TodayTarget
@@ -32,11 +34,20 @@ import com.wivernz.itera.feature.train.TechniqueDetailEffect
 import com.wivernz.itera.feature.train.TechniqueDetailRoute
 import com.wivernz.itera.feature.train.TrainEffect
 import com.wivernz.itera.feature.train.TrainRoute
+import com.wivernz.itera.feature.you.ExportRoute
+import com.wivernz.itera.feature.you.YouRoute
 
 /** Production destination content. Routes owned by later milestones keep the milestone 003 placeholder. */
 @Composable
 fun AppDestination(route: AppRoute, actions: NavigationActions) {
     when (route) {
+        Progress -> ProgressRoute(hiltViewModel(), {
+            actions.navigate(History)
+        }, { actions.navigate(Library) })
+        History, is HistoryDate -> HistoryRoute(hiltViewModel(), actions.back)
+        You -> YouRoute(hiltViewModel(), actions.reset) { dismiss ->
+            ExportRoute(hiltViewModel(), dismiss)
+        }
         Welcome -> WelcomeRoute(
             onboardingViewModel(),
             onStart = { actions.navigate(Goals) },
@@ -51,6 +62,7 @@ fun AppDestination(route: AppRoute, actions: NavigationActions) {
                 when (effect) {
                     TrainEffect.Library -> Library
                     TrainEffect.History -> History
+                    is TrainEffect.HistoryDay -> HistoryDate(effect.date.toString())
                     is TrainEffect.Exercise -> {
                         val a = effect.activity
                         when {
@@ -121,7 +133,6 @@ fun AppDestination(route: AppRoute, actions: NavigationActions) {
             onClose = actions.back,
             onDone = actions.backToToday
         )
-        else -> PlaceholderRoute(route, actions)
     }
 }
 

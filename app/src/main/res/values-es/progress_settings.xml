@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="coach_later">IA · más adelante</string>
+<string name="coach_clear">Claro</string>
+<string name="coach_clear_text">La comparación con guardar una partida hace fácil imaginar las instantáneas.</string>
+<string name="coach_gap">Punto a revisar</string>
+<string name="coach_gap_text">¿Qué pasa con los cambios hechos después de la última instantánea?</string>
+<string name="coach_beginner">Un principiante podría preguntar</string>
+<string name="coach_beginner_text">«¿Y por qué no usar siempre el registro?»</string>
+<string name="progress_title">Progreso</string>
+<string name="progress_days">%1$d de los últimos %2$d días</string>
+<string name="progress_since">desde el %1$s</string>
+<string name="progress_missed_hint">Los días que faltas no reinician nada. El programa sigue donde lo dejaste.</string>
+<string name="progress_history">Historial</string>
+<string name="progress_history_sub">Notas y reflexiones</string>
+<string name="history_title">Historial</string>
+<string name="history_rest">Día de descanso. Sin entrenamiento registrado.</string>
+<string name="history_empty">Aún no hay nada. Tu primer ejercicio aparecerá aquí.</string>
+<string name="you_title">Perfil</string>
+<string name="your_name">Tu nombre</string>
+<string name="training_since">Entrenando desde el %1$s · Día %2$d</string>
+<string name="sec_rhythm">Ritmo diario</string>
+<string name="time_most_days">Tiempo la mayoría de los días</string>
+<string name="sec_program">Programa</string>
+<string name="pace">Ritmo</string>
+<string name="pace_hint">Estándar: una técnica nueva casi cada día, con repasos entre medias.</string>
+<string name="pace_gentle">Suave</string>
+<string name="pace_standard">Estándar</string>
+<string name="pace_intense">Intenso</string>
+<string name="focus_areas">Áreas prioritarias</string>
+<string name="sec_language">Idioma y región</string>
+<string name="time_format">Formato de hora</string>
+<string name="time_format_value">Según el idioma</string>
+<string name="sec_appearance">Apariencia</string>
+<string name="theme">Tema</string>
+<string name="theme_system">Sistema</string>
+<string name="theme_light">Claro</string>
+<string name="theme_dark">Oscuro</string>
+<string name="sec_notifications">Notificaciones</string>
+<string name="notif_morning">Ejercicio de la mañana</string>
+<string name="notif_focus">Sugerencias de enfoque</string>
+<string name="notif_review">Recordatorios de repaso</string>
+<string name="notif_evening">Reflexión de la noche</string>
+<string name="sec_coach">Entrenador</string>
+<string name="coach_ai">Comentarios de IA sobre tus explicaciones</string>
+<string name="sec_data">Datos</string>
+<string name="export_journal">Exportar diario</string>
+<string name="privacy">Privacidad</string>
+<string name="load_demo">Cargar datos de ejemplo (día 9)</string>
+<plurals name="practices">
+        <item quantity="one">%d práctica</item>
+        <item quantity="many">%d prácticas</item>
+        <item quantity="other">%d prácticas</item>
+    </plurals>
+</resources>

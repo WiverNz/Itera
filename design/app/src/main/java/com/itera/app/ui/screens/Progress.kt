@@ -1,5 +1,18 @@
 package com.itera.app.ui.screens
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.activity.compose.BackHandler
+import kotlinx.coroutines.launch
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -86,7 +99,7 @@ fun ProgressScreen(vm: AppViewModel, onHistory: () -> Unit, onLibrary: () -> Uni
         Column {
             Skill.entries.forEach { skill ->
                 val sc = skill.colors(c.isDark)
-                val entries = vm.log.filter { it.technique.skill == skill }
+                val entries = vm.log.filter { it.technique.skill == skill && it.date in days }
                 val count = entries.size
                 val activeDays = entries.map { it.date }.distinct().size
                 // Level = depth (practices) + regularity (distinct days), four honest steps.
@@ -124,7 +137,7 @@ fun ProgressScreen(vm: AppViewModel, onHistory: () -> Unit, onLibrary: () -> Uni
                 }
             }
         }
-        LinkRow(IteraIcons.Progress, stringResource(R.string.progress_history), stringResource(R.string.progress_history_sub), onHistory)
+        LinkRow(IteraIcons.Progress, stringResource(R.string.progress_history), pluralStringResource(R.plurals.history_activities, vm.log.size, vm.log.size), onHistory)
         LinkRow(IteraIcons.Eisenhower, stringResource(R.string.train_library), stringResource(R.string.library_sub), onLibrary)
     }
 }
@@ -136,88 +149,88 @@ fun ProgressScreen(vm: AppViewModel, onHistory: () -> Unit, onLibrary: () -> Uni
 fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
     val c = Itera.colors
     val locale = currentLocale()
-    val month = YearMonth.now()
+    var monthText by rememberSaveable { mutableStateOf(YearMonth.now().toString()) }
+    val month = YearMonth.parse(monthText)
     val today = LocalDate.now()
+    val first = maxOf(vm.startDate, month.atDay(1))
+    val last = minOf(today, month.atEndOfMonth())
+    val days = if (first > last) emptyList() else generateSequence(last) { it.minusDays(1).takeIf { d -> d >= first } }.toList()
+    val list = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    var selected by rememberSaveable { mutableStateOf<Int?>(null) }
+    val entry = selected?.let { vm.log.getOrNull(it) }
+    if (entry != null) {
+        BackHandler { selected = null }
+        ScreenColumn {
+            TopBar("", { selected = null }, IteraIcons.Back)
+            Text(stringResource(entry.technique.title), style = Itera.type.display, color = c.ink)
+            if (entry.note.isNotBlank()) Text(entry.note, style = Itera.type.userText, color = c.ink2)
+        }
+        return
+    }
     val firstDow = WeekFields.of(locale).firstDayOfWeek
     val offset = (month.atDay(1).dayOfWeek.value - firstDow.value + 7) % 7
-    val weekdays = (0 until 7).map { firstDow.plus(it.toLong()) }
     val dayFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)
-
-    ScreenColumn(gap = 16.dp) {
-        TopBar("", onBack, IteraIcons.Back)
-        Text(stringResource(R.string.history_title), style = Itera.type.display, color = c.ink)
-        Text(
-            month.format(DateTimeFormatter.ofPattern("LLLL yyyy", locale)).replaceFirstChar { it.titlecase(locale) },
-            style = Itera.type.headline, color = c.ink,
-        )
-        // calendar grid (7 columns), dots coloured by skill
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Row { weekdays.forEach { d -> Text(d.getDisplayName(TextStyle.NARROW, locale), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, textAlign = TextAlign.Center, modifier = Modifier.weight(1f)) } }
-            val cells = offset + month.lengthOfMonth()
-            val rows = (cells + 6) / 7
-            for (r in 0 until rows) {
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    for (col in 0 until 7) {
-                        val dayNum = r * 7 + col - offset + 1
-                        Box(Modifier.weight(1f).aspectRatio(0.95f), contentAlignment = Alignment.Center) {
-                            if (dayNum in 1..month.lengthOfMonth()) {
-                                val date = month.atDay(dayNum)
-                                val skills = vm.practicedOn(date)
-                                val label = date.format(dayFormat)
-                                Column(
-                                    Modifier.fillMaxWidth().padding(1.dp).clip(RoundedCornerShape(12.dp))
-                                        .background(if (skills.isNotEmpty()) c.surface else androidx.compose.ui.graphics.Color.Transparent)
-                                        .then(if (date == today) Modifier.border(2.dp, c.ink, RoundedCornerShape(12.dp)) else Modifier)
-                                        .padding(vertical = 6.dp)
-                                        .semantics { contentDescription = label },
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                                ) {
-                                    Text("$dayNum", style = Itera.type.bodySmall.copy(fontWeight = if (skills.isNotEmpty()) FontWeight.SemiBold else FontWeight.Normal),
-                                        color = if (date.isAfter(today)) c.ink3 else c.ink)
-                                    Row(Modifier.height(5.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                                        skills.take(3).forEach { s -> Box(Modifier.size(5.dp).clip(CircleShape).background(s.colors(c.isDark).content)) }
+    val monthLabel = month.format(DateTimeFormatter.ofPattern("LLLL yyyy", locale)).replaceFirstChar { it.titlecase(locale) }
+    LazyColumn(state = list, modifier = Modifier.fillMaxSize().background(c.bg).safeDrawingPadding(), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        item(key = "calendar") {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                TopBar("", onBack, IteraIcons.Back)
+                Text(stringResource(R.string.history_title), style = Itera.type.display, color = c.ink)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(monthLabel, style = Itera.type.headline, color = c.ink, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { monthText = month.minusMonths(1).toString() }, enabled = month > YearMonth.from(vm.startDate)) { Icon(IteraIcons.Back, stringResource(R.string.history_previous), tint = if (month > YearMonth.from(vm.startDate)) c.ink else c.ink3) }
+                    IconButton(onClick = { monthText = month.plusMonths(1).toString() }, enabled = month < YearMonth.from(today)) { Icon(IteraIcons.Chevron, stringResource(R.string.history_next), tint = if (month < YearMonth.from(today)) c.ink else c.ink3) }
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Row { repeat(7) { i -> Text(firstDow.plus(i.toLong()).getDisplayName(TextStyle.NARROW, locale), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, textAlign = TextAlign.Center, modifier = Modifier.weight(1f)) } }
+                    repeat((offset + month.lengthOfMonth() + 6) / 7) { row ->
+                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            repeat(7) { col ->
+                                val num = row * 7 + col - offset + 1
+                                Box(Modifier.weight(1f).aspectRatio(0.95f), contentAlignment = Alignment.Center) {
+                                    if (num in 1..month.lengthOfMonth()) {
+                                        val date = month.atDay(num)
+                                        val skills = Skill.entries.filter { it in vm.practicedOn(date) }.take(3)
+                                        Column(Modifier.fillMaxWidth().padding(1.dp).clip(RoundedCornerShape(12.dp))
+                                            .background(if (skills.isEmpty()) androidx.compose.ui.graphics.Color.Transparent else c.surface)
+                                            .then(if (date == today) Modifier.border(2.dp, c.ink, RoundedCornerShape(12.dp)) else Modifier)
+                                            .clickable(enabled = date in days) { scope.launch { list.scrollToItem(1 + days.indexOf(date)) } }
+                                            .padding(vertical = 6.dp).semantics { contentDescription = date.format(dayFormat) }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                            Text(num.toString(), style = Itera.type.bodySmall, color = if (date > today) c.ink3 else c.ink)
+                                            Row(Modifier.height(5.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) { skills.forEach { skill -> Box(Modifier.size(5.dp).clip(CircleShape).background(skill.colors(c.isDark).content)) } }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Skill.entries.forEach { s ->
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Box(Modifier.size(8.dp).clip(CircleShape).background(s.colors(c.isDark).content))
-                    Text(stringResource(s.title), style = Itera.type.caption, color = c.ink2)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Skill.entries.forEach { skill -> Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Box(Modifier.size(8.dp).clip(CircleShape).background(skill.colors(c.isDark).content))
+                        Text(stringResource(skill.title), style = Itera.type.caption, color = c.ink2)
+                    } }
                 }
+                if (vm.log.none { YearMonth.from(it.date) == month }) Text(stringResource(R.string.history_empty_month, monthLabel), style = Itera.type.bodySmall, color = c.ink2)
             }
         }
-        // log, grouped by day
-        if (vm.log.isEmpty()) {
-            Text(stringResource(R.string.history_empty), style = Itera.type.body, color = c.ink2)
-        }
-        val byDay = vm.log.groupBy { it.date }.toSortedMap(compareByDescending { it })
-        val oldest = byDay.keys.minOrNull()
-        var d = today
-        while (oldest != null && !d.isBefore(oldest)) {
-            val entries = byDay[d]
-            Text(d.format(dayFormat).replaceFirstChar { it.titlecase(locale) }, style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, modifier = Modifier.padding(top = 8.dp))
-            if (entries == null) {
-                Text(stringResource(R.string.history_rest), style = Itera.type.bodySmall, color = c.ink2)
-            } else {
-                entries.forEach { e ->
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                        TechniqueToken(e.technique, 40.dp)
+        days.forEach { date -> item(key = date.toString()) {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text(if (date == today) stringResource(R.string.nav_today) else date.format(dayFormat), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, modifier = Modifier.padding(top = 8.dp))
+                val entries = vm.log.withIndex().filter { it.value.date == date }
+                if (entries.isEmpty()) Text(stringResource(R.string.history_rest), style = Itera.type.bodySmall, color = c.ink2)
+                entries.forEach { (index, entry) ->
+                    Row(Modifier.fillMaxWidth().clickable { selected = index }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                        TechniqueToken(entry.technique, 40.dp)
                         Column(Modifier.weight(1f)) {
-                            Text(stringResource(e.technique.title), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink)
-                            if (e.note.isNotBlank()) Text(e.note, style = Itera.type.bodySmall, color = c.ink2)
+                            Text(stringResource(entry.technique.title), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink)
+                            if (entry.note.isNotBlank()) Text(entry.note, style = Itera.type.userText, color = c.ink2)
                         }
                     }
                 }
+                Divider()
             }
-            Divider()
-            d = d.minusDays(1)
-        }
+        } }
     }
 }

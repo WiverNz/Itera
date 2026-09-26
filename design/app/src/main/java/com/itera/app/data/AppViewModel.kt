@@ -45,6 +45,15 @@ class AppViewModel : ViewModel() {
         }
     }
 
+    fun resetProgram(erase: Boolean = false) {
+        log.clear(); practiceDays.clear(); integrated.clear(); completed.clear()
+        programDay = 1; startDate = LocalDate.now(); lastFeeling = null; lastNote = ""; tomorrowChange = ""; carriedChange = ""
+        if (erase) {
+            onboarded = false; focusSkills.clear(); morningTime = LocalTime.of(8, 30); eveningTime = LocalTime.of(21, 0)
+            dailyMinutes = 15; pace = 1; themeMode = ThemeMode.System
+        }
+    }
+
     fun finishOnboarding() {
         onboarded = true
     }

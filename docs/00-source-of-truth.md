@@ -366,3 +366,10 @@ Recorded while implementing the content and training engine. Each resolves a gap
 - **Recent practice.** An indexed, limited query returns the five newest completed activities for the selected technique across all months. Unreadable result payloads retain the technique name and note. No History screen work is included.
 - **Today's position.** Use today's stored plan day after completion, as Today does; preferences already point to the next program day. Move the path when the next day's plan exists.
 - **Explicit review.** The Train card can open the next due review even after the plan's automatic review slots are exhausted. Reuse an existing open activity or add one optional review activity transactionally; the automatic scheduling cap is unchanged.
+
+## Milestone 008 implementation decisions (2026-09-26)
+
+- **Reset copy.** The detailed issue references confirmation copy absent from the copy deck. Reset program says: “Delete your training history, notes, reflections and reviews and return to Day 1. Keep your settings, learning topics and habit stacks. This cannot be undone.” Erase everything says: “Delete all local training history, notes, reflections, reviews, learning topics, habit stacks and settings. Return to Welcome. This cannot be undone.” Cancel precedes the destructive action.
+- **Identity.** The optional local display name is a DataStore preference, kept by Reset program and removed by Erase everything. It is never an analytics parameter.
+- **History.** Calendar dots count completed activities only; skipped entries remain visible in the day list. The cap is three (the detailed test's mention of four is a typo). Read-only results never reuse the editable exercise result screen.
+- **Export.** Load one month at a time and stream days into the writer. The 12-month range starts one year before today plus one day; the 30-day range includes today. The 24-hour worker sweep remains with milestone 009's EventLogTrimWorker; export also removes expired cache files on use.

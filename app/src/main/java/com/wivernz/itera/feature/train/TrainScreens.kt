@@ -69,6 +69,7 @@ import com.wivernz.itera.core.designsystem.component.SectionTitle
 import com.wivernz.itera.core.designsystem.component.TechniqueToken
 import com.wivernz.itera.core.designsystem.component.TopBar
 import com.wivernz.itera.core.designsystem.component.screenInsets
+import com.wivernz.itera.core.designsystem.component.summaryText
 import com.wivernz.itera.core.designsystem.component.title
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.icon.techniqueIcon
@@ -77,8 +78,11 @@ import com.wivernz.itera.core.designsystem.theme.colors
 import com.wivernz.itera.domain.model.ExerciseType
 import com.wivernz.itera.domain.model.LevelHint
 import com.wivernz.itera.domain.model.MasteryLevel
+import com.wivernz.itera.domain.model.PracticeKind
+import com.wivernz.itera.domain.model.PracticeSummary
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.Technique
+import com.wivernz.itera.domain.model.practiceSummary
 import com.wivernz.itera.feature.exercise.runner.levelHint
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -641,33 +645,4 @@ fun TechniqueDetailScreen(
             }
         }
     }
-}
-
-@Composable
-fun summaryText(summary: PracticeSummary): String = when (summary) {
-    is PracticeSummary.Review -> stringResource(
-        when (summary.grade) {
-            com.wivernz.itera.domain.model.RecallGrade.FORGOT -> R.string.review_forgot
-            com.wivernz.itera.domain.model.RecallGrade.PARTIAL -> R.string.review_partial
-            com.wivernz.itera.domain.model.RecallGrade.SOLID -> R.string.review_solid
-        }
-    )
-    is PracticeSummary.Text -> summary.value
-    is PracticeSummary.Topic -> stringResource(R.string.detail_explained, summary.title)
-    is PracticeSummary.Habit -> stringResource(
-        R.string.detail_habit_summary,
-        summary.anchor,
-        summary.habit
-    )
-    is PracticeSummary.Count -> pluralStringResource(
-        when (summary.kind) {
-            PracticeKind.MINUTES -> R.plurals.detail_minutes
-            PracticeKind.TASKS -> R.plurals.detail_tasks
-            PracticeKind.REASONS -> R.plurals.detail_reasons
-            PracticeKind.STEPS -> R.plurals.detail_steps
-            PracticeKind.ITEMS -> R.plurals.detail_items
-        },
-        summary.count,
-        summary.count
-    )
 }

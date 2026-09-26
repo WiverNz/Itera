@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_retry">Erneut versuchen</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="settings_failed">Die Änderung konnte nicht geladen oder gespeichert werden. Bitte erneut versuchen.</string>
+    <string name="settings_add_name">Namen hinzufügen (optional)</string>
+    <string name="settings_topics">Lernthemen</string>
+    <string name="settings_topics_empty">Noch keine Themen. Füge etwas hinzu, das du lernen möchtest.</string>
+    <string name="settings_add_topic">Thema hinzufügen</string>
+    <string name="settings_topic_title">Thementitel</string>
+    <string name="settings_archive">Thema archivieren</string>
+    <string name="settings_reset">Programm zurücksetzen</string>
+    <string name="settings_erase">Alles löschen</string>
+    <string name="settings_reset_body">Trainingsverlauf, Notizen, Reflexionen und Wiederholungen löschen und zu Tag 1 zurückkehren. Einstellungen, Lernthemen und Gewohnheitsketten bleiben erhalten. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="settings_erase_body">Alle lokalen Trainingsdaten, Notizen, Reflexionen, Wiederholungen, Lernthemen, Gewohnheitsketten und Einstellungen löschen. Zur Begrüßung zurückkehren. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="settings_reset_done">Programm zurückgesetzt. Bereit für Tag 1.</string>
+    <string name="settings_erased">Alle lokalen Daten gelöscht.</string>
+    <string name="settings_working">Daten werden aktualisiert…</string>
+    <string name="pace_gentle_hint">Weniger Aufwand und Wiederholungen.</string>
+    <string name="pace_standard_hint">Ausgewogener Aufwand mit regelmäßigen Wiederholungen.</string>
+    <string name="pace_intense_hint">Mehr Wiederholungen und längere Fokuseinheiten, sobald verfügbar.</string>
+    <string name="time_24">24 Stunden</string>
+    <string name="time_12">12 Stunden</string>
+    <string name="time_system_hint">In den Android-Einstellungen ändern.</string>
+    <string name="notif_denied">Benachrichtigungen für Itera sind aus</string>
+    <string name="notif_open_settings">Einstellungen öffnen</string>
+    <string name="notif_system_hint">Die Android-Benachrichtigungseinstellungen gelten ebenfalls.</string>
+    <string name="privacy_body">Itera speichert Übungen, Notizen, Reflexionen, Lernthemen, Gewohnheiten und Einstellungen auf diesem Gerät. Nichts wird übertragen. Es gibt kein Konto und keinen Cloud-Dienst. Der Journalexport enthält deine Notizen und Reflexionen und verlässt das Gerät nur über ein von dir gewähltes Ziel.</string>
+    <string name="history_skipped">Ausgelassen</string>
+    <string name="history_empty_month">Keine Übungen im %1$s erfasst.</string>
+    <string name="history_previous">Vorheriger Monat</string>
+    <string name="history_next">Nächster Monat</string>
+    <string name="history_boundary">Keine weiteren Monate</string>
+    <string name="history_cell">%1$s, Aktivitäten: %2$d. %3$s</string>
+    <string name="export_markdown">Markdown</string>
+    <string name="export_month">Letzte 30 Tage</string>
+    <string name="export_year">Letzte 12 Monate</string>
+    <string name="export_all">Alles</string>
+    <string name="export_share">Teilen</string>
+    <string name="export_save">In Datei speichern</string>
+    <string name="export_note">Diese Datei enthält deine Notizen und Reflexionen.</string>
+    <string name="export_no_target">Keine App kann diese Datei teilen. Speichere sie stattdessen als Datei.</string>
+    <string name="export_saved">Journal gespeichert.</string>
+    <string name="export_title">Itera-Journal</string>
+    <string name="export_header">Exportiert %1$s - Tage %2$s - %3$d Aktivitäten</string>
+    <string name="export_day">Tag %1$d</string>
+    <string name="export_rest">keine Übungen erfasst</string>
+    <string name="export_techniques">Techniken</string>
+    <string name="export_columns">Technik | Fähigkeit | Stufe | Anwendungen | Tage | Erste | Letzte</string>
+    <string name="export_minutes">%1$d Min.</string>
+    <string name="export_focus">%1$d von %2$d geplanten Min.</string>
+    <string name="export_felt">empfunden: %1$s</string>
+    <string name="export_recall">Erinnerung: %1$s</string>
+    <string name="export_well">Gut gelaufen</string>
+    <string name="export_not_well">Nicht gut gelaufen</string>
+    <string name="export_tomorrow">Morgen</string>
+<plurals name="history_activities">
+<item quantity="one">%d Aktivität · Notizen und Reflexionen</item>
+<item quantity="other">%d Aktivitäten · Notizen und Reflexionen</item>
+</plurals>
+<plurals name="settings_topic_count">
+<item quantity="one">%d Thema</item>
+<item quantity="other">%d Themen</item>
+</plurals>
+</resources>

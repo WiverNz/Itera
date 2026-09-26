@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="settings_failed">No se pudo cargar o guardar el cambio. Inténtalo de nuevo.</string>
+    <string name="settings_add_name">Añade tu nombre (opcional)</string>
+    <string name="settings_topics">Temas de aprendizaje</string>
+    <string name="settings_topics_empty">Aún no hay temas. Añade algo que quieras aprender.</string>
+    <string name="settings_add_topic">Añadir un tema</string>
+    <string name="settings_topic_title">Título del tema</string>
+    <string name="settings_archive">Archivar tema</string>
+    <string name="settings_reset">Reiniciar programa</string>
+    <string name="settings_erase">Borrar todo</string>
+    <string name="settings_reset_body">Borra el historial de práctica, notas, reflexiones y repasos y vuelve al Día 1. Conserva los ajustes, temas de aprendizaje y cadenas de hábitos. No se puede deshacer.</string>
+    <string name="settings_erase_body">Borra todo el historial local, notas, reflexiones, repasos, temas de aprendizaje, cadenas de hábitos y ajustes. Vuelve a la bienvenida. No se puede deshacer.</string>
+    <string name="settings_reset_done">Programa reiniciado. Listo para el Día 1.</string>
+    <string name="settings_erased">Todos los datos locales se han borrado.</string>
+    <string name="settings_working">Actualizando tus datos…</string>
+    <string name="pace_gentle_hint">Menor carga, con menos repasos.</string>
+    <string name="pace_standard_hint">Carga equilibrada, con repasos regulares.</string>
+    <string name="pace_intense_hint">Más repasos y sesiones de enfoque más largas cuando estén disponibles.</string>
+    <string name="time_24">24 horas</string>
+    <string name="time_12">12 horas</string>
+    <string name="time_system_hint">Cámbialo en los ajustes de Android.</string>
+    <string name="notif_denied">Las notificaciones de Itera están desactivadas</string>
+    <string name="notif_open_settings">Abrir ajustes</string>
+    <string name="notif_system_hint">También se aplican los ajustes de notificaciones de Android.</string>
+    <string name="privacy_body">Itera guarda tus prácticas, notas, reflexiones, temas, hábitos y preferencias en este dispositivo. No se transmite nada. No hay cuenta ni servicio en la nube. La exportación contiene tus notas y reflexiones y solo sale del dispositivo mediante un destino que tú elijas.</string>
+    <string name="history_skipped">Omitido</string>
+    <string name="history_empty_month">No hay prácticas registradas en %1$s.</string>
+    <string name="history_previous">Mes anterior</string>
+    <string name="history_next">Mes siguiente</string>
+    <string name="history_boundary">No hay más meses</string>
+    <string name="history_cell">%1$s, actividades: %2$d. %3$s</string>
+    <string name="export_markdown">Markdown</string>
+    <string name="export_month">Últimos 30 días</string>
+    <string name="export_year">Últimos 12 meses</string>
+    <string name="export_all">Todo</string>
+    <string name="export_share">Compartir</string>
+    <string name="export_save">Guardar en un archivo</string>
+    <string name="export_note">Este archivo contiene tus notas y reflexiones.</string>
+    <string name="export_no_target">Ninguna app puede compartir este archivo. Guárdalo en un archivo.</string>
+    <string name="export_saved">Diario guardado.</string>
+    <string name="export_title">Diario de Itera</string>
+    <string name="export_header">Exportado %1$s - Días %2$s - %3$d actividades</string>
+    <string name="export_day">Día %1$d</string>
+    <string name="export_rest">sin práctica registrada</string>
+    <string name="export_techniques">Técnicas</string>
+    <string name="export_columns">Técnica | Habilidad | Nivel | Usos | Días | Primera | Última</string>
+    <string name="export_minutes">%1$d min</string>
+    <string name="export_focus">%1$d min de %2$d previstos</string>
+    <string name="export_felt">sensación: %1$s</string>
+    <string name="export_recall">recuerdo: %1$s</string>
+    <string name="export_well">Salió bien</string>
+    <string name="export_not_well">No salió bien</string>
+    <string name="export_tomorrow">Mañana</string>
+<plurals name="history_activities">
+<item quantity="one">%d actividad · notas y reflexiones</item>
+<item quantity="other">%d actividades · notas y reflexiones</item>
+</plurals>
+<plurals name="settings_topic_count">
+<item quantity="one">%d tema</item>
+<item quantity="other">%d temas</item>
+</plurals>
+</resources>

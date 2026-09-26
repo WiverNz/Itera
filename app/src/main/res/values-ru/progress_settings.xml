@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="coach_later">ИИ · позже</string>
+<string name="coach_clear">Понятно</string>
+<string name="coach_clear_text">Сравнение с сохранением в игре хорошо объясняет снапшоты.</string>
+<string name="coach_gap">Стоит проверить</string>
+<string name="coach_gap_text">Что происходит с изменениями после последнего снапшота?</string>
+<string name="coach_beginner">Новичок мог бы спросить</string>
+<string name="coach_beginner_text">«А почему бы тогда всегда не использовать журнал?»</string>
+<string name="progress_title">Прогресс</string>
+<string name="progress_days">%1$d из последних %2$d дней</string>
+<string name="progress_since">с %1$s</string>
+<string name="progress_missed_hint">Пропущенные дни ничего не сбрасывают. Программа просто продолжится с того же места.</string>
+<string name="progress_history">История</string>
+<string name="progress_history_sub">Заметки и рефлексии</string>
+<string name="history_title">История</string>
+<string name="history_rest">День отдыха. Тренировок нет.</string>
+<string name="history_empty">Пока пусто. Здесь появится твоё первое упражнение.</string>
+<string name="you_title">Профиль</string>
+<string name="your_name">Твоё имя</string>
+<string name="training_since">Тренируешься с %1$s · День %2$d</string>
+<string name="sec_rhythm">Ритм дня</string>
+<string name="time_most_days">Время в обычный день</string>
+<string name="sec_program">Программа</string>
+<string name="pace">Темп</string>
+<string name="pace_hint">Стандартный: новая техника почти каждый день, между ними — повторения.</string>
+<string name="pace_gentle">Мягкий</string>
+<string name="pace_standard">Стандартный</string>
+<string name="pace_intense">Интенсивный</string>
+<string name="focus_areas">Приоритетные навыки</string>
+<string name="sec_language">Язык и регион</string>
+<string name="time_format">Формат времени</string>
+<string name="time_format_value">По языку</string>
+<string name="sec_appearance">Оформление</string>
+<string name="theme">Тема</string>
+<string name="theme_system">Системная</string>
+<string name="theme_light">Светлая</string>
+<string name="theme_dark">Тёмная</string>
+<string name="sec_notifications">Уведомления</string>
+<string name="notif_morning">Утреннее упражнение</string>
+<string name="notif_focus">Предложения фокус-сессий</string>
+<string name="notif_review">Напоминания о повторении</string>
+<string name="notif_evening">Вечерняя рефлексия</string>
+<string name="sec_coach">Тренер</string>
+<string name="coach_ai">ИИ-отзыв на объяснения</string>
+<string name="sec_data">Данные</string>
+<string name="export_journal">Экспорт дневника</string>
+<string name="privacy">Конфиденциальность</string>
+<string name="load_demo">Загрузить демо-данные (день 9)</string>
+<plurals name="practices">
+        <item quantity="one">%d практика</item>
+        <item quantity="few">%d практики</item>
+        <item quantity="many">%d практик</item>
+        <item quantity="other">%d практики</item>
+    </plurals>
+</resources>

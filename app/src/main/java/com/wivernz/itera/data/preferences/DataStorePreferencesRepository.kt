@@ -3,6 +3,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.wivernz.itera.core.common.Logger
 import com.wivernz.itera.domain.model.ProgramPace
 import com.wivernz.itera.domain.model.Skill
@@ -36,6 +37,7 @@ class DataStorePreferencesRepository @Inject constructor(
     override suspend fun update(transform: (UserPreferences) -> UserPreferences) {
         store.edit { prefs ->
             val value = transform(read(prefs))
+            prefs[stringPreferencesKey("display_name")] = value.displayName
             prefs[onboardingCompletedKey] = value.onboardingCompleted
             prefs[focusAreasKey] = value.focusAreas.map { it.name }.toSet()
             prefs[morningTimeKey] = value.morningTime.let { it.hour * 60 + it.minute }
@@ -66,6 +68,7 @@ class DataStorePreferencesRepository @Inject constructor(
         store.edit { it.clear() }
     }
     private fun read(prefs: Preferences): UserPreferences = UserPreferences(
+        displayName = prefs[stringPreferencesKey("display_name")] ?: "",
         onboardingCompleted = prefs[onboardingCompletedKey] ?: false,
         focusAreas =
         (

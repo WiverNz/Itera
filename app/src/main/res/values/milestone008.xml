@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_retry">Try again</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="settings_failed">Could not load or save this change. Please try again.</string>
+    <string name="settings_add_name">Add your name (optional)</string>
+    <string name="settings_topics">Learning topics</string>
+    <string name="settings_topics_empty">No topics yet. Add something you want to learn.</string>
+    <string name="settings_add_topic">Add a topic</string>
+    <string name="settings_topic_title">Topic title</string>
+    <string name="settings_archive">Archive topic</string>
+    <string name="settings_reset">Reset program</string>
+    <string name="settings_erase">Erase everything</string>
+    <string name="settings_reset_body">Delete your training history, notes, reflections and reviews and return to Day 1. Keep your settings, learning topics and habit stacks. This cannot be undone.</string>
+    <string name="settings_erase_body">Delete all local training history, notes, reflections, reviews, learning topics, habit stacks and settings. Return to Welcome. This cannot be undone.</string>
+    <string name="settings_reset_done">Program reset. Ready for Day 1.</string>
+    <string name="settings_erased">All local data erased.</string>
+    <string name="settings_working">Updating your data…</string>
+    <string name="pace_gentle_hint">A lighter workload, with fewer reviews.</string>
+    <string name="pace_standard_hint">A balanced workload, with regular reviews.</string>
+    <string name="pace_intense_hint">More reviews and longer focus sessions when available.</string>
+    <string name="time_24">24-hour</string>
+    <string name="time_12">12-hour</string>
+    <string name="time_system_hint">Change this in Android settings.</string>
+    <string name="notif_denied">Notifications are off for Itera</string>
+    <string name="notif_open_settings">Open settings</string>
+    <string name="notif_system_hint">Android notification settings also apply.</string>
+    <string name="privacy_body">Itera stores your practice, notes, reflections, learning topics, habits and preferences on this device. Nothing is transmitted. There is no account or cloud service. Journal exports contain your notes and reflections and leave the device only through a destination you choose.</string>
+    <string name="history_skipped">Skipped</string>
+    <string name="history_empty_month">No training logged in %1$s.</string>
+    <string name="history_previous">Previous month</string>
+    <string name="history_next">Next month</string>
+    <string name="history_boundary">No further months</string>
+    <string name="history_cell">%1$s, activities: %2$d. %3$s</string>
+    <string name="export_markdown">Markdown</string>
+    <string name="export_month">Last 30 days</string>
+    <string name="export_year">Last 12 months</string>
+    <string name="export_all">Everything</string>
+    <string name="export_share">Share</string>
+    <string name="export_save">Save to a file</string>
+    <string name="export_note">This file contains your notes and reflections.</string>
+    <string name="export_no_target">No app can share this file. Save to a file instead.</string>
+    <string name="export_saved">Journal saved.</string>
+    <string name="export_title">Itera journal</string>
+    <string name="export_header">Exported %1$s - Days %2$s - %3$d activities</string>
+    <string name="export_day">Day %1$d</string>
+    <string name="export_rest">no training logged</string>
+    <string name="export_techniques">Techniques</string>
+    <string name="export_columns">Technique | Skill | Level | Uses | Days | First | Last</string>
+    <string name="export_minutes">%1$d min</string>
+    <string name="export_focus">%1$d min of %2$d planned</string>
+    <string name="export_felt">felt %1$s</string>
+    <string name="export_recall">recall: %1$s</string>
+    <string name="export_well">Went well</string>
+    <string name="export_not_well">Didn’t go well</string>
+    <string name="export_tomorrow">Tomorrow</string>
+<plurals name="history_activities">
+<item quantity="one">%d activity · notes and reflections</item>
+<item quantity="other">%d activities · notes and reflections</item>
+</plurals>
+<plurals name="settings_topic_count">
+<item quantity="one">%d topic</item>
+<item quantity="other">%d topics</item>
+</plurals>
+</resources>

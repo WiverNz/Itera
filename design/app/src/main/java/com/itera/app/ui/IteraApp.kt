@@ -197,7 +197,7 @@ fun IteraApp(vm: AppViewModel) {
             composable(Routes.PROGRESS) {
                 ProgressScreen(vm, onHistory = { nav.navigate(Routes.HISTORY) }, onLibrary = { nav.navigate(Routes.LIBRARY) })
             }
-            composable(Routes.YOU) { ProfileScreen(vm) }
+            composable(Routes.YOU) { ProfileScreen(vm) { erased -> nav.navigate(if (erased) Routes.WELCOME else Routes.TODAY) { popUpTo(nav.graph.id) { inclusive = true } } } }
 
             // secondary
             composable(Routes.LIBRARY) {

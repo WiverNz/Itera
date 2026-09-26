@@ -47,6 +47,10 @@ data object Library : AppRoute
 data object History : AppRoute
 
 @Serializable
+@SerialName("HistoryDate")
+data class HistoryDate(val selectedDate: String) : AppRoute
+
+@Serializable
 @SerialName("TwoMinute")
 data class TwoMinute(val activityId: Long) : AppRoute
 

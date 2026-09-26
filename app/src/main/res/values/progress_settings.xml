@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="coach_later">AI · later</string>
+<string name="coach_clear">Clear</string>
+<string name="coach_clear_text">The “saving a game” comparison makes snapshots easy to picture.</string>
+<string name="coach_gap">Gap to check</string>
+<string name="coach_gap_text">What happens to changes made after the last snapshot?</string>
+<string name="coach_beginner">A beginner might ask</string>
+<string name="coach_beginner_text">“So why not just always use the log?”</string>
+<string name="progress_title">Progress</string>
+<string name="progress_days">%1$d of the last %2$d days</string>
+<string name="progress_since">since %1$s</string>
+<string name="progress_missed_hint">Missed days don’t reset anything. The program simply continues where you left off.</string>
+<string name="progress_history">History</string>
+<string name="progress_history_sub">Notes and reflections</string>
+<string name="history_title">History</string>
+<string name="history_rest">Rest day. No training logged.</string>
+<string name="history_empty">Nothing logged yet. Your first exercise will appear here.</string>
+<string name="you_title">You</string>
+<string name="your_name">Your name</string>
+<string name="training_since">Training since %1$s · Day %2$d</string>
+<string name="sec_rhythm">Daily rhythm</string>
+<string name="time_most_days">Time on most days</string>
+<string name="sec_program">Program</string>
+<string name="pace">Pace</string>
+<string name="pace_hint">Standard: a new technique on most days, reviews in between.</string>
+<string name="pace_gentle">Gentle</string>
+<string name="pace_standard">Standard</string>
+<string name="pace_intense">Intense</string>
+<string name="focus_areas">Focus areas</string>
+<string name="sec_language">Language &amp; region</string>
+<string name="time_format">Time format</string>
+<string name="time_format_value">From language</string>
+<string name="sec_appearance">Appearance</string>
+<string name="theme">Theme</string>
+<string name="theme_system">System</string>
+<string name="theme_light">Light</string>
+<string name="theme_dark">Dark</string>
+<string name="sec_notifications">Notifications</string>
+<string name="notif_morning">Morning exercise</string>
+<string name="notif_focus">Focus suggestions</string>
+<string name="notif_review">Review reminders</string>
+<string name="notif_evening">Evening reflection</string>
+<string name="sec_coach">Coach</string>
+<string name="coach_ai">AI feedback on explanations</string>
+<string name="sec_data">Data</string>
+<string name="export_journal">Export journal</string>
+<string name="privacy">Privacy</string>
+<string name="load_demo">Load demo data (Day 9)</string>
+<plurals name="practices">
+        <item quantity="one">%d practice</item>
+        <item quantity="other">%d practices</item>
+    </plurals>
+</resources>

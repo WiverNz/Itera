@@ -69,6 +69,7 @@ sealed interface TrainUiEvent {
 sealed interface TrainEffect {
     data class Exercise(val activity: PlanActivity) : TrainEffect
     data object History : TrainEffect
+    data class HistoryDay(val date: LocalDate) : TrainEffect
     data object Library : TrainEffect
 }
 fun trainNodes(
@@ -166,7 +167,13 @@ class TrainViewModel @Inject constructor(
                 if (event.day <
                     state.value.programDay
                 ) {
-                    viewModelScope.launch { channel.send(TrainEffect.History) }
+                    viewModelScope.launch {
+                        val date = plans.daysBefore(LocalDate.now(clock)).lastOrNull {
+                            it.programDay ==
+                                event.day
+                        }?.date
+                        channel.send(date?.let(TrainEffect::HistoryDay) ?: TrainEffect.History)
+                    }
                 } else if (event.day == state.value.programDay) {
                     open(false)
                 }

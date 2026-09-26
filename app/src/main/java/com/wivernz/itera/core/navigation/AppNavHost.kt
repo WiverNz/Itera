@@ -60,7 +60,8 @@ class NavigationActions(
     val back: () -> Unit,
     val finishOnboarding: () -> Unit,
     val backToToday: () -> Unit,
-    val showResult: (ExerciseResult) -> Unit
+    val showResult: (ExerciseResult) -> Unit,
+    val reset: (Boolean) -> Unit = {}
 )
 
 /** Injectable destination content keeps shell tests independent of feature repositories. */
@@ -99,7 +100,15 @@ fun AppNavHost(
             backToToday = { nav.backToToday() },
             // The result sits directly on Today, whether the exercise came through its intro or not, so back
             // never re-enters the exercise.
-            showResult = { result -> nav.navigate(result) { popUpTo<Today> { inclusive = false } } }
+            showResult = { result ->
+                nav.navigate(result) { popUpTo<Today> { inclusive = false } }
+            },
+            reset = { erased ->
+                nav.navigate(if (erased) Welcome else Today) {
+                    popUpTo(nav.graph.id) { inclusive = true }
+                    launchSingleTop = true
+                }
+            }
         )
     }
     LaunchedEffect(pendingDeepLink, onboardingCompleted, entry != null) {
@@ -149,6 +158,7 @@ fun AppNavHost(
             composable<You> { destination(You, actions) }
             composable<Library> { destination(Library, actions) }
             composable<History> { destination(History, actions) }
+            composable<HistoryDate> { destination(it.toRoute<HistoryDate>(), actions) }
             composable<TwoMinute> { entry ->
                 destination(entry.toRoute<TwoMinute>(), actions)
             }

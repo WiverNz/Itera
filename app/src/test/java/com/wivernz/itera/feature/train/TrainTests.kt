@@ -8,12 +8,15 @@ import com.wivernz.itera.domain.model.ActivityResult
 import com.wivernz.itera.domain.model.ActivitySource
 import com.wivernz.itera.domain.model.ActivityState
 import com.wivernz.itera.domain.model.MasteryLevel
+import com.wivernz.itera.domain.model.PracticeKind
+import com.wivernz.itera.domain.model.PracticeSummary
 import com.wivernz.itera.domain.model.RecallGrade
 import com.wivernz.itera.domain.model.ReviewItem
 import com.wivernz.itera.domain.model.ReviewState
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.Technique
 import com.wivernz.itera.domain.model.TechniqueId
+import com.wivernz.itera.domain.model.practiceSummary
 import com.wivernz.itera.domain.repository.TechniqueCatalogRepository
 import com.wivernz.itera.feature.MainDispatcherRule
 import com.wivernz.itera.feature.await

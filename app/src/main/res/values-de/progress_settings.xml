@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="coach_later">KI · später</string>
+<string name="coach_clear">Verständlich</string>
+<string name="coach_clear_text">Der Vergleich mit einem Spielstand macht Snapshots leicht vorstellbar.</string>
+<string name="coach_gap">Lücke prüfen</string>
+<string name="coach_gap_text">Was passiert mit Änderungen nach dem letzten Snapshot?</string>
+<string name="coach_beginner">Ein Anfänger könnte fragen</string>
+<string name="coach_beginner_text">„Warum dann nicht immer das Log verwenden?“</string>
+<string name="progress_title">Fortschritt</string>
+<string name="progress_days">%1$d der letzten %2$d Tage</string>
+<string name="progress_since">seit %1$s</string>
+<string name="progress_missed_hint">Verpasste Tage setzen nichts zurück. Das Programm geht einfach dort weiter, wo du aufgehört hast.</string>
+<string name="progress_history">Verlauf</string>
+<string name="progress_history_sub">Notizen und Reflexionen</string>
+<string name="history_title">Verlauf</string>
+<string name="history_rest">Ruhetag. Kein Training eingetragen.</string>
+<string name="history_empty">Noch nichts eingetragen. Deine erste Übung erscheint hier.</string>
+<string name="you_title">Profil</string>
+<string name="your_name">Dein Name</string>
+<string name="training_since">Im Training seit %1$s · Tag %2$d</string>
+<string name="sec_rhythm">Tagesrhythmus</string>
+<string name="time_most_days">Zeit an den meisten Tagen</string>
+<string name="sec_program">Programm</string>
+<string name="pace">Tempo</string>
+<string name="pace_hint">Standard: an den meisten Tagen eine neue Technik, dazwischen Wiederholungen.</string>
+<string name="pace_gentle">Sanft</string>
+<string name="pace_standard">Standard</string>
+<string name="pace_intense">Intensiv</string>
+<string name="focus_areas">Schwerpunkte</string>
+<string name="sec_language">Sprache &amp; Region</string>
+<string name="time_format">Zeitformat</string>
+<string name="time_format_value">Nach Sprache</string>
+<string name="sec_appearance">Darstellung</string>
+<string name="theme">Design</string>
+<string name="theme_system">System</string>
+<string name="theme_light">Hell</string>
+<string name="theme_dark">Dunkel</string>
+<string name="sec_notifications">Benachrichtigungen</string>
+<string name="notif_morning">Morgenübung</string>
+<string name="notif_focus">Fokus-Vorschläge</string>
+<string name="notif_review">Wiederholungs-Erinnerungen</string>
+<string name="notif_evening">Abendreflexion</string>
+<string name="sec_coach">Coach</string>
+<string name="coach_ai">KI-Feedback zu Erklärungen</string>
+<string name="sec_data">Daten</string>
+<string name="export_journal">Journal exportieren</string>
+<string name="privacy">Datenschutz</string>
+<string name="load_demo">Demodaten laden (Tag 9)</string>
+<plurals name="practices">
+        <item quantity="one">%d Übung</item>
+        <item quantity="other">%d Übungen</item>
+    </plurals>
+</resources>
