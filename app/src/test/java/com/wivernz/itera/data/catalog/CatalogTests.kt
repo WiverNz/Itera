@@ -33,6 +33,26 @@ private fun shipped(): ParsedCatalog = CatalogParser.parse(
 /** The eight assertions of docs/data/04 section 6, against the real assets. */
 @RunWith(RobolectricTestRunner::class)
 class CatalogValidationTest {
+    @Test fun dynamicallyResolvedResourcesAreRetainedInRelease() {
+        val document = javax.xml.parsers.DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder().parse(File("src/main/res/raw/com_wivernz_itera_catalog_keep.xml"))
+        val patterns = document.documentElement.getAttribute("tools:keep").split(',').map {
+            Regex(Regex.escape(it.trim()).replace("*", "\\E.*\\Q"))
+        }
+        val catalog = shipped()
+        val resources = CatalogKeys.stringKeys(catalog).map { "@string/$it" } +
+            CatalogKeys.arrayKeys(catalog).map { "@array/$it" }
+        assertTrue(resources.isNotEmpty())
+        resources.forEach { key ->
+            assertTrue(
+                "Resource loaded by name would be removed: $key",
+                patterns.any {
+                    it.matches(key)
+                }
+            )
+        }
+    }
+
     @Test fun shippedCatalogPassesEveryAssertionInAllFourLanguages() {
         val catalog = shipped()
         val context = ApplicationProvider.getApplicationContext<Context>()

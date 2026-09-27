@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CatalogKeys derives these names from bundled JSON. Resource shrinking cannot infer them. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@string/t_*,@string/exercise_*,@string/combination_day*,@array/exercise_*" />
