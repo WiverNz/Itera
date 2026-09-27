@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -179,8 +180,8 @@ fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
                 Text(stringResource(R.string.history_title), style = Itera.type.display, color = c.ink)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(monthLabel, style = Itera.type.headline, color = c.ink, modifier = Modifier.weight(1f))
-                    IconButton(onClick = { monthText = month.minusMonths(1).toString() }, enabled = month > YearMonth.from(vm.startDate)) { Icon(IteraIcons.Back, stringResource(R.string.history_previous), tint = if (month > YearMonth.from(vm.startDate)) c.ink else c.ink3) }
-                    IconButton(onClick = { monthText = month.plusMonths(1).toString() }, enabled = month < YearMonth.from(today)) { Icon(IteraIcons.Chevron, stringResource(R.string.history_next), tint = if (month < YearMonth.from(today)) c.ink else c.ink3) }
+                    IconButton(modifier = Modifier.size(44.dp), onClick = { monthText = month.minusMonths(1).toString() }, enabled = month > YearMonth.from(vm.startDate)) { Icon(IteraIcons.Back, stringResource(R.string.history_previous), tint = if (month > YearMonth.from(vm.startDate)) c.ink else c.ink3) }
+                    IconButton(modifier = Modifier.size(44.dp), onClick = { monthText = month.plusMonths(1).toString() }, enabled = month < YearMonth.from(today)) { Icon(IteraIcons.Chevron, stringResource(R.string.history_next), tint = if (month < YearMonth.from(today)) c.ink else c.ink3) }
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Row { repeat(7) { i -> Text(firstDow.plus(i.toLong()).getDisplayName(TextStyle.NARROW, locale), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, textAlign = TextAlign.Center, modifier = Modifier.weight(1f)) } }
@@ -192,7 +193,7 @@ fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
                                     if (num in 1..month.lengthOfMonth()) {
                                         val date = month.atDay(num)
                                         val skills = Skill.entries.filter { it in vm.practicedOn(date) }.take(3)
-                                        Column(Modifier.fillMaxWidth().padding(1.dp).clip(RoundedCornerShape(12.dp))
+                                        Column(Modifier.fillMaxWidth().padding(1.dp).heightIn(min = 44.dp).clip(RoundedCornerShape(12.dp))
                                             .background(if (skills.isEmpty()) androidx.compose.ui.graphics.Color.Transparent else c.surface)
                                             .then(if (date == today) Modifier.border(2.dp, c.ink, RoundedCornerShape(12.dp)) else Modifier)
                                             .clickable(enabled = date in days) { scope.launch { list.scrollToItem(1 + days.indexOf(date)) } }

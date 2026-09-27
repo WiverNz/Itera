@@ -22,6 +22,7 @@ fun TrainRoute(vm: TrainViewModel, navigate: (TrainEffect) -> Unit) {
 fun LibraryRoute(vm: LibraryViewModel, onBack: () -> Unit, onTechnique: (TechniqueId) -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
     ObserveEffects(vm.effects, onTechnique)
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.onEvent(LibraryUiEvent.Retry) }
     LibraryScreen(state, vm::onEvent, onBack)
 }
 

@@ -12,11 +12,30 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ReminderReceiver : BroadcastReceiver() {
     @Inject lateinit var scheduler: ReminderScheduler
+
+    @Inject lateinit var logger: com.wivernz.itera.core.common.Logger
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action !in setOf(Intent.ACTION_BOOT_COMPLETED, Intent.ACTION_MY_PACKAGE_REPLACED, Intent.ACTION_TIMEZONE_CHANGED, Intent.ACTION_TIME_CHANGED)) return
+        if (intent.action !in
+            setOf(
+                Intent.ACTION_BOOT_COMPLETED,
+                Intent.ACTION_MY_PACKAGE_REPLACED,
+                Intent.ACTION_TIMEZONE_CHANGED,
+                Intent.ACTION_TIME_CHANGED
+            )
+        ) {
+            return
+        }
         val pending = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
-            try { scheduler.rescheduleAll() } finally { pending.finish() }
+            try {
+                scheduler.rescheduleAll()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                logger.w("ReminderReceiver", "Reminder rescheduling deferred until next app resume")
+            } finally {
+                pending.finish()
+            }
         }
     }
 }

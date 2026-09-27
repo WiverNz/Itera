@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
@@ -28,7 +30,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -257,7 +263,19 @@ private fun Sentence(state: HabitStackUiState, actions: HabitStackActions) {
         text,
         style = Itera.type.title.copy(lineHeight = Itera.type.title.fontSize * 1.4f),
         color = c.ink,
-        modifier = Modifier.testTag("HabitSentence")
+        modifier = Modifier.testTag("HabitSentence").clearAndSetSemantics {
+            this.text = androidx.compose.ui.text.AnnotatedString(sentence)
+            customActions = listOf(
+                CustomAccessibilityAction(anchorA11y) {
+                    actions.edit(StackSlot.ANCHOR)
+                    true
+                },
+                CustomAccessibilityAction(habitA11y) {
+                    actions.edit(StackSlot.HABIT)
+                    true
+                }
+            )
+        }
     )
 }
 
@@ -325,6 +343,13 @@ private fun NudgeRow(state: HabitStackUiState, actions: HabitStackActions, onPic
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Row(
+            modifier = Modifier.fillMaxWidth().heightIn(
+                min = 44.dp
+            ).toggleable(
+                state.nudgeEnabled,
+                role = Role.Switch,
+                onValueChange = actions.nudge
+            ).testTag("NudgeSwitch"),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
@@ -332,8 +357,7 @@ private fun NudgeRow(state: HabitStackUiState, actions: HabitStackActions, onPic
             Text(label, style = Itera.type.body, color = c.ink, modifier = Modifier.weight(1f))
             Switch(
                 checked = state.nudgeEnabled,
-                onCheckedChange = actions.nudge,
-                modifier = Modifier.testTag("NudgeSwitch"),
+                onCheckedChange = null,
                 colors = SwitchDefaults.colors(
                     checkedTrackColor = sc.content,
                     checkedThumbColor = c.surface,

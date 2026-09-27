@@ -23,7 +23,10 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,38 +35,82 @@ import org.robolectric.Shadows.shadowOf
 
 class NotificationSuppressionTest {
     private val now = Instant.parse("2026-09-27T12:00:00Z")
-    private fun check(type: NotificationType, facts: ReminderFacts, reason: SuppressionReason?) = assertEquals(reason, ReminderPolicy.suppression(type, facts, now))
+    private fun check(type: NotificationType, facts: ReminderFacts, reason: SuppressionReason?) =
+        assertEquals(reason, ReminderPolicy.suppression(type, facts, now))
+
     @Test fun permissionAndTogglesApplyToEveryType() {
         NotificationType.entries.forEach {
             check(it, ReminderFacts(permitted = false), SuppressionReason.PERMISSION_DENIED)
             check(it, ReminderFacts(enabled = false), SuppressionReason.DISABLED)
         }
     }
+
     @Test fun foregroundAndFocusSuppressEveryType() {
         NotificationType.entries.forEach {
             check(it, ReminderFacts(foreground = true), SuppressionReason.FOREGROUND)
             check(it, ReminderFacts(focusRunning = true), SuppressionReason.FOCUS_RUNNING)
         }
     }
+
     @Test fun completedSkippedExpiredAndMissingTargetsNeverPost() {
-        listOf(ActivityState.COMPLETED, ActivityState.SKIPPED, ActivityState.EXPIRED, null).forEach {
-            check(NotificationType.MORNING, ReminderFacts(state = it), SuppressionReason.ALREADY_COMPLETE)
-            check(NotificationType.EVENING, ReminderFacts(state = it), SuppressionReason.ALREADY_COMPLETE)
+        listOf(
+            ActivityState.COMPLETED,
+            ActivityState.SKIPPED,
+            ActivityState.EXPIRED,
+            null
+        ).forEach {
+            check(
+                NotificationType.MORNING,
+                ReminderFacts(state = it),
+                SuppressionReason.ALREADY_COMPLETE
+            )
+            check(
+                NotificationType.EVENING,
+                ReminderFacts(state = it),
+                SuppressionReason.ALREADY_COMPLETE
+            )
         }
     }
+
     @Test fun morningInProgressAndFutureSnoozeAreSuppressed() {
-        check(NotificationType.MORNING, ReminderFacts(state = ActivityState.IN_PROGRESS), SuppressionReason.IN_PROGRESS)
-        check(NotificationType.MORNING, ReminderFacts(snoozedUntil = now.plusSeconds(1)), SuppressionReason.SNOOZED)
+        check(
+            NotificationType.MORNING,
+            ReminderFacts(state = ActivityState.IN_PROGRESS),
+            SuppressionReason.IN_PROGRESS
+        )
+        check(
+            NotificationType.MORNING,
+            ReminderFacts(snoozedUntil = now.plusSeconds(1)),
+            SuppressionReason.SNOOZED
+        )
         check(NotificationType.MORNING, ReminderFacts(snoozedUntil = now), null)
     }
+
     @Test fun focusRequiresAvailabilityAndNoEarlierSession() {
-        check(NotificationType.FOCUS, ReminderFacts(state = ActivityState.SCHEDULED), SuppressionReason.ALREADY_COMPLETE)
-        check(NotificationType.FOCUS, ReminderFacts(focusCompleted = true), SuppressionReason.ALREADY_COMPLETE)
+        check(
+            NotificationType.FOCUS,
+            ReminderFacts(state = ActivityState.SCHEDULED),
+            SuppressionReason.ALREADY_COMPLETE
+        )
+        check(
+            NotificationType.FOCUS,
+            ReminderFacts(focusCompleted = true),
+            SuppressionReason.ALREADY_COMPLETE
+        )
         check(NotificationType.FOCUS, ReminderFacts(), null)
     }
+
     @Test fun habitMustBeActiveAndUnlogged() {
-        check(NotificationType.HABIT, ReminderFacts(habitArchived = true), SuppressionReason.ALREADY_COMPLETE)
-        check(NotificationType.HABIT, ReminderFacts(habitLogged = true), SuppressionReason.ALREADY_COMPLETE)
+        check(
+            NotificationType.HABIT,
+            ReminderFacts(habitArchived = true),
+            SuppressionReason.ALREADY_COMPLETE
+        )
+        check(
+            NotificationType.HABIT,
+            ReminderFacts(habitLogged = true),
+            SuppressionReason.ALREADY_COMPLETE
+        )
         check(NotificationType.HABIT, ReminderFacts(state = null), null)
     }
 }
@@ -71,11 +118,22 @@ class NotificationSuppressionTest {
 class RecordingQueue : ReminderWorkQueue {
     val work = linkedMapOf<String, ReminderWork>()
     var maintained = false
-    override suspend fun replace(work: ReminderWork) { this.work[work.name] = work }
-    override suspend fun cancel(name: String) { work.remove(name) }
-    override suspend fun retain(names: Set<String>) { work.keys.retainAll(names) }
-    override suspend fun maintenance() { maintained = true }
-    override suspend fun cancelAll() { work.clear(); maintained = false }
+    override suspend fun replace(work: ReminderWork) {
+        this.work[work.name] = work
+    }
+    override suspend fun cancel(name: String) {
+        work.remove(name)
+    }
+    override suspend fun retain(names: Set<String>) {
+        work.keys.retainAll(names)
+    }
+    override suspend fun maintenance() {
+        maintained = true
+    }
+    override suspend fun cancelAll() {
+        work.clear()
+        maintained = false
+    }
 }
 
 open class ReminderTestBase {
@@ -85,6 +143,7 @@ open class ReminderTestBase {
     lateinit var notifier: IteraNotifier
     lateinit var queue: RecordingQueue
     lateinit var scheduler: WorkReminderScheduler
+
     @Before fun setup() {
         h = EngineHarness()
         context = ApplicationProvider.getApplicationContext()
@@ -92,10 +151,25 @@ open class ReminderTestBase {
         environment = ReminderEnvironment(context)
         notifier = IteraNotifier(context, environment, h.analytics)
         queue = RecordingQueue()
-        scheduler = WorkReminderScheduler(queue, h.prefs, h.plans, h.db.habitStackDao(), environment, notifier, h.analytics, h.clock)
-        shadowOf(context.getSystemService(NotificationManager::class.java)).setNotificationsEnabled(true)
+        scheduler =
+            WorkReminderScheduler(
+                queue,
+                h.prefs,
+                h.plans,
+                h.db.habitStackDao(),
+                environment,
+                notifier,
+                h.analytics,
+                h.clock
+            )
+        shadowOf(
+            context.getSystemService(NotificationManager::class.java)
+        ).setNotificationsEnabled(true)
     }
-    @After fun close() { h.close() }
+
+    @After fun close() {
+        h.close()
+    }
 }
 
 @RunWith(RobolectricTestRunner::class)
@@ -107,7 +181,14 @@ class ReminderSchedulerTest : ReminderTestBase() {
         scheduler.rescheduleAll()
         assertEquals(first, queue.work)
         assertTrue(first.keys.containsAll(listOf("reminder_morning", "reminder_evening")))
-        h.prefs.update { it.copy(notifyMorning = false, notifyFocus = false, notifyReviews = false, notifyEvening = false) }
+        h.prefs.update {
+            it.copy(
+                notifyMorning = false,
+                notifyFocus = false,
+                notifyReviews = false,
+                notifyEvening = false
+            )
+        }
         scheduler.rescheduleAll()
         assertTrue(queue.work.isEmpty())
         assertTrue(queue.maintained)
@@ -118,18 +199,28 @@ class ReminderSchedulerTest : ReminderTestBase() {
         scheduler.rescheduleAll()
         assertEquals(setOf("reminder_evening"), queue.work.keys)
     }
+
     @Test fun deniedPermissionRemovesEveryReminderButKeepsMaintenance() = runBlocking {
         scheduler.rescheduleAll()
-        shadowOf(context.getSystemService(NotificationManager::class.java)).setNotificationsEnabled(false)
+        shadowOf(
+            context.getSystemService(NotificationManager::class.java)
+        ).setNotificationsEnabled(false)
         scheduler.rescheduleAll()
         assertTrue(queue.work.isEmpty())
         assertTrue(queue.maintained)
     }
+
     @Test fun wallClockChainHandlesBothDstChanges() {
         val spring = ZonedDateTime.of(2026, 3, 28, 8, 30, 0, 0, ZoneId.of("Europe/Berlin"))
-        assertEquals(23, Duration.between(spring, ReminderPolicy.next(spring, LocalTime.of(8, 30))).toHours())
+        assertEquals(
+            23,
+            Duration.between(spring, ReminderPolicy.next(spring, LocalTime.of(8, 30))).toHours()
+        )
         val fall = ZonedDateTime.of(2026, 10, 24, 8, 30, 0, 0, spring.zone)
-        assertEquals(25, Duration.between(fall, ReminderPolicy.next(fall, LocalTime.of(8, 30))).toHours())
+        assertEquals(
+            25,
+            Duration.between(fall, ReminderPolicy.next(fall, LocalTime.of(8, 30))).toHours()
+        )
     }
 }
 
@@ -153,10 +244,14 @@ class RescheduleTest : ReminderTestBase() {
 @RunWith(RobolectricTestRunner::class)
 class HabitNudgeTest : ReminderTestBase() {
     @Test fun replacingAndDisablingStackCancelsOldUniqueWork() = runBlocking {
-        val first = h.records.insertHabitStack(HabitStackRecord(null, "coffee", "read", true, LocalTime.NOON, h.clock.instant()))
+        val first = h.records.insertHabitStack(
+            HabitStackRecord(null, "coffee", "read", true, LocalTime.NOON, h.clock.instant())
+        )
         scheduler.scheduleHabitNudge(first)
         assertTrue(queue.work.containsKey("habit_nudge_$first"))
-        val second = h.records.insertHabitStack(HabitStackRecord(null, "lunch", "walk", false, LocalTime.NOON, h.clock.instant()))
+        val second = h.records.insertHabitStack(
+            HabitStackRecord(null, "lunch", "walk", false, LocalTime.NOON, h.clock.instant())
+        )
         scheduler.scheduleHabitNudge(second)
         assertFalse(queue.work.keys.any { it.startsWith("habit_nudge_") })
     }
@@ -167,8 +262,14 @@ class NotificationContentTest : ReminderTestBase() {
     @Test fun channelImportanceAndOneVisibleReminder() {
         val manager = context.getSystemService(NotificationManager::class.java)
         assertEquals(4, manager.notificationChannels.size)
-        assertEquals(NotificationManager.IMPORTANCE_DEFAULT, manager.getNotificationChannel("training").importance)
-        assertEquals(NotificationManager.IMPORTANCE_LOW, manager.getNotificationChannel("habits").importance)
+        assertEquals(
+            NotificationManager.IMPORTANCE_DEFAULT,
+            manager.getNotificationChannel("training").importance
+        )
+        assertEquals(
+            NotificationManager.IMPORTANCE_LOW,
+            manager.getNotificationChannel("habits").importance
+        )
         NotificationType.entries.forEach { type ->
             val content = ReminderContent(type, "Synthetic title", "Synthetic body", Today)
             val built = notifier.build(content)
@@ -179,6 +280,7 @@ class NotificationContentTest : ReminderTestBase() {
             assertEquals(1, manager.activeNotifications.size)
         }
     }
+
     @Test fun bodyIsSingleLineUnderSixtyCodePointsIncludingEmoji() {
         val text = IteraNotifier.shortBody("🌱".repeat(80) + "\nprivate")
         assertEquals(59, text.codePointCount(0, text.length))
@@ -196,8 +298,57 @@ class DeepLinkTest : ReminderTestBase() {
         val intro = ExerciseIntro(activity.id, activity.techniqueId.value)
         assertEquals(intro, resolver.resolve(intro))
         h.plans.updateActivityState(activity.id, ActivityState.COMPLETED)
-        assertEquals(ExerciseResult(activity.id, activity.techniqueId.value, true), resolver.resolve(intro))
+        assertEquals(
+            ExerciseResult(activity.id, activity.techniqueId.value, true),
+            resolver.resolve(intro)
+        )
         assertEquals(Today, resolver.resolve(Reflection(Long.MAX_VALUE)))
         assertEquals(Train, resolver.resolve(Review(Long.MAX_VALUE)))
+    }
+}
+
+@RunWith(RobolectricTestRunner::class)
+class ReminderDeliveryTest : ReminderTestBase() {
+    private fun delivery() = ReminderDelivery(
+        context, h.plans, h.prefs, h.focusTimer,
+        h.db.habitStackDao(), h.db.learningTopicDao(), h.reviews, notifier, environment,
+        h.analytics, h.clock
+    )
+
+    @Test fun completedProgramAndDuplicateMorningDoNotPost() = runBlocking {
+        val day = h.ensureToday()
+        val engine = delivery()
+        engine.deliver(NotificationType.MORNING, 0)
+        val manager = context.getSystemService(NotificationManager::class.java)
+        assertEquals(1, manager.activeNotifications.size)
+        engine.deliver(NotificationType.MORNING, 0)
+        assertEquals(1, h.eventNames().count { it == "notification_posted" })
+        notifier.cancelAll()
+        h.plans.updateActivityState(
+            day.activities.first {
+                it.source == ActivitySource.PROGRAM
+            }.id,
+            ActivityState.COMPLETED
+        )
+        engine.deliver(NotificationType.MORNING, 0)
+        assertTrue(manager.activeNotifications.isEmpty())
+    }
+
+    @Test fun expiredSnoozeBecomesAvailableWithoutPermissionAndRetryDoesNotPost() = runBlocking {
+        val activity = h.ensureToday().activities.first { it.source == ActivitySource.PROGRAM }
+        h.snooze(activity.id, h.clock.instant().plusSeconds(3600)).getOrThrow()
+        h.clock.advance(Duration.ofHours(3))
+        shadowOf(
+            context.getSystemService(NotificationManager::class.java)
+        ).setNotificationsEnabled(false)
+        delivery().deliver(NotificationType.SNOOZE, activity.id)
+        assertEquals(ActivityState.AVAILABLE, h.plans.activity(activity.id)?.state)
+        shadowOf(
+            context.getSystemService(NotificationManager::class.java)
+        ).setNotificationsEnabled(true)
+        delivery().deliver(NotificationType.SNOOZE, activity.id)
+        assertTrue(
+            context.getSystemService(NotificationManager::class.java).activeNotifications.isEmpty()
+        )
     }
 }

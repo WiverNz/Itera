@@ -9,7 +9,10 @@ import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.first
 
-data class ProgressionSnapshot(val mastery: Map<AnalyticsTechnique, MasteryLevel>, val skills: Map<Skill, SkillLevel>)
+data class ProgressionSnapshot(
+    val mastery: Map<AnalyticsTechnique, MasteryLevel>,
+    val skills: Map<Skill, SkillLevel>
+)
 
 /** Numeric/enumerated facts only. Diagnostic failures must not prevent completion. */
 class ProgressionEvents @Inject constructor(
@@ -19,19 +22,32 @@ class ProgressionEvents @Inject constructor(
 ) {
     suspend fun snapshot(): ProgressionSnapshot? = try {
         ProgressionSnapshot(
-            techniques().first().mapNotNull { item -> AnalyticsTechnique.of(item.techniqueId.value)?.let { it to item.level } }.toMap(),
+            techniques().first().mapNotNull { item ->
+                AnalyticsTechnique.of(item.techniqueId.value)?.let {
+                    it to
+                        item.level
+                }
+            }.toMap(),
             progress().first().skills.associate { it.skill to it.level }
         )
-    } catch (e: CancellationException) { throw e } catch (_: Exception) { null }
+    } catch (e: CancellationException) {
+        throw e
+    } catch (_: Exception) {
+        null
+    }
 
     suspend fun changed(before: ProgressionSnapshot?) {
         if (before == null) return
         val after = snapshot() ?: return
         after.mastery.forEach { (id, level) ->
-            before.mastery[id]?.takeIf { it != level }?.let { analytics.append(Event.MasteryChanged(id, it, level)) }
+            before.mastery[id]?.takeIf {
+                it != level
+            }?.let { analytics.append(Event.MasteryChanged(id, it, level)) }
         }
         after.skills.forEach { (skill, level) ->
-            before.skills[skill]?.takeIf { it != level }?.let { analytics.append(Event.SkillLevelChanged(skill, it, level)) }
+            before.skills[skill]?.takeIf {
+                it != level
+            }?.let { analytics.append(Event.SkillLevelChanged(skill, it, level)) }
         }
     }
 }

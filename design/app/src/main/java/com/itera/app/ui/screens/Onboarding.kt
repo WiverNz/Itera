@@ -296,33 +296,33 @@ fun GoalsScreen(vm: AppViewModel, onBack: () -> Unit, onNext: () -> Unit) {
 @Composable
 fun FocusAreaRows(vm: AppViewModel) {
     val c = Itera.colors
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Skill.entries.forEach { skill ->
-                val on = skill in vm.focusSkills
-                val sc = skill.colors(c.isDark)
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 72.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(c.surface)
-                        .border(2.dp, if (on) c.ink else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(20.dp))
-                        .toggleable(value = on, role = Role.Checkbox) { vm.toggleFocusSkill(skill) }
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp),
-                ) {
-                    Box(Modifier.size(40.dp).clip(RoundedCornerShape(13.dp)).background(sc.container), contentAlignment = Alignment.Center) {
-                        Box(Modifier.size(12.dp).clip(CircleShape).background(sc.content))
-                    }
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(stringResource(skill.title), style = Itera.type.label, color = c.ink)
-                        Text(stringResource(skill.description), style = Itera.type.bodySmall, color = c.ink2)
-                    }
-                    if (on) RadioDot(true)
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Skill.entries.forEach { skill ->
+            val on = skill in vm.focusSkills
+            val sc = skill.colors(c.isDark)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 72.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(c.surface)
+                    .border(2.dp, if (on) c.ink else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(20.dp))
+                    .toggleable(value = on, role = Role.Checkbox) { vm.toggleFocusSkill(skill) }
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                Box(Modifier.size(40.dp).clip(RoundedCornerShape(13.dp)).background(sc.container), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(12.dp).clip(CircleShape).background(sc.content))
                 }
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(stringResource(skill.title), style = Itera.type.label, color = c.ink)
+                    Text(stringResource(skill.description), style = Itera.type.bodySmall, color = c.ink2)
+                }
+                if (on) RadioDot(true)
             }
         }
+    }
 }
 
 @Composable

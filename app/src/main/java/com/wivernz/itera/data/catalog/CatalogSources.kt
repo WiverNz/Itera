@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:max-line-length")
+
 package com.wivernz.itera.data.catalog
 
 import android.annotation.SuppressLint
@@ -41,7 +43,9 @@ class ResourceCatalogStrings @Inject constructor(
 ) : CatalogStrings {
     private val ids = ConcurrentHashMap<String, Int>()
 
-    private val localized: Context get() = androidx.core.content.ContextCompat.getContextForLanguage(context)
+    private val localized: Context get() = androidx.core.content.ContextCompat.getContextForLanguage(
+        context
+    )
     override val locale: Locale get() = localized.resources.configuration.locales[0]
 
     override fun text(key: String): String? = id(key, "string")?.let(localized::getString)

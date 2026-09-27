@@ -30,7 +30,9 @@ open class ReminderWorker(
     private val scheduler: WorkReminderScheduler
 ) : CoroutineWorker(context, parameters) {
     override suspend fun doWork(): Result {
-        val type = NotificationType.entries.firstOrNull { it.name == inputData.getString("type") } ?: return Result.failure()
+        val type =
+            NotificationType.entries.firstOrNull { it.name == inputData.getString("type") }
+                ?: return Result.failure()
         val name = inputData.getString("name") ?: return Result.failure()
         val target = inputData.getLong("target", 0)
         return try {
@@ -39,80 +41,122 @@ open class ReminderWorker(
             if (type != NotificationType.SNOOZE) refresh()
             val deferred = delivery.deliver(type, target)
             // Enqueue is last: REPLACE may cancel this running WorkSpec, but cannot cancel the new one.
-            if (deferred != null) scheduler.enqueue(ReminderWork(name, type, deferred, target, successor = true))
-            else scheduler.next(type, target, name)
+            if (deferred !=
+                null
+            ) {
+                scheduler.enqueue(ReminderWork(name, type, deferred, target, successor = true))
+            } else {
+                scheduler.next(type, target, name)
+            }
             Result.success()
-        } catch (e: CancellationException) { throw e } catch (_: Exception) { Result.retry() }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            Result.retry()
+        }
     }
 }
 
 @HiltWorker
 class DailyPlanWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
     private val preferences: PreferencesRepository,
     private val ensure: EnsureTodayPlanUseCase
 ) : CoroutineWorker(context, parameters) {
     override suspend fun doWork(): Result = try {
         if (preferences.preferences.first().onboardingCompleted) ensure()
         Result.success()
-    } catch (e: CancellationException) { throw e } catch (_: Exception) { Result.retry() }
+    } catch (e: CancellationException) {
+        throw e
+    } catch (_: Exception) {
+        Result.retry()
+    }
 }
 
 @HiltWorker
 class EventLogTrimWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
     private val events: EventLogDao
 ) : CoroutineWorker(context, parameters) {
     override suspend fun doWork(): Result = try {
         events.trimTo(2000)
         Result.success()
-    } catch (e: CancellationException) { throw e } catch (_: Exception) { Result.retry() }
+    } catch (e: CancellationException) {
+        throw e
+    } catch (_: Exception) {
+        Result.retry()
+    }
 }
 
 @HiltWorker
 class ExportCleanupWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
     private val clock: Clock
 ) : CoroutineWorker(context, parameters) {
     override suspend fun doWork(): Result {
         val cutoff = clock.instant().minusSeconds(86400).toEpochMilli()
-        File(applicationContext.cacheDir, "export").listFiles()?.filter { it.isFile && it.lastModified() < cutoff }?.forEach { it.delete() }
+        File(applicationContext.cacheDir, "export").listFiles()?.filter {
+            it.isFile &&
+                it.lastModified() < cutoff
+        }?.forEach { it.delete() }
         return Result.success()
     }
 }
 
 @HiltWorker
 class MorningReminderWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
-    preferences: PreferencesRepository, ensure: EnsureTodayPlanUseCase,
-    refresh: RefreshAvailabilityUseCase, delivery: ReminderDelivery, scheduler: WorkReminderScheduler
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
+    preferences: PreferencesRepository,
+    ensure: EnsureTodayPlanUseCase,
+    refresh: RefreshAvailabilityUseCase,
+    delivery: ReminderDelivery,
+    scheduler: WorkReminderScheduler
 ) : ReminderWorker(context, parameters, preferences, ensure, refresh, delivery, scheduler)
 
 @HiltWorker
 class FocusSuggestionWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
-    preferences: PreferencesRepository, ensure: EnsureTodayPlanUseCase,
-    refresh: RefreshAvailabilityUseCase, delivery: ReminderDelivery, scheduler: WorkReminderScheduler
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
+    preferences: PreferencesRepository,
+    ensure: EnsureTodayPlanUseCase,
+    refresh: RefreshAvailabilityUseCase,
+    delivery: ReminderDelivery,
+    scheduler: WorkReminderScheduler
 ) : ReminderWorker(context, parameters, preferences, ensure, refresh, delivery, scheduler)
 
 @HiltWorker
 class EveningReminderWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
-    preferences: PreferencesRepository, ensure: EnsureTodayPlanUseCase,
-    refresh: RefreshAvailabilityUseCase, delivery: ReminderDelivery, scheduler: WorkReminderScheduler
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
+    preferences: PreferencesRepository,
+    ensure: EnsureTodayPlanUseCase,
+    refresh: RefreshAvailabilityUseCase,
+    delivery: ReminderDelivery,
+    scheduler: WorkReminderScheduler
 ) : ReminderWorker(context, parameters, preferences, ensure, refresh, delivery, scheduler)
 
 @HiltWorker
 class SnoozeReminderWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
-    preferences: PreferencesRepository, ensure: EnsureTodayPlanUseCase,
-    refresh: RefreshAvailabilityUseCase, delivery: ReminderDelivery, scheduler: WorkReminderScheduler
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
+    preferences: PreferencesRepository,
+    ensure: EnsureTodayPlanUseCase,
+    refresh: RefreshAvailabilityUseCase,
+    delivery: ReminderDelivery,
+    scheduler: WorkReminderScheduler
 ) : ReminderWorker(context, parameters, preferences, ensure, refresh, delivery, scheduler)
 
 @HiltWorker
 class HabitNudgeWorker @AssistedInject constructor(
-    @Assisted context: Context, @Assisted parameters: WorkerParameters,
-    preferences: PreferencesRepository, ensure: EnsureTodayPlanUseCase,
-    refresh: RefreshAvailabilityUseCase, delivery: ReminderDelivery, scheduler: WorkReminderScheduler
+    @Assisted context: Context,
+    @Assisted parameters: WorkerParameters,
+    preferences: PreferencesRepository,
+    ensure: EnsureTodayPlanUseCase,
+    refresh: RefreshAvailabilityUseCase,
+    delivery: ReminderDelivery,
+    scheduler: WorkReminderScheduler
 ) : ReminderWorker(context, parameters, preferences, ensure, refresh, delivery, scheduler)
-

@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:max-line-length")
+
 package com.wivernz.itera.core.notifications
 
 import android.content.Context
@@ -34,7 +36,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
-data class ReminderWork(val name: String, val type: NotificationType, val at: Instant, val target: Long = 0, val successor: Boolean = false)
+data class ReminderWork(
+    val name: String,
+    val type: NotificationType,
+    val at: Instant,
+    val target: Long = 0,
+    val successor: Boolean = false
+)
 
 /** Facade keeps desired work independently testable without starting a WorkManager database. */
 interface ReminderWorkQueue {
@@ -46,46 +54,93 @@ interface ReminderWorkQueue {
 }
 
 @Singleton
-class AndroidReminderWorkQueue @Inject constructor(@param:ApplicationContext private val context: Context, private val clock: Clock) : ReminderWorkQueue {
+class AndroidReminderWorkQueue @Inject constructor(
+    @param:ApplicationContext private val context: Context,
+    private val clock: Clock
+) : ReminderWorkQueue {
     private val manager get() = WorkManager.getInstance(context)
     override suspend fun replace(work: ReminderWork) {
         if (!work.successor && withContext(Dispatchers.IO) {
-            manager.getWorkInfosForUniqueWork(work.name).get().any { it.state == androidx.work.WorkInfo.State.RUNNING }
-        }) return
-        val request = OneTimeWorkRequest.Builder(when (work.type) {
-            NotificationType.MORNING, NotificationType.REVIEW -> com.wivernz.itera.core.notifications.work.MorningReminderWorker::class.java
-            NotificationType.FOCUS -> com.wivernz.itera.core.notifications.work.FocusSuggestionWorker::class.java
-            NotificationType.EVENING -> com.wivernz.itera.core.notifications.work.EveningReminderWorker::class.java
-            NotificationType.SNOOZE -> com.wivernz.itera.core.notifications.work.SnoozeReminderWorker::class.java
-            NotificationType.HABIT -> com.wivernz.itera.core.notifications.work.HabitNudgeWorker::class.java
-        })
-            .setInputData(Data.Builder().putString("type", work.type.name).putLong("target", work.target).putString("name", work.name).build())
+                manager.getWorkInfosForUniqueWork(work.name).get().any {
+                    it.state ==
+                        androidx.work.WorkInfo.State.RUNNING
+                }
+            }
+        ) {
+            return
+        }
+        val request = OneTimeWorkRequest.Builder(
+            when (work.type) {
+                NotificationType.MORNING, NotificationType.REVIEW -> com.wivernz.itera.core.notifications.work.MorningReminderWorker::class.java
+                NotificationType.FOCUS -> com.wivernz.itera.core.notifications.work.FocusSuggestionWorker::class.java
+                NotificationType.EVENING -> com.wivernz.itera.core.notifications.work.EveningReminderWorker::class.java
+                NotificationType.SNOOZE -> com.wivernz.itera.core.notifications.work.SnoozeReminderWorker::class.java
+                NotificationType.HABIT -> com.wivernz.itera.core.notifications.work.HabitNudgeWorker::class.java
+            }
+        )
+            .setInputData(
+                Data.Builder().putString(
+                    "type",
+                    work.type.name
+                ).putLong("target", work.target).putString("name", work.name).build()
+            )
             .setInitialDelay(ReminderPolicy.delay(clock.instant(), work.at))
             .addTag(REMINDERS).addTag(work.name).build()
         manager.enqueueUniqueWork(work.name, ExistingWorkPolicy.REPLACE, request)
     }
-    override suspend fun cancel(name: String) { manager.cancelUniqueWork(name) }
+    override suspend fun cancel(name: String) {
+        manager.cancelUniqueWork(name)
+    }
     override suspend fun retain(names: Set<String>) = withContext(Dispatchers.IO) {
-        manager.getWorkInfosByTag(REMINDERS).get().filter { !it.state.isFinished }.forEach { work ->
+        manager.getWorkInfosByTag(REMINDERS).get().filter {
+            !it.state.isFinished &&
+                it.state != androidx.work.WorkInfo.State.RUNNING
+        }.forEach { work ->
             if (work.tags.none { it in names }) manager.cancelWorkById(work.id)
         }
     }
     override suspend fun maintenance() {
         val now = clock.instant().atZone(ZoneId.systemDefault())
-        manager.enqueueUniquePeriodicWork("daily_plan", ExistingPeriodicWorkPolicy.UPDATE,
+        manager.enqueueUniquePeriodicWork(
+            "daily_plan",
+            ExistingPeriodicWorkPolicy.UPDATE,
             PeriodicWorkRequest.Builder(DailyPlanWorker::class.java, 1, TimeUnit.DAYS)
-                .setInitialDelay(ReminderPolicy.delay(now.toInstant(), ReminderPolicy.next(now, LocalTime.of(3, 0)).toInstant()))
-                .addTag(MAINTENANCE).build())
-        manager.enqueueUniquePeriodicWork("event_log_trim", ExistingPeriodicWorkPolicy.UPDATE,
+                .setInitialDelay(
+                    ReminderPolicy.delay(
+                        now.toInstant(),
+                        ReminderPolicy.next(now, LocalTime.of(3, 0)).toInstant()
+                    )
+                )
+                .addTag(MAINTENANCE).build()
+        )
+        manager.enqueueUniquePeriodicWork(
+            "event_log_trim",
+            ExistingPeriodicWorkPolicy.UPDATE,
             PeriodicWorkRequest.Builder(EventLogTrimWorker::class.java, 7, TimeUnit.DAYS)
-                .setConstraints(Constraints.Builder().setRequiresDeviceIdle(true).setRequiresBatteryNotLow(true).build())
-                .addTag(MAINTENANCE).build())
-        manager.enqueueUniquePeriodicWork("export_cleanup", ExistingPeriodicWorkPolicy.UPDATE,
-            PeriodicWorkRequest.Builder(ExportCleanupWorker::class.java, 1, TimeUnit.DAYS).addTag(MAINTENANCE).build())
+                .setConstraints(
+                    Constraints.Builder().setRequiresDeviceIdle(
+                        true
+                    ).setRequiresBatteryNotLow(true).build()
+                )
+                .addTag(MAINTENANCE).build()
+        )
+        manager.enqueueUniquePeriodicWork(
+            "export_cleanup",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            PeriodicWorkRequest.Builder(
+                ExportCleanupWorker::class.java,
+                1,
+                TimeUnit.DAYS
+            ).addTag(MAINTENANCE).build()
+        )
     }
     override suspend fun cancelAll() = withContext(Dispatchers.IO) {
         manager.cancelAllWorkByTag(REMINDERS).result.get()
         manager.cancelAllWorkByTag(MAINTENANCE).result.get()
+        context.getSharedPreferences(
+            "reminder_delivery",
+            Context.MODE_PRIVATE
+        ).edit().clear().commit()
         Unit
     }
     companion object {
@@ -120,28 +175,88 @@ class WorkReminderScheduler @Inject constructor(
         val day = plans.dayByDate(now.toLocalDate())
         fun next(time: LocalTime) = ReminderPolicy.next(now, time).toInstant()
         return buildList {
-            if (prefs.notifyMorning || prefs.notifyReviews) add(ReminderWork("reminder_morning", NotificationType.MORNING, next(prefs.morningTime)))
-            if (prefs.notifyEvening) add(ReminderWork("reminder_evening", NotificationType.EVENING, next(prefs.eveningTime)))
+            if (prefs.notifyMorning ||
+                prefs.notifyReviews
+            ) {
+                add(
+                    ReminderWork(
+                        "reminder_morning",
+                        NotificationType.MORNING,
+                        next(prefs.morningTime)
+                    )
+                )
+            }
+            if (prefs.notifyEvening) {
+                add(
+                    ReminderWork(
+                        "reminder_evening",
+                        NotificationType.EVENING,
+                        next(prefs.eveningTime)
+                    )
+                )
+            }
             day?.activities?.forEach { activity ->
-                if (prefs.notifyFocus && activity.source == ActivitySource.FOCUS_SUGGESTION && activity.state in setOf(ActivityState.AVAILABLE, ActivityState.SCHEDULED)) {
+                if (prefs.notifyFocus && activity.source == ActivitySource.FOCUS_SUGGESTION &&
+                    activity.state in setOf(ActivityState.AVAILABLE, ActivityState.SCHEDULED)
+                ) {
                     activity.scheduledAt?.let { time ->
                         val at = day.date.atTime(time).atZone(now.zone).toInstant()
-                        if (at.isAfter(now.toInstant())) add(ReminderWork("reminder_focus", NotificationType.FOCUS, at, activity.id))
+                        if (at.isAfter(
+                                now.toInstant()
+                            )
+                        ) {
+                            add(
+                                ReminderWork(
+                                    "reminder_focus",
+                                    NotificationType.FOCUS,
+                                    at,
+                                    activity.id
+                                )
+                            )
+                        }
                     }
                 }
-                if (prefs.notifyMorning && activity.state == ActivityState.SNOOZED) activity.snoozedUntil?.let {
-                    add(ReminderWork("snooze_${activity.id}", NotificationType.SNOOZE, it, activity.id))
+                if (prefs.notifyMorning &&
+                    activity.state == ActivityState.SNOOZED
+                ) {
+                    activity.snoozedUntil?.let {
+                        add(
+                            ReminderWork(
+                                "snooze_${activity.id}",
+                                NotificationType.SNOOZE,
+                                it,
+                                activity.id
+                            )
+                        )
+                    }
                 }
             }
             habits.observeActive().first().filter { it.nudgeEnabled }.forEach { habit ->
-                habit.nudgeTimeMinutes?.let { add(ReminderWork("habit_nudge_${habit.id}", NotificationType.HABIT, next(LocalTime.ofSecondOfDay(it * 60L)), habit.id)) }
+                habit.nudgeTimeMinutes?.let {
+                    add(
+                        ReminderWork(
+                            "habit_nudge_${habit.id}",
+                            NotificationType.HABIT,
+                            next(LocalTime.ofSecondOfDay(it * 60L)),
+                            habit.id
+                        )
+                    )
+                }
             }
         }
     }
 
     suspend fun enqueue(work: ReminderWork) {
         queue.replace(work)
-        analytics.track(Event.NotificationScheduled(work.type, ReminderPolicy.delay(clock.instant(), work.at).toMinutes().coerceAtMost(Int.MAX_VALUE.toLong()).toInt()))
+        analytics.track(
+            Event.NotificationScheduled(
+                work.type,
+                ReminderPolicy.delay(
+                    clock.instant(),
+                    work.at
+                ).toMinutes().coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+            )
+        )
     }
 
     /** Reschedule only this chain; unrelated settings and snoozes must not be disturbed. */
@@ -151,10 +266,17 @@ class WorkReminderScheduler @Inject constructor(
         enqueue(work.copy(target = target, successor = true))
     }
 
-    override suspend fun cancelAll() { queue.cancelAll(); notifier.cancelAll() }
+    override suspend fun cancelAll() {
+        queue.cancelAll()
+        notifier.cancelAll()
+    }
     override suspend fun onPlanGenerated(dayId: Long) = rescheduleAll()
     override suspend fun scheduleSnooze(activityId: Long, at: Instant) {
-        if (environment.permitted() && preferences.preferences.first().notifyMorning) enqueue(ReminderWork("snooze_$activityId", NotificationType.SNOOZE, at, activityId))
+        if (environment.permitted() &&
+            preferences.preferences.first().notifyMorning
+        ) {
+            enqueue(ReminderWork("snooze_$activityId", NotificationType.SNOOZE, at, activityId))
+        }
     }
     override suspend fun cancelForActivity(activityId: Long) {
         queue.cancel("snooze_$activityId")

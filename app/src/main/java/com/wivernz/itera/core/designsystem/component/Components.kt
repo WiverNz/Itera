@@ -253,8 +253,7 @@ fun TopBar(
             modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
             style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold),
             color = Itera.colors.ink2,
-            textAlign = TextAlign.Center,
-            maxLines = 1
+            textAlign = TextAlign.Center
         )
         Box(Modifier.widthIn(min = 44.dp), contentAlignment = Alignment.CenterEnd) { trailing() }
     }
@@ -532,8 +531,7 @@ fun MasteryLadder(
                             FontWeight.Normal
                         }
                     ),
-                    color = if (i < reached) c.ink else c.ink2,
-                    maxLines = 2
+                    color = if (i < reached) c.ink else c.ink2
                 )
             }
         }

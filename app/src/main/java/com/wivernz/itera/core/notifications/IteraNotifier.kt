@@ -20,7 +20,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-data class ReminderContent(val type: NotificationType, val title: String, val body: String, val route: AppRoute)
+data class ReminderContent(
+    val type: NotificationType,
+    val title: String,
+    val body: String,
+    val route: AppRoute
+)
 
 @Singleton
 class IteraNotifier @Inject constructor(
@@ -29,13 +34,19 @@ class IteraNotifier @Inject constructor(
     private val analytics: Analytics
 ) {
     private val manager get() = context.getSystemService(NotificationManager::class.java)
+
     // Read AppCompat's persisted locale even when a worker cold-starts the process on API 26-32.
-    fun text(id: Int, vararg args: Any): String = ContextCompat.getContextForLanguage(context).getString(id, *args)
+    fun text(id: Int, vararg args: Any): String =
+        ContextCompat.getContextForLanguage(context).getString(id, *args)
 
     @SuppressLint("DiscouragedApi")
     fun technique(id: String): String {
         val localized = ContextCompat.getContextForLanguage(context)
-        val resource = localized.resources.getIdentifier(CatalogKeys.name(id), "string", context.packageName)
+        val resource = localized.resources.getIdentifier(
+            CatalogKeys.name(id),
+            "string",
+            context.packageName
+        )
         return if (resource != 0) localized.getString(resource) else text(R.string.app_name)
     }
 
@@ -44,7 +55,12 @@ class IteraNotifier @Inject constructor(
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra(RouteCodec.EXTRA, RouteCodec.encode(content.route))
             .putExtra(TYPE_EXTRA, content.type.name)
-        val tap = PendingIntent.getActivity(context, id(content.type), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val tap = PendingIntent.getActivity(
+            context,
+            id(content.type),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         return NotificationCompat.Builder(context, channel(content.type))
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(content.title)
@@ -58,13 +74,21 @@ class IteraNotifier @Inject constructor(
 
     @Synchronized
     fun post(content: ReminderContent): Boolean {
-        if (!environment.permitted() || environment.foreground || !environment.channelEnabled(channel(content.type))) return false
+        if (!environment.permitted() || environment.foreground ||
+            !environment.channelEnabled(channel(content.type))
+        ) {
+            return false
+        }
         return try {
-            NotificationType.entries.filter { it != content.type }.forEach { manager.cancel(id(it)) }
+            NotificationType.entries.filter {
+                it != content.type
+            }.forEach { manager.cancel(id(it)) }
             manager.notify(id(content.type), build(content))
             analytics.track(Event.NotificationPosted(content.type))
             true
-        } catch (_: SecurityException) { false }
+        } catch (_: SecurityException) {
+            false
+        }
     }
 
     fun cancel(type: NotificationType) = manager.cancel(id(type))
@@ -80,7 +104,13 @@ class IteraNotifier @Inject constructor(
         }
         fun shortBody(value: String): String {
             val line = value.replace(Regex("\\s+"), " ").trim()
-            return if (line.codePointCount(0, line.length) < 60) line else line.substring(0, line.offsetByCodePoints(0, 58)) + "…"
+            return if (line.codePointCount(0, line.length) <
+                60
+            ) {
+                line
+            } else {
+                line.substring(0, line.offsetByCodePoints(0, 58)) + "…"
+            }
         }
     }
 }

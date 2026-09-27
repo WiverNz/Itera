@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -182,7 +183,7 @@ fun HistoryScreen(
                                         Column(
                                             Modifier.fillMaxWidth().padding(
                                                 1.dp
-                                            ).clip(RoundedCornerShape(12.dp))
+                                            ).heightIn(min = 44.dp).clip(RoundedCornerShape(12.dp))
                                                 .background(
                                                     if (day?.skills?.isNotEmpty() ==
                                                         true
@@ -369,7 +370,7 @@ private fun MonthButton(next: Boolean, enabled: Boolean, click: () -> Unit) {
     IconButton(
         onClick = click,
         enabled = enabled,
-        modifier = Modifier.semantics {
+        modifier = Modifier.size(44.dp).semantics {
             contentDescription =
                 label
             if (!enabled) stateDescription = disabled

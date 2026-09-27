@@ -34,6 +34,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +46,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -338,14 +340,23 @@ private fun AxisLabel(text: String, modifier: Modifier) {
 
 @Composable
 private fun SideLabel(text: String) {
-    Box(Modifier.width(22.dp).height(168.dp), contentAlignment = Alignment.Center) {
+    val density = LocalDensity.current
+    val style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)
+    val measured = rememberTextMeasurer().measure(text, style, softWrap = false)
+    val length = with(density) {
+        measured.size.width.toDp() + 4.dp
+    }.coerceAtLeast(168.dp * density.fontScale)
+    val thickness = with(density) {
+        measured.size.height.toDp() + 2.dp
+    }.coerceAtLeast(22.dp * density.fontScale)
+    Box(Modifier.width(thickness).height(length), contentAlignment = Alignment.Center) {
         Text(
             text,
             maxLines = 1,
             softWrap = false,
             style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold),
             color = Itera.colors.ink2,
-            modifier = Modifier.rotate(-90f).requiredWidth(168.dp),
+            modifier = Modifier.rotate(-90f).requiredWidth(length),
             textAlign = TextAlign.Center
         )
     }
@@ -373,7 +384,7 @@ private fun Quadrant(
     val pickFirst = stringResource(R.string.eis_pick_first)
     Column(
         modifier
-            .heightIn(min = 168.dp)
+            .heightIn(min = 168.dp * LocalDensity.current.fontScale)
             .clip(RoundedCornerShape(22.dp))
             .background(bg)
             .then(

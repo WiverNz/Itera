@@ -27,11 +27,25 @@ object NotificationChannels {
             enableVibration(false)
             setShowBadge(false)
         }
-        manager.createNotificationChannels(listOf(
-            focus,
-            NotificationChannel(TRAINING, context.getString(R.string.notification_channel_training), NotificationManager.IMPORTANCE_DEFAULT),
-            NotificationChannel(REFLECTION, context.getString(R.string.notification_channel_reflection), NotificationManager.IMPORTANCE_DEFAULT),
-            NotificationChannel(HABITS, context.getString(R.string.notification_channel_habits), NotificationManager.IMPORTANCE_LOW)
-        ))
+        manager.createNotificationChannels(
+            listOf(
+                focus,
+                NotificationChannel(
+                    TRAINING,
+                    context.getString(R.string.notification_channel_training),
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ),
+                NotificationChannel(
+                    REFLECTION,
+                    context.getString(R.string.notification_channel_reflection),
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ),
+                NotificationChannel(
+                    HABITS,
+                    context.getString(R.string.notification_channel_habits),
+                    NotificationManager.IMPORTANCE_LOW
+                )
+            )
+        )
     }
 }

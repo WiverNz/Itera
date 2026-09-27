@@ -257,12 +257,12 @@ private fun Explain(state: FeynmanUiState, actions: FeynmanActions, onClose: () 
             bordered = true,
             modifier = Modifier.testTag("FeynmanExplanation")
         )
-        Row {
+        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 pluralStringResource(R.plurals.words, state.words, state.words),
                 style = Itera.type.caption,
                 color = c.ink2,
-                modifier = Modifier.weight(1f).testTag("FeynmanWords")
+                modifier = Modifier.testTag("FeynmanWords")
             )
             Text(stringResource(R.string.fey_no_notes), style = Itera.type.caption, color = c.ink2)
         }

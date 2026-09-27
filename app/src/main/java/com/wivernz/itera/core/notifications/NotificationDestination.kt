@@ -22,7 +22,11 @@ class NotificationDestination @Inject constructor(private val plans: TrainingPla
         val fallback = if (route is Review) Train else Today
         val activity = plans.activity(id) ?: return fallback
         return when (activity.state) {
-            ActivityState.COMPLETED -> ExerciseResult(id, activity.techniqueId.value, readOnly = true)
+            ActivityState.COMPLETED -> ExerciseResult(
+                id,
+                activity.techniqueId.value,
+                readOnly = true
+            )
             ActivityState.SKIPPED, ActivityState.EXPIRED -> fallback
             else -> route
         }

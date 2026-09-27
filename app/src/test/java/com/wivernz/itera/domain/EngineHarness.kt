@@ -202,7 +202,8 @@ class EngineHarness(
         plans, states, records, scheduleReview, advance, tx, reminders, analytics, clock, checks,
         com.wivernz.itera.analytics.ProgressionEvents(
             ObserveTechniqueProgressUseCase(progress, states, catalog),
-            ObserveProgressUseCase(progress, catalog, prefs, clock), analytics
+            ObserveProgressUseCase(progress, catalog, prefs, clock),
+            analytics
         )
     )
     val submitReview = SubmitReviewUseCase(plans, reviews, complete, tx, analytics, clock)

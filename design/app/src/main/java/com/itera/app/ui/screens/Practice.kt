@@ -1,6 +1,7 @@
 package com.itera.app.ui.screens
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,6 +33,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -227,11 +230,16 @@ private fun AxisLabel(text: String, modifier: Modifier) {
 
 @Composable
 private fun SideLabel(text: String) {
-    Box(Modifier.width(22.dp).height(168.dp), contentAlignment = Alignment.Center) {
+    val density = LocalDensity.current
+    val style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)
+    val measured = rememberTextMeasurer().measure(text, style, softWrap = false)
+    val length = with(density) { measured.size.width.toDp() + 4.dp }.coerceAtLeast(168.dp * density.fontScale)
+    val thickness = with(density) { measured.size.height.toDp() + 2.dp }.coerceAtLeast(22.dp * density.fontScale)
+    Box(Modifier.width(thickness).height(length), contentAlignment = Alignment.Center) {
         Text(
             text, maxLines = 1, softWrap = false,
             style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = Itera.colors.ink2,
-            modifier = Modifier.rotate(-90f).requiredWidth(168.dp), textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            modifier = Modifier.rotate(-90f).requiredWidth(length), textAlign = androidx.compose.ui.text.style.TextAlign.Center,
         )
     }
 }
@@ -245,7 +253,7 @@ private fun QuadrantBox(
     val line = c.ink3
     Column(
         modifier
-            .heightIn(min = 168.dp)
+            .heightIn(min = 168.dp * LocalDensity.current.fontScale)
             .clip(RoundedCornerShape(22.dp))
             .background(bg)
             .then(
@@ -273,6 +281,7 @@ private fun QuadrantBox(
 
 // ------------------------------------------------------------------ feynman
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FeynmanScreen(onClose: () -> Unit, onDone: () -> Unit) {
     val c = Itera.colors
@@ -297,8 +306,8 @@ fun FeynmanScreen(onClose: () -> Unit, onDone: () -> Unit) {
         Text(stringResource(R.string.fey_instruction), style = Itera.type.body, color = c.ink2)
         Text(stringResource(R.string.fey_your_expl), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2)
         NoteField(text, { text = it }, stringResource(R.string.fey_hint), minLines = 9, textStyle = Itera.type.bodyLarge, bordered = true, dictation = true)
-        Row {
-            Text(pluralStringResource(R.plurals.words, words, words), style = Itera.type.caption, color = c.ink2, modifier = Modifier.weight(1f))
+        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(pluralStringResource(R.plurals.words, words, words), style = Itera.type.caption, color = c.ink2)
             Text(stringResource(R.string.fey_no_notes), style = Itera.type.caption, color = c.ink2)
         }
     }
@@ -512,13 +521,13 @@ fun HabitStackScreen(onClose: () -> Unit, onDone: () -> Unit) {
             habits.forEachIndexed { i, res -> ChoiceChip(stringResource(res), i == habit, onClick = { habit = i }) }
         }
         Row(
-            Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 16.dp, vertical = 10.dp),
+            Modifier.fillMaxWidth().heightIn(min = 44.dp).clip(RoundedCornerShape(20.dp)).background(c.surface).toggleable(nudge, role = Role.Switch) { nudge = it }.padding(horizontal = 16.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             Icon(IteraIcons.Bell, null, tint = c.ink2, modifier = Modifier.size(20.dp))
             Text(stringResource(R.string.hs_nudge), style = Itera.type.body, color = c.ink, modifier = Modifier.weight(1f))
             Switch(
-                checked = nudge, onCheckedChange = { nudge = it },
+                checked = nudge, onCheckedChange = null,
                 colors = SwitchDefaults.colors(checkedTrackColor = sc.content, checkedThumbColor = c.surface, uncheckedTrackColor = c.surface2, uncheckedBorderColor = c.line),
             )
         }

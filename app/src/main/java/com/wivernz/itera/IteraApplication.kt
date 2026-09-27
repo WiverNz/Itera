@@ -9,7 +9,9 @@ import javax.inject.Inject
 class IteraApplication :
     Application(),
     Configuration.Provider {
-    @Inject lateinit var reminderEnvironment: com.wivernz.itera.core.notifications.ReminderEnvironment
+    @Inject lateinit var reminderEnvironment:
+        com.wivernz.itera.core.notifications.ReminderEnvironment
+
     @Inject lateinit var workerFactory: HiltWorkerFactory
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder().setWorkerFactory(workerFactory).build()

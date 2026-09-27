@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.wivernz.itera.core.designsystem.component.ErrorState
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.theme.IteraTheme
@@ -45,7 +46,6 @@ import com.wivernz.itera.feature.focus.FocusRestoreViewModel
 import com.wivernz.itera.feature.voice.VoiceHost
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -54,8 +54,12 @@ class MainActivity : AppCompatActivity() {
     private val focusRestore: FocusRestoreViewModel by viewModels()
 
     @Inject lateinit var voiceRecognizer: VoiceRecognizer
-    @Inject lateinit var notificationDestination: com.wivernz.itera.core.notifications.NotificationDestination
+
+    @Inject lateinit var notificationDestination:
+        com.wivernz.itera.core.notifications.NotificationDestination
+
     @Inject lateinit var reminders: com.wivernz.itera.core.notifications.ReminderScheduler
+
     @Inject lateinit var analytics: com.wivernz.itera.analytics.Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,14 +111,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun takeDeepLink(intent: Intent) {
         val encoded = intent.getStringExtra(RouteCodec.EXTRA)
-        val type = intent.getStringExtra(com.wivernz.itera.core.notifications.IteraNotifier.TYPE_EXTRA)
+        val type = intent.getStringExtra(
+            com.wivernz.itera.core.notifications.IteraNotifier.TYPE_EXTRA
+        )
         intent.removeExtra(RouteCodec.EXTRA)
         intent.removeExtra(com.wivernz.itera.core.notifications.IteraNotifier.TYPE_EXTRA)
         val route = encoded?.let(RouteCodec::decode) ?: return
         lifecycleScope.launch {
             val resolved = notificationDestination.resolve(route)
             shell.acceptDeepLink(RouteCodec.encode(resolved))
-            com.wivernz.itera.analytics.NotificationType.entries.firstOrNull { it.name == type }?.let {
+            com.wivernz.itera.analytics.NotificationType.entries.firstOrNull {
+                it.name == type
+            }?.let {
                 analytics.track(com.wivernz.itera.analytics.Event.NotificationOpened(it))
             }
         }

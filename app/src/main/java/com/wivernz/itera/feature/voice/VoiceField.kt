@@ -3,9 +3,8 @@
 
 package com.wivernz.itera.feature.voice
 
-import androidx.compose.foundation.border
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -354,21 +354,33 @@ internal fun VoiceStatusPanel(
 @Composable
 internal fun PanelActions(actions: List<Pair<String, () -> Unit>>) {
     val c = Itera.colors
+
     @Composable fun Action(index: Int, label: String, action: () -> Unit, modifier: Modifier) {
         IteraButton(
-            label, action,
+            label,
+            action,
             kind = if (index == 0) ButtonKind.Primary else ButtonKind.Secondary,
             height = 44.dp,
-            modifier = if (index == 0) modifier else modifier.border(1.dp, c.ink2, RoundedCornerShape(18.dp))
+            modifier = if (index ==
+                0
+            ) {
+                modifier
+            } else {
+                modifier.border(1.dp, c.ink2, RoundedCornerShape(18.dp))
+            }
         )
     }
     if (LocalDensity.current.fontScale > 1.3f) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            actions.forEachIndexed { index, (label, action) -> Action(index, label, action, Modifier.fillMaxWidth()) }
+            actions.forEachIndexed { index, (label, action) ->
+                Action(index, label, action, Modifier.fillMaxWidth())
+            }
         }
     } else {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            actions.forEachIndexed { index, (label, action) -> Action(index, label, action, Modifier.weight(1f)) }
+            actions.forEachIndexed { index, (label, action) ->
+                Action(index, label, action, Modifier.weight(1f))
+            }
         }
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:max-line-length")
+
 package com.wivernz.itera.feature.today
 
 import androidx.lifecycle.ViewModel
@@ -86,9 +88,19 @@ class TodayViewModel @Inject constructor(
             .toMap()
     }.catch { emit(emptyMap()) }
 
-    private val catalogFlow = flow {
-        emit(Catalog(catalog.catalog().associateBy { it.id.value }, catalog.curriculum().days.size))
-    }.catch { emit(Catalog(emptyMap(), 0)) }
+    private val catalogRefresh = MutableStateFlow(0)
+    private val catalogFlow = catalogRefresh.flatMapLatest {
+        flow {
+            emit(
+                Catalog(
+                    catalog.catalog().associateBy {
+                        it.id.value
+                    },
+                    catalog.curriculum().days.size
+                )
+            )
+        }.catch { emit(Catalog(emptyMap(), 0)) }
+    }
 
     val state: StateFlow<TodayUiState> = combine(
         combine(day, reviewTopics) { d, t -> d to t },
@@ -122,6 +134,7 @@ class TodayViewModel @Inject constructor(
 
     /** ON_RESUME: greeting thresholds, day rollover and lazy availability. */
     fun onResume() {
+        catalogRefresh.value++
         local.update { it.copy(now = LocalTime.now(clock)) }
         viewModelScope.launch {
             val current = dayId.value?.let { plans.day(it) }

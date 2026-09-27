@@ -19,12 +19,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +43,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
@@ -278,8 +282,11 @@ private fun FocusTimerContent(
         else -> ""
     }
     val status = stringResource(if (running) R.string.focus_remaining else R.string.focus_paused)
+    val scrollTimer = LocalDensity.current.fontScale > 1.3f
+    val timerScroll = rememberScrollState()
     Column(
         Modifier.fillMaxSize().background(c.bg).screenInsets()
+            .then(if (scrollTimer) Modifier.verticalScroll(timerScroll) else Modifier)
             .padding(horizontal = 24.dp, vertical = 16.dp).testTag("FocusTimer"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -298,7 +305,7 @@ private fun FocusTimerContent(
             )
         }
         VoiceCommandAction(Modifier.align(Alignment.End).padding(top = 8.dp))
-        Spacer(Modifier.weight(1f))
+        Spacer(if (scrollTimer) Modifier.height(24.dp) else Modifier.weight(1f))
         Box(Modifier.size(300.dp), contentAlignment = Alignment.Center) {
             Canvas(Modifier.fillMaxSize().testTag("FocusRing")) {
                 val stroke = 6.dp.toPx()
@@ -359,7 +366,7 @@ private fun FocusTimerContent(
                 textAlign = TextAlign.Center
             )
         }
-        Spacer(Modifier.weight(1f))
+        Spacer(if (scrollTimer) Modifier.height(24.dp) else Modifier.weight(1f))
         Row(
             horizontalArrangement = Arrangement.spacedBy(28.dp),
             verticalAlignment = Alignment.CenterVertically

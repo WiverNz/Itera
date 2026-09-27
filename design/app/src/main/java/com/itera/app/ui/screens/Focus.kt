@@ -3,6 +3,10 @@ package com.itera.app.ui.screens
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -100,8 +104,11 @@ private fun FocusContent(minutes: Int, onEnd: () -> Unit) {
     val progress by animateFloatAsState(1f - left.toFloat() / total, tween(900), label = "ring")
     val time = "%02d:%02d".format(left / 60, left % 60)
 
+    val scrollTimer = LocalDensity.current.fontScale > 1.3f
+    val timerScroll = rememberScrollState()
     Column(
-        Modifier.fillMaxSize().background(c.bg).screenInsets().padding(horizontal = 24.dp, vertical = 16.dp),
+        Modifier.fillMaxSize().background(c.bg).screenInsets()
+            .then(if (scrollTimer) Modifier.verticalScroll(timerScroll) else Modifier).padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -110,7 +117,7 @@ private fun FocusContent(minutes: Int, onEnd: () -> Unit) {
             Text(stringResource(R.string.focus_silenced), style = Itera.type.caption, color = c.ink2)
         }
         VoiceCommandPill(Modifier.align(Alignment.End).padding(top = 8.dp))
-        Spacer(Modifier.weight(1f))
+        Spacer(if (scrollTimer) Modifier.height(24.dp) else Modifier.weight(1f))
         Box(Modifier.size(300.dp), contentAlignment = Alignment.Center) {
             Canvas(Modifier.fillMaxSize()) {
                 val stroke = 6.dp.toPx()
@@ -128,7 +135,7 @@ private fun FocusContent(minutes: Int, onEnd: () -> Unit) {
             Text(stringResource(R.string.focus_working_on).uppercase(), style = Itera.type.eyebrow, color = c.ink2)
             Text(stringResource(R.string.focus_default_task), style = Itera.type.headline, color = c.ink, textAlign = TextAlign.Center)
         }
-        Spacer(Modifier.weight(1f))
+        Spacer(if (scrollTimer) Modifier.height(24.dp) else Modifier.weight(1f))
         Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
             TextControl(stringResource(R.string.focus_plus5)) {
                 total += 300

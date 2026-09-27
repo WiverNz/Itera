@@ -21,7 +21,9 @@ class CopyResolver @Inject constructor(
     private val clock: Clock,
     private val logger: Logger
 ) {
-    private val context: Context get() = androidx.core.content.ContextCompat.getContextForLanguage(application)
+    private val context: Context get() = androidx.core.content.ContextCompat.getContextForLanguage(
+        application
+    )
     fun resolve(key: String, args: String, techniqueId: String): ResolvedCopy = try {
         val values = Json.parseToJsonElement(args).jsonObject
         val technique = values["technique"]?.jsonPrimitive?.content ?: techniqueId
