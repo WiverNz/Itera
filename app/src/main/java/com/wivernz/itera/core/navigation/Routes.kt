@@ -101,7 +101,7 @@ data class ExerciseRun(val activityId: Long, val technique: String) : AppRoute
 
 @Serializable
 @SerialName("ExerciseResult")
-data class ExerciseResult(val activityId: Long, val technique: String) : AppRoute
+data class ExerciseResult(val activityId: Long, val technique: String, val readOnly: Boolean = false) : AppRoute
 
 @Serializable
 @SerialName("FocusSession")

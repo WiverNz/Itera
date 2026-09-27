@@ -9,8 +9,8 @@
     <string name="action_close">Schließen</string>
     <string name="action_next">Weiter</string>
     <string name="action_finish">Abschließen</string>
-    <string name="minutes_short">%d Min.</string>
-    <string name="minutes_plus">%d+ Min.</string>
+    <string name="minutes_short">%1$d Min.</string>
+    <string name="minutes_plus">%1$d+ Min.</string>
 
     <string name="nav_today">Heute</string>
     <string name="nav_train">Training</string>
@@ -60,13 +60,13 @@
     <string name="language_title">Sprache</string>
     <string name="language_sub">Ändert sofort die ganze App, auch Techniken und Erinnerungen. Deine eigenen Notizen bleiben genau so, wie du sie geschrieben hast.</string>
     <string name="language_match_device">Wie auf dem Gerät</string>
-    <string name="language_current">Aktuell: %s</string>
-    <string name="language_a11y">Sprache: %s</string>
+    <string name="language_current">Aktuell: %1$s</string>
+    <string name="language_a11y">Sprache: %1$s</string>
 
     <string name="greeting_morning">Guten Morgen</string>
     <string name="greeting_afternoon">Guten Tag</string>
     <string name="greeting_evening">Guten Abend</string>
-    <string name="day_n">Tag %d</string>
+    <string name="day_n">Tag %1$d</string>
     <string name="today_training">Heutiges Training</string>
     <string name="today_combination">Kombinationstag</string>
     <string name="badge_new">Neu</string>
@@ -75,14 +75,14 @@
     <string name="today_count">%1$d / %2$d</string>
     <string name="today_about">Etwa %1$d Min. · %2$s</string>
     <string name="today_plan_label">Dein Plan von gestern Abend:</string>
-    <string name="step_now">Jetzt · %d Min.</string>
+    <string name="step_now">Jetzt · %1$d Min.</string>
     <string name="step_done">Erledigt</string>
-    <string name="step_focus_title">%d-Minuten-Fokussession</string>
-    <string name="step_focus_sub">Empfohlen gegen %s</string>
-    <string name="step_reflection_sub">%s · 2 Min.</string>
+    <string name="step_focus_title">%1$d-Minuten-Fokussession</string>
+    <string name="step_focus_sub">Empfohlen gegen %1$s</string>
+    <string name="step_reflection_sub">%1$s · 2 Min.</string>
     <string name="step_optional">optional</string>
     <string name="hero_next_optional">Als Nächstes · optional</string>
-    <string name="hero_focus_title">%d Minuten Fokus</string>
+    <string name="hero_focus_title">%1$d Minuten Fokus</string>
     <string name="hero_focus_line">Wähle eine Aufgabe. Handy umdrehen. Nichts anderes, bis der Timer abläuft.</string>
     <string name="hero_focus_cta">Fokussession starten</string>
     <string name="hero_evening">Heute Abend</string>
@@ -142,15 +142,15 @@
     <string name="chip_focus_before_email">Fokussession vor den E-Mails starten</string>
     <string name="chip_phone_away">Handy in einem anderen Raum lassen</string>
     <string name="chip_start_earlier">30 Minuten früher anfangen</string>
-    <string name="day_complete_title">Tag %d geschafft</string>
+    <string name="day_complete_title">Tag %1$d geschafft</string>
     <string name="day_complete_sub">Übung, Fokus, Reflexion. Ein vollständiger Trainingstag.</string>
     <string name="day_change_label">Deine Änderung für morgen</string>
     <string name="day_change_hint">Sie wartet morgen auf deinem Heute-Bildschirm.</string>
-    <string name="day_tomorrow">Morgen · Tag %d</string>
-    <string name="day_unlocks">Verfügbar ab %s</string>
+    <string name="day_tomorrow">Morgen · Tag %1$d</string>
+    <string name="day_unlocks">Verfügbar ab %1$s</string>
     <string name="good_night">Gute Nacht</string>
 
-    <string name="combo_label">Tag %d · Kombination</string>
+    <string name="combo_label">Tag %1$d · Kombination</string>
     <string name="combo_title">Erst planen, dann eintauchen</string>
     <string name="combo_sub">Vier Techniken, die du kennst, in einem Zug.</string>
     <string name="combo_step1">Am wichtigsten: Q4-Roadmap</string>
@@ -160,7 +160,7 @@
     <string name="combo_opt1">Die 3 Wetten für Q4 festlegen</string>
     <string name="combo_opt2">Feature-Wünsche sammeln</string>
     <string name="combo_opt3">Foliendesign aufpolieren</string>
-    <string name="combo_step3">%d Minuten für diesen einen Schritt</string>
+    <string name="combo_step3">%1$d Minuten für diesen einen Schritt</string>
     <string name="combo_step3_sub">Handy weg, nur ein Tab offen</string>
     <string name="combo_step4" formatted="false">Heute Abend: Haben die 20 % gehalten?</string>
     <string name="combo_step4_sub">Teil deiner Abendreflexion</string>
@@ -224,13 +224,13 @@
     <string name="review_field">Deine Erklärung aus dem Gedächtnis</string>
     <string name="review_hidden">Deine erste Antwort bleibt verborgen, bis du fertig bist</string>
     <string name="review_compare">Mit meiner ersten Antwort vergleichen</string>
-    <string name="interval_days">%d T.</string>
-    <string name="interval_weeks">%d Wo.</string>
-    <string name="interval_months">%d Mon.</string>
+    <string name="interval_days">%1$d T.</string>
+    <string name="interval_weeks">%1$d Wo.</string>
+    <string name="interval_months">%1$d Mon.</string>
 
     <string name="pm_project">Projekt:</string>
     <string name="pm_project_value">Start der mobilen Beta</string>
-    <string name="pm_title">Es ist %s. Das Projekt ist komplett gescheitert. Warum?</string>
+    <string name="pm_title">Es ist %1$s. Das Projekt ist komplett gescheitert. Warum?</string>
     <string name="pm_reason_1">Der Umfang wuchs ständig, wir haben nie geliefert</string>
     <string name="pm_reason_2">Niemand außerhalb des Teams hat getestet</string>
     <string name="pm_reason_3">Der Backend-Entwickler wurde abgezogen</string>
@@ -281,11 +281,11 @@
     <string name="detail_history">Deine Praxis</string>
     <string name="detail_no_history">Noch keine Praxis.</string>
     <string name="detail_related">Passt gut zu</string>
-    <string name="detail_locked">Wird an Tag %d deines Programms freigeschaltet.</string>
+    <string name="detail_locked">Wird an Tag %1$d deines Programms freigeschaltet.</string>
 
     <string name="progress_title">Fortschritt</string>
     <string name="progress_days">%1$d der letzten %2$d Tage</string>
-    <string name="progress_since">seit %s</string>
+    <string name="progress_since">seit %1$s</string>
     <string name="progress_missed_hint">Verpasste Tage setzen nichts zurück. Das Programm geht einfach dort weiter, wo du aufgehört hast.</string>
     <string name="progress_history">Verlauf</string>
     <string name="progress_history_sub">Notizen und Reflexionen</string>
@@ -327,20 +327,20 @@
     <string name="load_demo">Demodaten laden (Tag 9)</string>
 
     <plurals name="practices">
-        <item quantity="one">%d Übung</item>
-        <item quantity="other">%d Übungen</item>
+        <item quantity="one">%1$d Übung</item>
+        <item quantity="other">%1$d Übungen</item>
     </plurals>
     <plurals name="words">
-        <item quantity="one">%d Wort</item>
-        <item quantity="other">%d Wörter</item>
+        <item quantity="one">%1$d Wort</item>
+        <item quantity="other">%1$d Wörter</item>
     </plurals>
     <plurals name="review_days_ago">
-        <item quantity="one">Deine erste Erklärung war vor %d Tag:</item>
-        <item quantity="other">Deine erste Erklärung war vor %d Tagen:</item>
+        <item quantity="one">Deine erste Erklärung war vor %1$d Tag:</item>
+        <item quantity="other">Deine erste Erklärung war vor %1$d Tagen:</item>
     </plurals>
     <plurals name="review_next">
-        <item quantity="one">Wenn es gut läuft, ist die nächste Wiederholung in %d Tag.</item>
-        <item quantity="other">Wenn es gut läuft, ist die nächste Wiederholung in %d Tagen.</item>
+        <item quantity="one">Wenn es gut läuft, ist die nächste Wiederholung in %1$d Tag.</item>
+        <item quantity="other">Wenn es gut läuft, ist die nächste Wiederholung in %1$d Tagen.</item>
     </plurals>
 
     <string name="t_two_name">2-Minuten-Regel</string>
@@ -418,16 +418,16 @@
     <string name="reflection_week_title">Deine Woche</string>
     <string name="reflection_week_changes">Änderungen, die du diese Woche geplant hast</string>
     <plurals name="reflection_week_days">
-        <item quantity="one">%d Trainingstag</item>
-        <item quantity="other">%d Trainingstage</item>
+        <item quantity="one">%1$d Trainingstag</item>
+        <item quantity="other">%1$d Trainingstage</item>
     </plurals>
     <plurals name="reflection_week_techniques">
-        <item quantity="one">%d Technik geübt</item>
-        <item quantity="other">%d Techniken geübt</item>
+        <item quantity="one">%1$d Technik geübt</item>
+        <item quantity="other">%1$d Techniken geübt</item>
     </plurals>
     <plurals name="reflection_week_focus">
-        <item quantity="one">%d Minute Fokus</item>
-        <item quantity="other">%d Minuten Fokus</item>
+        <item quantity="one">%1$d Minute Fokus</item>
+        <item quantity="other">%1$d Minuten Fokus</item>
     </plurals>
 
     <string name="train_today_skill">Heute · %1$s</string>
@@ -438,15 +438,15 @@
     <string name="detail_explained">Erklärt: %1$s</string>
     <string name="detail_habit_summary">Nach %1$s werde ich %2$s.</string>
     <string name="detail_note">„%1$s“</string>
-    <plurals name="train_more_reviews"><item quantity="one">+%d weitere</item><item quantity="other">+%d weitere</item></plurals>
-    <plurals name="detail_minutes"><item quantity="one">%d Fokusminute</item><item quantity="other">%d Fokusminuten</item></plurals>
-    <plurals name="detail_tasks"><item quantity="one">%d Aufgabe sortiert</item><item quantity="other">%d Aufgaben sortiert</item></plurals>
-    <plurals name="detail_reasons"><item quantity="one">%d Risiko betrachtet</item><item quantity="other">%d Risiken betrachtet</item></plurals>
-    <plurals name="detail_steps"><item quantity="one">%d Schritt abgeschlossen</item><item quantity="other">%d Schritte abgeschlossen</item></plurals>
-    <plurals name="detail_items"><item quantity="one">%d Aufgabe erledigt</item><item quantity="other">%d Aufgaben erledigt</item></plurals>
+    <plurals name="train_more_reviews"><item quantity="one">+%1$d weitere</item><item quantity="other">+%1$d weitere</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%1$d Fokusminute</item><item quantity="other">%1$d Fokusminuten</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">%1$d Aufgabe sortiert</item><item quantity="other">%1$d Aufgaben sortiert</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">%1$d Risiko betrachtet</item><item quantity="other">%1$d Risiken betrachtet</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">%1$d Schritt abgeschlossen</item><item quantity="other">%1$d Schritte abgeschlossen</item></plurals>
+    <plurals name="detail_items"><item quantity="one">%1$d Aufgabe erledigt</item><item quantity="other">%1$d Aufgaben erledigt</item></plurals>
 
-<string name="level_hint_applied_span">Nutze sie über zwei Wochen weiter, um „%s“ zu erreichen.</string>
-<string name="level_hint_integrated">Nutze sie an einem Kombinationstag, um „%s“ zu erreichen.</string>
+<string name="level_hint_applied_span">Nutze sie über zwei Wochen weiter, um „%1$s“ zu erreichen.</string>
+<string name="level_hint_integrated">Nutze sie an einem Kombinationstag, um „%1$s“ zu erreichen.</string>
 <string name="level_hint_top">Du nutzt sie zusammen mit anderen Techniken.</string>
 <plurals name="level_hint_days">
         <item quantity="one">Übe sie an %1$d weiteren Tag, um „%2$s“ zu erreichen.</item>

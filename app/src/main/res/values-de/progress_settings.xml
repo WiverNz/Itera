@@ -48,7 +48,7 @@
 <string name="privacy">Datenschutz</string>
 <string name="load_demo">Demodaten laden (Tag 9)</string>
 <plurals name="practices">
-        <item quantity="one">%d Übung</item>
-        <item quantity="other">%d Übungen</item>
+        <item quantity="one">%1$d Übung</item>
+        <item quantity="other">%1$d Übungen</item>
     </plurals>
 </resources>

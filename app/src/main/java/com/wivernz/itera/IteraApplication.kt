@@ -9,11 +9,13 @@ import javax.inject.Inject
 class IteraApplication :
     Application(),
     Configuration.Provider {
+    @Inject lateinit var reminderEnvironment: com.wivernz.itera.core.notifications.ReminderEnvironment
     @Inject lateinit var workerFactory: HiltWorkerFactory
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
     override fun onCreate() {
         super.onCreate()
+        registerActivityLifecycleCallbacks(reminderEnvironment)
         com.wivernz.itera.core.notifications.NotificationChannels.register(this)
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(

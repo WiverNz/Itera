@@ -90,7 +90,11 @@ class DebugDemoDataLoader @Inject constructor(
         )
         val complete = CompleteActivityUseCase(
             plans, states, records, ScheduleReviewUseCase(reviews, catalog, tx, clock), advance, tx,
-            reminders, analytics, clock, checks
+            reminders, analytics, clock, checks,
+            com.wivernz.itera.analytics.ProgressionEvents(
+                com.wivernz.itera.domain.progress.ObserveTechniqueProgressUseCase(progress, states, catalog),
+                com.wivernz.itera.domain.progress.ObserveProgressUseCase(progress, catalog, preferences, clock), analytics
+            )
         )
         val submitReview = SubmitReviewUseCase(plans, reviews, complete, tx, analytics, clock)
         val refresh = RefreshAvailabilityUseCase(plans, tx, clock)

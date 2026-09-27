@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_training">Ежедневная практика</string>
+    <string name="notification_channel_reflection">Вечерняя рефлексия</string>
+    <string name="notification_channel_habits">Напоминания о привычках</string>
+    <string name="notification_morning_title">Упражнение на сегодня готово</string>
+    <string name="notification_morning_review_title">Упражнение и одно повторение</string>
+    <string name="notification_training_body">%1$s — около %2$d мин</string>
+    <string name="notification_review_body">%1$s и повторение: %2$s</string>
+    <string name="notification_review_topic">то, что вы хотели запомнить</string>
+    <string name="notification_focus_title">Время сосредоточиться?</string>
+    <string name="notification_focus_body">%1$d мин на одно дело</string>
+    <string name="notification_evening_title">Две минуты, три вопроса</string>
+    <string name="notification_evening_body">Завершите день, пока всё свежо в памяти</string>
+    <string name="notification_habit_title">Сразу после: %1$s</string>
+    <string name="notification_snooze_title">Ещё попробуем?</string>
+</resources>

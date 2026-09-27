@@ -1,5 +1,7 @@
 package com.itera.app.ui.components
 
+import androidx.compose.foundation.border
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -117,9 +119,16 @@ fun VoicePanel(state: VoiceDemoState, command: Boolean, onPrimary: () -> Unit, o
         if (state == VoiceDemoState.Partial) {
             Text(stringResource(R.string.voice_preview), style = Itera.type.body.copy(fontStyle = FontStyle.Italic), color = c.ink2)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IteraButton(actions[0], onPrimary, Modifier.weight(1f), height = 44.dp)
-            IteraButton(actions[1], onCancel, Modifier.weight(1f), kind = ButtonKind.Secondary, height = 44.dp)
+        if (LocalDensity.current.fontScale > 1.3f) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                IteraButton(actions[0], onPrimary, height = 44.dp)
+                IteraButton(actions[1], onCancel, Modifier.border(1.dp, c.ink2, RoundedCornerShape(18.dp)), kind = ButtonKind.Secondary, height = 44.dp)
+            }
+        } else {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                IteraButton(actions[0], onPrimary, Modifier.weight(1f), height = 44.dp)
+                IteraButton(actions[1], onCancel, Modifier.weight(1f).border(1.dp, c.ink2, RoundedCornerShape(18.dp)), kind = ButtonKind.Secondary, height = 44.dp)
+            }
         }
     }
 }

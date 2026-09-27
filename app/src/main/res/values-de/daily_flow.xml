@@ -4,8 +4,8 @@
     <string name="app_description">Ein praktischer Trainer für Fokus, Planung, Lernen, Gewohnheiten und Reflexion.</string>
     <string name="action_continue">Weiter</string>
     <string name="action_next">Weiter</string>
-    <string name="minutes_short">%d Min.</string>
-    <string name="minutes_plus">%d+ Min.</string>
+    <string name="minutes_short">%1$d Min.</string>
+    <string name="minutes_plus">%1$d+ Min.</string>
     <string name="welcome_title">Trainiere, wie du arbeitest.</string>
     <string name="welcome_get_started">Los geht’s</string>
     <string name="welcome_demo">Mit Demodaten ansehen</string>
@@ -28,7 +28,7 @@
     <string name="greeting_morning">Guten Morgen</string>
     <string name="greeting_afternoon">Guten Tag</string>
     <string name="greeting_evening">Guten Abend</string>
-    <string name="day_n">Tag %d</string>
+    <string name="day_n">Tag %1$d</string>
     <string name="today_training">Heutiges Training</string>
     <string name="today_combination">Kombinationstag</string>
     <string name="badge_new">Neu</string>
@@ -38,7 +38,7 @@
     <string name="today_about">Etwa %1$d Min. · %2$s</string>
     <string name="today_plan_label">Dein Plan von gestern Abend:</string>
     <string name="hero_next_optional">Als Nächstes · optional</string>
-    <string name="hero_focus_title">%d Minuten Fokus</string>
+    <string name="hero_focus_title">%1$d Minuten Fokus</string>
     <string name="hero_focus_line">Wähle eine Aufgabe. Handy umdrehen. Nichts anderes, bis der Timer abläuft.</string>
     <string name="hero_focus_cta">Fokussession starten</string>
     <string name="hero_evening">Heute Abend</string>
@@ -65,13 +65,13 @@
     <string name="chip_focus_before_email">Fokussession vor den E-Mails starten</string>
     <string name="chip_phone_away">Handy in einem anderen Raum lassen</string>
     <string name="chip_start_earlier">30 Minuten früher anfangen</string>
-    <string name="day_complete_title">Tag %d geschafft</string>
+    <string name="day_complete_title">Tag %1$d geschafft</string>
     <string name="day_complete_sub">Übung, Fokus, Reflexion. Ein vollständiger Trainingstag.</string>
     <string name="day_ring_count">%1$d/%2$d</string>
     <string name="day_change_label">Deine Änderung für morgen</string>
     <string name="day_change_hint">Sie wartet morgen auf deinem Heute-Bildschirm.</string>
-    <string name="day_tomorrow">Morgen · Tag %d</string>
-    <string name="day_unlocks">Verfügbar ab %s</string>
+    <string name="day_tomorrow">Morgen · Tag %1$d</string>
+    <string name="day_unlocks">Verfügbar ab %1$s</string>
     <string name="good_night">Gute Nacht</string>
     <string name="combo_title">Erst planen, dann eintauchen</string>
     <string name="combo_sub">Vier Techniken, die du kennst, in einem Zug.</string>
@@ -102,23 +102,23 @@
     <string name="day_part_reflection">Reflexion</string>
     <string name="day_tomorrow_practice">Übungstag</string>
     <plurals name="reflection_prefill_tasks">
-        <item quantity="one">%d kleine Aufgabe erledigt</item>
-        <item quantity="other">%d kleine Aufgaben erledigt</item>
+        <item quantity="one">%1$d kleine Aufgabe erledigt</item>
+        <item quantity="other">%1$d kleine Aufgaben erledigt</item>
     </plurals>
     <plurals name="reflection_prefill_focus">
-        <item quantity="one">%d Minute fokussiert</item>
-        <item quantity="other">%d Minuten fokussiert</item>
+        <item quantity="one">%1$d Minute fokussiert</item>
+        <item quantity="other">%1$d Minuten fokussiert</item>
     </plurals>
     <plurals name="reflection_week_days">
-        <item quantity="one">%d Trainingstag</item>
-        <item quantity="other">%d Trainingstage</item>
+        <item quantity="one">%1$d Trainingstag</item>
+        <item quantity="other">%1$d Trainingstage</item>
     </plurals>
     <plurals name="reflection_week_techniques">
-        <item quantity="one">%d Technik geübt</item>
-        <item quantity="other">%d Techniken geübt</item>
+        <item quantity="one">%1$d Technik geübt</item>
+        <item quantity="other">%1$d Techniken geübt</item>
     </plurals>
     <plurals name="reflection_week_focus">
-        <item quantity="one">%d Minute Fokus</item>
-        <item quantity="other">%d Minuten Fokus</item>
+        <item quantity="one">%1$d Minute Fokus</item>
+        <item quantity="other">%1$d Minuten Fokus</item>
     </plurals>
 </resources>

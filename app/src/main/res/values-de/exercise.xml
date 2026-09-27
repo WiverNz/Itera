@@ -22,7 +22,7 @@
     <string name="focus_end">Beenden</string>
     <string name="focus_pause">Pause</string>
     <string name="focus_resume">Fortsetzen</string>
-    <string name="combo_label">Tag %d · Kombination</string>
+    <string name="combo_label">Tag %1$d · Kombination</string>
     <string name="combo_step1_sub">Aus „Sofort erledigen“ in der Matrix</string>
     <string name="eis_title">Sortiere, was ansteht</string>
     <string name="eis_to_sort">Zu sortieren</string>
@@ -62,7 +62,7 @@
     <string name="review_hidden">Deine erste Antwort bleibt verborgen, bis du fertig bist</string>
     <string name="review_compare">Mit meiner ersten Antwort vergleichen</string>
     <string name="pm_project">Projekt:</string>
-    <string name="pm_title">Es ist %s. Das Projekt ist komplett gescheitert. Warum?</string>
+    <string name="pm_title">Es ist %1$s. Das Projekt ist komplett gescheitert. Warum?</string>
     <string name="pm_likely">Wahrscheinlich</string>
     <string name="pm_possible">Möglich</string>
     <string name="pm_add">Grund hinzufügen</string>
@@ -84,7 +84,7 @@
     <string name="hs_nudge">Direkt danach erinnern</string>
     <string name="hs_save">Verknüpfung speichern</string>
     <string name="action_finish">Abschließen</string>
-    <string name="exercise_later_at">Nicht jetzt – erinnere mich um %s</string>
+    <string name="exercise_later_at">Nicht jetzt – erinnere mich um %1$s</string>
     <string name="exercise_not_now">Nicht jetzt</string>
     <string name="exercise_leave_title">Übung verlassen?</string>
     <string name="exercise_leave_body">Was du geschrieben hast, bleibt erhalten. Du kannst später weitermachen.</string>
@@ -92,12 +92,12 @@
     <string name="exercise_leave">Verlassen</string>
     <string name="gate_fill">Fülle alle Felder aus, um abzuschließen</string>
     <string name="gate_pick">Wähle eine Option, um abzuschließen</string>
-    <string name="template_option_hint">Option %d</string>
+    <string name="template_option_hint">Option %1$d</string>
     <string name="template_pick_label">Wähle dann die wichtigste aus</string>
-    <string name="template_item_hint">Punkt %d</string>
+    <string name="template_item_hint">Punkt %1$d</string>
     <string name="template_custom_hint">Etwas anderes</string>
-    <string name="level_hint_applied_span">Nutze sie über zwei Wochen weiter, um „%s“ zu erreichen.</string>
-    <string name="level_hint_integrated">Nutze sie an einem Kombinationstag, um „%s“ zu erreichen.</string>
+    <string name="level_hint_applied_span">Nutze sie über zwei Wochen weiter, um „%1$s“ zu erreichen.</string>
+    <string name="level_hint_integrated">Nutze sie an einem Kombinationstag, um „%1$s“ zu erreichen.</string>
     <string name="level_hint_top">Du nutzt sie zusammen mit anderen Techniken.</string>
     <string name="review_retired">Das sitzt. Es kommt nicht mehr zur Wiederholung.</string>
     <string name="review_retire_preview">Wenn das gut geht, ist es abgeschlossen: du kannst es.</string>
@@ -118,11 +118,11 @@
     <string name="eis_entry_hint">Eine Aufgabe pro Zeile</string>
     <string name="eis_entry_cta">Sortieren</string>
     <string name="eis_pick_first">Wähle zuerst eine Aufgabe</string>
-    <string name="eis_place">„%s“ hier ablegen</string>
-    <string name="eis_choose_hint">Tippe auf eine Aufgabe in „%s“, um sie zu wählen</string>
+    <string name="eis_place">„%1$s“ hier ablegen</string>
+    <string name="eis_choose_hint">Tippe auf eine Aufgabe in „%1$s“, um sie zu wählen</string>
     <string name="eis_chosen">Gewählt</string>
     <string name="eis_gate_sort">Sortiere zuerst alle Aufgaben</string>
-    <string name="eis_gate_choose">Wähle eine Aufgabe aus „%s“</string>
+    <string name="eis_gate_choose">Wähle eine Aufgabe aus „%1$s“</string>
     <string name="fey_topic_new">Was lernst du gerade?</string>
     <string name="fey_topic_new_hint">Ein Thema in wenigen Worten</string>
     <string name="fey_topic_use">Dieses Thema nehmen</string>
@@ -153,39 +153,39 @@
     <string name="pm_move_up">Nach oben</string>
     <string name="pm_move_down">Nach unten</string>
     <string name="pm_remove">Entfernen</string>
-    <string name="pm_likelihood_a11y">Wahrscheinlichkeit: %s. Tippen zum Ändern</string>
-    <string name="pm_idea_n">Idee: Hier könnte „%s“ helfen.</string>
+    <string name="pm_likelihood_a11y">Wahrscheinlichkeit: %1$s. Tippen zum Ändern</string>
+    <string name="pm_idea_n">Idee: Hier könnte „%1$s“ helfen.</string>
     <string name="pm_finish_only">Ohne Hinzufügen abschließen</string>
     <string name="hs_custom_anchor">Etwas anderes, das du täglich tust</string>
     <string name="hs_custom_habit">Deine eigene Mini-Gewohnheit</string>
-    <string name="hs_nudge_after">Erinnere mich direkt nach: %s</string>
-    <string name="hs_nudge_time">Gegen %s</string>
+    <string name="hs_nudge_after">Erinnere mich direkt nach: %1$s</string>
+    <string name="hs_nudge_time">Gegen %1$s</string>
     <string name="hs_nudge_time_title">Erinnerungszeit</string>
     <string name="hs_gate">Fülle beide Lücken aus, um zu speichern</string>
-    <string name="hs_slot_a11y">%s. Tippen zum Ändern</string>
-    <string name="combo_continue_to">Weiter zu %s</string>
-    <string name="combo_start_step">%s starten</string>
-    <string name="combo_done_eis">Am wichtigsten: %s</string>
+    <string name="hs_slot_a11y">%1$s. Tippen zum Ändern</string>
+    <string name="combo_continue_to">Weiter zu %1$s</string>
+    <string name="combo_start_step">%1$s starten</string>
+    <string name="combo_done_eis">Am wichtigsten: %1$s</string>
     <string name="combo_done_eis_none">Sortiert – nichts Dringendes und Wichtiges</string>
-    <string name="combo_done_pick">Gewählt: %s</string>
-    <string name="combo_subject">Für: %s</string>
+    <string name="combo_done_pick">Gewählt: %1$s</string>
+    <string name="combo_subject">Für: %1$s</string>
     <string name="combo_leave_title">Kette verlassen?</string>
     <string name="combo_leave_body">Erledigte Schritte bleiben erledigt. Du kannst dort weitermachen.</string>
     <plurals name="words">
-        <item quantity="one">%d Wort</item>
-        <item quantity="other">%d Wörter</item>
+        <item quantity="one">%1$d Wort</item>
+        <item quantity="other">%1$d Wörter</item>
     </plurals>
     <plurals name="review_days_ago">
-        <item quantity="one">Deine erste Erklärung war vor %d Tag:</item>
-        <item quantity="other">Deine erste Erklärung war vor %d Tagen:</item>
+        <item quantity="one">Deine erste Erklärung war vor %1$d Tag:</item>
+        <item quantity="other">Deine erste Erklärung war vor %1$d Tagen:</item>
     </plurals>
     <plurals name="review_next">
-        <item quantity="one">Wenn es gut läuft, ist die nächste Wiederholung in %d Tag.</item>
-        <item quantity="other">Wenn es gut läuft, ist die nächste Wiederholung in %d Tagen.</item>
+        <item quantity="one">Wenn es gut läuft, ist die nächste Wiederholung in %1$d Tag.</item>
+        <item quantity="other">Wenn es gut läuft, ist die nächste Wiederholung in %1$d Tagen.</item>
     </plurals>
     <plurals name="gate_tick">
-        <item quantity="one">Hake noch %d Aufgabe ab, um abzuschließen</item>
-        <item quantity="other">Hake noch %d Aufgaben ab, um abzuschließen</item>
+        <item quantity="one">Hake noch %1$d Aufgabe ab, um abzuschließen</item>
+        <item quantity="other">Hake noch %1$d Aufgaben ab, um abzuschließen</item>
     </plurals>
     <plurals name="level_hint_days">
         <item quantity="one">Übe sie an %1$d weiteren Tag, um „%2$s“ zu erreichen.</item>
@@ -200,43 +200,43 @@
         <item quantity="other">%1$d Minuten von %2$d geplanten</item>
     </plurals>
     <plurals name="review_next_in">
-        <item quantity="one">Nächste Wiederholung in %d Tag.</item>
-        <item quantity="other">Nächste Wiederholung in %d Tagen.</item>
+        <item quantity="one">Nächste Wiederholung in %1$d Tag.</item>
+        <item quantity="other">Nächste Wiederholung in %1$d Tagen.</item>
     </plurals>
     <plurals name="focus_announce_minutes">
-        <item quantity="one">Noch %d Minute</item>
-        <item quantity="other">Noch %d Minuten</item>
+        <item quantity="one">Noch %1$d Minute</item>
+        <item quantity="other">Noch %1$d Minuten</item>
     </plurals>
     <plurals name="focus_break_hint_n">
-        <item quantity="one">Danach Pause: %d Minute, weg vom Bildschirm.</item>
-        <item quantity="other">Danach Pause: %d Minuten, weg vom Bildschirm.</item>
+        <item quantity="one">Danach Pause: %1$d Minute, weg vom Bildschirm.</item>
+        <item quantity="other">Danach Pause: %1$d Minuten, weg vom Bildschirm.</item>
     </plurals>
     <plurals name="eis_gate_tasks">
-        <item quantity="one">Füge noch %d Aufgabe hinzu, um weiterzumachen</item>
-        <item quantity="other">Füge noch %d Aufgaben hinzu, um weiterzumachen</item>
+        <item quantity="one">Füge noch %1$d Aufgabe hinzu, um weiterzumachen</item>
+        <item quantity="other">Füge noch %1$d Aufgaben hinzu, um weiterzumachen</item>
     </plurals>
     <plurals name="eis_quadrant_a11y">
         <item quantity="one">%1$s, %2$s, %3$d Aufgabe</item>
         <item quantity="other">%1$s, %2$s, %3$d Aufgaben</item>
     </plurals>
     <plurals name="fey_gate_words">
-        <item quantity="one">Schreib noch %d Wort, um weiterzumachen</item>
-        <item quantity="other">Schreib noch %d Wörter, um weiterzumachen</item>
+        <item quantity="one">Schreib noch %1$d Wort, um weiterzumachen</item>
+        <item quantity="other">Schreib noch %1$d Wörter, um weiterzumachen</item>
     </plurals>
     <plurals name="fey_review_in">
-        <item quantity="one">Du erklärst das in %d Tag noch einmal, aus dem Gedächtnis.</item>
-        <item quantity="other">Du erklärst das in %d Tagen noch einmal, aus dem Gedächtnis.</item>
+        <item quantity="one">Du erklärst das in %1$d Tag noch einmal, aus dem Gedächtnis.</item>
+        <item quantity="other">Du erklärst das in %1$d Tagen noch einmal, aus dem Gedächtnis.</item>
     </plurals>
     <plurals name="pm_gate_reasons">
-        <item quantity="one">Füge noch %d Grund hinzu, um abzuschließen</item>
-        <item quantity="other">Füge noch %d Gründe hinzu, um abzuschließen</item>
+        <item quantity="one">Füge noch %1$d Grund hinzu, um abzuschließen</item>
+        <item quantity="other">Füge noch %1$d Gründe hinzu, um abzuschließen</item>
     </plurals>
     <plurals name="hs_log_hint_n">
         <item quantity="one">Trag sie an %1$d Tag ein, um „%2$s“ zu erreichen.</item>
         <item quantity="other">Trag sie an %1$d Tagen ein, um „%2$s“ zu erreichen.</item>
     </plurals>
     <plurals name="combo_done_focus">
-        <item quantity="one">%d Minute Fokus</item>
-        <item quantity="other">%d Minuten Fokus</item>
+        <item quantity="one">%1$d Minute Fokus</item>
+        <item quantity="other">%1$d Minuten Fokus</item>
     </plurals>
 </resources>

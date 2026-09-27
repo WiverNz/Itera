@@ -199,7 +199,11 @@ class EngineHarness(
     val ensureToday = EnsureTodayPlanUseCase(reconciler, generate, clock)
     val scheduleReview = ScheduleReviewUseCase(reviews, catalog, tx, clock)
     val complete = CompleteActivityUseCase(
-        plans, states, records, scheduleReview, advance, tx, reminders, analytics, clock, checks
+        plans, states, records, scheduleReview, advance, tx, reminders, analytics, clock, checks,
+        com.wivernz.itera.analytics.ProgressionEvents(
+            ObserveTechniqueProgressUseCase(progress, states, catalog),
+            ObserveProgressUseCase(progress, catalog, prefs, clock), analytics
+        )
     )
     val submitReview = SubmitReviewUseCase(plans, reviews, complete, tx, analytics, clock)
     val start = StartActivityUseCase(plans, tx, reminders, analytics, clock)

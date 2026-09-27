@@ -65,7 +65,7 @@
     <string name="detail_history">Deine Praxis</string>
     <string name="detail_no_history">Noch keine Praxis.</string>
     <string name="detail_related">Passt gut zu</string>
-    <string name="detail_locked">Wird an Tag %d deines Programms freigeschaltet.</string>
+    <string name="detail_locked">Wird an Tag %1$d deines Programms freigeschaltet.</string>
     <string name="train_today_skill">Heute · %1$s</string>
     <string name="train_locked">Gesperrt</string>
     <string name="library_locked">%1$s, gesperrt, verfügbar ab Tag %2$d</string>
@@ -74,10 +74,10 @@
     <string name="detail_explained">Erklärt: %1$s</string>
     <string name="detail_habit_summary">Nach %1$s werde ich %2$s.</string>
     <string name="detail_note">„%1$s“</string>
-    <plurals name="train_more_reviews"><item quantity="one">+%d weitere</item><item quantity="other">+%d weitere</item></plurals>
-    <plurals name="detail_minutes"><item quantity="one">%d Fokusminute</item><item quantity="other">%d Fokusminuten</item></plurals>
-    <plurals name="detail_tasks"><item quantity="one">%d Aufgabe sortiert</item><item quantity="other">%d Aufgaben sortiert</item></plurals>
-    <plurals name="detail_reasons"><item quantity="one">%d Risiko betrachtet</item><item quantity="other">%d Risiken betrachtet</item></plurals>
-    <plurals name="detail_steps"><item quantity="one">%d Schritt abgeschlossen</item><item quantity="other">%d Schritte abgeschlossen</item></plurals>
-    <plurals name="detail_items"><item quantity="one">%d Aufgabe erledigt</item><item quantity="other">%d Aufgaben erledigt</item></plurals>
+    <plurals name="train_more_reviews"><item quantity="one">+%1$d weitere</item><item quantity="other">+%1$d weitere</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%1$d Fokusminute</item><item quantity="other">%1$d Fokusminuten</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">%1$d Aufgabe sortiert</item><item quantity="other">%1$d Aufgaben sortiert</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">%1$d Risiko betrachtet</item><item quantity="other">%1$d Risiken betrachtet</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">%1$d Schritt abgeschlossen</item><item quantity="other">%1$d Schritte abgeschlossen</item></plurals>
+    <plurals name="detail_items"><item quantity="one">%1$d Aufgabe erledigt</item><item quantity="other">%1$d Aufgaben erledigt</item></plurals>
 </resources>

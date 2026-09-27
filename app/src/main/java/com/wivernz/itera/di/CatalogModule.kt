@@ -2,7 +2,7 @@ package com.wivernz.itera.di
 
 import com.wivernz.itera.BuildConfig
 import com.wivernz.itera.core.common.RuntimeChecks
-import com.wivernz.itera.core.notifications.NoOpReminderScheduler
+import com.wivernz.itera.core.notifications.WorkReminderScheduler
 import com.wivernz.itera.core.notifications.ReminderScheduler
 import com.wivernz.itera.data.catalog.AndroidCatalogAssetSource
 import com.wivernz.itera.data.catalog.AssetTechniqueCatalogRepository
@@ -34,7 +34,7 @@ abstract class CatalogModule {
 
     /** Milestone 009 replaces this binding with the WorkManager scheduler. */
     @Binds @Singleton
-    abstract fun reminders(impl: NoOpReminderScheduler): ReminderScheduler
+    abstract fun reminders(impl: WorkReminderScheduler): ReminderScheduler
 
     companion object {
         @Provides

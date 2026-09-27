@@ -41,12 +41,13 @@ class ResourceCatalogStrings @Inject constructor(
 ) : CatalogStrings {
     private val ids = ConcurrentHashMap<String, Int>()
 
-    override val locale: Locale get() = context.resources.configuration.locales[0]
+    private val localized: Context get() = androidx.core.content.ContextCompat.getContextForLanguage(context)
+    override val locale: Locale get() = localized.resources.configuration.locales[0]
 
-    override fun text(key: String): String? = id(key, "string")?.let(context::getString)
+    override fun text(key: String): String? = id(key, "string")?.let(localized::getString)
 
     override fun array(key: String): List<String>? =
-        id(key, "array")?.let { context.resources.getStringArray(it).toList() }
+        id(key, "array")?.let { localized.resources.getStringArray(it).toList() }
 
     @SuppressLint("DiscouragedApi")
     private fun id(key: String, type: String): Int? = ids.getOrPut("$type/$key") {

@@ -26,3 +26,5 @@ Reminder copy is written to tolerate a delay of up to roughly 45 minutes.
 ## Migration implications
 
 None.
+
+Milestone 009 adds `RECEIVE_BOOT_COMPLETED` solely to rederive inexact reminder work after boot; package replacement and timezone changes use the same receiver. No exact-alarm or network permission is added.

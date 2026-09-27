@@ -17,10 +17,11 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 data class ResolvedCopy(val title: String, val subtitle: String, val instruction: String)
 class CopyResolver @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+    @param:ApplicationContext private val application: Context,
     private val clock: Clock,
     private val logger: Logger
 ) {
+    private val context: Context get() = androidx.core.content.ContextCompat.getContextForLanguage(application)
     fun resolve(key: String, args: String, techniqueId: String): ResolvedCopy = try {
         val values = Json.parseToJsonElement(args).jsonObject
         val technique = values["technique"]?.jsonPrimitive?.content ?: techniqueId

@@ -4,8 +4,8 @@
     <string name="app_description">A practical trainer for focus, planning, learning, habits, and reflection.</string>
     <string name="action_continue">Continue</string>
     <string name="action_next">Next</string>
-    <string name="minutes_short">%d min</string>
-    <string name="minutes_plus">%d+ min</string>
+    <string name="minutes_short">%1$d min</string>
+    <string name="minutes_plus">%1$d+ min</string>
     <string name="welcome_title">A coach for how you work.</string>
     <string name="welcome_get_started">Get started</string>
     <string name="welcome_demo">Explore with demo data</string>
@@ -28,7 +28,7 @@
     <string name="greeting_morning">Good morning</string>
     <string name="greeting_afternoon">Good afternoon</string>
     <string name="greeting_evening">Good evening</string>
-    <string name="day_n">Day %d</string>
+    <string name="day_n">Day %1$d</string>
     <string name="today_training">Today’s training</string>
     <string name="today_combination">Combination day</string>
     <string name="badge_new">New</string>
@@ -38,7 +38,7 @@
     <string name="today_about">About %1$d min · %2$s</string>
     <string name="today_plan_label">Your plan from last night:</string>
     <string name="hero_next_optional">Next up · optional</string>
-    <string name="hero_focus_title">%d-minute focus</string>
+    <string name="hero_focus_title">%1$d-minute focus</string>
     <string name="hero_focus_line">Pick one task. Phone face down. Nothing else until the timer ends.</string>
     <string name="hero_focus_cta">Start focus session</string>
     <string name="hero_evening">This evening</string>
@@ -65,13 +65,13 @@
     <string name="chip_focus_before_email">Start the focus session before opening email</string>
     <string name="chip_phone_away">Leave the phone in another room</string>
     <string name="chip_start_earlier">Start 30 minutes earlier</string>
-    <string name="day_complete_title">Day %d complete</string>
+    <string name="day_complete_title">Day %1$d complete</string>
     <string name="day_complete_sub">Exercise, focus, reflection. That’s a full training day.</string>
     <string name="day_ring_count">%1$d/%2$d</string>
     <string name="day_change_label">Your change for tomorrow</string>
     <string name="day_change_hint">It’ll be waiting on tomorrow’s Today screen.</string>
-    <string name="day_tomorrow">Tomorrow · Day %d</string>
-    <string name="day_unlocks">Unlocks at %s</string>
+    <string name="day_tomorrow">Tomorrow · Day %1$d</string>
+    <string name="day_unlocks">Unlocks at %1$s</string>
     <string name="good_night">Good night</string>
     <string name="combo_title">Plan it, then go deep</string>
     <string name="combo_sub">Four techniques you know, used as one move.</string>
@@ -102,23 +102,23 @@
     <string name="day_part_reflection">reflection</string>
     <string name="day_tomorrow_practice">Practice day</string>
     <plurals name="reflection_prefill_tasks">
-        <item quantity="one">Cleared %d small task</item>
-        <item quantity="other">Cleared %d small tasks</item>
+        <item quantity="one">Cleared %1$d small task</item>
+        <item quantity="other">Cleared %1$d small tasks</item>
     </plurals>
     <plurals name="reflection_prefill_focus">
-        <item quantity="one">Focused for %d minute</item>
-        <item quantity="other">Focused for %d minutes</item>
+        <item quantity="one">Focused for %1$d minute</item>
+        <item quantity="other">Focused for %1$d minutes</item>
     </plurals>
     <plurals name="reflection_week_days">
-        <item quantity="one">%d day trained</item>
-        <item quantity="other">%d days trained</item>
+        <item quantity="one">%1$d day trained</item>
+        <item quantity="other">%1$d days trained</item>
     </plurals>
     <plurals name="reflection_week_techniques">
-        <item quantity="one">%d technique practised</item>
-        <item quantity="other">%d techniques practised</item>
+        <item quantity="one">%1$d technique practised</item>
+        <item quantity="other">%1$d techniques practised</item>
     </plurals>
     <plurals name="reflection_week_focus">
-        <item quantity="one">%d minute of focus</item>
-        <item quantity="other">%d minutes of focus</item>
+        <item quantity="one">%1$d minute of focus</item>
+        <item quantity="other">%1$d minutes of focus</item>
     </plurals>
 </resources>

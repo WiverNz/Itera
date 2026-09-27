@@ -24,7 +24,7 @@
     <string name="focus_end">End</string>
     <string name="focus_pause">Pause</string>
     <string name="focus_resume">Resume</string>
-    <string name="combo_label">Day %d · Combination</string>
+    <string name="combo_label">Day %1$d · Combination</string>
     <string name="combo_step1_sub">From “Do now” in the matrix</string>
     <string name="eis_title">Sort what’s on your plate</string>
     <string name="eis_to_sort">To sort</string>
@@ -64,7 +64,7 @@
     <string name="review_hidden">Your first answer stays hidden until you finish</string>
     <string name="review_compare">Compare with my first answer</string>
     <string name="pm_project">Project:</string>
-    <string name="pm_title">It’s %s. The project failed completely. Why?</string>
+    <string name="pm_title">It’s %1$s. The project failed completely. Why?</string>
     <string name="pm_likely">Likely</string>
     <string name="pm_possible">Possible</string>
     <string name="pm_add">Add a reason</string>
@@ -86,7 +86,7 @@
     <string name="hs_nudge">Nudge me right after it</string>
     <string name="hs_save">Save my stack</string>
     <string name="action_finish">Finish</string>
-    <string name="exercise_later_at">Not now — remind me at %s</string>
+    <string name="exercise_later_at">Not now — remind me at %1$s</string>
     <string name="exercise_not_now">Not now</string>
     <string name="exercise_leave_title">Leave this exercise?</string>
     <string name="exercise_leave_body">What you’ve written is kept. You can pick it up again later.</string>
@@ -94,12 +94,12 @@
     <string name="exercise_leave">Leave</string>
     <string name="gate_fill">Fill in every field to finish</string>
     <string name="gate_pick">Pick one to finish</string>
-    <string name="template_option_hint">Option %d</string>
+    <string name="template_option_hint">Option %1$d</string>
     <string name="template_pick_label">Then pick the one that matters most</string>
-    <string name="template_item_hint">Item %d</string>
+    <string name="template_item_hint">Item %1$d</string>
     <string name="template_custom_hint">Something else</string>
-    <string name="level_hint_applied_span">Keep using it across two weeks to reach %s.</string>
-    <string name="level_hint_integrated">Use it on a combination day to reach %s.</string>
+    <string name="level_hint_applied_span">Keep using it across two weeks to reach %1$s.</string>
+    <string name="level_hint_integrated">Use it on a combination day to reach %1$s.</string>
     <string name="level_hint_top">You use it together with other techniques.</string>
     <string name="review_retired">You know this one. It won’t come back for review.</string>
     <string name="review_retire_preview">If this goes well, this one is retired: you know it.</string>
@@ -120,11 +120,11 @@
     <string name="eis_entry_hint">One task per line</string>
     <string name="eis_entry_cta">Sort them</string>
     <string name="eis_pick_first">Pick a task first</string>
-    <string name="eis_place">Place %s</string>
-    <string name="eis_choose_hint">Tap a task in %s to choose it</string>
+    <string name="eis_place">Place %1$s</string>
+    <string name="eis_choose_hint">Tap a task in %1$s to choose it</string>
     <string name="eis_chosen">Chosen</string>
     <string name="eis_gate_sort">Sort every task first</string>
-    <string name="eis_gate_choose">Choose one task from %s</string>
+    <string name="eis_gate_choose">Choose one task from %1$s</string>
     <string name="fey_topic_new">What are you learning?</string>
     <string name="fey_topic_new_hint">A topic, in a few words</string>
     <string name="fey_topic_use">Use this topic</string>
@@ -155,39 +155,39 @@
     <string name="pm_move_up">Move up</string>
     <string name="pm_move_down">Move down</string>
     <string name="pm_remove">Remove</string>
-    <string name="pm_likelihood_a11y">Likelihood: %s. Tap to change</string>
-    <string name="pm_idea_n">Idea: %s could help here.</string>
+    <string name="pm_likelihood_a11y">Likelihood: %1$s. Tap to change</string>
+    <string name="pm_idea_n">Idea: %1$s could help here.</string>
     <string name="pm_finish_only">Finish without adding</string>
     <string name="hs_custom_anchor">Something else you do every day</string>
     <string name="hs_custom_habit">Your own tiny habit</string>
-    <string name="hs_nudge_after">Nudge me right after I %s</string>
-    <string name="hs_nudge_time">Around %s</string>
+    <string name="hs_nudge_after">Nudge me right after I %1$s</string>
+    <string name="hs_nudge_time">Around %1$s</string>
     <string name="hs_nudge_time_title">Nudge time</string>
     <string name="hs_gate">Fill both blanks to save</string>
-    <string name="hs_slot_a11y">%s. Tap to change</string>
-    <string name="combo_continue_to">Continue to %s</string>
-    <string name="combo_start_step">Start %s</string>
-    <string name="combo_done_eis">Most important: %s</string>
+    <string name="hs_slot_a11y">%1$s. Tap to change</string>
+    <string name="combo_continue_to">Continue to %1$s</string>
+    <string name="combo_start_step">Start %1$s</string>
+    <string name="combo_done_eis">Most important: %1$s</string>
     <string name="combo_done_eis_none">Sorted — nothing urgent and important</string>
-    <string name="combo_done_pick">Chosen: %s</string>
-    <string name="combo_subject">For: %s</string>
+    <string name="combo_done_pick">Chosen: %1$s</string>
+    <string name="combo_subject">For: %1$s</string>
     <string name="combo_leave_title">Leave the chain?</string>
     <string name="combo_leave_body">Finished steps stay done. You can pick up where you left off.</string>
     <plurals name="words">
-        <item quantity="one">%d word</item>
-        <item quantity="other">%d words</item>
+        <item quantity="one">%1$d word</item>
+        <item quantity="other">%1$d words</item>
     </plurals>
     <plurals name="review_days_ago">
-        <item quantity="one">Your first explanation was %d day ago:</item>
-        <item quantity="other">Your first explanation was %d days ago:</item>
+        <item quantity="one">Your first explanation was %1$d day ago:</item>
+        <item quantity="other">Your first explanation was %1$d days ago:</item>
     </plurals>
     <plurals name="review_next">
-        <item quantity="one">If this goes well, the next review is in %d day.</item>
-        <item quantity="other">If this goes well, the next review is in %d days.</item>
+        <item quantity="one">If this goes well, the next review is in %1$d day.</item>
+        <item quantity="other">If this goes well, the next review is in %1$d days.</item>
     </plurals>
     <plurals name="gate_tick">
-        <item quantity="one">Tick %d more task to finish</item>
-        <item quantity="other">Tick %d more tasks to finish</item>
+        <item quantity="one">Tick %1$d more task to finish</item>
+        <item quantity="other">Tick %1$d more tasks to finish</item>
     </plurals>
     <plurals name="level_hint_days">
         <item quantity="one">Practice it on %1$d more day to reach %2$s.</item>
@@ -202,43 +202,43 @@
         <item quantity="other">%1$d minutes of %2$d planned</item>
     </plurals>
     <plurals name="review_next_in">
-        <item quantity="one">Next review in %d day.</item>
-        <item quantity="other">Next review in %d days.</item>
+        <item quantity="one">Next review in %1$d day.</item>
+        <item quantity="other">Next review in %1$d days.</item>
     </plurals>
     <plurals name="focus_announce_minutes">
-        <item quantity="one">%d minute left</item>
-        <item quantity="other">%d minutes left</item>
+        <item quantity="one">%1$d minute left</item>
+        <item quantity="other">%1$d minutes left</item>
     </plurals>
     <plurals name="focus_break_hint_n">
-        <item quantity="one">Break after this one: %d minute, away from the screen.</item>
-        <item quantity="other">Break after this one: %d minutes, away from the screen.</item>
+        <item quantity="one">Break after this one: %1$d minute, away from the screen.</item>
+        <item quantity="other">Break after this one: %1$d minutes, away from the screen.</item>
     </plurals>
     <plurals name="eis_gate_tasks">
-        <item quantity="one">Add %d more task to continue</item>
-        <item quantity="other">Add %d more tasks to continue</item>
+        <item quantity="one">Add %1$d more task to continue</item>
+        <item quantity="other">Add %1$d more tasks to continue</item>
     </plurals>
     <plurals name="eis_quadrant_a11y">
         <item quantity="one">%1$s, %2$s, %3$d task</item>
         <item quantity="other">%1$s, %2$s, %3$d tasks</item>
     </plurals>
     <plurals name="fey_gate_words">
-        <item quantity="one">Write %d more word to continue</item>
-        <item quantity="other">Write %d more words to continue</item>
+        <item quantity="one">Write %1$d more word to continue</item>
+        <item quantity="other">Write %1$d more words to continue</item>
     </plurals>
     <plurals name="fey_review_in">
-        <item quantity="one">You’ll explain this again in %d day, from memory.</item>
-        <item quantity="other">You’ll explain this again in %d days, from memory.</item>
+        <item quantity="one">You’ll explain this again in %1$d day, from memory.</item>
+        <item quantity="other">You’ll explain this again in %1$d days, from memory.</item>
     </plurals>
     <plurals name="pm_gate_reasons">
-        <item quantity="one">Add %d more reason to finish</item>
-        <item quantity="other">Add %d more reasons to finish</item>
+        <item quantity="one">Add %1$d more reason to finish</item>
+        <item quantity="other">Add %1$d more reasons to finish</item>
     </plurals>
     <plurals name="hs_log_hint_n">
         <item quantity="one">Log it on %1$d day to reach %2$s.</item>
         <item quantity="other">Log it on %1$d days to reach %2$s.</item>
     </plurals>
     <plurals name="combo_done_focus">
-        <item quantity="one">%d minute of focus</item>
-        <item quantity="other">%d minutes of focus</item>
+        <item quantity="one">%1$d minute of focus</item>
+        <item quantity="other">%1$d minutes of focus</item>
     </plurals>
 </resources>

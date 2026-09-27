@@ -53,7 +53,8 @@ class CompleteActivityUseCase @Inject constructor(
     private val reminders: ReminderScheduler,
     private val analytics: Analytics,
     private val clock: Clock,
-    private val checks: RuntimeChecks
+    private val checks: RuntimeChecks,
+    private val progression: com.wivernz.itera.analytics.ProgressionEvents
 ) {
     suspend operator fun invoke(
         activityId: Long,
@@ -98,6 +99,7 @@ class CompleteActivityUseCase @Inject constructor(
 
         val duration = (result as? ActivityResult.Focus)?.actualSeconds
             ?: secondsBetween(activity.startedAt ?: now, now)
+        val previousProgress = progression.snapshot()
         plans.complete(activityId, result, difficulty, note, now, duration)
         if (activity.exerciseType == ExerciseType.COMBINATION) {
             settleCombinationSteps(day, result as ActivityResult.Combination)
@@ -153,6 +155,7 @@ class CompleteActivityUseCase @Inject constructor(
         if (day.status == TrainingDayStatus.PLANNED) {
             plans.updateDayStatus(day.id, TrainingDayStatus.IN_PROGRESS, null)
         }
+        progression.changed(previousProgress)
         // 6. Day completion; the program advances after the commit.
         val dayCompleted = completeDayIfDone(plans, analytics, day.id, now)
         // 7. Analytics, inside the transaction.

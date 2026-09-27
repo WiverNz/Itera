@@ -10,6 +10,9 @@ import com.wivernz.itera.R
  * milestone 009 adds the reminder channels here.
  */
 object NotificationChannels {
+    const val TRAINING = "training"
+    const val REFLECTION = "reflection"
+    const val HABITS = "habits"
     const val FOCUS_SESSION = "focus_session"
 
     fun register(context: Context) {
@@ -24,6 +27,11 @@ object NotificationChannels {
             enableVibration(false)
             setShowBadge(false)
         }
-        manager.createNotificationChannel(focus)
+        manager.createNotificationChannels(listOf(
+            focus,
+            NotificationChannel(TRAINING, context.getString(R.string.notification_channel_training), NotificationManager.IMPORTANCE_DEFAULT),
+            NotificationChannel(REFLECTION, context.getString(R.string.notification_channel_reflection), NotificationManager.IMPORTANCE_DEFAULT),
+            NotificationChannel(HABITS, context.getString(R.string.notification_channel_habits), NotificationManager.IMPORTANCE_LOW)
+        ))
     }
 }

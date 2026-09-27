@@ -48,8 +48,8 @@
 <string name="privacy">Privacidad</string>
 <string name="load_demo">Cargar datos de ejemplo (día 9)</string>
 <plurals name="practices">
-        <item quantity="one">%d práctica</item>
-        <item quantity="many">%d prácticas</item>
-        <item quantity="other">%d prácticas</item>
+        <item quantity="one">%1$d práctica</item>
+        <item quantity="many">%1$d prácticas</item>
+        <item quantity="other">%1$d prácticas</item>
     </plurals>
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_training">Daily training</string>
+    <string name="notification_channel_reflection">Evening reflection</string>
+    <string name="notification_channel_habits">Habit nudges</string>
+    <string name="notification_morning_title">Today’s exercise is ready</string>
+    <string name="notification_morning_review_title">Today’s exercise and one review</string>
+    <string name="notification_training_body">%1$s — about %2$d min</string>
+    <string name="notification_review_body">%1$s, plus %2$s to recall</string>
+    <string name="notification_review_topic">something to remember</string>
+    <string name="notification_focus_title">Time for one focus block?</string>
+    <string name="notification_focus_body">%1$d minutes on one thing</string>
+    <string name="notification_evening_title">Two minutes, three questions</string>
+    <string name="notification_evening_body">Close the day while it’s fresh</string>
+    <string name="notification_habit_title">Right after %1$s</string>
+    <string name="notification_snooze_title">Still up for it?</string>
+</resources>

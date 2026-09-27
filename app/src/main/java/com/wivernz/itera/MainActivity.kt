@@ -45,6 +45,8 @@ import com.wivernz.itera.feature.focus.FocusRestoreViewModel
 import com.wivernz.itera.feature.voice.VoiceHost
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -52,15 +54,19 @@ class MainActivity : AppCompatActivity() {
     private val focusRestore: FocusRestoreViewModel by viewModels()
 
     @Inject lateinit var voiceRecognizer: VoiceRecognizer
+    @Inject lateinit var notificationDestination: com.wivernz.itera.core.notifications.NotificationDestination
+    @Inject lateinit var reminders: com.wivernz.itera.core.notifications.ReminderScheduler
+    @Inject lateinit var analytics: com.wivernz.itera.analytics.Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
         splash.setKeepOnScreenCondition { shell.state.value.loading }
         if (savedInstanceState == null) {
+            val hasDeepLink = intent.getStringExtra(RouteCodec.EXTRA) != null
             takeDeepLink(intent)
             // A notification tap already names its destination; otherwise re-attach a stored timer.
-            if (intent.getStringExtra(RouteCodec.EXTRA) == null) {
+            if (!hasDeepLink) {
                 focusRestore.restore { shell.acceptDeepLink(RouteCodec.encode(it.toRoute())) }
             }
         }
@@ -100,8 +106,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun takeDeepLink(intent: Intent) {
-        shell.acceptDeepLink(intent.getStringExtra(RouteCodec.EXTRA))
+        val encoded = intent.getStringExtra(RouteCodec.EXTRA)
+        val type = intent.getStringExtra(com.wivernz.itera.core.notifications.IteraNotifier.TYPE_EXTRA)
         intent.removeExtra(RouteCodec.EXTRA)
+        intent.removeExtra(com.wivernz.itera.core.notifications.IteraNotifier.TYPE_EXTRA)
+        val route = encoded?.let(RouteCodec::decode) ?: return
+        lifecycleScope.launch {
+            val resolved = notificationDestination.resolve(route)
+            shell.acceptDeepLink(RouteCodec.encode(resolved))
+            com.wivernz.itera.analytics.NotificationType.entries.firstOrNull { it.name == type }?.let {
+                analytics.track(com.wivernz.itera.analytics.Event.NotificationOpened(it))
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch { reminders.rescheduleAll() }
     }
 }
 

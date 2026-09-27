@@ -388,3 +388,12 @@ Decisions the voice documents left to implementation; none changes a product rul
 - **Spoken minutes** cover 15/25/50 and the seeded suggestions 25/30/50 (Pomodoro's 30-minute estimate is a Today seed).
 - **Availability.** The mic and command action are shown on every API level; on API 26-30 or without an on-device service a tap explains that voice is unavailable. Missing language models are detected from the recogniser's language errors, not a pre-check; settings links go to the platform voice-input settings.
 - **Placement.** The "Voice command" action sits end-aligned under each exercise/focus top bar and after Today's steps, never in the hero. The field mic sits in the note field's end padding. Prototype and production carry the same affordances and `milestone012.xml` catalogues.
+
+## Milestone 009 implementation decisions (2026-09-27)
+
+- Reminder IDs remain fixed per type; before posting, cancel the other reminder IDs (never the foreground timer). This resolves notification UX section 6's contradictory same-ID/per-type wording while enforcing one visible reminder.
+- Reviews share the morning slot. With training off and reviews on, a due review can still be offered; with reviews off, morning copy never mentions a review. Habit nudges use the saved stack's own switch. No additional settings toggle is introduced.
+- A paused focus session suppresses nudges too. Evening work rechecks in short intervals while paused, or at the running timer's expected end; it stops at 23:00. Other reminders are dropped during focus. All workers recheck persisted state.
+- Maintenance (daily plan, weekly log trim, daily expired-export cleanup) runs independently of notification permission. Permission denial cancels all reminder work, not local data maintenance.
+- Habit logging has no separate occurrence table in the shipped model. A completed habit-stacking activity today counts as logged; do not invent a new habit-tracking flow or match user text.
+- Reminder bodies are capped at 59 Unicode code points including an ellipsis when user content or a translated technique name is long. Review-without-topic copy uses the existing generic review label.

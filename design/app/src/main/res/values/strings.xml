@@ -10,8 +10,8 @@
     <string name="action_close">Close</string>
     <string name="action_next">Next</string>
     <string name="action_finish">Finish</string>
-    <string name="minutes_short">%d min</string>
-    <string name="minutes_plus">%d+ min</string>
+    <string name="minutes_short">%1$d min</string>
+    <string name="minutes_plus">%1$d+ min</string>
 
     <!-- Navigation -->
     <string name="nav_today">Today</string>
@@ -66,14 +66,14 @@
     <string name="language_title">Language</string>
     <string name="language_sub">Changes the whole app instantly, including techniques and reminders. Your own notes stay exactly as you wrote them.</string>
     <string name="language_match_device">Match device</string>
-    <string name="language_current">Currently %s</string>
-    <string name="language_a11y">Language: %s</string>
+    <string name="language_current">Currently %1$s</string>
+    <string name="language_a11y">Language: %1$s</string>
 
     <!-- Today -->
     <string name="greeting_morning">Good morning</string>
     <string name="greeting_afternoon">Good afternoon</string>
     <string name="greeting_evening">Good evening</string>
-    <string name="day_n">Day %d</string>
+    <string name="day_n">Day %1$d</string>
     <string name="today_training">Today’s training</string>
     <string name="today_combination">Combination day</string>
     <string name="badge_new">New</string>
@@ -82,14 +82,14 @@
     <string name="today_count">%1$d / %2$d</string>
     <string name="today_about">About %1$d min · %2$s</string>
     <string name="today_plan_label">Your plan from last night:</string>
-    <string name="step_now">Now · %d min</string>
+    <string name="step_now">Now · %1$d min</string>
     <string name="step_done">Done</string>
-    <string name="step_focus_title">%d-minute focus session</string>
-    <string name="step_focus_sub">Suggested around %s</string>
-    <string name="step_reflection_sub">%s · 2 min</string>
+    <string name="step_focus_title">%1$d-minute focus session</string>
+    <string name="step_focus_sub">Suggested around %1$s</string>
+    <string name="step_reflection_sub">%1$s · 2 min</string>
     <string name="step_optional">optional</string>
     <string name="hero_next_optional">Next up · optional</string>
-    <string name="hero_focus_title">%d-minute focus</string>
+    <string name="hero_focus_title">%1$d-minute focus</string>
     <string name="hero_focus_line">Pick one task. Phone face down. Nothing else until the timer ends.</string>
     <string name="hero_focus_cta">Start focus session</string>
     <string name="hero_evening">This evening</string>
@@ -152,16 +152,16 @@
     <string name="chip_focus_before_email">Start the focus session before opening email</string>
     <string name="chip_phone_away">Leave the phone in another room</string>
     <string name="chip_start_earlier">Start 30 minutes earlier</string>
-    <string name="day_complete_title">Day %d complete</string>
+    <string name="day_complete_title">Day %1$d complete</string>
     <string name="day_complete_sub">Exercise, focus, reflection. That’s a full training day.</string>
     <string name="day_change_label">Your change for tomorrow</string>
     <string name="day_change_hint">It’ll be waiting on tomorrow’s Today screen.</string>
-    <string name="day_tomorrow">Tomorrow · Day %d</string>
-    <string name="day_unlocks">Unlocks at %s</string>
+    <string name="day_tomorrow">Tomorrow · Day %1$d</string>
+    <string name="day_unlocks">Unlocks at %1$s</string>
     <string name="good_night">Good night</string>
 
     <!-- Combination -->
-    <string name="combo_label">Day %d · Combination</string>
+    <string name="combo_label">Day %1$d · Combination</string>
     <string name="combo_title">Plan it, then go deep</string>
     <string name="combo_sub">Four techniques you know, used as one move.</string>
     <string name="combo_step1">Most important: Q4 roadmap</string>
@@ -171,7 +171,7 @@
     <string name="combo_opt1">Define the 3 bets for Q4</string>
     <string name="combo_opt2">Collect feature requests</string>
     <string name="combo_opt3">Polish slide design</string>
-    <string name="combo_step3">%d minutes on that one step</string>
+    <string name="combo_step3">%1$d minutes on that one step</string>
     <string name="combo_step3_sub">Phone away, one tab open</string>
     <string name="combo_step4" formatted="false">Tonight: did the 20% hold?</string>
     <string name="combo_step4_sub">Part of your evening reflection</string>
@@ -238,14 +238,14 @@
     <string name="review_field">Your explanation, from memory</string>
     <string name="review_hidden">Your first answer stays hidden until you finish</string>
     <string name="review_compare">Compare with my first answer</string>
-    <string name="interval_days">%d d</string>
-    <string name="interval_weeks">%d wk</string>
-    <string name="interval_months">%d mo</string>
+    <string name="interval_days">%1$d d</string>
+    <string name="interval_weeks">%1$d wk</string>
+    <string name="interval_months">%1$d mo</string>
 
     <!-- Premortem -->
     <string name="pm_project">Project:</string>
     <string name="pm_project_value">Launch the mobile beta</string>
-    <string name="pm_title">It’s %s. The project failed completely. Why?</string>
+    <string name="pm_title">It’s %1$s. The project failed completely. Why?</string>
     <string name="pm_reason_1">Scope kept growing, we never shipped</string>
     <string name="pm_reason_2">Nobody outside the team tested it</string>
     <string name="pm_reason_3">Backend dev pulled onto another project</string>
@@ -298,12 +298,12 @@
     <string name="detail_history">Your practice</string>
     <string name="detail_no_history">No practice yet.</string>
     <string name="detail_related">Works well with</string>
-    <string name="detail_locked">Unlocks on Day %d of your program.</string>
+    <string name="detail_locked">Unlocks on Day %1$d of your program.</string>
 
     <!-- Progress & history -->
     <string name="progress_title">Progress</string>
     <string name="progress_days">%1$d of the last %2$d days</string>
-    <string name="progress_since">since %s</string>
+    <string name="progress_since">since %1$s</string>
     <string name="progress_missed_hint">Missed days don’t reset anything. The program simply continues where you left off.</string>
     <string name="progress_history">History</string>
     <string name="progress_history_sub">Notes and reflections</string>
@@ -347,20 +347,20 @@
 
     <!-- Plurals -->
     <plurals name="practices">
-        <item quantity="one">%d practice</item>
-        <item quantity="other">%d practices</item>
+        <item quantity="one">%1$d practice</item>
+        <item quantity="other">%1$d practices</item>
     </plurals>
     <plurals name="words">
-        <item quantity="one">%d word</item>
-        <item quantity="other">%d words</item>
+        <item quantity="one">%1$d word</item>
+        <item quantity="other">%1$d words</item>
     </plurals>
     <plurals name="review_days_ago">
-        <item quantity="one">Your first explanation was %d day ago:</item>
-        <item quantity="other">Your first explanation was %d days ago:</item>
+        <item quantity="one">Your first explanation was %1$d day ago:</item>
+        <item quantity="other">Your first explanation was %1$d days ago:</item>
     </plurals>
     <plurals name="review_next">
-        <item quantity="one">If this goes well, the next review is in %d day.</item>
-        <item quantity="other">If this goes well, the next review is in %d days.</item>
+        <item quantity="one">If this goes well, the next review is in %1$d day.</item>
+        <item quantity="other">If this goes well, the next review is in %1$d days.</item>
     </plurals>
 
     <!-- Techniques -->
@@ -439,16 +439,16 @@
     <string name="reflection_week_title">Your week</string>
     <string name="reflection_week_changes">Changes you planned this week</string>
     <plurals name="reflection_week_days">
-        <item quantity="one">%d day trained</item>
-        <item quantity="other">%d days trained</item>
+        <item quantity="one">%1$d day trained</item>
+        <item quantity="other">%1$d days trained</item>
     </plurals>
     <plurals name="reflection_week_techniques">
-        <item quantity="one">%d technique practised</item>
-        <item quantity="other">%d techniques practised</item>
+        <item quantity="one">%1$d technique practised</item>
+        <item quantity="other">%1$d techniques practised</item>
     </plurals>
     <plurals name="reflection_week_focus">
-        <item quantity="one">%d minute of focus</item>
-        <item quantity="other">%d minutes of focus</item>
+        <item quantity="one">%1$d minute of focus</item>
+        <item quantity="other">%1$d minutes of focus</item>
     </plurals>
 
     <string name="train_today_skill">Today · %1$s</string>
@@ -459,15 +459,15 @@
     <string name="detail_explained">Explained %1$s</string>
     <string name="detail_habit_summary">After %1$s, I will %2$s.</string>
     <string name="detail_note">“%1$s”</string>
-    <plurals name="train_more_reviews"><item quantity="one">+%d more</item><item quantity="other">+%d more</item></plurals>
-    <plurals name="detail_minutes"><item quantity="one">%d focus minute</item><item quantity="other">%d focus minutes</item></plurals>
-    <plurals name="detail_tasks"><item quantity="one">Sorted %d task</item><item quantity="other">Sorted %d tasks</item></plurals>
-    <plurals name="detail_reasons"><item quantity="one">Considered %d risk</item><item quantity="other">Considered %d risks</item></plurals>
-    <plurals name="detail_steps"><item quantity="one">Completed %d step</item><item quantity="other">Completed %d steps</item></plurals>
-    <plurals name="detail_items"><item quantity="one">Completed %d task</item><item quantity="other">Completed %d tasks</item></plurals>
+    <plurals name="train_more_reviews"><item quantity="one">+%1$d more</item><item quantity="other">+%1$d more</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%1$d focus minute</item><item quantity="other">%1$d focus minutes</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Sorted %1$d task</item><item quantity="other">Sorted %1$d tasks</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Considered %1$d risk</item><item quantity="other">Considered %1$d risks</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Completed %1$d step</item><item quantity="other">Completed %1$d steps</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Completed %1$d task</item><item quantity="other">Completed %1$d tasks</item></plurals>
 
-<string name="level_hint_applied_span">Keep using it across two weeks to reach %s.</string>
-<string name="level_hint_integrated">Use it on a combination day to reach %s.</string>
+<string name="level_hint_applied_span">Keep using it across two weeks to reach %1$s.</string>
+<string name="level_hint_integrated">Use it on a combination day to reach %1$s.</string>
 <string name="level_hint_top">You use it together with other techniques.</string>
 <plurals name="level_hint_days">
         <item quantity="one">Practice it on %1$d more day to reach %2$s.</item>

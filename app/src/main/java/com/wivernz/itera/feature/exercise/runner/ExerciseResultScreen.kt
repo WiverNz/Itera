@@ -48,6 +48,10 @@ import com.wivernz.itera.domain.model.MasteryLevel
 @Composable
 fun ExerciseResultRoute(vm: ExerciseResultViewModel, onDone: () -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
+    state.readOnlyActivity?.let { activity ->
+        com.wivernz.itera.feature.progress.HistoryResultScreen(activity, onDone)
+        return
+    }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flush() }
     ExerciseResultScreen(
         state,

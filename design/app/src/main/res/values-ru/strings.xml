@@ -9,8 +9,8 @@
     <string name="action_close">Закрыть</string>
     <string name="action_next">Далее</string>
     <string name="action_finish">Завершить</string>
-    <string name="minutes_short">%d мин</string>
-    <string name="minutes_plus">%d+ мин</string>
+    <string name="minutes_short">%1$d мин</string>
+    <string name="minutes_plus">%1$d+ мин</string>
 
     <string name="nav_today">Сегодня</string>
     <string name="nav_train">Тренировки</string>
@@ -60,13 +60,13 @@
     <string name="language_title">Язык</string>
     <string name="language_sub">Меняет всё приложение сразу, включая техники и напоминания. Твои заметки останутся без изменений.</string>
     <string name="language_match_device">Как на устройстве</string>
-    <string name="language_current">Сейчас: %s</string>
-    <string name="language_a11y">Язык: %s</string>
+    <string name="language_current">Сейчас: %1$s</string>
+    <string name="language_a11y">Язык: %1$s</string>
 
     <string name="greeting_morning">Доброе утро</string>
     <string name="greeting_afternoon">Добрый день</string>
     <string name="greeting_evening">Добрый вечер</string>
-    <string name="day_n">День %d</string>
+    <string name="day_n">День %1$d</string>
     <string name="today_training">Тренировка дня</string>
     <string name="today_combination">День комбинаций</string>
     <string name="badge_new">Новое</string>
@@ -75,14 +75,14 @@
     <string name="today_count">%1$d / %2$d</string>
     <string name="today_about">Около %1$d мин · %2$s</string>
     <string name="today_plan_label">Твой план со вчерашнего вечера:</string>
-    <string name="step_now">Сейчас · %d мин</string>
+    <string name="step_now">Сейчас · %1$d мин</string>
     <string name="step_done">Готово</string>
-    <string name="step_focus_title">Фокус-сессия на %d минут</string>
-    <string name="step_focus_sub">Лучше около %s</string>
-    <string name="step_reflection_sub">%s · 2 мин</string>
+    <string name="step_focus_title">Фокус-сессия на %1$d минут</string>
+    <string name="step_focus_sub">Лучше около %1$s</string>
+    <string name="step_reflection_sub">%1$s · 2 мин</string>
     <string name="step_optional">по желанию</string>
     <string name="hero_next_optional">Дальше · по желанию</string>
-    <string name="hero_focus_title">Фокус на %d минут</string>
+    <string name="hero_focus_title">Фокус на %1$d минут</string>
     <string name="hero_focus_line">Выбери одну задачу. Телефон экраном вниз. Больше ничего, пока не закончится таймер.</string>
     <string name="hero_focus_cta">Начать фокус-сессию</string>
     <string name="hero_evening">Этим вечером</string>
@@ -142,15 +142,15 @@
     <string name="chip_focus_before_email">Начать фокус-сессию до того, как открою почту</string>
     <string name="chip_phone_away">Оставить телефон в другой комнате</string>
     <string name="chip_start_earlier">Начать на 30 минут раньше</string>
-    <string name="day_complete_title">День %d завершён</string>
+    <string name="day_complete_title">День %1$d завершён</string>
     <string name="day_complete_sub">Упражнение, фокус, рефлексия. Полноценный тренировочный день.</string>
     <string name="day_change_label">Твоё изменение на завтра</string>
     <string name="day_change_hint">Оно будет ждать тебя завтра на экране «Сегодня».</string>
-    <string name="day_tomorrow">Завтра · День %d</string>
-    <string name="day_unlocks">Откроется в %s</string>
+    <string name="day_tomorrow">Завтра · День %1$d</string>
+    <string name="day_unlocks">Откроется в %1$s</string>
     <string name="good_night">Спокойной ночи</string>
 
-    <string name="combo_label">День %d · Комбинация</string>
+    <string name="combo_label">День %1$d · Комбинация</string>
     <string name="combo_title">Спланируй — и погрузись</string>
     <string name="combo_sub">Четыре знакомые техники в одном движении.</string>
     <string name="combo_step1">Самое важное: план на IV квартал</string>
@@ -160,7 +160,7 @@
     <string name="combo_opt1">Сформулировать 3 главные ставки</string>
     <string name="combo_opt2">Собрать запросы на функции</string>
     <string name="combo_opt3">Отполировать дизайн слайдов</string>
-    <string name="combo_step3">%d минут на этот один шаг</string>
+    <string name="combo_step3">%1$d минут на этот один шаг</string>
     <string name="combo_step3_sub">Телефон убран, открыта одна вкладка</string>
     <string name="combo_step4" formatted="false">Вечером: сработали ли те самые 20%?</string>
     <string name="combo_step4_sub">Часть вечерней рефлексии</string>
@@ -224,13 +224,13 @@
     <string name="review_field">Объяснение по памяти</string>
     <string name="review_hidden">Первый ответ скрыт, пока не закончишь</string>
     <string name="review_compare">Сравнить с первым ответом</string>
-    <string name="interval_days">%d д</string>
-    <string name="interval_weeks">%d нед</string>
-    <string name="interval_months">%d мес</string>
+    <string name="interval_days">%1$d д</string>
+    <string name="interval_weeks">%1$d нед</string>
+    <string name="interval_months">%1$d мес</string>
 
     <string name="pm_project">Проект:</string>
     <string name="pm_project_value">Запуск мобильной беты</string>
-    <string name="pm_title">Сейчас %s. Проект полностью провалился. Почему?</string>
+    <string name="pm_title">Сейчас %1$s. Проект полностью провалился. Почему?</string>
     <string name="pm_reason_1">Объём всё рос, и мы так и не выпустились</string>
     <string name="pm_reason_2">Никто вне команды его не тестировал</string>
     <string name="pm_reason_3">Бэкенд-разработчика забрали на другой проект</string>
@@ -281,11 +281,11 @@
     <string name="detail_history">Твоя практика</string>
     <string name="detail_no_history">Практики пока не было.</string>
     <string name="detail_related">Хорошо сочетается с</string>
-    <string name="detail_locked">Откроется на %d-й день программы.</string>
+    <string name="detail_locked">Откроется на %1$d-й день программы.</string>
 
     <string name="progress_title">Прогресс</string>
     <string name="progress_days">%1$d из последних %2$d дней</string>
-    <string name="progress_since">с %s</string>
+    <string name="progress_since">с %1$s</string>
     <string name="progress_missed_hint">Пропущенные дни ничего не сбрасывают. Программа просто продолжится с того же места.</string>
     <string name="progress_history">История</string>
     <string name="progress_history_sub">Заметки и рефлексии</string>
@@ -327,28 +327,28 @@
     <string name="load_demo">Загрузить демо-данные (день 9)</string>
 
     <plurals name="practices">
-        <item quantity="one">%d практика</item>
-        <item quantity="few">%d практики</item>
-        <item quantity="many">%d практик</item>
-        <item quantity="other">%d практики</item>
+        <item quantity="one">%1$d практика</item>
+        <item quantity="few">%1$d практики</item>
+        <item quantity="many">%1$d практик</item>
+        <item quantity="other">%1$d практики</item>
     </plurals>
     <plurals name="words">
-        <item quantity="one">%d слово</item>
-        <item quantity="few">%d слова</item>
-        <item quantity="many">%d слов</item>
-        <item quantity="other">%d слова</item>
+        <item quantity="one">%1$d слово</item>
+        <item quantity="few">%1$d слова</item>
+        <item quantity="many">%1$d слов</item>
+        <item quantity="other">%1$d слова</item>
     </plurals>
     <plurals name="review_days_ago">
-        <item quantity="one">Первое объяснение было %d день назад:</item>
-        <item quantity="few">Первое объяснение было %d дня назад:</item>
-        <item quantity="many">Первое объяснение было %d дней назад:</item>
-        <item quantity="other">Первое объяснение было %d дня назад:</item>
+        <item quantity="one">Первое объяснение было %1$d день назад:</item>
+        <item quantity="few">Первое объяснение было %1$d дня назад:</item>
+        <item quantity="many">Первое объяснение было %1$d дней назад:</item>
+        <item quantity="other">Первое объяснение было %1$d дня назад:</item>
     </plurals>
     <plurals name="review_next">
-        <item quantity="one">Если всё получится, следующее повторение через %d день.</item>
-        <item quantity="few">Если всё получится, следующее повторение через %d дня.</item>
-        <item quantity="many">Если всё получится, следующее повторение через %d дней.</item>
-        <item quantity="other">Если всё получится, следующее повторение через %d дня.</item>
+        <item quantity="one">Если всё получится, следующее повторение через %1$d день.</item>
+        <item quantity="few">Если всё получится, следующее повторение через %1$d дня.</item>
+        <item quantity="many">Если всё получится, следующее повторение через %1$d дней.</item>
+        <item quantity="other">Если всё получится, следующее повторение через %1$d дня.</item>
     </plurals>
 
     <string name="t_two_name">Правило двух минут</string>
@@ -426,22 +426,22 @@
     <string name="reflection_week_title">Ваша неделя</string>
     <string name="reflection_week_changes">Изменения, запланированные на неделе</string>
     <plurals name="reflection_week_days">
-        <item quantity="one">%d день тренировок</item>
-        <item quantity="few">%d дня тренировок</item>
-        <item quantity="many">%d дней тренировок</item>
-        <item quantity="other">%d дня тренировок</item>
+        <item quantity="one">%1$d день тренировок</item>
+        <item quantity="few">%1$d дня тренировок</item>
+        <item quantity="many">%1$d дней тренировок</item>
+        <item quantity="other">%1$d дня тренировок</item>
     </plurals>
     <plurals name="reflection_week_techniques">
-        <item quantity="one">%d техника в практике</item>
-        <item quantity="few">%d техники в практике</item>
-        <item quantity="many">%d техник в практике</item>
-        <item quantity="other">%d техники в практике</item>
+        <item quantity="one">%1$d техника в практике</item>
+        <item quantity="few">%1$d техники в практике</item>
+        <item quantity="many">%1$d техник в практике</item>
+        <item quantity="other">%1$d техники в практике</item>
     </plurals>
     <plurals name="reflection_week_focus">
-        <item quantity="one">%d минута фокуса</item>
-        <item quantity="few">%d минуты фокуса</item>
-        <item quantity="many">%d минут фокуса</item>
-        <item quantity="other">%d минуты фокуса</item>
+        <item quantity="one">%1$d минута фокуса</item>
+        <item quantity="few">%1$d минуты фокуса</item>
+        <item quantity="many">%1$d минут фокуса</item>
+        <item quantity="other">%1$d минуты фокуса</item>
     </plurals>
 
     <string name="train_today_skill">Сегодня · %1$s</string>
@@ -452,15 +452,15 @@
     <string name="detail_explained">Объяснение: %1$s</string>
     <string name="detail_habit_summary">После %1$s я буду %2$s.</string>
     <string name="detail_note">«%1$s»</string>
-    <plurals name="train_more_reviews"><item quantity="one">Ещё %d</item><item quantity="few">Ещё %d</item><item quantity="many">Ещё %d</item><item quantity="other">Ещё %d</item></plurals>
-    <plurals name="detail_minutes"><item quantity="one">%d минута фокуса</item><item quantity="few">%d минуты фокуса</item><item quantity="many">%d минут фокуса</item><item quantity="other">%d минуты фокуса</item></plurals>
-    <plurals name="detail_tasks"><item quantity="one">Распределена %d задача</item><item quantity="few">Распределены %d задачи</item><item quantity="many">Распределено %d задач</item><item quantity="other">Распределено %d задачи</item></plurals>
-    <plurals name="detail_reasons"><item quantity="one">Рассмотрен %d риск</item><item quantity="few">Рассмотрены %d риска</item><item quantity="many">Рассмотрено %d рисков</item><item quantity="other">Рассмотрено %d риска</item></plurals>
-    <plurals name="detail_steps"><item quantity="one">Выполнен %d шаг</item><item quantity="few">Выполнены %d шага</item><item quantity="many">Выполнено %d шагов</item><item quantity="other">Выполнено %d шага</item></plurals>
-    <plurals name="detail_items"><item quantity="one">Выполнена %d задача</item><item quantity="few">Выполнены %d задачи</item><item quantity="many">Выполнено %d задач</item><item quantity="other">Выполнено %d задачи</item></plurals>
+    <plurals name="train_more_reviews"><item quantity="one">Ещё %1$d</item><item quantity="few">Ещё %1$d</item><item quantity="many">Ещё %1$d</item><item quantity="other">Ещё %1$d</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%1$d минута фокуса</item><item quantity="few">%1$d минуты фокуса</item><item quantity="many">%1$d минут фокуса</item><item quantity="other">%1$d минуты фокуса</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Распределена %1$d задача</item><item quantity="few">Распределены %1$d задачи</item><item quantity="many">Распределено %1$d задач</item><item quantity="other">Распределено %1$d задачи</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Рассмотрен %1$d риск</item><item quantity="few">Рассмотрены %1$d риска</item><item quantity="many">Рассмотрено %1$d рисков</item><item quantity="other">Рассмотрено %1$d риска</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Выполнен %1$d шаг</item><item quantity="few">Выполнены %1$d шага</item><item quantity="many">Выполнено %1$d шагов</item><item quantity="other">Выполнено %1$d шага</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Выполнена %1$d задача</item><item quantity="few">Выполнены %1$d задачи</item><item quantity="many">Выполнено %1$d задач</item><item quantity="other">Выполнено %1$d задачи</item></plurals>
 
-<string name="level_hint_applied_span">Продолжай применять её две недели, чтобы дойти до уровня «%s».</string>
-<string name="level_hint_integrated">Используй её в день комбинации, чтобы дойти до уровня «%s».</string>
+<string name="level_hint_applied_span">Продолжай применять её две недели, чтобы дойти до уровня «%1$s».</string>
+<string name="level_hint_integrated">Используй её в день комбинации, чтобы дойти до уровня «%1$s».</string>
 <string name="level_hint_top">Ты применяешь её вместе с другими техниками.</string>
 <plurals name="level_hint_days">
         <item quantity="one">Практикуй её ещё %1$d день, чтобы дойти до уровня «%2$s».</item>

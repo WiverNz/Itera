@@ -48,9 +48,9 @@
 <string name="privacy">Конфиденциальность</string>
 <string name="load_demo">Загрузить демо-данные (день 9)</string>
 <plurals name="practices">
-        <item quantity="one">%d практика</item>
-        <item quantity="few">%d практики</item>
-        <item quantity="many">%d практик</item>
-        <item quantity="other">%d практики</item>
+        <item quantity="one">%1$d практика</item>
+        <item quantity="few">%1$d практики</item>
+        <item quantity="many">%1$d практик</item>
+        <item quantity="other">%1$d практики</item>
     </plurals>
 </resources>

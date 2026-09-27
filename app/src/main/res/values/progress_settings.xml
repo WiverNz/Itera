@@ -48,7 +48,7 @@
 <string name="privacy">Privacy</string>
 <string name="load_demo">Load demo data (Day 9)</string>
 <plurals name="practices">
-        <item quantity="one">%d practice</item>
-        <item quantity="other">%d practices</item>
+        <item quantity="one">%1$d practice</item>
+        <item quantity="other">%1$d practices</item>
     </plurals>
 </resources>

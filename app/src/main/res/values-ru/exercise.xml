@@ -22,7 +22,7 @@
     <string name="focus_end">Стоп</string>
     <string name="focus_pause">Пауза</string>
     <string name="focus_resume">Продолжить</string>
-    <string name="combo_label">День %d · Комбинация</string>
+    <string name="combo_label">День %1$d · Комбинация</string>
     <string name="combo_step1_sub">Из квадрата «Сделать сейчас»</string>
     <string name="eis_title">Разложи свои дела</string>
     <string name="eis_to_sort">Разобрать</string>
@@ -62,7 +62,7 @@
     <string name="review_hidden">Первый ответ скрыт, пока не закончишь</string>
     <string name="review_compare">Сравнить с первым ответом</string>
     <string name="pm_project">Проект:</string>
-    <string name="pm_title">Сейчас %s. Проект полностью провалился. Почему?</string>
+    <string name="pm_title">Сейчас %1$s. Проект полностью провалился. Почему?</string>
     <string name="pm_likely">Вероятно</string>
     <string name="pm_possible">Возможно</string>
     <string name="pm_add">Добавить причину</string>
@@ -84,7 +84,7 @@
     <string name="hs_nudge">Напомнить сразу после этого</string>
     <string name="hs_save">Сохранить связку</string>
     <string name="action_finish">Завершить</string>
-    <string name="exercise_later_at">Не сейчас — напомни в %s</string>
+    <string name="exercise_later_at">Не сейчас — напомни в %1$s</string>
     <string name="exercise_not_now">Не сейчас</string>
     <string name="exercise_leave_title">Выйти из упражнения?</string>
     <string name="exercise_leave_body">Всё, что ты написал, сохранится. Можно продолжить позже.</string>
@@ -92,12 +92,12 @@
     <string name="exercise_leave">Выйти</string>
     <string name="gate_fill">Заполни все поля, чтобы завершить</string>
     <string name="gate_pick">Выбери один вариант, чтобы завершить</string>
-    <string name="template_option_hint">Вариант %d</string>
+    <string name="template_option_hint">Вариант %1$d</string>
     <string name="template_pick_label">Теперь выбери самый важный</string>
-    <string name="template_item_hint">Пункт %d</string>
+    <string name="template_item_hint">Пункт %1$d</string>
     <string name="template_custom_hint">Другое</string>
-    <string name="level_hint_applied_span">Продолжай применять её две недели, чтобы дойти до уровня «%s».</string>
-    <string name="level_hint_integrated">Используй её в день комбинации, чтобы дойти до уровня «%s».</string>
+    <string name="level_hint_applied_span">Продолжай применять её две недели, чтобы дойти до уровня «%1$s».</string>
+    <string name="level_hint_integrated">Используй её в день комбинации, чтобы дойти до уровня «%1$s».</string>
     <string name="level_hint_top">Ты применяешь её вместе с другими техниками.</string>
     <string name="review_retired">Это ты знаешь. Повторять больше не нужно.</string>
     <string name="review_retire_preview">Если всё пройдёт хорошо, повторять больше не придётся: ты это знаешь.</string>
@@ -118,11 +118,11 @@
     <string name="eis_entry_hint">Одна задача в строке</string>
     <string name="eis_entry_cta">Разложить</string>
     <string name="eis_pick_first">Сначала выбери задачу</string>
-    <string name="eis_place">Положить «%s» сюда</string>
-    <string name="eis_choose_hint">Нажми на задачу в «%s», чтобы выбрать её</string>
+    <string name="eis_place">Положить «%1$s» сюда</string>
+    <string name="eis_choose_hint">Нажми на задачу в «%1$s», чтобы выбрать её</string>
     <string name="eis_chosen">Выбрано</string>
     <string name="eis_gate_sort">Сначала разложи все задачи</string>
-    <string name="eis_gate_choose">Выбери одну задачу из «%s»</string>
+    <string name="eis_gate_choose">Выбери одну задачу из «%1$s»</string>
     <string name="fey_topic_new">Что ты сейчас изучаешь?</string>
     <string name="fey_topic_new_hint">Тема в нескольких словах</string>
     <string name="fey_topic_use">Выбрать эту тему</string>
@@ -153,47 +153,47 @@
     <string name="pm_move_up">Выше</string>
     <string name="pm_move_down">Ниже</string>
     <string name="pm_remove">Удалить</string>
-    <string name="pm_likelihood_a11y">Вероятность: %s. Нажми, чтобы изменить</string>
-    <string name="pm_idea_n">Идея: здесь может помочь «%s».</string>
+    <string name="pm_likelihood_a11y">Вероятность: %1$s. Нажми, чтобы изменить</string>
+    <string name="pm_idea_n">Идея: здесь может помочь «%1$s».</string>
     <string name="pm_finish_only">Завершить без добавления</string>
     <string name="hs_custom_anchor">Что-то другое, что ты делаешь каждый день</string>
     <string name="hs_custom_habit">Своя маленькая привычка</string>
-    <string name="hs_nudge_after">Напомни сразу после: %s</string>
-    <string name="hs_nudge_time">Около %s</string>
+    <string name="hs_nudge_after">Напомни сразу после: %1$s</string>
+    <string name="hs_nudge_time">Около %1$s</string>
     <string name="hs_nudge_time_title">Время напоминания</string>
     <string name="hs_gate">Заполни оба пропуска, чтобы сохранить</string>
-    <string name="hs_slot_a11y">%s. Нажми, чтобы изменить</string>
-    <string name="combo_continue_to">Дальше: %s</string>
-    <string name="combo_start_step">Начать: %s</string>
-    <string name="combo_done_eis">Самое важное: %s</string>
+    <string name="hs_slot_a11y">%1$s. Нажми, чтобы изменить</string>
+    <string name="combo_continue_to">Дальше: %1$s</string>
+    <string name="combo_start_step">Начать: %1$s</string>
+    <string name="combo_done_eis">Самое важное: %1$s</string>
     <string name="combo_done_eis_none">Разложено — срочного и важного нет</string>
-    <string name="combo_done_pick">Выбрано: %s</string>
-    <string name="combo_subject">Для: %s</string>
+    <string name="combo_done_pick">Выбрано: %1$s</string>
+    <string name="combo_subject">Для: %1$s</string>
     <string name="combo_leave_title">Выйти из цепочки?</string>
     <string name="combo_leave_body">Завершённые шаги сохранятся. Можно продолжить с того же места.</string>
     <plurals name="words">
-        <item quantity="one">%d слово</item>
-        <item quantity="few">%d слова</item>
-        <item quantity="many">%d слов</item>
-        <item quantity="other">%d слова</item>
+        <item quantity="one">%1$d слово</item>
+        <item quantity="few">%1$d слова</item>
+        <item quantity="many">%1$d слов</item>
+        <item quantity="other">%1$d слова</item>
     </plurals>
     <plurals name="review_days_ago">
-        <item quantity="one">Первое объяснение было %d день назад:</item>
-        <item quantity="few">Первое объяснение было %d дня назад:</item>
-        <item quantity="many">Первое объяснение было %d дней назад:</item>
-        <item quantity="other">Первое объяснение было %d дня назад:</item>
+        <item quantity="one">Первое объяснение было %1$d день назад:</item>
+        <item quantity="few">Первое объяснение было %1$d дня назад:</item>
+        <item quantity="many">Первое объяснение было %1$d дней назад:</item>
+        <item quantity="other">Первое объяснение было %1$d дня назад:</item>
     </plurals>
     <plurals name="review_next">
-        <item quantity="one">Если всё получится, следующее повторение через %d день.</item>
-        <item quantity="few">Если всё получится, следующее повторение через %d дня.</item>
-        <item quantity="many">Если всё получится, следующее повторение через %d дней.</item>
-        <item quantity="other">Если всё получится, следующее повторение через %d дня.</item>
+        <item quantity="one">Если всё получится, следующее повторение через %1$d день.</item>
+        <item quantity="few">Если всё получится, следующее повторение через %1$d дня.</item>
+        <item quantity="many">Если всё получится, следующее повторение через %1$d дней.</item>
+        <item quantity="other">Если всё получится, следующее повторение через %1$d дня.</item>
     </plurals>
     <plurals name="gate_tick">
-        <item quantity="one">Отметь ещё %d задачу, чтобы завершить</item>
-        <item quantity="few">Отметь ещё %d задачи, чтобы завершить</item>
-        <item quantity="many">Отметь ещё %d задач, чтобы завершить</item>
-        <item quantity="other">Отметь ещё %d задачи, чтобы завершить</item>
+        <item quantity="one">Отметь ещё %1$d задачу, чтобы завершить</item>
+        <item quantity="few">Отметь ещё %1$d задачи, чтобы завершить</item>
+        <item quantity="many">Отметь ещё %1$d задач, чтобы завершить</item>
+        <item quantity="other">Отметь ещё %1$d задачи, чтобы завершить</item>
     </plurals>
     <plurals name="level_hint_days">
         <item quantity="one">Практикуй её ещё %1$d день, чтобы дойти до уровня «%2$s».</item>
@@ -214,28 +214,28 @@
         <item quantity="other">%1$d минуты из %2$d запланированных</item>
     </plurals>
     <plurals name="review_next_in">
-        <item quantity="one">Следующее повторение через %d день.</item>
-        <item quantity="few">Следующее повторение через %d дня.</item>
-        <item quantity="many">Следующее повторение через %d дней.</item>
-        <item quantity="other">Следующее повторение через %d дня.</item>
+        <item quantity="one">Следующее повторение через %1$d день.</item>
+        <item quantity="few">Следующее повторение через %1$d дня.</item>
+        <item quantity="many">Следующее повторение через %1$d дней.</item>
+        <item quantity="other">Следующее повторение через %1$d дня.</item>
     </plurals>
     <plurals name="focus_announce_minutes">
-        <item quantity="one">Осталась %d минута</item>
-        <item quantity="few">Осталось %d минуты</item>
-        <item quantity="many">Осталось %d минут</item>
-        <item quantity="other">Осталось %d минуты</item>
+        <item quantity="one">Осталась %1$d минута</item>
+        <item quantity="few">Осталось %1$d минуты</item>
+        <item quantity="many">Осталось %1$d минут</item>
+        <item quantity="other">Осталось %1$d минуты</item>
     </plurals>
     <plurals name="focus_break_hint_n">
-        <item quantity="one">Потом перерыв: %d минута вдали от экрана.</item>
-        <item quantity="few">Потом перерыв: %d минуты вдали от экрана.</item>
-        <item quantity="many">Потом перерыв: %d минут вдали от экрана.</item>
-        <item quantity="other">Потом перерыв: %d минуты вдали от экрана.</item>
+        <item quantity="one">Потом перерыв: %1$d минута вдали от экрана.</item>
+        <item quantity="few">Потом перерыв: %1$d минуты вдали от экрана.</item>
+        <item quantity="many">Потом перерыв: %1$d минут вдали от экрана.</item>
+        <item quantity="other">Потом перерыв: %1$d минуты вдали от экрана.</item>
     </plurals>
     <plurals name="eis_gate_tasks">
-        <item quantity="one">Добавь ещё %d задачу, чтобы продолжить</item>
-        <item quantity="few">Добавь ещё %d задачи, чтобы продолжить</item>
-        <item quantity="many">Добавь ещё %d задач, чтобы продолжить</item>
-        <item quantity="other">Добавь ещё %d задачи, чтобы продолжить</item>
+        <item quantity="one">Добавь ещё %1$d задачу, чтобы продолжить</item>
+        <item quantity="few">Добавь ещё %1$d задачи, чтобы продолжить</item>
+        <item quantity="many">Добавь ещё %1$d задач, чтобы продолжить</item>
+        <item quantity="other">Добавь ещё %1$d задачи, чтобы продолжить</item>
     </plurals>
     <plurals name="eis_quadrant_a11y">
         <item quantity="one">%1$s, %2$s, %3$d задача</item>
@@ -244,22 +244,22 @@
         <item quantity="other">%1$s, %2$s, %3$d задачи</item>
     </plurals>
     <plurals name="fey_gate_words">
-        <item quantity="one">Напиши ещё %d слово, чтобы продолжить</item>
-        <item quantity="few">Напиши ещё %d слова, чтобы продолжить</item>
-        <item quantity="many">Напиши ещё %d слов, чтобы продолжить</item>
-        <item quantity="other">Напиши ещё %d слова, чтобы продолжить</item>
+        <item quantity="one">Напиши ещё %1$d слово, чтобы продолжить</item>
+        <item quantity="few">Напиши ещё %1$d слова, чтобы продолжить</item>
+        <item quantity="many">Напиши ещё %1$d слов, чтобы продолжить</item>
+        <item quantity="other">Напиши ещё %1$d слова, чтобы продолжить</item>
     </plurals>
     <plurals name="fey_review_in">
-        <item quantity="one">Ты объяснишь это снова через %d день, по памяти.</item>
-        <item quantity="few">Ты объяснишь это снова через %d дня, по памяти.</item>
-        <item quantity="many">Ты объяснишь это снова через %d дней, по памяти.</item>
-        <item quantity="other">Ты объяснишь это снова через %d дня, по памяти.</item>
+        <item quantity="one">Ты объяснишь это снова через %1$d день, по памяти.</item>
+        <item quantity="few">Ты объяснишь это снова через %1$d дня, по памяти.</item>
+        <item quantity="many">Ты объяснишь это снова через %1$d дней, по памяти.</item>
+        <item quantity="other">Ты объяснишь это снова через %1$d дня, по памяти.</item>
     </plurals>
     <plurals name="pm_gate_reasons">
-        <item quantity="one">Добавь ещё %d причину, чтобы завершить</item>
-        <item quantity="few">Добавь ещё %d причины, чтобы завершить</item>
-        <item quantity="many">Добавь ещё %d причин, чтобы завершить</item>
-        <item quantity="other">Добавь ещё %d причины, чтобы завершить</item>
+        <item quantity="one">Добавь ещё %1$d причину, чтобы завершить</item>
+        <item quantity="few">Добавь ещё %1$d причины, чтобы завершить</item>
+        <item quantity="many">Добавь ещё %1$d причин, чтобы завершить</item>
+        <item quantity="other">Добавь ещё %1$d причины, чтобы завершить</item>
     </plurals>
     <plurals name="hs_log_hint_n">
         <item quantity="one">Отмечай её %1$d день, чтобы дойти до уровня «%2$s».</item>
@@ -268,9 +268,9 @@
         <item quantity="other">Отмечай её %1$d дня, чтобы дойти до уровня «%2$s».</item>
     </plurals>
     <plurals name="combo_done_focus">
-        <item quantity="one">%d минута фокуса</item>
-        <item quantity="few">%d минуты фокуса</item>
-        <item quantity="many">%d минут фокуса</item>
-        <item quantity="other">%d минуты фокуса</item>
+        <item quantity="one">%1$d минута фокуса</item>
+        <item quantity="few">%1$d минуты фокуса</item>
+        <item quantity="many">%1$d минут фокуса</item>
+        <item quantity="other">%1$d минуты фокуса</item>
     </plurals>
 </resources>

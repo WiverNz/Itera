@@ -37,6 +37,7 @@ sealed interface ResultVariant {
 }
 
 data class ExerciseResultUiState(
+    val readOnlyActivity: com.wivernz.itera.domain.model.PlanActivity? = null,
     val loading: Boolean = true,
     val missing: Boolean = false,
     val techniqueId: String = "",
@@ -58,6 +59,7 @@ class ExerciseResultViewModel @Inject constructor(
     private val reviews: ReviewRepository,
     private val techniques: ObserveTechniqueProgressUseCase
 ) : ViewModel() {
+    private val readOnly = saved.get<Boolean>("readOnly") == true
     private val activityId: Long = checkNotNull(saved.get<Long>(ARG_ACTIVITY))
     private val mutable = MutableStateFlow(ExerciseResultUiState())
     val state: StateFlow<ExerciseResultUiState> = mutable.asStateFlow()
@@ -72,6 +74,10 @@ class ExerciseResultViewModel @Inject constructor(
         val technique = activity?.let { catalog.technique(it.techniqueId) }
         if (activity == null || technique == null) {
             mutable.update { it.copy(loading = false, missing = true) }
+            return
+        }
+        if (readOnly) {
+            mutable.update { it.copy(loading = false, readOnlyActivity = activity) }
             return
         }
         val variant = when (val result = activity.result) {
@@ -111,13 +117,13 @@ class ExerciseResultViewModel @Inject constructor(
     }
 
     fun setDifficulty(difficulty: Difficulty) {
-        if (mutable.value.loading) return
+        if (mutable.value.loading || readOnly) return
         mutable.update { it.copy(difficulty = difficulty) }
         viewModelScope.launch { writeFeedback() }
     }
 
     fun setNote(note: String) {
-        if (mutable.value.loading) return
+        if (mutable.value.loading || readOnly) return
         mutable.update { it.copy(note = capped(note)) }
         autosave.schedule(Unit)
     }
@@ -126,6 +132,7 @@ class ExerciseResultViewModel @Inject constructor(
     fun flush() = autosave.flush()
 
     private suspend fun writeFeedback() {
+        if (readOnly) return
         val s = mutable.value
         plans.updateFeedback(activityId, s.difficulty, s.note.ifBlank { null })
     }

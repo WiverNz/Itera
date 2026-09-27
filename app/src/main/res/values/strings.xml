@@ -65,7 +65,7 @@
     <string name="detail_history">Your practice</string>
     <string name="detail_no_history">No practice yet.</string>
     <string name="detail_related">Works well with</string>
-    <string name="detail_locked">Unlocks on Day %d of your program.</string>
+    <string name="detail_locked">Unlocks on Day %1$d of your program.</string>
     <string name="train_today_skill">Today · %1$s</string>
     <string name="train_locked">Locked</string>
     <string name="library_locked">%1$s, locked, unlocks on day %2$d</string>
@@ -74,10 +74,10 @@
     <string name="detail_explained">Explained %1$s</string>
     <string name="detail_habit_summary">After %1$s, I will %2$s.</string>
     <string name="detail_note">“%1$s”</string>
-    <plurals name="train_more_reviews"><item quantity="one">+%d more</item><item quantity="other">+%d more</item></plurals>
-    <plurals name="detail_minutes"><item quantity="one">%d focus minute</item><item quantity="other">%d focus minutes</item></plurals>
-    <plurals name="detail_tasks"><item quantity="one">Sorted %d task</item><item quantity="other">Sorted %d tasks</item></plurals>
-    <plurals name="detail_reasons"><item quantity="one">Considered %d risk</item><item quantity="other">Considered %d risks</item></plurals>
-    <plurals name="detail_steps"><item quantity="one">Completed %d step</item><item quantity="other">Completed %d steps</item></plurals>
-    <plurals name="detail_items"><item quantity="one">Completed %d task</item><item quantity="other">Completed %d tasks</item></plurals>
+    <plurals name="train_more_reviews"><item quantity="one">+%1$d more</item><item quantity="other">+%1$d more</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%1$d focus minute</item><item quantity="other">%1$d focus minutes</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">Sorted %1$d task</item><item quantity="other">Sorted %1$d tasks</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">Considered %1$d risk</item><item quantity="other">Considered %1$d risks</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">Completed %1$d step</item><item quantity="other">Completed %1$d steps</item></plurals>
+    <plurals name="detail_items"><item quantity="one">Completed %1$d task</item><item quantity="other">Completed %1$d tasks</item></plurals>
 </resources>

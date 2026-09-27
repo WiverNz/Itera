@@ -77,6 +77,14 @@ class GenerateDailyPlanUseCase @Inject constructor(
         }
         val day = checkNotNull(plans.day(dayId))
         if (generated) {
+            day.activities.mapNotNull { it.reviewItemId }.distinct().forEach { id ->
+                reviews.item(id)?.let { review ->
+                    com.wivernz.itera.analytics.AnalyticsTechnique.of(review.techniqueId.value)?.let { technique ->
+                        analytics.track(Event.ReviewDue(technique, review.stageIndex,
+                            java.time.temporal.ChronoUnit.DAYS.between(review.dueOn, date).coerceAtLeast(0).toInt()))
+                    }
+                }
+            }
             analytics.track(
                 Event.PlanGenerated(
                     programDay = day.programDay,

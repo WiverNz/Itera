@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_training">Práctica diaria</string>
+    <string name="notification_channel_reflection">Reflexión nocturna</string>
+    <string name="notification_channel_habits">Recordatorios de hábitos</string>
+    <string name="notification_morning_title">Tu ejercicio de hoy está listo</string>
+    <string name="notification_morning_review_title">Tu ejercicio y un repaso</string>
+    <string name="notification_training_body">%1$s — unos %2$d min</string>
+    <string name="notification_review_body">%1$s y repasar %2$s</string>
+    <string name="notification_review_topic">algo que recordar</string>
+    <string name="notification_focus_title">¿Un bloque de concentración?</string>
+    <string name="notification_focus_body">%1$d min para una sola cosa</string>
+    <string name="notification_evening_title">Dos minutos, tres preguntas</string>
+    <string name="notification_evening_body">Cierra el día mientras lo tienes fresco</string>
+    <string name="notification_habit_title">Justo después de %1$s</string>
+    <string name="notification_snooze_title">¿Te sigue apeteciendo?</string>
+</resources>

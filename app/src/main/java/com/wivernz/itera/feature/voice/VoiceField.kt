@@ -3,6 +3,8 @@
 
 package com.wivernz.itera.feature.voice
 
+import androidx.compose.foundation.border
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -351,15 +353,22 @@ internal fun VoiceStatusPanel(
 
 @Composable
 internal fun PanelActions(actions: List<Pair<String, () -> Unit>>) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        actions.forEachIndexed { index, (label, action) ->
-            IteraButton(
-                label,
-                action,
-                kind = if (index == 0) ButtonKind.Primary else ButtonKind.Secondary,
-                height = 44.dp,
-                modifier = Modifier.weight(1f)
-            )
+    val c = Itera.colors
+    @Composable fun Action(index: Int, label: String, action: () -> Unit, modifier: Modifier) {
+        IteraButton(
+            label, action,
+            kind = if (index == 0) ButtonKind.Primary else ButtonKind.Secondary,
+            height = 44.dp,
+            modifier = if (index == 0) modifier else modifier.border(1.dp, c.ink2, RoundedCornerShape(18.dp))
+        )
+    }
+    if (LocalDensity.current.fontScale > 1.3f) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            actions.forEachIndexed { index, (label, action) -> Action(index, label, action, Modifier.fillMaxWidth()) }
+        }
+    } else {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            actions.forEachIndexed { index, (label, action) -> Action(index, label, action, Modifier.weight(1f)) }
         }
     }
 }

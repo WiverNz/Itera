@@ -65,7 +65,7 @@
     <string name="detail_history">Tu práctica</string>
     <string name="detail_no_history">Todavía no hay práctica.</string>
     <string name="detail_related">Combina bien con</string>
-    <string name="detail_locked">Se desbloquea el día %d de tu programa.</string>
+    <string name="detail_locked">Se desbloquea el día %1$d de tu programa.</string>
     <string name="train_today_skill">Hoy · %1$s</string>
     <string name="train_locked">Bloqueado</string>
     <string name="library_locked">%1$s, bloqueado, disponible el día %2$d</string>
@@ -74,10 +74,10 @@
     <string name="detail_explained">Explicación de %1$s</string>
     <string name="detail_habit_summary">Después de %1$s, haré %2$s.</string>
     <string name="detail_note">«%1$s»</string>
-    <plurals name="train_more_reviews"><item quantity="one">+%d más</item><item quantity="other">+%d más</item></plurals>
-    <plurals name="detail_minutes"><item quantity="one">%d minuto de concentración</item><item quantity="other">%d minutos de concentración</item></plurals>
-    <plurals name="detail_tasks"><item quantity="one">%d tarea ordenada</item><item quantity="other">%d tareas ordenadas</item></plurals>
-    <plurals name="detail_reasons"><item quantity="one">%d riesgo considerado</item><item quantity="other">%d riesgos considerados</item></plurals>
-    <plurals name="detail_steps"><item quantity="one">%d paso completado</item><item quantity="other">%d pasos completados</item></plurals>
-    <plurals name="detail_items"><item quantity="one">%d tarea completada</item><item quantity="other">%d tareas completadas</item></plurals>
+    <plurals name="train_more_reviews"><item quantity="one">+%1$d más</item><item quantity="other">+%1$d más</item></plurals>
+    <plurals name="detail_minutes"><item quantity="one">%1$d minuto de concentración</item><item quantity="other">%1$d minutos de concentración</item></plurals>
+    <plurals name="detail_tasks"><item quantity="one">%1$d tarea ordenada</item><item quantity="other">%1$d tareas ordenadas</item></plurals>
+    <plurals name="detail_reasons"><item quantity="one">%1$d riesgo considerado</item><item quantity="other">%1$d riesgos considerados</item></plurals>
+    <plurals name="detail_steps"><item quantity="one">%1$d paso completado</item><item quantity="other">%1$d pasos completados</item></plurals>
+    <plurals name="detail_items"><item quantity="one">%1$d tarea completada</item><item quantity="other">%1$d tareas completadas</item></plurals>
 </resources>
