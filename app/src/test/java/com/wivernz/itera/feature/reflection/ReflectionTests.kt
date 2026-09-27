@@ -357,7 +357,7 @@ class ReflectionIntegrationTest {
         vm.state.await { !it.loading }
         vm.next()
         vm.next()
-        val change = "  Leave the phone in another room — before 9 "
+        val change = "  Leave the phone in another room - before 9 "
         vm.setAnswer(2, change)
         vm.next()
         vm.effects.awaitFirst()

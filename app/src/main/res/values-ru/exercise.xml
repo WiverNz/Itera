@@ -41,11 +41,11 @@
     <string name="eis_q3_sub">Срочно, но не важно</string>
     <string name="eis_q4">Отказаться</string>
     <string name="eis_q4_sub">Ни то, ни другое</string>
-    <string name="eis_cta">Дальше — правило 80/20</string>
+    <string name="eis_cta">Дальше - правило 80/20</string>
     <string name="fey_topic">Тема</string>
     <string name="fey_from_list">Из твоего списка для изучения</string>
     <string name="fey_change">Сменить тему</string>
-    <string name="fey_instruction">Объясни любознательному двенадцатилетнему. Если используешь термин — дай ему определение.</string>
+    <string name="fey_instruction">Объясни любознательному двенадцатилетнему. Если используешь термин - дай ему определение.</string>
     <string name="fey_your_expl">Твоё объяснение</string>
     <string name="fey_hint">Начни с самого простого верного предложения.</string>
     <string name="fey_no_notes">Без конспектов и подсказок</string>
@@ -57,7 +57,7 @@
     <string name="coach_improve">Улучшить объяснение</string>
     <string name="coming_later">Появится позже</string>
     <string name="review_label">Повторение</string>
-    <string name="review_again">Объясни ещё раз — не заглядывая в прошлый ответ.</string>
+    <string name="review_again">Объясни ещё раз - не заглядывая в прошлый ответ.</string>
     <string name="review_field">Объяснение по памяти</string>
     <string name="review_hidden">Первый ответ скрыт, пока не закончишь</string>
     <string name="review_compare">Сравнить с первым ответом</string>
@@ -84,7 +84,7 @@
     <string name="hs_nudge">Напомнить сразу после этого</string>
     <string name="hs_save">Сохранить связку</string>
     <string name="action_finish">Завершить</string>
-    <string name="exercise_later_at">Не сейчас — напомни в %1$s</string>
+    <string name="exercise_later_at">Не сейчас - напомни в %1$s</string>
     <string name="exercise_not_now">Не сейчас</string>
     <string name="exercise_leave_title">Выйти из упражнения?</string>
     <string name="exercise_leave_body">Всё, что ты написал, сохранится. Можно продолжить позже.</string>
@@ -114,7 +114,7 @@
     <string name="focus_channel_desc">Показывает идущий таймер фокуса</string>
     <string name="focus_notification_paused">На паузе</string>
     <string name="eis_entry_title">Что у тебя сейчас в делах?</string>
-    <string name="eis_entry_sub">Запиши 5–7 настоящих задач, по одной в строке.</string>
+    <string name="eis_entry_sub">Запиши 5-7 настоящих задач, по одной в строке.</string>
     <string name="eis_entry_hint">Одна задача в строке</string>
     <string name="eis_entry_cta">Разложить</string>
     <string name="eis_pick_first">Сначала выбери задачу</string>
@@ -129,7 +129,7 @@
     <string name="fey_topic_pick">Выбери тему</string>
     <string name="fey_topic_add">Новая тема</string>
     <string name="fey_gate_topic">Сначала выбери тему</string>
-    <string name="fey_coach_line">Письменный разбор объяснений появится позже. Пока обратная связь — это твой собственный взгляд назад.</string>
+    <string name="fey_coach_line">Письменный разбор объяснений появится позже. Пока обратная связь - это твой собственный взгляд назад.</string>
     <string name="fey_chip_terms">Определения терминов</string>
     <string name="fey_chip_why">Почему это работает</string>
     <string name="fey_chip_example">Конкретный пример</string>
@@ -166,7 +166,7 @@
     <string name="combo_continue_to">Дальше: %1$s</string>
     <string name="combo_start_step">Начать: %1$s</string>
     <string name="combo_done_eis">Самое важное: %1$s</string>
-    <string name="combo_done_eis_none">Разложено — срочного и важного нет</string>
+    <string name="combo_done_eis_none">Разложено - срочного и важного нет</string>
     <string name="combo_done_pick">Выбрано: %1$s</string>
     <string name="combo_subject">Для: %1$s</string>
     <string name="combo_leave_title">Выйти из цепочки?</string>

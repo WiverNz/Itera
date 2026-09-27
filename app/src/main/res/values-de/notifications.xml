@@ -5,7 +5,7 @@
     <string name="notification_channel_habits">Gewohnheitserinnerungen</string>
     <string name="notification_morning_title">Deine heutige Übung ist bereit</string>
     <string name="notification_morning_review_title">Heutige Übung und eine Wiederholung</string>
-    <string name="notification_training_body">%1$s — etwa %2$d Min.</string>
+    <string name="notification_training_body">%1$s - etwa %2$d Min.</string>
     <string name="notification_review_body">%1$s, dazu %2$s wiederholen</string>
     <string name="notification_review_topic">etwas zum Merken</string>
     <string name="notification_focus_title">Zeit für einen Fokusblock?</string>

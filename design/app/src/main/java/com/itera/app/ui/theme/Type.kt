@@ -25,19 +25,19 @@ internal fun resourceFamily(resource: Int): FontFamily = FontFamily(
 
 @Immutable
 data class IteraType(
-    val hero: TextStyle,       // 42 — welcome
-    val display: TextStyle,    // 34 — screen titles
-    val title: TextStyle,      // 28–30 — exercise titles
-    val headline: TextStyle,   // 22 — section headlines
+    val hero: TextStyle,       // 42 - welcome
+    val display: TextStyle,    // 34 - screen titles
+    val title: TextStyle,      // 28-30 - exercise titles
+    val headline: TextStyle,   // 22 - section headlines
     val bodyLarge: TextStyle,  // 18
     val body: TextStyle,       // 16
     val bodySmall: TextStyle,  // 14
     val caption: TextStyle,    // 13
-    val label: TextStyle,      // 17 semibold — buttons, row titles
+    val label: TextStyle,      // 17 semibold - buttons, row titles
     val eyebrow: TextStyle,    // 13 caps
     val userText: TextStyle,
     val userTextLarge: TextStyle,
-    val timer: TextStyle,      // 80 — focus timer
+    val timer: TextStyle,      // 80 - focus timer
 )
 
 @Composable

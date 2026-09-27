@@ -221,7 +221,7 @@ fun ReflectionScreen(
                                 modifier = Modifier.semantics { heading() }
                             )
                             Text(
-                                state.answers[i].ifBlank { "—" },
+                                state.answers[i].ifBlank { "-" },
                                 style = Itera.type.body.copy(
                                     fontFamily = Itera.type.userText.fontFamily
                                 ),

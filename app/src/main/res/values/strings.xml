@@ -8,7 +8,7 @@
     <string name="error_content_missing">This content is unavailable.</string>
     <string name="error_export">Could not export. Check available storage and try again.</string>
 <string name="t_two_name">2-minute rule</string>
-<string name="t_two_task">Look at your current to-dos. Find two tasks that take under two minutes — and finish them now.</string>
+<string name="t_two_task">Look at your current to-dos. Find two tasks that take under two minutes - and finish them now.</string>
 <string name="t_pomodoro_name">Pomodoro</string>
 <string name="t_pomodoro_task">Pick one task. Work on it for 25 minutes without switching, then take a real 5-minute break.</string>
 <string name="t_eisenhower_name">Eisenhower matrix</string>
@@ -56,7 +56,7 @@
     <string name="train_library">Library</string>
     <string name="train_library_sub">All %1$d techniques · %2$d unlocked</string>
     <string name="library_title">Library</string>
-    <string name="library_sub">All 14 techniques. Your program unlocks them in order — you can open any of them to peek.</string>
+    <string name="library_sub">All 14 techniques. Your program unlocks them in order - you can open any of them to peek.</string>
     <string name="filter_all">All</string>
     <string name="detail_why">Why it helps</string>
     <string name="detail_level">Your level</string>

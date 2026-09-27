@@ -48,7 +48,7 @@
     <string name="welcome_demo">Explore with demo data</string>
     <string name="onb_step">%1$d of %2$d</string>
     <string name="goals_title">What do you want to train first?</string>
-    <string name="goals_sub">Pick up to two. The rest still comes — just a bit later.</string>
+    <string name="goals_sub">Pick up to two. The rest still comes - just a bit later.</string>
     <string name="rhythm_title">When should your coach show up?</string>
     <string name="rhythm_morning">Morning training</string>
     <string name="rhythm_morning_sub">Today’s exercise is ready</string>
@@ -104,7 +104,7 @@
     <string name="exercise_meta">%1$s · Day %2$d</string>
     <string name="exercise_yours">Your exercise</string>
     <string name="exercise_start">Start exercise</string>
-    <string name="exercise_later">Not now — remind me later</string>
+    <string name="exercise_later">Not now - remind me later</string>
     <string name="exercise_did_it">I did it</string>
     <string name="two_title">Find two quick tasks</string>
     <string name="two_sub">Write them down, do them, tap when finished. If one runs over two minutes, that’s useful to notice too.</string>
@@ -234,7 +234,7 @@
     <!-- Review -->
     <string name="review_label">Review</string>
     <string name="review_topic">Redis persistence</string>
-    <string name="review_again">Explain it again — without looking at your previous answer.</string>
+    <string name="review_again">Explain it again - without looking at your previous answer.</string>
     <string name="review_field">Your explanation, from memory</string>
     <string name="review_hidden">Your first answer stays hidden until you finish</string>
     <string name="review_compare">Compare with my first answer</string>
@@ -254,7 +254,7 @@
     <string name="pm_add">Add a reason</string>
     <string name="pm_today_q">What can you do today to reduce risk #1?</string>
     <string name="pm_action_hint">One concrete step, doable today</string>
-    <string name="pm_idea">Idea: write a short “not in the beta” list — that’s the Two-list strategy.</string>
+    <string name="pm_idea">Idea: write a short “not in the beta” list - that’s the Two-list strategy.</string>
     <string name="pm_cta">Add to today</string>
 
     <!-- Habit stacking -->
@@ -288,7 +288,7 @@
     <string name="train_library">Library</string>
     <string name="train_library_sub">All %1$d techniques · %2$d unlocked</string>
     <string name="library_title">Library</string>
-    <string name="library_sub">All 14 techniques. Your program unlocks them in order — you can open any of them to peek.</string>
+    <string name="library_sub">All 14 techniques. Your program unlocks them in order - you can open any of them to peek.</string>
     <string name="filter_all">All</string>
     <string name="not_started">Not started</string>
     <string name="detail_why">Why it helps</string>
@@ -367,7 +367,7 @@
     <string name="t_two_name">2-minute rule</string>
     <string name="t_two_short">Clear small tasks before they accumulate.</string>
     <string name="t_two_why">If something takes less than two minutes, do it now. Small tasks are cheap to finish and expensive to keep remembering.</string>
-    <string name="t_two_task">Look at your current to-dos. Find two tasks that take under two minutes — and finish them now.</string>
+    <string name="t_two_task">Look at your current to-dos. Find two tasks that take under two minutes - and finish them now.</string>
 
     <string name="t_pomodoro_name">Pomodoro</string>
     <string name="t_pomodoro_short">Work in 25-minute sprints with real breaks.</string>

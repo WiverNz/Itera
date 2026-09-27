@@ -11,7 +11,7 @@
     <string name="welcome_demo">Explore with demo data</string>
     <string name="onb_step">%1$d of %2$d</string>
     <string name="goals_title">What do you want to train first?</string>
-    <string name="goals_sub">Pick up to two. The rest still comes — just a bit later.</string>
+    <string name="goals_sub">Pick up to two. The rest still comes - just a bit later.</string>
     <string name="rhythm_title">When should your coach show up?</string>
     <string name="rhythm_morning">Morning training</string>
     <string name="rhythm_morning_sub">Today’s exercise is ready</string>

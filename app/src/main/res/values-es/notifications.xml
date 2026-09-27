@@ -5,7 +5,7 @@
     <string name="notification_channel_habits">Recordatorios de hábitos</string>
     <string name="notification_morning_title">Tu ejercicio de hoy está listo</string>
     <string name="notification_morning_review_title">Tu ejercicio y un repaso</string>
-    <string name="notification_training_body">%1$s — unos %2$d min</string>
+    <string name="notification_training_body">%1$s - unos %2$d min</string>
     <string name="notification_review_body">%1$s y repasar %2$s</string>
     <string name="notification_review_topic">algo que recordar</string>
     <string name="notification_focus_title">¿Un bloque de concentración?</string>

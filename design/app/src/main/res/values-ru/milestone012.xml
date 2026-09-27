@@ -51,7 +51,7 @@
     <string name="voice_focus_already_paused">Фокус уже на паузе.</string>
     <string name="voice_focus_not_paused">Фокус не на паузе.</string>
     <string name="voice_focus_active">Сессия фокуса уже идёт.</string>
-    <string name="voice_focus_duration">%1$s — такой длительности здесь нет. Выберите: %2$s.</string>
+    <string name="voice_focus_duration">%1$s - такой длительности здесь нет. Выберите: %2$s.</string>
     <string name="voice_focus_no_entry">Сейчас в плане на сегодня нет сессии фокуса.</string>
     <string name="voice_exercise_not_ready">Упражнение ещё нельзя завершить. Сначала пройдите оставшиеся шаги.</string>
     <string name="voice_stale">Пока вы подтверждали, всё изменилось. Ничего не сделано.</string>
@@ -85,5 +85,5 @@
     <string name="voice_example_end">«Закончи фокус»</string>
     <string name="voice_example_complete_exercise">«Заверши упражнение»</string>
     <string name="voice_example_recommendation">«Что мне делать сейчас?»</string>
-    <string name="privacy_voice">Голосовой ввод необязателен и работает, только когда вы нажимаете на микрофон. Речь распознаётся на этом устройстве; Itera не записывает звук и не хранит сказанное — только принятый вами текст, как при наборе.</string>
+    <string name="privacy_voice">Голосовой ввод необязателен и работает, только когда вы нажимаете на микрофон. Речь распознаётся на этом устройстве; Itera не записывает звук и не хранит сказанное - только принятый вами текст, как при наборе.</string>
 </resources>

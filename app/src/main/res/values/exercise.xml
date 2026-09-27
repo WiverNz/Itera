@@ -59,7 +59,7 @@
     <string name="coach_improve">Improve my explanation</string>
     <string name="coming_later">Coming later</string>
     <string name="review_label">Review</string>
-    <string name="review_again">Explain it again — without looking at your previous answer.</string>
+    <string name="review_again">Explain it again - without looking at your previous answer.</string>
     <string name="review_field">Your explanation, from memory</string>
     <string name="review_hidden">Your first answer stays hidden until you finish</string>
     <string name="review_compare">Compare with my first answer</string>
@@ -86,7 +86,7 @@
     <string name="hs_nudge">Nudge me right after it</string>
     <string name="hs_save">Save my stack</string>
     <string name="action_finish">Finish</string>
-    <string name="exercise_later_at">Not now — remind me at %1$s</string>
+    <string name="exercise_later_at">Not now - remind me at %1$s</string>
     <string name="exercise_not_now">Not now</string>
     <string name="exercise_leave_title">Leave this exercise?</string>
     <string name="exercise_leave_body">What you’ve written is kept. You can pick it up again later.</string>
@@ -116,7 +116,7 @@
     <string name="focus_channel_desc">Shows the running focus timer</string>
     <string name="focus_notification_paused">Paused</string>
     <string name="eis_entry_title">What’s on your plate?</string>
-    <string name="eis_entry_sub">Write 5–7 real tasks, one per line.</string>
+    <string name="eis_entry_sub">Write 5-7 real tasks, one per line.</string>
     <string name="eis_entry_hint">One task per line</string>
     <string name="eis_entry_cta">Sort them</string>
     <string name="eis_pick_first">Pick a task first</string>
@@ -168,7 +168,7 @@
     <string name="combo_continue_to">Continue to %1$s</string>
     <string name="combo_start_step">Start %1$s</string>
     <string name="combo_done_eis">Most important: %1$s</string>
-    <string name="combo_done_eis_none">Sorted — nothing urgent and important</string>
+    <string name="combo_done_eis_none">Sorted - nothing urgent and important</string>
     <string name="combo_done_pick">Chosen: %1$s</string>
     <string name="combo_subject">For: %1$s</string>
     <string name="combo_leave_title">Leave the chain?</string>

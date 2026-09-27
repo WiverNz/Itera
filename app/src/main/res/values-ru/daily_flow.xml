@@ -11,14 +11,14 @@
     <string name="welcome_demo">Посмотреть с демо-данными</string>
     <string name="onb_step">%1$d из %2$d</string>
     <string name="goals_title">Что хочешь тренировать в первую очередь?</string>
-    <string name="goals_sub">Выбери до двух. Остальное тоже будет — просто чуть позже.</string>
+    <string name="goals_sub">Выбери до двух. Остальное тоже будет - просто чуть позже.</string>
     <string name="rhythm_title">Когда тренеру выходить на связь?</string>
     <string name="rhythm_morning">Утренняя тренировка</string>
     <string name="rhythm_morning_sub">Упражнение дня готово</string>
     <string name="rhythm_evening">Вечерняя рефлексия</string>
     <string name="rhythm_evening_sub">Две минуты, три вопроса</string>
     <string name="rhythm_time_q">Сколько времени есть в обычный день?</string>
-    <string name="rhythm_time_hint">Ежедневная программа укладывается в 15 минут. Фокус-сессии — по желанию.</string>
+    <string name="rhythm_time_hint">Ежедневная программа укладывается в 15 минут. Фокус-сессии - по желанию.</string>
     <string name="week_title">Твоя первая неделя</string>
     <string name="week_sub">Одна новая техника в день. На 4-й день повторишь одну из пройденных, чтобы закрепить.</string>
     <string name="week_review_suffix">+ повторение</string>
@@ -73,7 +73,7 @@
     <string name="day_tomorrow">Завтра · День %1$d</string>
     <string name="day_unlocks">Откроется в %1$s</string>
     <string name="good_night">Спокойной ночи</string>
-    <string name="combo_title">Спланируй — и погрузись</string>
+    <string name="combo_title">Спланируй - и погрузись</string>
     <string name="combo_sub">Четыре знакомые техники в одном движении.</string>
     <string name="train_review_due">Повторение на сегодня</string>
     <string name="action_try_again">Попробовать снова</string>

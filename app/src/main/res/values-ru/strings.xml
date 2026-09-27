@@ -8,7 +8,7 @@
     <string name="error_content_missing">Этот материал недоступен.</string>
     <string name="error_export">Не удалось экспортировать. Проверьте свободное место и повторите попытку.</string>
 <string name="t_two_name">Правило двух минут</string>
-<string name="t_two_task">Посмотри на свои текущие дела. Найди две задачи меньше чем на две минуты — и выполни их прямо сейчас.</string>
+<string name="t_two_task">Посмотри на свои текущие дела. Найди две задачи меньше чем на две минуты - и выполни их прямо сейчас.</string>
 <string name="t_pomodoro_name">Pomodoro</string>
 <string name="t_pomodoro_task">Выбери одну задачу. Работай над ней 25 минут, ни на что не переключаясь, а потом сделай настоящий 5-минутный перерыв.</string>
 <string name="t_eisenhower_name">Матрица Эйзенхауэра</string>
@@ -33,7 +33,7 @@
 <string name="t_premortem_name">Премортем</string>
 <string name="t_premortem_task">Представь, что через полгода проект полностью провалился. Запиши причины и выбери один шаг, который сегодня снизит самый большой риск.</string>
 <string name="t_onepct_name" formatted="false">Улучшение на 1%</string>
-<string name="t_onepct_task" formatted="false">Выбери один навык или привычку. Сделай их сегодня на 1% лучше — одним небольшим конкретным изменением.</string>
+<string name="t_onepct_task" formatted="false">Выбери один навык или привычку. Сделай их сегодня на 1% лучше - одним небольшим конкретным изменением.</string>
 <string name="t_reflect_name">Ежедневная рефлексия</string>
 <string name="t_reflect_task">Ответь на три вопроса: что получилось, что нет и что изменишь завтра.</string>
 <string name="activity_program">Сейчас · %1$d мин</string>
@@ -46,7 +46,7 @@
 <string name="activity_focus_generic">Фокус-сессия на %1$d мин</string>
 <string name="activity_combination_title">Объедините техники</string>
     <string name="train_title">Тренировки</string>
-    <string name="train_sub">Твоя программа — по одной технике за раз.</string>
+    <string name="train_sub">Твоя программа - по одной технике за раз.</string>
     <string name="train_week">Неделя %1$d · %2$s</string>
     <string name="week_foundations">Основы</string>
     <string name="week_depth">Глубина</string>

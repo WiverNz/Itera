@@ -219,7 +219,7 @@ class ExerciseRunnerScreenTest {
     @Test fun introShowsTheComputedSnoozeTime() {
         compose.setContent { IteraTheme { ExerciseIntroScreen(intro, {}, {}, {}) } }
         compose.onNodeWithText("Start exercise").assertExists()
-        compose.onNodeWithText("Not now — remind me at 12:00", substring = true).assertExists()
+        compose.onNodeWithText("Not now - remind me at 12:00", substring = true).assertExists()
     }
 
     @Test fun genericIntroSaysIDidIt() {

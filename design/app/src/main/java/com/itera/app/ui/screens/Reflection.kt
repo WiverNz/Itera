@@ -124,7 +124,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
                     when (s) {
                         StepState.Done -> Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(stringResource(q), style = Itera.type.bodySmall, color = c.ink2)
-                            Text(answers[i].ifBlank { "—" }, style = Itera.type.body, color = c.ink)
+                            Text(answers[i].ifBlank { "-" }, style = Itera.type.body, color = c.ink)
                         }
                         StepState.Now -> Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                             Text(stringResource(q), style = Itera.type.headline, color = c.ink)

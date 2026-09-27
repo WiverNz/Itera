@@ -65,7 +65,7 @@ class MarkdownJournalWriter(
     }
 
     fun header(writer: Writer, exportedOn: LocalDate, programDays: List<Int>, count: Int) {
-        val range = if (programDays.isEmpty()) "—" else "${programDays.min()}-${programDays.max()}"
+        val range = if (programDays.isEmpty()) "-" else "${programDays.min()}-${programDays.max()}"
         writer.write(
             "# ${copy.text(
                 "title"
@@ -150,7 +150,7 @@ class MarkdownJournalWriter(
             writer.write(
                 "| ${inline(
                     t.name
-                )} | ${t.skill} | ${t.level} | ${p.totalUses} | ${p.distinctPracticeDays} | ${p.firstUsedOn ?: "—"} | ${p.lastUsedOn ?: "—"} |\n"
+                )} | ${t.skill} | ${t.level} | ${p.totalUses} | ${p.distinctPracticeDays} | ${p.firstUsedOn ?: "-"} | ${p.lastUsedOn ?: "-"} |\n"
             )
         }
     }

@@ -23,7 +23,7 @@
 <string name="time_most_days">Время в обычный день</string>
 <string name="sec_program">Программа</string>
 <string name="pace">Темп</string>
-<string name="pace_hint">Стандартный: новая техника почти каждый день, между ними — повторения.</string>
+<string name="pace_hint">Стандартный: новая техника почти каждый день, между ними - повторения.</string>
 <string name="pace_gentle">Мягкий</string>
 <string name="pace_standard">Стандартный</string>
 <string name="pace_intense">Интенсивный</string>

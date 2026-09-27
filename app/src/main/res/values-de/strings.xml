@@ -8,7 +8,7 @@
     <string name="error_content_missing">Dieser Inhalt ist nicht verfügbar.</string>
     <string name="error_export">Export fehlgeschlagen. Prüfe den freien Speicher und versuche es erneut.</string>
 <string name="t_two_name">2-Minuten-Regel</string>
-<string name="t_two_task">Schau auf deine aktuellen To-dos. Finde zwei Aufgaben, die unter zwei Minuten dauern – und erledige sie jetzt.</string>
+<string name="t_two_task">Schau auf deine aktuellen To-dos. Finde zwei Aufgaben, die unter zwei Minuten dauern - und erledige sie jetzt.</string>
 <string name="t_pomodoro_name">Pomodoro</string>
 <string name="t_pomodoro_task">Wähle eine Aufgabe. Arbeite 25 Minuten ohne Wechsel daran, dann mach eine echte 5-Minuten-Pause.</string>
 <string name="t_eisenhower_name">Eisenhower-Matrix</string>
@@ -33,7 +33,7 @@
 <string name="t_premortem_name">Premortem</string>
 <string name="t_premortem_task">Stell dir vor, dein Projekt ist in sechs Monaten komplett gescheitert. Schreib die Gründe auf und wähle einen Schritt, der heute das größte Risiko senkt.</string>
 <string name="t_onepct_name" formatted="false">1 % besser</string>
-<string name="t_onepct_task" formatted="false">Wähle eine Fähigkeit oder Gewohnheit. Mach sie heute 1 % besser – mit einer kleinen, konkreten Änderung.</string>
+<string name="t_onepct_task" formatted="false">Wähle eine Fähigkeit oder Gewohnheit. Mach sie heute 1 % besser - mit einer kleinen, konkreten Änderung.</string>
 <string name="t_reflect_name">Tägliche Reflexion</string>
 <string name="t_reflect_task">Beantworte drei Fragen: Was lief gut, was nicht, und was änderst du morgen?</string>
 <string name="activity_program">Jetzt · %1$d Min.</string>
@@ -46,7 +46,7 @@
 <string name="activity_focus_generic">%1$d Minuten Fokus</string>
 <string name="activity_combination_title">Kombiniere deine Techniken</string>
     <string name="train_title">Training</string>
-    <string name="train_sub">Dein Programm – eine Technik nach der anderen.</string>
+    <string name="train_sub">Dein Programm - eine Technik nach der anderen.</string>
     <string name="train_week">Woche %1$d · %2$s</string>
     <string name="week_foundations">Grundlagen</string>
     <string name="week_depth">Vertiefung</string>
@@ -56,7 +56,7 @@
     <string name="train_library">Bibliothek</string>
     <string name="train_library_sub">Alle %1$d Techniken · %2$d freigeschaltet</string>
     <string name="library_title">Bibliothek</string>
-    <string name="library_sub">Alle 14 Techniken. Dein Programm schaltet sie der Reihe nach frei – reinschauen kannst du in jede.</string>
+    <string name="library_sub">Alle 14 Techniken. Dein Programm schaltet sie der Reihe nach frei - reinschauen kannst du in jede.</string>
     <string name="filter_all">Alle</string>
     <string name="detail_why">Warum es hilft</string>
     <string name="detail_level">Dein Level</string>

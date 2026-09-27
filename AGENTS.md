@@ -4,7 +4,7 @@ Instructions for any agent working in this repository. Read this before touching
 
 If `AGENTS.local.md` exists in this checkout, read it for machine-specific build, run, and verification instructions. It supplements this file and is not committed.
 
-## Git ownership — do not commit
+## Git ownership - do not commit
 
 - **Do not create Git commits, amend commits, or push changes.** Leave completed work in the working tree for the user to review and commit manually.
 - Do not bypass hooks or use alternate tools, Git aliases, plumbing commands, or scripts to create commits indirectly.

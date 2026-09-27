@@ -16,7 +16,7 @@
     <string name="voice_retry">Nochmal</string>
     <string name="voice_keep_typing">Weiter tippen</string>
     <string name="voice_permission_title">Mikrofon verwenden?</string>
-    <string name="voice_permission_body">Itera hört erst zu, wenn du auf das Mikrofon tippst – für einen Satz, mit Spracherkennung auf diesem Gerät. Nichts wird aufgenommen oder gespeichert.</string>
+    <string name="voice_permission_body">Itera hört erst zu, wenn du auf das Mikrofon tippst - für einen Satz, mit Spracherkennung auf diesem Gerät. Nichts wird aufgenommen oder gespeichert.</string>
     <string name="voice_permission_continue">Weiter</string>
     <string name="voice_not_now">Nicht jetzt</string>
     <string name="voice_permission_denied">Mikrofonzugriff ist aus</string>
@@ -85,5 +85,5 @@
     <string name="voice_example_end">„Beende Fokus“</string>
     <string name="voice_example_complete_exercise">„Schließe Übung ab“</string>
     <string name="voice_example_recommendation">„Was soll ich jetzt tun?“</string>
-    <string name="privacy_voice">Spracheingabe ist optional und funktioniert nur, wenn du auf ein Mikrofon tippst. Sprache wird auf diesem Gerät erkannt; Itera nimmt nie Audio auf und behält nicht, was du gesagt hast – nur den Text, den du übernimmst, wie beim Tippen.</string>
+    <string name="privacy_voice">Spracheingabe ist optional und funktioniert nur, wenn du auf ein Mikrofon tippst. Sprache wird auf diesem Gerät erkannt; Itera nimmt nie Audio auf und behält nicht, was du gesagt hast - nur den Text, den du übernimmst, wie beim Tippen.</string>
 </resources>

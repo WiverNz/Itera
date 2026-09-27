@@ -57,7 +57,7 @@
     <string name="coach_improve">Erklärung verbessern</string>
     <string name="coming_later">Kommt später</string>
     <string name="review_label">Wiederholung</string>
-    <string name="review_again">Erkläre es noch einmal – ohne auf deine vorige Antwort zu schauen.</string>
+    <string name="review_again">Erkläre es noch einmal - ohne auf deine vorige Antwort zu schauen.</string>
     <string name="review_field">Deine Erklärung aus dem Gedächtnis</string>
     <string name="review_hidden">Deine erste Antwort bleibt verborgen, bis du fertig bist</string>
     <string name="review_compare">Mit meiner ersten Antwort vergleichen</string>
@@ -84,7 +84,7 @@
     <string name="hs_nudge">Direkt danach erinnern</string>
     <string name="hs_save">Verknüpfung speichern</string>
     <string name="action_finish">Abschließen</string>
-    <string name="exercise_later_at">Nicht jetzt – erinnere mich um %1$s</string>
+    <string name="exercise_later_at">Nicht jetzt - erinnere mich um %1$s</string>
     <string name="exercise_not_now">Nicht jetzt</string>
     <string name="exercise_leave_title">Übung verlassen?</string>
     <string name="exercise_leave_body">Was du geschrieben hast, bleibt erhalten. Du kannst später weitermachen.</string>
@@ -114,7 +114,7 @@
     <string name="focus_channel_desc">Zeigt den laufenden Fokus-Timer</string>
     <string name="focus_notification_paused">Pausiert</string>
     <string name="eis_entry_title">Was steht gerade an?</string>
-    <string name="eis_entry_sub">Schreib 5–7 echte Aufgaben auf, eine pro Zeile.</string>
+    <string name="eis_entry_sub">Schreib 5-7 echte Aufgaben auf, eine pro Zeile.</string>
     <string name="eis_entry_hint">Eine Aufgabe pro Zeile</string>
     <string name="eis_entry_cta">Sortieren</string>
     <string name="eis_pick_first">Wähle zuerst eine Aufgabe</string>
@@ -166,7 +166,7 @@
     <string name="combo_continue_to">Weiter zu %1$s</string>
     <string name="combo_start_step">%1$s starten</string>
     <string name="combo_done_eis">Am wichtigsten: %1$s</string>
-    <string name="combo_done_eis_none">Sortiert – nichts Dringendes und Wichtiges</string>
+    <string name="combo_done_eis_none">Sortiert - nichts Dringendes und Wichtiges</string>
     <string name="combo_done_pick">Gewählt: %1$s</string>
     <string name="combo_subject">Für: %1$s</string>
     <string name="combo_leave_title">Kette verlassen?</string>

@@ -6,7 +6,7 @@ Status: accepted (2026-09-26); implemented in milestone 012 (2026-09-27).
 
 Add `RECORD_AUDIO` only for user-initiated, foreground, single-utterance dictation/commands. Request it on first mic use with a rationale; denial or revocation leaves all keyboard/touch interactions available. No continuous listening, hotword, microphone foreground service, audio file or voice history.
 
-The user explicitly chose **strictly on-device recognition**. On API 31+, prefer the on-device `SpeechRecognizer` factory after checking availability, then handle language/model support. If unavailable (including API 26–30), offer manual input and relevant speech settings; do not start the default platform recognizer. No network permission is added.
+The user explicitly chose **strictly on-device recognition**. On API 31+, prefer the on-device `SpeechRecognizer` factory after checking availability, then handle language/model support. If unavailable (including API 26-30), offer manual input and relevant speech settings; do not start the default platform recognizer. No network permission is added.
 
 ## Platform fallback (blocked)
 

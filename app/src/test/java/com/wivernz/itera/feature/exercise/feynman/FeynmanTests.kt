@@ -45,8 +45,8 @@ class FeynmanViewModelTest {
     }
 
     @Test fun wordCounting() {
-        assertEquals(5, FeynmanText.words("  Redis   keeps\tdata,  in memory — ! "))
-        assertEquals(0, FeynmanText.words(" ... — "))
+        assertEquals(5, FeynmanText.words("  Redis   keeps\tdata,  in memory - ! "))
+        assertEquals(0, FeynmanText.words(" ... - "))
     }
 
     @Test fun inlineTopicCreationWithAnEmptyList() {

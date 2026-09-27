@@ -43,7 +43,7 @@
     <string name="welcome_demo">Mit Demodaten ansehen</string>
     <string name="onb_step">%1$d von %2$d</string>
     <string name="goals_title">Was möchtest du zuerst trainieren?</string>
-    <string name="goals_sub">Wähle bis zu zwei. Der Rest kommt auch – nur etwas später.</string>
+    <string name="goals_sub">Wähle bis zu zwei. Der Rest kommt auch - nur etwas später.</string>
     <string name="rhythm_title">Wann soll sich dein Coach melden?</string>
     <string name="rhythm_morning">Morgentraining</string>
     <string name="rhythm_morning_sub">Die heutige Übung ist bereit</string>
@@ -96,7 +96,7 @@
     <string name="exercise_meta">%1$s · Tag %2$d</string>
     <string name="exercise_yours">Deine Übung</string>
     <string name="exercise_start">Übung starten</string>
-    <string name="exercise_later">Nicht jetzt – später erinnern</string>
+    <string name="exercise_later">Nicht jetzt - später erinnern</string>
     <string name="exercise_did_it">Erledigt</string>
     <string name="two_title">Finde zwei schnelle Aufgaben</string>
     <string name="two_sub">Schreib sie auf, erledige sie und tippe sie ab. Dauert eine länger als zwei Minuten, ist auch das gut zu wissen.</string>
@@ -216,11 +216,11 @@
     <string name="coach_beginner">Ein Anfänger könnte fragen</string>
     <string name="coach_beginner_text">„Warum dann nicht immer das Log verwenden?“</string>
     <string name="coach_improve">Erklärung verbessern</string>
-    <string name="fey_review_note">In 4 Tagen erklärst du es noch einmal – aus dem Gedächtnis.</string>
+    <string name="fey_review_note">In 4 Tagen erklärst du es noch einmal - aus dem Gedächtnis.</string>
 
     <string name="review_label">Wiederholung</string>
     <string name="review_topic">Persistenz in Redis</string>
-    <string name="review_again">Erkläre es noch einmal – ohne auf deine vorige Antwort zu schauen.</string>
+    <string name="review_again">Erkläre es noch einmal - ohne auf deine vorige Antwort zu schauen.</string>
     <string name="review_field">Deine Erklärung aus dem Gedächtnis</string>
     <string name="review_hidden">Deine erste Antwort bleibt verborgen, bis du fertig bist</string>
     <string name="review_compare">Mit meiner ersten Antwort vergleichen</string>
@@ -239,7 +239,7 @@
     <string name="pm_add">Grund hinzufügen</string>
     <string name="pm_today_q">Was kannst du heute tun, um Risiko Nr. 1 zu senken?</string>
     <string name="pm_action_hint">Ein konkreter Schritt, heute machbar</string>
-    <string name="pm_idea">Idee: Schreib eine kurze Liste „nicht in der Beta“ – das ist die Zwei-Listen-Strategie.</string>
+    <string name="pm_idea">Idee: Schreib eine kurze Liste „nicht in der Beta“ - das ist die Zwei-Listen-Strategie.</string>
     <string name="pm_cta">Zu heute hinzufügen</string>
 
     <string name="hs_sentence">Nachdem ich %1$s,\nwerde ich %2$s.</string>
@@ -259,7 +259,7 @@
     <string name="hs_save">Verknüpfung speichern</string>
 
     <string name="train_title">Training</string>
-    <string name="train_sub">Dein Programm – eine Technik nach der anderen.</string>
+    <string name="train_sub">Dein Programm - eine Technik nach der anderen.</string>
     <string name="train_week">Woche %1$d · %2$s</string>
     <string name="week_foundations">Grundlagen</string>
     <string name="week_depth">Vertiefung</string>
@@ -271,7 +271,7 @@
     <string name="train_library">Bibliothek</string>
     <string name="train_library_sub">Alle %1$d Techniken · %2$d freigeschaltet</string>
     <string name="library_title">Bibliothek</string>
-    <string name="library_sub">Alle 14 Techniken. Dein Programm schaltet sie der Reihe nach frei – reinschauen kannst du in jede.</string>
+    <string name="library_sub">Alle 14 Techniken. Dein Programm schaltet sie der Reihe nach frei - reinschauen kannst du in jede.</string>
     <string name="filter_all">Alle</string>
     <string name="not_started">Noch nicht begonnen</string>
     <string name="detail_why">Warum es hilft</string>
@@ -346,7 +346,7 @@
     <string name="t_two_name">2-Minuten-Regel</string>
     <string name="t_two_short">Erledige Kleinkram, bevor er sich stapelt.</string>
     <string name="t_two_why">Wenn etwas weniger als zwei Minuten dauert, mach es sofort. Kleine Aufgaben sind schnell erledigt und teuer im Kopf.</string>
-    <string name="t_two_task">Schau auf deine aktuellen To-dos. Finde zwei Aufgaben, die unter zwei Minuten dauern – und erledige sie jetzt.</string>
+    <string name="t_two_task">Schau auf deine aktuellen To-dos. Finde zwei Aufgaben, die unter zwei Minuten dauern - und erledige sie jetzt.</string>
 
     <string name="t_pomodoro_name">Pomodoro</string>
     <string name="t_pomodoro_short">Arbeite in 25-Minuten-Sprints mit echten Pausen.</string>
@@ -399,14 +399,14 @@
     <string name="t_diet_task">Wähle einen Feed oder eine App, die du heute auslässt. Frag dich vor dem Öffnen: Brauche ich das gerade?</string>
 
     <string name="t_premortem_name">Premortem</string>
-    <string name="t_premortem_short">Stell dir das Scheitern vor – und verhindere es.</string>
+    <string name="t_premortem_short">Stell dir das Scheitern vor - und verhindere es.</string>
     <string name="t_premortem_why">Wer sich das Scheitern vorab vorstellt, macht Risiken greifbar, solange noch Zeit zum Handeln ist.</string>
     <string name="t_premortem_task">Stell dir vor, dein Projekt ist in sechs Monaten komplett gescheitert. Schreib die Gründe auf und wähle einen Schritt, der heute das größte Risiko senkt.</string>
 
     <string name="t_onepct_name" formatted="false">1 % besser</string>
     <string name="t_onepct_short">Verbessere jeden Tag eine kleine Sache.</string>
     <string name="t_onepct_why">Winzige Verbesserungen lassen sich leicht wiederholen und summieren sich über Wochen.</string>
-    <string name="t_onepct_task" formatted="false">Wähle eine Fähigkeit oder Gewohnheit. Mach sie heute 1 % besser – mit einer kleinen, konkreten Änderung.</string>
+    <string name="t_onepct_task" formatted="false">Wähle eine Fähigkeit oder Gewohnheit. Mach sie heute 1 % besser - mit einer kleinen, konkreten Änderung.</string>
 
     <string name="t_reflect_name">Tägliche Reflexion</string>
     <string name="t_reflect_short">Drei kurze Fragen zum Tagesabschluss.</string>
