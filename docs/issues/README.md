@@ -16,9 +16,10 @@ This index is the implementation status entry point; each milestone owns its acc
 - **007: complete (2026-09-26).** Train, Library and Technique Detail use the real catalog, progress, history and exercise flows. Required tests, build, lint and formatting pass; prototype comparisons completed in light and dark. See [007](007-train-and-technique-library.md#reconciled-differences).
 - **008: implemented; one device acceptance check pending (2026-09-27).** Required tests, build, lint, formatting and light/dark prototype comparisons pass. API 26-30 language persistence remains open; see [008](008-progress-history-and-settings.md#verification-gaps).
 - **012: implemented (2026-09-27).** Required tests, build, lint and formatting pass; the full visual/device voice comparison is deferred to 009/010. See [012](012-voice-input-and-commands.md#verification-gap).
-- **009-011: not started.**
+- **009: in progress (2026-09-27).** Reminders, workers, receivers, the notification channels and analytics completion are implemented. All of the milestone's required tests exist. Still open: the acceptance checklist, the manual accessibility and localisation walks, the minified release smoke test, and the visual and device checks deferred from 003, 005, 006, 008 and 012. See [009](009-notifications-and-quality-passes.md).
+- **010-011: not started.**
 
-Next implementation milestone: **009**, which also owns the deferred visual/device checks of 003, 005, 006, 008 and 012. Readiness is not authorization to start another milestone.
+Current milestone: **009**. Next after it: **010**. Readiness is not authorization to start another milestone.
 
 ## Index
 
@@ -31,11 +32,11 @@ Next implementation milestone: **009**, which also owns the deferred visual/devi
 | [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow - **implemented; visual comparison pending** | 003, 004 | 016, 017, 019, 020 |
 | [006](006-exercise-system.md) | Exercise system - **implemented; visual comparison pending** | 005 | 018, 021-027 |
 | [007](007-train-and-technique-library.md) | Train & technique library - **complete** | 006 | 028-030 |
-| [008](008-progress-history-and-settings.md) | Progress, history & settings | 005 | 031, 032, 034, 035 |
-| [009](009-notifications-and-quality-passes.md) | Notifications & quality passes | 006, 007, 008, 012 | 033, rest of 036, 037, 041 |
+| [008](008-progress-history-and-settings.md) | Progress, history & settings - **implemented; one device check pending** | 005 | 031, 032, 034, 035 |
+| [009](009-notifications-and-quality-passes.md) | Notifications & quality passes - **in progress** | 006, 007, 008, 012 | 033, rest of 036, 037, 041 |
 | [010](010-test-hardening.md) | Test hardening | 009 | 039 |
 | [011](011-release-readiness.md) | Release readiness | 010 | 040 |
-| [012](012-voice-input-and-commands.md) | Voice input & commands | 006, 007, 008 | New scope; none |
+| [012](012-voice-input-and-commands.md) | Voice input & commands - **implemented; visual/device comparison deferred to 009/010** | 006, 007, 008 | New scope; none |
 
 Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 012 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007 and must finish before 012. The solo sequence after 007 is **008, 012, 009, 010, 011**. Finish outstanding core visual acceptance before 012; numbering is not execution order.
 

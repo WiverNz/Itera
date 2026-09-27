@@ -7,25 +7,29 @@
 
 A native Android app that teaches productivity techniques through daily practice, not through another list of things to do.
 
-> **Status: milestones 001-002 complete; 003 implemented with final visual acceptance pending.**
-> `app/` contains core architecture/storage, the design system and navigation shell with placeholder feature destinations. Milestone 004 is ready to start; 004 and later milestones have not been started. See the [milestone status and acceptance gaps](docs/issues/README.md#current-status-2026-09-24).
+> **Status: in development, not yet released.**
+> Onboarding, the daily flow, every exercise, Train, the technique library, Progress, History, Settings and voice input are implemented. Reminders and notifications, the full accessibility and localisation passes, test hardening and release readiness are still in progress. The issue index has [milestone status and open acceptance checks](docs/issues/README.md#current-status-2026-09-27).
 
 ## What it is
 
 Most productivity apps store your tasks. Itera teaches you how to work: one technique at a time, one small exercise a day, done in real life rather than in the app.
 
-```
-Today's training                              New
-2-minute rule
-Clear small tasks before they accumulate.
-About 5 min · Habits
+<p align="center">
+  <img src="docs/images/today-light.png" width="300"
+       alt="Today screen on Day 9: one training card for the 80/20 principle with a Start today's exercise button, followed by a short list of today's three steps.">
+</p>
 
-              [ Start today's exercise ]
-```
+## How it works
 
-Three touchpoints a day: one exercise in the morning, an optional focus block during the day, a two-minute reflection at night. Techniques unlock one a day across fourteen days, then start combining.
+Each day has three touchpoints:
 
-Ships in English, Russian, German and Spanish, switchable at any time without a restart.
+- **Morning:** one exercise from one technique. A short "why", then a concrete action to take in real life. Afterwards you rate how it went (easy, okay or hard) and can add a note.
+- **During the day (optional):** a focus block with a Pomodoro or Deep Work timer.
+- **Evening:** a two-minute reflection on what went well, what didn't, and what changes tomorrow.
+
+Daily reflection is available from Day 1. The other thirteen techniques unlock one per program day, on Days 1-13. Day 14 is the first combination day, where several techniques are chained together. From Day 15, every third day is a generated combination and the others are practice days. Spaced reviews bring earlier material back.
+
+Program days advance when you train, not by the calendar. Missing a day never resets anything and never shows a warning.
 
 ## The fourteen techniques
 
@@ -37,83 +41,146 @@ Ships in English, Russian, German and Spanish, switchable at any time without a 
 | Habits | 2-minute rule, Habit stacking, 1% improvement |
 | Reflection | Daily reflection, Premortem |
 
+All fourteen are visible in the library from the start. Locked ones can be opened and read before they unlock. The unlock order is in [`docs/engine/04-unlock-rules.md`](docs/engine/04-unlock-rules.md).
+
+## Key features
+
+- **Dedicated exercises:** Eisenhower matrix, Feynman technique, habit stacking, premortem, the focus timer and combination days. Simpler techniques use a shared exercise runner.
+- **Progress without pressure:** five skill rows, a 14-day regularity strip, a history calendar, and a weekly look-back in the evening reflection.
+- **Four languages:** English, Russian, German and Spanish, covering the whole app including technique content. You can switch from Welcome or Settings at any time, and the choice survives restarts. It uses Android's per-app language setting, so the phone's system language is left alone. Switching recreates the screen in the new language; no app restart is needed.
+- **Push-to-talk voice input** (Android 12 and later):
+  - dictation into text fields
+  - a small, fixed set of commands in all four languages, such as adding or completing an item, starting, pausing or ending a focus session, and completing the current exercise
+  - commands come from explicit phrase tables, not AI, and actions that are hard to undo ask for confirmation first
+  - recognition runs **only on the device**. Voice is available only when the phone has an on-device speech recognizer and the language model for the current app language. Without them, the microphone reports voice as unavailable, and Itera never falls back to a cloud or default platform recognizer.
+  - keyboard and touch always work.
+- **Journal export:** your practice journal can be exported as Markdown through the Android share sheet.
+
+## Screenshots
+
+Taken from the production app (`app/`) on a 1080×2400 emulator using the built-in demo data (Day 9). Status and navigation bars are cropped out.
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/images/technique-library-light.png" width="220" alt="Technique library listing all fourteen techniques with skill filters and mastery dots."><br><sub>Technique library</sub></td>
+    <td align="center" width="33%"><img src="docs/images/eisenhower-matrix-dark.png" width="220" alt="Eisenhower matrix exercise in dark theme, with five sample tasks sorted into Do now, Schedule and Drop."><br><sub>Eisenhower matrix (dark)</sub></td>
+    <td align="center" width="33%"><img src="docs/images/focus-timer-dark.png" width="220" alt="Always-dark focus timer showing 24:56 remaining on a sample task, with pause, +5 min and End controls."><br><sub>Focus timer</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/progress-dark.png" width="220" alt="Progress screen in dark theme: trained days in the last ten, and five skill rows with practice counts."><br><sub>Progress (dark)</sub></td>
+    <td align="center"><img src="docs/images/language-switch-russian-light.png" width="220" alt="Language sheet after switching to Russian: the whole app, including the sheet, is now in Russian."><br><sub>Language switch (Russian)</sub></td>
+    <td></td>
+  </tr>
+</table>
+
 ## What it deliberately is not
 
-- **Not a task manager.** No entity in the database represents a task outside an exercise.
+- **Not a task manager.** The database has no task entity outside an exercise.
 - **Not gamified.** No streak, no XP, no points, no leaderboard, no percentage complete.
-- **Not online.** No account, no backend, no sync, no subscription, no AI requirement. The app declares no internet permission.
-- **Not a dashboard.** Progress is five bars, a strip of days and one sentence.
+- **Not online.** No account, no backend, no sync, no subscription, no AI requirement.
+- **Not a coach that makes things up.** No generated feedback is ever shown. The AI coach panel ships in a "Coming later" state.
+- **Not a dashboard.** Home answers one question, "what should I do right now?", with one main action and a short list.
 
-Missing a day never resets anything. Program days advance when you train, not by the calendar.
+Rest days are shown honestly, never hidden or scolded.
+
+## Privacy
+
+- **No account and no backend.** There is no sign-in, server or cloud sync.
+- **No `INTERNET` permission.** The manifest does not declare it. The permissions it does declare cover notifications, rescheduling reminders after a reboot, the focus-timer foreground service, and the microphone for voice.
+- **Your data stays on the device.** Room and DataStore files are excluded from Android cloud backup. They are included only in direct device-to-device transfer. Journal export happens only when you ask for it.
+- **Voice is on-device only.** Listening starts only when you tap the microphone, and it stops after one utterance. There is no continuous listening, no hotword and no background microphone use.
+- **Nothing you write or say is logged.** Audio is never stored, and transcripts are never logged or sent to analytics. Final dictated text is saved exactly like typed text. The local analytics log records only fixed event names and enumerated values, never text you wrote.
+
+The full voice decision is [ADR-0022](docs/architecture/adr/0022-voice-recognition-and-privacy.md).
+
+## Tech stack
+
+Production app (`app/`):
+
+- Kotlin, Coroutines and Flow
+- Jetpack Compose with Material 3, Navigation Compose, Lifecycle/ViewModel (MVVM, one immutable `UiState` per screen)
+- Hilt for dependency injection
+- Room for persistence and DataStore for preferences
+- WorkManager for reminders and background upkeep, plus a foreground service for the focus timer
+- AppCompat per-app locales (`AppCompatDelegate.setApplicationLocales`)
+- Android `SpeechRecognizer`, on-device recognizer only, for voice
+- kotlinx.serialization and kotlinx.collections.immutable
+- Testing: JUnit, Robolectric, Compose UI tests, Turbine, Roborazzi and Kover
+- Build tooling: KSP, Spotless and custom Compose lint checks
+
+Single Gradle module with enforced package boundaries. minSdk 26 (Android 8.0), target/compileSdk 37. Four bundled typefaces; a script-based selection rule covers Cyrillic ([ADR-0019](docs/architecture/adr/0019-typography-and-script-coverage.md)). Full list and pinned versions: [`docs/architecture/06-dependency-catalog.md`](docs/architecture/06-dependency-catalog.md) and `gradle/libs.versions.toml`.
 
 ## Repository layout
 
 | Path | What it is |
 | --- | --- |
-| [`design/`](design/) | **A runnable Compose prototype of the whole app** — 24 screens, theme, components, icons, navigation, four languages. The source of truth for all UI and interaction. |
-| [`docs/`](docs/README.md) | The specification: the product documents, ADRs and implementation issues. |
-| `app/` | The production app: core architecture/storage, design system and navigation shell. Feature destinations remain placeholders. |
-| [`AGENTS.md`](AGENTS.md) | Working rules for anyone — human or agent — implementing this. |
-| [`CLAUDE_START_HERE.md`](CLAUDE_START_HERE.md) | Entry point for implementation. |
+| [`design/`](design/) | **A runnable Compose prototype of the whole app**: screens, theme, components, icons, navigation and four languages, with in-memory state. It is the UI/UX reference, not a dependency. |
+| `app/` | **The production application** (`com.wivernz.itera`). |
+| [`docs/`](docs/README.md) | The specification: product documents, UX, architecture, engines, testing, ADRs and milestone issues. |
+| [`scripts/`](scripts/README.md) | Windows scripts for versioning and signed releases. |
+| [`licenses/`](licenses/fonts/README.md) | Font licences and pinned source hashes. |
+| [`docs/images/`](docs/images/) | README screenshots of the production app. |
 
-## Where to start
+## Getting started
 
-1. **Run the prototype.** It explains the product faster than any document.
-2. [`docs/00-source-of-truth.md`](docs/00-source-of-truth.md) — source priority and every locked decision. Read before writing code.
-3. [`docs/ux/05-prototype-reference.md`](docs/ux/05-prototype-reference.md) — screen-to-file map and the porting checklist.
-4. [`docs/delivery/00-implementation-order.md`](docs/delivery/00-implementation-order.md) — 12 milestone issues; planned voice milestone 012 runs before 009's quality passes.
-
-## Requirements
+### Requirements
 
 - Android Studio Ladybug (2024.2) or newer
-- JDK 25 for production (the committed daemon JVM criteria select it); JDK 17+ for the independent prototype
-- Android SDK; both modules download their own Gradle distribution on first sync
-- A device or emulator running Android 8.0 (API 26) or newer
+- JDK 25 for the production app (the committed daemon JVM criteria select it; it can be provisioned automatically); JDK 17+ for the prototype
+- Android SDK with platform `android-37.0` and build tools `36.0.0`. Point to it with `ANDROID_HOME` or with `sdk.dir` in the ignored `local.properties`.
+- A device or emulator on Android 8.0 (API 26) or newer. Voice needs Android 12+ and an on-device recognizer.
 
-## Building
+The first build needs network access for Gradle and dependencies. The app itself never does.
 
-The two projects are **independent** — separate Gradle builds, separate application ids, different toolchain versions. That is intentional.
-
-### The prototype
+### Run the prototype
 
 ```bash
 cd design
 ./gradlew installDebug
 ```
 
-Or open the `design/` folder as its own Android Studio project.
+Or open `design/` as its own Android Studio project. On the Welcome screen, **"Explore with demo data"** jumps to Day 9 with realistic history, and the language pill switches languages at runtime. The prototype's own notes are in [`design/README.md`](design/README.md) (in Russian).
 
-Two things make exploring it fast: **"Explore with demo data"** on the Welcome screen jumps to day 9 with realistic history, and the **language pill** switches between the four languages at runtime.
-
-The prototype builds and runs independently. See [`design/README.md`](design/README.md) (written in Russian) for its own notes.
-
-### The production app
+### Build and run the production app
 
 ```bash
-./gradlew build
-./gradlew installDebug
-```
-
-This builds a single centered, localized app-name placeholder. The four fonts are bundled in `app/src/main/res/font/`; licenses and pinned source hashes are in [licenses/fonts](licenses/fonts/README.md).
-
-Set `ANDROID_HOME` to your SDK, or add `sdk.dir=/path/to/sdk` in the ignored `local.properties`. Install platform `android-37.0` and build tools `36.0.0`. The wrapper downloads Gradle 9.7.1 and checks its SHA-256. The daemon JDK can be provisioned automatically. Dependencies need network access on the first build; the app itself has no INTERNET permission.
-
-On Windows use `.\gradlew.bat` instead of `./gradlew`.
-
-```bash
-./gradlew clean build
-./gradlew testDebugUnitTest lintDebug spotlessCheck koverVerify verifyRoborazziDebug
-./gradlew -p buildSrc test
-./gradlew spotlessApply                       # format production Kotlin/build scripts
 ./gradlew installDebug
 adb shell am start -W -n com.wivernz.itera/.MainActivity
 ```
 
-`build` runs formatting, lint, unit tests and the domain coverage gate. `verifyRoborazziDebug` is configured with an empty golden set; milestone 010 adds goldens. JVM tests render all four font previews in light/dark under API 34, fixed dimensions, en-US, UTC and disabled animations. Open `BootstrapPreview` in Android Studio for the IDE preview.
+Debug builds also offer "Explore with demo data" on Welcome. On Windows, use `.\gradlew.bat` instead of `./gradlew`.
 
-Dependency versions are pinned in `gradle/libs.versions.toml` and resolved artifacts in `app/gradle.lockfile`. Intentional changes require regenerating locks with `./gradlew :app:dependencies --write-locks`, then running the full task set. Built-in Kotlin and the configuration cache stay enabled. No compatibility opt-out is used.
+The two projects are separate Gradle builds with different application ids and toolchains, so both can be installed at once for side-by-side comparison.
 
-The local instrumentation smoke test is deliberately separate from CI (instrumented CI remains milestone 010):
+### Build and test
+
+```bash
+./gradlew build                  # formatting, lint, unit tests, domain coverage gate
+./gradlew testDebugUnitTest      # unit and Robolectric tests
+./gradlew lintDebug
+./gradlew spotlessApply          # format Kotlin and build scripts
+./gradlew -p buildSrc test       # build-logic tests
+```
+
+More detail:
+- Test strategy and matrix: [`docs/testing/`](docs/testing/00-strategy.md)
+- CI: [`docs/testing/03-ci.md`](docs/testing/03-ci.md)
+- Visual regression: [`docs/testing/04-visual-regression.md`](docs/testing/04-visual-regression.md)
+- Versioning and signed releases: [`scripts/README.md`](scripts/README.md)
+
+<details>
+<summary>Maintenance notes: dependency locks and the locale instrumentation smoke test</summary>
+
+**Dependency locks.** Versions are pinned in `gradle/libs.versions.toml`, and resolved artifacts in `app/gradle.lockfile`. After an intentional change, regenerate the locks with `./gradlew :app:dependencies --write-locks`, then run the full task set:
+
+```bash
+./gradlew clean build
+./gradlew testDebugUnitTest lintDebug spotlessCheck koverVerify verifyRoborazziDebug
+```
+
+The Gradle wrapper checks the SHA-256 of its distribution. Built-in Kotlin and the configuration cache stay enabled. `verifyRoborazziDebug` currently has an empty golden set; milestone 010 records the goldens.
+
+**Locale smoke test.** Instrumented tests run locally; instrumented CI arrives with milestone 010. The locale test can run as three phases, with process death between select and assert:
 
 ```bash
 ./gradlew installDebug assembleDebugAndroidTest
@@ -124,20 +191,27 @@ adb shell am instrument -w -e class com.wivernz.itera.LocaleSmokeTest -e phase a
 adb shell am instrument -w -e class com.wivernz.itera.LocaleSmokeTest -e phase restore com.wivernz.itera.test/androidx.test.runner.AndroidJUnitRunner
 ```
 
-Without a `phase` argument, `connectedDebugAndroidTest` performs a self-contained locale round trip. The `select` phase calls `AppCompatDelegate.setApplicationLocales` and checks the translated name; `assert` verifies it after process death; `restore` returns to the system language.
+Without a `phase` argument, `connectedDebugAndroidTest` performs a self-contained round trip.
 
-CI runs on branch pushes and pull requests, uploads a debug APK, and retains reports even when checks fail. Windows version/release scripts and signed tag builds are documented in [scripts/README.md](scripts/README.md). Pushed vX.Y.Z tags run the checks and create a draft GitHub Release with signed APK/AAB assets. Custom Compose lint checks are build-only tooling described in [ADR-0020](docs/architecture/adr/0020-bootstrap-lint.md).
+</details>
 
-### Side by side
+## Contributing and implementation entry points
 
-Both install at once — `com.itera.app` and `com.wivernz.itera` are different application ids. That is the intended setup: every UI issue requires comparing the implementation against the prototype in light and dark before it is considered done.
+Read these before changing code:
 
-## Conventions
+1. [`AGENTS.md`](AGENTS.md): working rules for humans and agents, including the Git policy.
+2. [`CLAUDE_START_HERE.md`](CLAUDE_START_HERE.md): implementation entry point.
+3. [`docs/00-source-of-truth.md`](docs/00-source-of-truth.md): source priority and every locked decision.
+4. [`docs/issues/README.md`](docs/issues/README.md): milestone status, order and verification scope.
+5. [`docs/ux/05-prototype-reference.md`](docs/ux/05-prototype-reference.md): screen-to-file map and porting checklist.
 
-- **Line endings** are normalised by Git via [`.gitattributes`](.gitattributes): LF in the repository and in the working tree, CRLF only for `.bat` and `.cmd`. After pulling a change to that file, run `git add --renormalize .`.
-- **`design/` is a reference, not a dependency.** Production code never imports from it, and it is not part of the production Gradle build.
-- **If you change anything visual, change `design/` to match in the same change.** A prototype that has drifted from the app is worse than none.
+Conventions:
+
+- **`design/` is a reference, not a dependency.** Production code never imports from it.
+- **If you change anything visual, change `design/` to match in the same change.**
+- **Every new string ships in all four languages** in the change that introduces it.
+- **Line endings** are normalised by [`.gitattributes`](.gitattributes): LF everywhere, CRLF only for `.bat` and `.cmd`. After pulling a change to that file, run `git add --renormalize .`.
 
 ## Licence
 
-Not yet chosen. Note that the four bundled typefaces (Bricolage Grotesque, Instrument Sans, Inter, Inter Tight) are SIL Open Font Licence and carry their own attribution requirements — see [ADR-0019](docs/architecture/adr/0019-typography-and-script-coverage.md).
+Not yet chosen. The four bundled typefaces (Bricolage Grotesque, Instrument Sans, Inter, Inter Tight) are under the SIL Open Font Licence and carry their own attribution requirements; see [`licenses/fonts`](licenses/fonts/README.md) and [ADR-0019](docs/architecture/adr/0019-typography-and-script-coverage.md).
