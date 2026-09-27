@@ -20,6 +20,14 @@ interface TrainingDayDao {
     suspend fun findByDate(date: Long): TrainingDayEntity?
 
     @Query(
+        "SELECT d.date, d.programDay, COUNT(a.id) AS activityCount FROM training_day d " +
+            "LEFT JOIN plan_activity a ON a.practiceDate = d.date " +
+            "AND a.state IN ('COMPLETED', 'SKIPPED') " +
+            "WHERE d.date BETWEEN :from AND :to GROUP BY d.id ORDER BY d.date"
+    )
+    suspend fun journalHeaders(from: Long, to: Long): List<JournalDayHeader>
+
+    @Query(
         "UPDATE training_day SET status = :status, completedAt = :completedAt WHERE id = :id"
     )
     suspend fun updateStatus(id: Long, status: String, completedAt: Long?)
@@ -54,3 +62,5 @@ interface TrainingDayDao {
     )
     suspend fun programDayOfActivity(activityId: Long): Int?
 }
+
+data class JournalDayHeader(val date: Long, val programDay: Int, val activityCount: Int)

@@ -65,16 +65,36 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
     var showLanguage by rememberSaveable { mutableStateOf(false) }
     var panel by rememberSaveable { mutableStateOf<String?>(null) }
     var name by rememberSaveable { mutableStateOf("") }
+    var addingTopic by rememberSaveable { mutableStateOf(false) }
     var newTopic by rememberSaveable { mutableStateOf("") }
     val topics = remember { mutableStateListOf<String>() }
     var range by rememberSaveable { mutableStateOf(0) }
     val context = LocalContext.current
     val use24Hour = android.text.format.DateFormat.is24HourFormat(context)
     val locale = currentLocale()
+    val timeFormat = DateTimeFormatter.ofPattern(
+        android.text.format.DateFormat.getBestDateTimePattern(locale, if (use24Hour) "Hm" else "hm"), locale
+    )
     val since = vm.startDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale))
     val habits = Skill.Habits.colors(c.isDark).content
 
-    ScreenColumn(gap = 22.dp) {
+    if (panel == "privacy" || panel == "topics") {
+        androidx.activity.compose.BackHandler { panel = null }
+        ScreenColumn {
+            TopBar("", { panel = null }, IteraIcons.Back)
+            Text(stringResource(if (panel == "privacy") R.string.privacy else R.string.settings_topics), style = Itera.type.display, color = c.ink)
+            if (panel == "privacy") Text(stringResource(R.string.privacy_body), style = Itera.type.body, color = c.ink)
+            else {
+                if (topics.isEmpty()) Text(stringResource(R.string.settings_topics_empty), style = Itera.type.body, color = c.ink2)
+                topics.toList().forEachIndexed { i, topic ->
+                    NoteField(topic, { topics[i] = it }, stringResource(R.string.settings_topic_title))
+                    IteraButton(stringResource(R.string.settings_archive), { topics.removeAt(i) }, kind = ButtonKind.Ghost)
+                    Divider()
+                }
+                IteraButton(stringResource(R.string.settings_add_topic), { addingTopic = true })
+            }
+        }
+    } else ScreenColumn(gap = 22.dp) {
         Text(stringResource(R.string.you_title), style = Itera.type.display, color = c.ink)
         Row(Modifier.fillMaxWidth().clickable { panel = "name" }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
             val sc = Skill.Focus.colors(c.isDark)
@@ -88,9 +108,9 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
         }
 
         Group(stringResource(R.string.sec_rhythm)) {
-            ValueRow(stringResource(R.string.rhythm_morning), formatTime(vm.morningTime)) { panel = "morning" }
+            ValueRow(stringResource(R.string.rhythm_morning), vm.morningTime.format(timeFormat)) { panel = "morning" }
             Divider()
-            ValueRow(stringResource(R.string.rhythm_evening), formatTime(vm.eveningTime)) { panel = "evening" }
+            ValueRow(stringResource(R.string.rhythm_evening), vm.eveningTime.format(timeFormat)) { panel = "evening" }
             Divider()
             ValueRow(stringResource(R.string.time_most_days), stringResource(R.string.minutes_short, vm.dailyMinutes)) { panel = "budget" }
         }
@@ -138,10 +158,18 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
         }
 
         Group(stringResource(R.string.sec_notifications)) {
+            val permission = androidx.core.app.NotificationManagerCompat.from(context).areNotificationsEnabled()
+            if (!permission) {
+                ValueRow(stringResource(R.string.notif_denied), stringResource(R.string.notif_open_settings)) {
+                    context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
+                }
+                Divider()
+            }
             listOf(R.string.notif_morning, R.string.notif_focus, R.string.notif_review, R.string.notif_evening).forEachIndexed { i, res ->
                 if (i > 0) Divider()
-                SwitchRow(stringResource(res), vm.notifications[i], habits) { vm.notifications[i] = it }
+                SwitchRow(stringResource(res), permission && vm.notifications[i], habits, enabled = permission) { vm.notifications[i] = it }
             }
+            Text(stringResource(R.string.notif_system_hint), style = Itera.type.caption, color = c.ink2, modifier = Modifier.padding(bottom = 12.dp))
         }
 
         Group(stringResource(R.string.sec_coach)) {
@@ -160,6 +188,10 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
 
         if (context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) IteraButton(stringResource(R.string.load_demo), onClick = { vm.loadDemo() }, kind = ButtonKind.Secondary, height = 48.dp)
     }
+    if (addingTopic) ProfileSheet(stringResource(R.string.settings_add_topic), { addingTopic = false }, false) {
+        NoteField(newTopic, { newTopic = it }, stringResource(R.string.settings_topic_title))
+        IteraButton(stringResource(R.string.settings_add_topic), { topics.add(newTopic); newTopic = ""; addingTopic = false }, enabled = newTopic.isNotBlank())
+    }
     if (showLanguage) LanguageSheet { showLanguage = false }
     when(panel) {
         "morning", "evening" -> TimePickerSheet(stringResource(if (panel == "morning") R.string.rhythm_morning else R.string.rhythm_evening), if (panel == "morning") vm.morningTime else vm.eveningTime,
@@ -168,17 +200,7 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
         "budget" -> ProfileSheet(stringResource(R.string.time_most_days), { panel = null }) { Segmented(listOf(5, 15, 30).map { it to stringResource(R.string.minutes_short, it) }, vm.dailyMinutes, { vm.dailyMinutes = it }) }
         "areas" -> ProfileSheet(stringResource(R.string.focus_areas), { panel = null }) {
             Text(stringResource(R.string.goals_sub), style = Itera.type.bodySmall, color = c.ink2)
-            Skill.entries.forEach { skill -> SwitchRow(stringResource(skill.title), skill in vm.focusSkills, skill.colors(c.isDark).content, onChange = { if (skill in vm.focusSkills || vm.focusSkills.size < 2) vm.toggleFocusSkill(skill) }) }
-        }
-        "privacy" -> ProfileSheet(stringResource(R.string.privacy), { panel = null }) { Text(stringResource(R.string.privacy_body), style = Itera.type.body, color = c.ink) }
-        "topics" -> ProfileSheet(stringResource(R.string.settings_topics), { panel = null }) {
-            if (topics.isEmpty()) Text(stringResource(R.string.settings_topics_empty), style = Itera.type.body, color = c.ink2)
-            topics.toList().forEachIndexed { i, topic ->
-                NoteField(topic, { topics[i] = it }, stringResource(R.string.settings_topic_title))
-                IteraButton(stringResource(R.string.settings_archive), { topics.removeAt(i) }, kind = ButtonKind.Ghost)
-            }
-            NoteField(newTopic, { newTopic = it }, stringResource(R.string.settings_topic_title))
-            IteraButton(stringResource(R.string.settings_add_topic), { topics.add(newTopic); newTopic = "" }, enabled = newTopic.isNotBlank())
+            FocusAreaRows(vm)
         }
         "reset", "erase" -> ProfileSheet(stringResource(if (panel == "erase") R.string.settings_erase else R.string.settings_reset), { panel = null }, false) {
             Text(stringResource(if (panel == "erase") R.string.settings_erase_body else R.string.settings_reset_body), style = Itera.type.body, color = c.ink)

@@ -42,7 +42,10 @@
     <string name="export_no_target">No app can share this file. Save to a file instead.</string>
     <string name="export_saved">Journal saved.</string>
     <string name="export_title">Itera journal</string>
-    <string name="export_header">Exported %1$s - Days %2$s - %3$d activities</string>
+<plurals name="export_header">
+    <item quantity="one">Exported %1$s - Days %2$s - %3$d activity</item>
+    <item quantity="other">Exported %1$s - Days %2$s - %3$d activities</item>
+</plurals>
     <string name="export_day">Day %1$d</string>
     <string name="export_rest">no training logged</string>
     <string name="export_techniques">Techniques</string>
@@ -55,11 +58,15 @@
     <string name="export_not_well">Didn’t go well</string>
     <string name="export_tomorrow">Tomorrow</string>
 <plurals name="history_activities">
-<item quantity="one">%d activity · notes and reflections</item>
-<item quantity="other">%d activities · notes and reflections</item>
+<item quantity="one">%1$d activity · notes and reflections</item>
+<item quantity="other">%1$d activities · notes and reflections</item>
 </plurals>
 <plurals name="settings_topic_count">
-<item quantity="one">%d topic</item>
-<item quantity="other">%d topics</item>
+<item quantity="one">%1$d topic</item>
+<item quantity="other">%1$d topics</item>
+</plurals>
+<plurals name="progress_window_count">
+    <item quantity="one">%1$d of the last %2$d day</item>
+    <item quantity="other">%1$d of the last %2$d days</item>
 </plurals>
 </resources>

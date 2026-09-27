@@ -8,6 +8,7 @@ import com.wivernz.itera.analytics.Event
 import com.wivernz.itera.analytics.ExportRange
 import com.wivernz.itera.core.common.dispatchers.IoDispatcher
 import com.wivernz.itera.core.designsystem.component.title
+import com.wivernz.itera.data.database.dao.TrainingDayDao
 import com.wivernz.itera.domain.model.Difficulty
 import com.wivernz.itera.domain.model.RecallGrade
 import com.wivernz.itera.domain.model.Skill
@@ -16,7 +17,6 @@ import com.wivernz.itera.domain.repository.JournalExporter
 import com.wivernz.itera.domain.repository.PreferencesRepository
 import com.wivernz.itera.domain.repository.ProgressRepository
 import com.wivernz.itera.domain.repository.TechniqueCatalogRepository
-import com.wivernz.itera.domain.repository.TrainingPlanRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.time.Clock
@@ -44,7 +44,7 @@ class ExportJournalUseCase @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val preferences: PreferencesRepository,
     private val progress: ProgressRepository,
-    private val plans: TrainingPlanRepository,
+    private val days: TrainingDayDao,
     private val catalog: TechniqueCatalogRepository,
     private val mastery: ObserveTechniqueProgressUseCase,
     private val analytics: Analytics,
@@ -69,23 +69,13 @@ class ExportJournalUseCase @Inject constructor(
         val facts = mastery().first()
         val writer = MarkdownJournalWriter(copy, techniques.associate { it.id to it.skill })
         // Only compact header facts are retained; activity payloads are read one month at a time.
-        val programDays = mutableListOf<Int>()
-        var count = 0
+        val headers = start?.let { first ->
+            days.journalHeaders(first.toEpochDay(), today.toEpochDay())
+        }.orEmpty()
+        val dayNumbers = headers.associate { LocalDate.ofEpochDay(it.date) to it.programDay }
+        val programDays = headers.filter { it.activityCount > 0 }.map { it.programDay }
+        val count = headers.sumOf { it.activityCount }
         var dayCount = 0
-        if (start != null) {
-            var month = YearMonth.from(today)
-            while (month >= YearMonth.from(start)) {
-                val rows = progress.observeHistory(month).first().filter { it.date in start..today }
-                count += rows.size
-                rows.map { it.date }.distinct().forEach { date ->
-                    plans.dayByDate(date)?.programDay?.let {
-                        programDays +=
-                            it
-                    }
-                }
-                month = month.minusMonths(1)
-            }
-        }
         try {
             output.bufferedWriter().use { stream ->
                 writer.header(stream, today, programDays, count)
@@ -100,7 +90,7 @@ class ExportJournalUseCase @Inject constructor(
                                 stream,
                                 JournalDay(
                                     date,
-                                    plans.dayByDate(date)?.programDay,
+                                    dayNumbers[date],
                                     rows[date].orEmpty().map {
                                         it.activity
                                     }
@@ -158,27 +148,43 @@ class ExportJournalUseCase @Inject constructor(
 }
 
 class ResourceJournalCopy(private val context: Context) : JournalCopy {
-    override fun text(key: String, vararg args: Any): String = context.getString(
-        when (key) {
-            "title" -> R.string.export_title
-            "header" -> R.string.export_header
-            "rest" -> R.string.export_rest
-            "day" -> R.string.export_day
-            "skipped" -> R.string.history_skipped
-            "focus" -> R.string.export_focus
-            "minutes" -> R.string.export_minutes
-            "recall" -> R.string.export_recall
-            "felt" -> R.string.export_felt
-            "well" -> R.string.export_well
-            "not_well" -> R.string.export_not_well
-            "tomorrow" -> R.string.export_tomorrow
-            "techniques" -> R.string.export_techniques
-            "columns" -> R.string.export_columns
-            else -> error("Unknown journal label")
-        },
-        *args
-    )
-    override fun skill(skill: Skill) = context.getString(skill.title)
+    // One export owns this bounded cache. Only resource labels and numeric format arguments enter it.
+    private val labels = object : LinkedHashMap<Pair<String, List<Any>>, String>() {
+        override fun removeEldestEntry(
+            eldest: MutableMap.MutableEntry<Pair<String, List<Any>>, String>?
+        ) = size > 64
+    }
+    private val skills = Skill.entries.associateWith { context.getString(it.title) }
+    override fun text(key: String, vararg args: Any): String =
+        labels.getOrPut(key to args.toList()) {
+            if (key == "header") {
+                return@getOrPut context.resources.getQuantityString(
+                    R.plurals.export_header,
+                    args[2] as Int,
+                    *args
+                )
+            }
+            context.getString(
+                when (key) {
+                    "title" -> R.string.export_title
+                    "rest" -> R.string.export_rest
+                    "day" -> R.string.export_day
+                    "skipped" -> R.string.history_skipped
+                    "focus" -> R.string.export_focus
+                    "minutes" -> R.string.export_minutes
+                    "recall" -> R.string.export_recall
+                    "felt" -> R.string.export_felt
+                    "well" -> R.string.export_well
+                    "not_well" -> R.string.export_not_well
+                    "tomorrow" -> R.string.export_tomorrow
+                    "techniques" -> R.string.export_techniques
+                    "columns" -> R.string.export_columns
+                    else -> error("Unknown journal label")
+                },
+                *args
+            )
+        }
+    override fun skill(skill: Skill) = skills.getValue(skill)
     override fun difficulty(value: Difficulty) = context.getString(
         when (value) {
             Difficulty.EASY -> R.string.feel_easy

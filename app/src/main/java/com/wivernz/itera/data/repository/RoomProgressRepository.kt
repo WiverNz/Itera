@@ -2,6 +2,7 @@ package com.wivernz.itera.data.repository
 
 import com.wivernz.itera.core.common.dispatchers.IoDispatcher
 import com.wivernz.itera.data.copy.CopyResolver
+import com.wivernz.itera.data.copy.ResolvedCopy
 import com.wivernz.itera.data.database.dao.FocusSessionDao
 import com.wivernz.itera.data.database.dao.PlanActivityDao
 import com.wivernz.itera.data.database.relation.TechniqueFactsRow
@@ -44,12 +45,16 @@ class RoomProgressRepository @Inject constructor(
             .toEpochDay()
     )
         .map { rows ->
+            val labels = mutableMapOf<Triple<String, String, String>, ResolvedCopy>()
             rows.map {
                 HistoryEntry(
                     LocalDate.ofEpochDay(it.practiceDate),
                     it.toDomain(
                         copy,
-                        codec
+                        codec,
+                        labels.getOrPut(Triple(it.copyKey, it.copyArgs, it.techniqueId)) {
+                            copy.resolve(it.copyKey, it.copyArgs, it.techniqueId)
+                        }
                     )
                 )
             }

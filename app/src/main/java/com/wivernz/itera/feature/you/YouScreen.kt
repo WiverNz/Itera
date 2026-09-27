@@ -28,13 +28,14 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,9 +52,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wivernz.itera.R
-import com.wivernz.itera.core.designsystem.component.Segmented
 import com.wivernz.itera.analytics.Event
 import com.wivernz.itera.analytics.LanguageChoice
+import com.wivernz.itera.analytics.ScreenRoute
 import com.wivernz.itera.analytics.SettingKey
 import com.wivernz.itera.analytics.SettingValue
 import com.wivernz.itera.core.common.AppLanguage
@@ -71,6 +72,7 @@ import com.wivernz.itera.core.designsystem.component.IteraCard
 import com.wivernz.itera.core.designsystem.component.LanguageSheet
 import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
+import com.wivernz.itera.core.designsystem.component.Segmented
 import com.wivernz.itera.core.designsystem.component.Skeleton
 import com.wivernz.itera.core.designsystem.component.SwitchRow
 import com.wivernz.itera.core.designsystem.component.TimePickerSheet
@@ -138,6 +140,12 @@ fun YouScreen(
     val locale = currentLocale()
     var panel by rememberSaveable { mutableStateOf<String?>(null) }
     var reset by rememberSaveable { mutableStateOf<Boolean?>(null) }
+    LaunchedEffect(panel) {
+        when (panel) {
+            "privacy" -> onEvent(YouUiEvent.Open(ScreenRoute.PRIVACY))
+            "topics" -> onEvent(YouUiEvent.Open(ScreenRoute.TOPICS))
+        }
+    }
     fun change(key: SettingKey, value: SettingValue) = onEvent(YouUiEvent.Change(key, value))
     if (panel == "privacy" || panel == "topics") {
         BackHandler { panel = null }
@@ -617,9 +625,13 @@ fun TopicsScreen(topics: List<LearningTopic>, onEvent: (YouUiEvent) -> Unit, bac
             )
         }
         topics.forEach { topic ->
-            NoteField(topic.title, {
-                onEvent(YouUiEvent.Topic(topic.id, it))
-            }, stringResource(R.string.settings_topic_title))
+            key(topic.id) {
+                var draft by rememberSaveable { mutableStateOf(topic.title) }
+                NoteField(draft, {
+                    draft = it
+                    onEvent(YouUiEvent.Topic(topic.id, it))
+                }, stringResource(R.string.settings_topic_title))
+            }
             IteraButton(stringResource(R.string.settings_archive), {
                 onEvent(YouUiEvent.Archive(topic.id))
             }, kind = ButtonKind.Ghost)

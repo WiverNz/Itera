@@ -32,9 +32,12 @@ Exported 2026-09-22 - Days 1-9 - 41 activities
 > Snapshots vs the append log. Forgot what happens to writes after the last snapshot.
 
 **Evening reflection**
-- Went well: Protected the morning block.
-- Didn't go well: Checked email first.
-- Tomorrow: Start the focus session before opening email.
+- Went well:
+> Protected the morning block.
+- Didn't go well:
+> Checked email first.
+- Tomorrow:
+> Start the focus session before opening email.
 
 ---
 

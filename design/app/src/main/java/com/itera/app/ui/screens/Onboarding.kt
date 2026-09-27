@@ -289,6 +289,13 @@ fun GoalsScreen(vm: AppViewModel, onBack: () -> Unit, onNext: () -> Unit) {
         OnboardingHeader(1, onBack)
         Text(stringResource(R.string.goals_title), style = Itera.type.title, color = c.ink)
         Text(stringResource(R.string.goals_sub), style = Itera.type.body, color = c.ink2)
+        FocusAreaRows(vm)
+    }
+}
+
+@Composable
+fun FocusAreaRows(vm: AppViewModel) {
+    val c = Itera.colors
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Skill.entries.forEach { skill ->
                 val on = skill in vm.focusSkills
@@ -316,7 +323,6 @@ fun GoalsScreen(vm: AppViewModel, onBack: () -> Unit, onNext: () -> Unit) {
                 }
             }
         }
-    }
 }
 
 @Composable

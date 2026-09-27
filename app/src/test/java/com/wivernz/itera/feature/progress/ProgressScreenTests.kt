@@ -53,7 +53,7 @@ class ProgressScreenTest {
                 }, {})
             }
         }
-        compose.onNodeWithText("0 of the last 1 days").assertExists()
+        compose.onNodeWithText("0 of the last 1 day").assertExists()
         compose.onAllNodesWithText("0 practices", substring = true).assertCountEquals(5)
         compose.onNodeWithText("History").performScrollTo().performClick()
         compose.onNodeWithText("Library").performScrollTo().performClick()

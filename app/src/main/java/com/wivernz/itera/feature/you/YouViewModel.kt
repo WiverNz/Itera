@@ -46,6 +46,7 @@ sealed interface YouUiEvent {
     data class Permission(val granted: Boolean) : YouUiEvent
     data class Topic(val id: Long?, val title: String) : YouUiEvent
     data class Archive(val id: Long) : YouUiEvent
+    data class Open(val route: ScreenRoute) : YouUiEvent
     data class Reset(val erase: Boolean) : YouUiEvent
     data object Demo : YouUiEvent
     data object Retry : YouUiEvent
@@ -113,6 +114,7 @@ class YouViewModel @Inject constructor(
                         }
                     }
                     is YouUiEvent.Archive -> topics.archive(event.id)
+                    is YouUiEvent.Open -> analytics.track(Event.ScreenViewed(event.route))
                     is YouUiEvent.Reset -> {
                         if (event.erase) erase() else reset()
                         channel.send(YouEffect.ResetDone(event.erase))

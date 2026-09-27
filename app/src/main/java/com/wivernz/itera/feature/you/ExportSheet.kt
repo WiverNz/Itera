@@ -18,13 +18,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.wivernz.itera.R
-import com.wivernz.itera.core.designsystem.component.Segmented
 import com.wivernz.itera.analytics.ExportRange
 import com.wivernz.itera.core.common.ObserveEffects
 import com.wivernz.itera.core.common.currentLocale
 import com.wivernz.itera.core.common.dispatchers.IoDispatcher
 import com.wivernz.itera.core.designsystem.component.ButtonKind
 import com.wivernz.itera.core.designsystem.component.IteraButton
+import com.wivernz.itera.core.designsystem.component.Segmented
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.domain.repository.JournalExporter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -141,6 +141,7 @@ fun journalShareIntent(uri: Uri): Intent =
 fun ExportRoute(vm: ExportViewModel, dismiss: () -> Unit) {
     val context = LocalContext.current
     val locale = currentLocale()
+    val chooserTitle = stringResource(R.string.export_journal)
     val state by vm.state.collectAsStateWithLifecycle()
     val share =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -160,7 +161,7 @@ fun ExportRoute(vm: ExportViewModel, dismiss: () -> Unit) {
                     vm.noTarget()
                 } else {
                     share.launch(
-                        Intent.createChooser(intent, context.getString(R.string.export_journal))
+                        Intent.createChooser(intent, chooserTitle)
                     )
                 }
             }

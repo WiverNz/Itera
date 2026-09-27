@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -134,7 +135,7 @@ fun AppNavHost(
         NavHost(
             navController = nav,
             startDestination = if (startCompleted) Today else Welcome,
-            modifier = Modifier.padding(bottom = padding.calculateBottomPadding()),
+            modifier = Modifier.padding(padding).consumeWindowInsets(padding),
             enterTransition = { if (reduced) EnterTransition.None else fadeIn() },
             exitTransition = { if (reduced) ExitTransition.None else fadeOut() },
             popEnterTransition = { if (reduced) EnterTransition.None else fadeIn() },

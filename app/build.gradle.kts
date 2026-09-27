@@ -61,6 +61,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // All four languages must remain available for offline runtime switching.
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     signingConfigs {
         if (hasReleaseSigning) {
             create("release") {

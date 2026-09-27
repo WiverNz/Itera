@@ -54,38 +54,39 @@ fun TrainingDay.toEntity(original: TrainingDayEntity): TrainingDayEntity = origi
     carryOverIntent = carryOverIntent,
     completedAt = completedAt?.toEpochMilli()
 )
-fun PlanActivityEntity.toDomain(copy: CopyResolver, codec: ResultPayloadCodec): PlanActivity {
-    val text = copy.resolve(copyKey, copyArgs, techniqueId)
-    return PlanActivity(
+fun PlanActivityEntity.toDomain(
+    copy: CopyResolver,
+    codec: ResultPayloadCodec,
+    text: com.wivernz.itera.data.copy.ResolvedCopy = copy.resolve(copyKey, copyArgs, techniqueId)
+): PlanActivity = PlanActivity(
+    id,
+    trainingDayId,
+    TechniqueId(techniqueId),
+    ExerciseType.valueOf(exerciseType),
+    ActivitySource.valueOf(source),
+    orderIndex,
+    DayPart.valueOf(dayPart),
+    text.title,
+    text.subtitle,
+    text.instruction,
+    estimatedMinutes,
+    ActivityState.valueOf(state),
+    optional,
+    scheduledAtMinutes?.let { LocalTime.ofSecondOfDay(it * 60L) },
+    snoozedUntil?.let(Instant::ofEpochMilli),
+    startedAt?.let(Instant::ofEpochMilli),
+    completedAt?.let(Instant::ofEpochMilli),
+    durationSeconds,
+    difficulty?.let(Difficulty::valueOf),
+    note,
+    codec.decode(
+        resultPayload,
         id,
-        trainingDayId,
-        TechniqueId(techniqueId),
-        ExerciseType.valueOf(exerciseType),
-        ActivitySource.valueOf(source),
-        orderIndex,
-        DayPart.valueOf(dayPart),
-        text.title,
-        text.subtitle,
-        text.instruction,
-        estimatedMinutes,
-        ActivityState.valueOf(state),
-        optional,
-        scheduledAtMinutes?.let { LocalTime.ofSecondOfDay(it * 60L) },
-        snoozedUntil?.let(Instant::ofEpochMilli),
-        startedAt?.let(Instant::ofEpochMilli),
-        completedAt?.let(Instant::ofEpochMilli),
-        durationSeconds,
-        difficulty?.let(Difficulty::valueOf),
-        note,
-        codec.decode(
-            resultPayload,
-            id,
-            exerciseType
-        ),
-        reviewItemId,
-        weeklyLookBack = copyArgs.contains("\"weeklyLookBack\":true")
-    )
-}
+        exerciseType
+    ),
+    reviewItemId,
+    weeklyLookBack = copyArgs.contains("\"weeklyLookBack\":true")
+)
 fun PlanActivity.toEntity(
     original: PlanActivityEntity,
     codec: ResultPayloadCodec

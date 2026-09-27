@@ -70,8 +70,9 @@ fun ProgressScreen(
             if (summary != null) {
                 Row(verticalAlignment = Alignment.Bottom) {
                     Text(
-                        stringResource(
-                            R.string.progress_days,
+                        pluralStringResource(
+                            R.plurals.progress_window_count,
+                            summary.windowDays,
                             summary.trainedDays,
                             summary.windowDays
                         ),

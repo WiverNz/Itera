@@ -1,7 +1,14 @@
 package com.wivernz.itera.feature.you
 
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import com.wivernz.itera.analytics.SettingKey
 import com.wivernz.itera.analytics.SettingValue
+import com.wivernz.itera.core.designsystem.theme.IteraTheme
 import com.wivernz.itera.domain.model.ProgramPace
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.ThemePreference
@@ -18,6 +25,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -116,19 +124,26 @@ class YouViewModelTest : YouTestBase() {
 
 @RunWith(RobolectricTestRunner::class)
 class ResetIntegrationTest : YouTestBase() {
+    @get:Rule val compose = createComposeRule()
+
     @Test fun settingsEntryPointsDelegateToBothRealResetTiers() = runBlocking {
         h.trainFullDay()
         h.topics.add("Keep this")
         h.prefs.update { it.copy(displayName = "Name", theme = ThemePreference.DARK) }
         val vm = you()
-        vm.onEvent(YouUiEvent.Reset(false))
+        compose.setContent {
+            IteraTheme { YouScreen(YouUiState(loading = false), vm::onEvent, true) }
+        }
+        compose.onNodeWithText("Reset program").performScrollTo().performClick()
+        compose.onAllNodesWithText("Reset program").onLast().performClick()
         assertEquals(YouEffect.ResetDone(false), vm.effects.awaitFirst())
         assertEquals(1, h.prefs.state.value.currentProgramDay)
         assertEquals("Name", h.prefs.state.value.displayName)
         assertEquals(ThemePreference.DARK, h.prefs.state.value.theme)
         assertNotNull(h.topics.nextTopicForReview())
         assertNull(h.plans.dayByDate(h.today))
-        vm.onEvent(YouUiEvent.Reset(true))
+        compose.onNodeWithText("Erase everything").performScrollTo().performClick()
+        compose.onAllNodesWithText("Erase everything").onLast().performClick()
         assertEquals(YouEffect.ResetDone(true), vm.effects.awaitFirst())
         assertEquals(UserPreferences(), h.prefs.state.value)
         assertNull(h.topics.nextTopicForReview())

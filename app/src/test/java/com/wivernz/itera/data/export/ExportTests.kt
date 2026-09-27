@@ -126,6 +126,19 @@ class MarkdownJournalWriterTest {
         assertFalse(actual.contains("| Pomodoro |"))
         assertTrue(actual.endsWith("| --- | --- | --- | --- | --- | --- | --- |\n"))
     }
+
+    @Test fun singleActivityUsesSingularAndEscapesHtmlAndMarkdown() {
+        val actual = writer().render(
+            listOf(
+                JournalDay(date, 1, listOf(journalActivity(1, "Pomodoro", note = "<tag> **note**")))
+            ),
+            emptyList(),
+            date,
+            Locale.US
+        )
+        assertTrue(actual.contains("Days 1-1 - 1 activity\n"))
+        assertTrue(actual.contains("> \\<tag\\> \\*\\*note\\*\\*"))
+    }
 }
 
 @RunWith(RobolectricTestRunner::class)
@@ -178,7 +191,7 @@ class ExportJournalUseCaseTest {
     }
 }
 fun exporter(h: EngineHarness) =
-    ExportJournalUseCase(ApplicationProvider.getApplicationContext(), h.prefs, h.progress, h.plans, h.catalog, h.observeTechniques, h.analytics, h.clock, Dispatchers.IO)
+    ExportJournalUseCase(ApplicationProvider.getApplicationContext(), h.prefs, h.progress, h.db.trainingDayDao(), h.catalog, h.observeTechniques, h.analytics, h.clock, Dispatchers.IO)
 
 @RunWith(RobolectricTestRunner::class)
 class ExportPerformanceTest {

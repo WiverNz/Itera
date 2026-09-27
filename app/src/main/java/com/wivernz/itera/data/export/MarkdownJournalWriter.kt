@@ -158,10 +158,18 @@ class MarkdownJournalWriter(
     private fun quote(writer: Writer, text: String) {
         text.lineSequence().forEach { line -> writer.write("> ${inline(line)}\n") }
     }
-    private fun inline(text: String): String = text.replace(
-        "\\",
-        "\\\\"
-    ).replace(Regex("([`*_{}\\[\\]()#+.!>|~-])"), "\\\\$1").replace("\r", "").replace("\n", " ")
+    private fun inline(text: String): String = buildString(text.length) {
+        text.forEach { character ->
+            when (character) {
+                '\r' -> Unit
+                '\n' -> append(' ')
+                else -> {
+                    if (character in "\\`*_{}[]()#+.!<>|~-") append('\\')
+                    append(character)
+                }
+            }
+        }
+    }
 }
 
 private fun authoredText(result: ActivityResult?): List<String> = when (result) {

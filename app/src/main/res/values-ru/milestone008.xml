@@ -42,7 +42,12 @@
     <string name="export_no_target">Нет приложения для отправки файла. Сохраните его в файл.</string>
     <string name="export_saved">Дневник сохранён.</string>
     <string name="export_title">Дневник Itera</string>
-    <string name="export_header">Экспортировано %1$s - Дни %2$s - %3$d занятий</string>
+<plurals name="export_header">
+    <item quantity="one">Экспортировано %1$s - Дни %2$s - %3$d занятие</item>
+    <item quantity="few">Экспортировано %1$s - Дни %2$s - %3$d занятия</item>
+    <item quantity="many">Экспортировано %1$s - Дни %2$s - %3$d занятий</item>
+    <item quantity="other">Экспортировано %1$s - Дни %2$s - %3$d занятий</item>
+</plurals>
     <string name="export_day">День %1$d</string>
     <string name="export_rest">практика не записана</string>
     <string name="export_techniques">Техники</string>
@@ -55,15 +60,21 @@
     <string name="export_not_well">Что не получилось</string>
     <string name="export_tomorrow">Завтра</string>
 <plurals name="history_activities">
-<item quantity="one">%d занятие · заметки и рефлексии</item>
-<item quantity="few">%d занятия · заметки и рефлексии</item>
-<item quantity="many">%d занятий · заметки и рефлексии</item>
-<item quantity="other">%d занятия · заметки и рефлексии</item>
+<item quantity="one">%1$d занятие · заметки и рефлексии</item>
+<item quantity="few">%1$d занятия · заметки и рефлексии</item>
+<item quantity="many">%1$d занятий · заметки и рефлексии</item>
+<item quantity="other">%1$d занятия · заметки и рефлексии</item>
 </plurals>
 <plurals name="settings_topic_count">
-<item quantity="one">%d тема</item>
-<item quantity="few">%d темы</item>
-<item quantity="many">%d тем</item>
-<item quantity="other">%d темы</item>
+<item quantity="one">%1$d тема</item>
+<item quantity="few">%1$d темы</item>
+<item quantity="many">%1$d тем</item>
+<item quantity="other">%1$d темы</item>
+</plurals>
+<plurals name="progress_window_count">
+    <item quantity="one">%1$d из %2$d дня</item>
+    <item quantity="few">%1$d из последних %2$d дней</item>
+    <item quantity="many">%1$d из последних %2$d дней</item>
+    <item quantity="other">%1$d из последних %2$d дней</item>
 </plurals>
 </resources>

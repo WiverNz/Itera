@@ -81,7 +81,7 @@ fun ProgressScreen(vm: AppViewModel, onHistory: () -> Unit, onLibrary: () -> Uni
         Text(stringResource(R.string.progress_title), style = Itera.type.display, color = c.ink)
         IteraCard(padding = PaddingValues(18.dp), gap = 12.dp) {
             Row(verticalAlignment = Alignment.Bottom) {
-                Text(stringResource(R.string.progress_days, practicedDays, span), style = Itera.type.headline, color = c.ink, modifier = Modifier.weight(1f))
+                Text(pluralStringResource(R.plurals.progress_window_count, span, practicedDays, span), style = Itera.type.headline, color = c.ink, modifier = Modifier.weight(1f))
                 Text(stringResource(R.string.progress_since, vm.startDate.format(dateFormat)), style = Itera.type.caption, color = c.ink2)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
