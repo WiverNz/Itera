@@ -19,12 +19,20 @@ import com.wivernz.itera.domain.repository.TrainingPlanRepository
 import com.wivernz.itera.domain.training.CompleteActivityUseCase
 import com.wivernz.itera.domain.training.SaveDraftUseCase
 import com.wivernz.itera.domain.training.StartActivityUseCase
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
 import com.wivernz.itera.feature.exercise.eisenhower.EisenhowerBoard
 import com.wivernz.itera.feature.exercise.eisenhower.EisenhowerGate
 import com.wivernz.itera.feature.exercise.runner.DraftAutosave
 import com.wivernz.itera.feature.exercise.runner.ExerciseBody
 import com.wivernz.itera.feature.exercise.runner.bodyFor
 import com.wivernz.itera.feature.exercise.runner.capped
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Clock
 import javax.inject.Inject
@@ -141,7 +149,8 @@ class CombinationViewModel @Inject constructor(
     private val complete: CompleteActivityUseCase,
     private val saveDraft: SaveDraftUseCase,
     private val clock: Clock
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val parentId: Long = checkNotNull(saved.get<Long>(ARG_ACTIVITY))
     private val mutable = MutableStateFlow(CombinationUiState())
     val state: StateFlow<CombinationUiState> = mutable.asStateFlow()
@@ -381,6 +390,37 @@ class CombinationViewModel @Inject constructor(
             )
         }
         complete(parentId, ActivityResult.Combination(results))
+    }
+
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    /**
+     * Only the Eisenhower step's task entry takes items. The parent completes when its steps do, so
+     * CompleteCurrentExercise is never offered here: voice cannot finish a chain early.
+     */
+    override val voiceCommands: Set<VoiceCommandKind>
+        get() = if (mutable.value.entering) setOf(VoiceCommandKind.ADD_ITEM) else emptySet()
+
+    override fun planVoice(command: VoiceCommand): VoicePlan {
+        val s = mutable.value
+        return when {
+            command !is VoiceCommand.AddItem -> VoicePlan.Reject(VoiceRejection.NotHere)
+            !s.entering -> VoicePlan.Reject(VoiceRejection.NoList)
+            EisenhowerBoard.lines(s.entryText).size >= EisenhowerBoard.MAX_TASKS ->
+                VoicePlan.Reject(VoiceRejection.ListFull)
+            else -> VoicePlan.Run(VoiceAction.AddItem(command.text))
+        }
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome {
+        val s = mutable.value
+        if (action !is VoiceAction.AddItem) return VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        if (!s.entering || EisenhowerBoard.lines(s.entryText).size >= EisenhowerBoard.MAX_TASKS) {
+            return VoiceOutcome.Rejected(VoiceRejection.Stale)
+        }
+        val task = action.text.trim()
+        setEntry(s.entryText.trimEnd().let { if (it.isEmpty()) task else it + "\n" + task })
+        return VoiceOutcome.Done(VoiceFeedback.Added(task))
     }
 
     companion object {

@@ -375,3 +375,16 @@ Recorded while implementing the content and training engine. Each resolves a gap
 - **Export.** Load one month at a time and stream days into the writer. The 12-month range starts one year before today plus one day; the 30-day range includes today. The 24-hour worker sweep remains with milestone 009's EventLogTrimWorker; export also removes expired cache files on use.
 - **Export reflection layout.** The format's block-quote rule applies to reflection answers too: put each translated question label on its own list line, followed by the escaped answer in a block quote. This resolves the example's inline answers conflicting with its rule for all user-authored text.
 - **Offline language availability.** Disable App Bundle language splitting so all four bundled languages remain available to the existing AppCompat runtime picker without a download.
+
+## Milestone 012 implementation decisions (2026-09-27)
+
+Decisions the voice documents left to implementation; none changes a product rule.
+
+- **Command contexts.** Today offers StartFocus and ShowCurrentRecommendation. Focus setup offers StartFocus; the running/paused timer offers Pause, Resume and End. Exercises offer AddItem/CompleteItem only for their one active list (template with exactly one checklist, Eisenhower entry, Premortem reasons, the combination's Eisenhower entry step) plus CompleteCurrentExercise where a single completion action exists. A template with more than one checklist rejects item commands rather than guessing a list.
+- **No voice completion where the action needs user input or would finish early.** Review completion needs the user's own recall grade, so Review offers only ShowCurrentRecommendation. A combination parent completes through its steps, so CompleteCurrentExercise is not offered there. Feynman and Reflection count only the final step's Finish/Done.
+- **Premortem completion** by voice uses "finish without adding"; the confirmation states that the action is not added to Today. Adding a new activity stays a touch action.
+- **ShowCurrentRecommendation.** On Today the hero is already on screen: feedback only, nothing created. In an exercise it asks first (existing leave copy), takes the screen's normal leave path (draft kept, activity released) and opens Today. From focus it opens Today directly; a running session keeps running.
+- **StartFocus from Today** uses only Today's actionable focus entry and always opens its setup (Today has no task), carrying the requested length as the `FocusSession.requested` route argument; an unoffered length is explained in setup, never rounded. EndFocus raises the existing end-session dialog.
+- **Spoken minutes** cover 15/25/50 and the seeded suggestions 25/30/50 (Pomodoro's 30-minute estimate is a Today seed).
+- **Availability.** The mic and command action are shown on every API level; on API 26-30 or without an on-device service a tap explains that voice is unavailable. Missing language models are detected from the recogniser's language errors, not a pre-check; settings links go to the platform voice-input settings.
+- **Placement.** The "Voice command" action sits end-aligned under each exercise/focus top bar and after Today's steps, never in the hero. The field mic sits in the note field's end padding. Prototype and production carry the same affordances and `milestone012.xml` catalogues.

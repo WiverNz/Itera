@@ -8,9 +8,18 @@ import com.wivernz.itera.domain.model.Likelihood
 import com.wivernz.itera.domain.model.PremortemReason
 import com.wivernz.itera.domain.model.Technique
 import com.wivernz.itera.domain.repository.TechniqueStateRepository
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
 import com.wivernz.itera.feature.exercise.runner.ExerciseSession
 import com.wivernz.itera.feature.exercise.runner.ExerciseSessionDeps
 import com.wivernz.itera.feature.exercise.runner.capped
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceConfirmNote
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Clock
 import java.time.LocalDate
@@ -76,7 +85,8 @@ class PremortemViewModel @Inject constructor(
     private val deps: ExerciseSessionDeps,
     private val states: TechniqueStateRepository,
     private val clock: Clock
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val session =
         ExerciseSession(deps, checkNotNull(saved.get<Long>(ARG_ACTIVITY)), viewModelScope)
     private val mutable = MutableStateFlow(PremortemUiState())
@@ -213,8 +223,65 @@ class PremortemViewModel @Inject constructor(
         mitigationAddedToToday = addToToday && s.action.isNotBlank()
     )
 
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    /** The one voice-addable list here is the failure reasons; completion never adds the action to Today. */
+    override val voiceCommands: Set<VoiceCommandKind> =
+        setOf(VoiceCommandKind.ADD_ITEM, VoiceCommandKind.COMPLETE_CURRENT_EXERCISE)
+
+    override fun planVoice(command: VoiceCommand): VoicePlan {
+        val s = mutable.value
+        if (s.loading || s.missing) return VoicePlan.Reject(VoiceRejection.NotHere)
+        return when (command) {
+            is VoiceCommand.AddItem ->
+                if (s.canAdd) {
+                    VoicePlan.Run(
+                        VoiceAction.AddItem(command.text)
+                    )
+                } else {
+                    VoicePlan.Reject(VoiceRejection.ListFull)
+                }
+            VoiceCommand.CompleteCurrentExercise ->
+                if (s.ready && !s.busy) {
+                    VoicePlan.Confirm(
+                        VoiceAction.CompleteExercise,
+                        VoiceConfirmNote.MITIGATION_NOT_ADDED.takeIf { s.action.isNotBlank() }
+                    )
+                } else {
+                    VoicePlan.Reject(VoiceRejection.ExerciseNotReady)
+                }
+            else -> VoicePlan.Reject(VoiceRejection.NotHere)
+        }
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome {
+        val s = mutable.value
+        return when (action) {
+            is VoiceAction.AddItem -> {
+                val text = capped(action.text.trim())
+                if (!s.canAdd || text.isEmpty() || s.loading) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    // the Add rule without touching what is being typed in the add field
+                    edit {
+                        it.copy(reasons = it.reasons + PremortemReason(text, Likelihood.POSSIBLE))
+                    }
+                    VoiceOutcome.Done(VoiceFeedback.Added(text))
+                }
+            }
+            VoiceAction.CompleteExercise ->
+                if (!s.ready || s.busy) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    finishWithoutAdding()
+                    VoiceOutcome.Done(VoiceFeedback.Handover)
+                }
+            else -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        }
+    }
+
     companion object {
         const val ARG_ACTIVITY = "activityId"
-        private const val PROJECT_MAX = 200
+        const val PROJECT_MAX = 200
     }
 }

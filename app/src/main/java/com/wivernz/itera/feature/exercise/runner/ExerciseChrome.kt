@@ -18,10 +18,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wivernz.itera.R
-import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.feature.exercise.template.CompletionGate
 import com.wivernz.itera.feature.exercise.template.CompletionRules
+import com.wivernz.itera.feature.voice.VoiceNoteField
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
@@ -76,7 +76,7 @@ class DraftAutosave<T : Any>(
 /** Caps free text at 4 000 characters. */
 fun capped(text: String): String = text.take(CompletionRules.MAX_CHARS)
 
-/** A [NoteField] capped at 4 000 characters, with a counter once past 3 500. */
+/** A dictation-enabled note field capped at 4 000 characters, with a counter once past 3 500. */
 @Composable
 fun CappedNoteField(
     value: String,
@@ -89,10 +89,11 @@ fun CappedNoteField(
     onDone: (() -> Unit)? = null
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        NoteField(
+        VoiceNoteField(
             value,
             { onValueChange(capped(it)) },
             placeholder,
+            maxChars = CompletionRules.MAX_CHARS,
             minLines = minLines,
             textStyle = textStyle,
             bordered = bordered,

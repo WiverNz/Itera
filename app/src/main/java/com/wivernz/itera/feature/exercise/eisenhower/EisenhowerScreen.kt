@@ -67,6 +67,10 @@ import com.wivernz.itera.feature.exercise.runner.CappedNoteField
 import com.wivernz.itera.feature.exercise.runner.LeaveExerciseDialog
 import com.wivernz.itera.feature.exercise.runner.gated
 import com.wivernz.itera.feature.exercise.template.RadioGroup
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 
 @Composable
 fun EisenhowerRoute(
@@ -75,21 +79,25 @@ fun EisenhowerRoute(
     onClose: () -> Unit
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = rememberExerciseVoice(vm, vm::leave)
+    val toToday = LocalVoiceToToday.current
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is EisenhowerEffect.ShowResult -> showResult(effect.activityId, effect.techniqueId)
-            EisenhowerEffect.Close -> onClose()
+            EisenhowerEffect.Close -> voice.onClosed(onClose, toToday)
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    EisenhowerScreen(
-        state,
-        onEntry = vm::setEntry,
-        onSort = vm::startSorting,
-        actions = EisenhowerActions(vm::select, vm::place, vm::choose),
-        onFinish = vm::finish,
-        onLeave = vm::leave
-    )
+    ProvideVoiceCommands(voice.host) {
+        EisenhowerScreen(
+            state,
+            onEntry = vm::setEntry,
+            onSort = vm::startSorting,
+            actions = EisenhowerActions(vm::select, vm::place, vm::choose),
+            onFinish = vm::finish,
+            onLeave = vm::leave
+        )
+    }
 }
 
 class EisenhowerActions(
@@ -148,6 +156,7 @@ fun EisenhowerScreen(
         TopBar(state.name, back, trailing = {
             Pill(stringResource(Skill.PLANNING.title), sc.container, sc.content)
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         if (state.entering) {
             Text(stringResource(R.string.eis_entry_title), style = Itera.type.title, color = c.ink)
             Text(stringResource(R.string.eis_entry_sub), style = Itera.type.body, color = c.ink2)

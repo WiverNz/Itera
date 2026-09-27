@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -41,6 +42,10 @@ import com.wivernz.itera.domain.model.BlockValue
 import com.wivernz.itera.domain.model.ExerciseBlock
 import com.wivernz.itera.feature.exercise.template.TemplateActions
 import com.wivernz.itera.feature.exercise.template.TemplateBody
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 
 /** Navigation out of the runner; the host maps these to routes. */
 class ExerciseRunnerNavigation(
@@ -64,10 +69,19 @@ fun ExerciseIntroRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNa
 @Composable
 fun ExerciseRunRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNavigation) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = rememberExerciseVoice(vm, vm::leave)
+    val toToday = LocalVoiceToToday.current
     LaunchedEffect(state.loading) { if (!state.loading) vm.enterRun() }
-    ObserveRunnerEffects(vm, navigation)
+    ObserveRunnerEffects(
+        vm,
+        ExerciseRunnerNavigation(navigation.openBody, navigation.showResult) {
+            voice.onClosed(navigation.close, toToday)
+        }
+    )
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    ExerciseRunScreen(state, vm.templateActions(), onFinish = vm::finish, onLeave = vm::leave)
+    ProvideVoiceCommands(voice.host) {
+        ExerciseRunScreen(state, vm.templateActions(), onFinish = vm::finish, onLeave = vm::leave)
+    }
 }
 
 @Composable
@@ -206,6 +220,7 @@ fun ExerciseRunScreen(
                 Pill("${items.count { it.done }} / ${items.size}", sc.container, sc.content)
             }
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         TemplateBody(
             state.blocks,
             state.values,

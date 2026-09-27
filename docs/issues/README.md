@@ -15,9 +15,10 @@ This index is the implementation status entry point; each milestone owns its acc
 - **006: implemented (2026-09-26).** Required tests pass; the prototype comparison in light and dark and the oldest-device timer check remain open. See [006](006-exercise-system.md#verification-gap).
 - **007: complete (2026-09-26).** Train, Library and Technique Detail use the real catalog, progress, history and exercise flows. Required tests, build, lint and formatting pass; prototype comparisons completed in light and dark. See [007](007-train-and-technique-library.md#reconciled-differences).
 - **008: implemented; one device acceptance check pending (2026-09-27).** Required tests, build, lint, formatting and light/dark prototype comparisons pass. API 26-30 language persistence remains open; see [008](008-progress-history-and-settings.md#verification-gaps).
-- **009-012: not started.** 012 is documentation/backlog only; its execution precedes 009.
+- **012: implemented (2026-09-27).** Required tests, build, lint and formatting pass; the full visual/device voice comparison is deferred to 009/010. See [012](012-voice-input-and-commands.md#verification-gap).
+- **009-011: not started.**
 
-Next implementation milestone: **012**, after 008's remaining acceptance checks and the outstanding 003, 005 and 006 verification. It has not been started; readiness is not authorization to start another milestone.
+Next implementation milestone: **009**, which also owns the deferred visual/device checks of 003, 005, 006, 008 and 012. Readiness is not authorization to start another milestone.
 
 ## Index
 

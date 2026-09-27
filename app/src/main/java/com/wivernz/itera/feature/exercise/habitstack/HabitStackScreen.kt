@@ -46,7 +46,6 @@ import com.wivernz.itera.core.common.time.formatTime
 import com.wivernz.itera.core.designsystem.component.ChoiceChip
 import com.wivernz.itera.core.designsystem.component.ErrorState
 import com.wivernz.itera.core.designsystem.component.IteraButton
-import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.component.Pill
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.TimePickerSheet
@@ -59,6 +58,11 @@ import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.progress.Mastery
 import com.wivernz.itera.feature.exercise.runner.LeaveExerciseDialog
 import com.wivernz.itera.feature.exercise.runner.gated
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.VoiceNoteField
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 import java.time.LocalTime
 
 private val ANCHOR_LABELS = mapOf(
@@ -91,25 +95,29 @@ fun HabitStackRoute(
     onClose: () -> Unit
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = rememberExerciseVoice(vm, vm::leave)
+    val toToday = LocalVoiceToToday.current
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is HabitStackEffect.ShowResult -> showResult(effect.activityId, effect.techniqueId)
-            HabitStackEffect.Close -> onClose()
+            HabitStackEffect.Close -> voice.onClosed(onClose, toToday)
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    HabitStackScreen(
-        state,
-        HabitStackActions(
-            vm::edit,
-            vm::pick,
-            vm::setCustom,
-            vm::setNudge,
-            vm::setNudgeTime,
-            vm::save,
-            vm::leave
+    ProvideVoiceCommands(voice.host) {
+        HabitStackScreen(
+            state,
+            HabitStackActions(
+                vm::edit,
+                vm::pick,
+                vm::setCustom,
+                vm::setNudge,
+                vm::setNudgeTime,
+                vm::save,
+                vm::leave
+            )
         )
-    )
+    }
 }
 
 /** Prototype `HabitStackScreen` (Practice.kt): the sentence, two chip groups and the nudge. */
@@ -157,6 +165,7 @@ fun HabitStackScreen(state: HabitStackUiState, actions: HabitStackActions) {
         TopBar(state.name, back, trailing = {
             Pill(stringResource(Skill.HABITS.title), sc.container, sc.content)
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         Sentence(state, actions)
         Text(stringResource(R.string.hs_sub), style = Itera.type.body, color = c.ink2)
         SlotGroup(
@@ -291,10 +300,11 @@ private fun SlotGroup(
             )
         }
         if (editing || (value != null && value.chipId == null)) {
-            NoteField(
+            VoiceNoteField(
                 custom.ifEmpty { value?.takeIf { it.chipId == null }?.text.orEmpty() },
                 { actions.custom(slot, it) },
                 customHint,
+                maxChars = HabitStackViewModel.CUSTOM_MAX,
                 minLines = 1,
                 modifier = Modifier.testTag("CustomField_${slot.name}")
             )

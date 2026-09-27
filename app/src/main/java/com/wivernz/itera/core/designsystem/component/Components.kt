@@ -68,6 +68,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
@@ -572,41 +573,94 @@ fun NoteField(
         onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth().semantics { contentDescription = placeholder },
         textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
-        keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Sentences,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = if (onDone != null) {
-            androidx.compose.foundation.text.KeyboardActions(onDone = { onDone() })
-        } else {
-            androidx.compose.foundation.text.KeyboardActions.Default
-        },
+        keyboardOptions = noteKeyboard,
+        keyboardActions = noteActions(onDone),
         minLines = minLines,
         cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
         decorationBox = { inner ->
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(c.surface)
-                    .then(
-                        if (bordered) {
-                            Modifier.border(
-                                2.dp,
-                                c.ink,
-                                RoundedCornerShape(16.dp)
-                            )
-                        } else {
-                            Modifier
-                        }
-                    )
-                    .padding(horizontal = 16.dp, vertical = 14.dp)
-            ) {
-                if (value.isEmpty()) Text(placeholder, style = textStyle, color = c.ink2)
-                inner()
-            }
+            NoteDecoration(value.isEmpty(), placeholder, textStyle, bordered, null, inner)
         }
     )
+}
+
+/**
+ * The same field over a [TextFieldValue], so a caller can read the caret and selection, with an optional
+ * [trailing] action (the voice dictation mic) in the field's end padding.
+ */
+@Composable
+fun NoteField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    placeholder: String,
+    minLines: Int = 2,
+    textStyle: TextStyle = Itera.type.userText,
+    bordered: Boolean = false,
+    modifier: Modifier = Modifier,
+    onDone: (() -> Unit)? = null,
+    trailing: (@Composable () -> Unit)? = null
+) {
+    val c = Itera.colors
+    androidx.compose.foundation.text.BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier.fillMaxWidth().semantics { contentDescription = placeholder },
+        textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
+        keyboardOptions = noteKeyboard,
+        keyboardActions = noteActions(onDone),
+        minLines = minLines,
+        cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
+        decorationBox = { inner ->
+            NoteDecoration(value.text.isEmpty(), placeholder, textStyle, bordered, trailing, inner)
+        }
+    )
+}
+
+private val noteKeyboard = KeyboardOptions(
+    capitalization = KeyboardCapitalization.Sentences,
+    imeAction = ImeAction.Done
+)
+
+private fun noteActions(onDone: (() -> Unit)?) = if (onDone != null) {
+    androidx.compose.foundation.text.KeyboardActions(onDone = { onDone() })
+} else {
+    androidx.compose.foundation.text.KeyboardActions.Default
+}
+
+@Composable
+private fun NoteDecoration(
+    empty: Boolean,
+    placeholder: String,
+    textStyle: TextStyle,
+    bordered: Boolean,
+    trailing: (@Composable () -> Unit)?,
+    inner: @Composable () -> Unit
+) {
+    val c = Itera.colors
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(c.surface)
+            .then(
+                if (bordered) {
+                    Modifier.border(
+                        2.dp,
+                        c.ink,
+                        RoundedCornerShape(16.dp)
+                    )
+                } else {
+                    Modifier
+                }
+            )
+            .padding(start = 16.dp, end = if (trailing == null) 16.dp else 4.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(Modifier.weight(1f).padding(vertical = 14.dp)) {
+            if (empty) Text(placeholder, style = textStyle, color = c.ink2)
+            inner()
+        }
+        if (trailing != null) Box(Modifier.padding(vertical = 2.dp)) { trailing() }
+    }
 }
 
 @Composable

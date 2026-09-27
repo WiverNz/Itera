@@ -14,6 +14,14 @@ import com.wivernz.itera.domain.repository.TrainingPlanRepository
 import com.wivernz.itera.domain.training.CompleteActivityUseCase
 import com.wivernz.itera.domain.training.SaveDraftUseCase
 import com.wivernz.itera.domain.training.SkipActivityUseCase
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -67,7 +75,8 @@ class ReflectionViewModel @Inject constructor(
     private val skip: SkipActivityUseCase,
     private val saveDraft: SaveDraftUseCase,
     analytics: Analytics
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val activityId: Long = checkNotNull(saved.get<Long>(ARG_ACTIVITY))
     private val mutable = MutableStateFlow(
         ReflectionUiState(step = saved.get<Int>(KEY_STEP) ?: 0)
@@ -229,6 +238,33 @@ class ReflectionViewModel @Inject constructor(
 
     private fun <T> List<T>.replaced(index: Int, value: T) =
         toMutableList().also { it[index] = value }
+
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    override val voiceCommands: Set<VoiceCommandKind> =
+        setOf(VoiceCommandKind.COMPLETE_CURRENT_EXERCISE)
+
+    /** Only the last question's Save completes; earlier Next buttons are steps, not completion. */
+    private fun canFinish(s: ReflectionUiState) = !s.loading && !s.saving && s.step == LAST_STEP
+
+    override fun planVoice(command: VoiceCommand): VoicePlan = when (command) {
+        VoiceCommand.CompleteCurrentExercise ->
+            if (canFinish(mutable.value)) {
+                VoicePlan.Confirm(VoiceAction.CompleteExercise)
+            } else {
+                VoicePlan.Reject(VoiceRejection.ExerciseNotReady)
+            }
+        else -> VoicePlan.Reject(VoiceRejection.NotHere)
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome = when {
+        action != VoiceAction.CompleteExercise -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        !canFinish(mutable.value) -> VoiceOutcome.Rejected(VoiceRejection.Stale)
+        else -> {
+            next()
+            VoiceOutcome.Done(VoiceFeedback.Handover)
+        }
+    }
 
     companion object {
         const val ARG_ACTIVITY = "activityId"

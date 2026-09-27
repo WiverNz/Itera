@@ -6,9 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.wivernz.itera.domain.model.ActivityResult
 import com.wivernz.itera.domain.model.ActivitySource
 import com.wivernz.itera.domain.model.Quadrant
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
 import com.wivernz.itera.feature.exercise.runner.ExerciseSession
 import com.wivernz.itera.feature.exercise.runner.ExerciseSessionDeps
 import com.wivernz.itera.feature.exercise.runner.capped
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
@@ -47,7 +55,8 @@ sealed interface EisenhowerEffect {
 class EisenhowerViewModel @Inject constructor(
     private val saved: SavedStateHandle,
     deps: ExerciseSessionDeps
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val session =
         ExerciseSession(deps, checkNotNull(saved.get<Long>(ARG_ACTIVITY)), viewModelScope)
     private val mutable = MutableStateFlow(EisenhowerUiState())
@@ -127,6 +136,69 @@ class EisenhowerViewModel @Inject constructor(
         saved[KEY_SELECTED] = board.selectedId
         mutable.update { it.copy(board = board) }
         session.draft(board.result())
+    }
+
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    /** Tasks are added to the entry list; sorting has no completion action, so CompleteItem is not offered. */
+    override val voiceCommands: Set<VoiceCommandKind>
+        get() = buildSet {
+            if (mutable.value.entering) add(VoiceCommandKind.ADD_ITEM)
+            add(VoiceCommandKind.COMPLETE_CURRENT_EXERCISE)
+        }
+
+    override fun planVoice(command: VoiceCommand): VoicePlan {
+        val s = mutable.value
+        if (s.loading || s.missing) return VoicePlan.Reject(VoiceRejection.NotHere)
+        return when (command) {
+            is VoiceCommand.AddItem -> when {
+                !s.entering -> VoicePlan.Reject(VoiceRejection.NoList)
+                s.entryCount >= EisenhowerBoard.MAX_TASKS -> VoicePlan.Reject(
+                    VoiceRejection.ListFull
+                )
+                else -> VoicePlan.Run(VoiceAction.AddItem(command.text))
+            }
+            VoiceCommand.CompleteCurrentExercise ->
+                if (!s.entering && s.board.gate == EisenhowerGate.READY && !s.busy) {
+                    VoicePlan.Confirm(VoiceAction.CompleteExercise)
+                } else {
+                    VoicePlan.Reject(VoiceRejection.ExerciseNotReady)
+                }
+            else -> VoicePlan.Reject(VoiceRejection.NotHere)
+        }
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome {
+        val s = mutable.value
+        return when (action) {
+            is VoiceAction.AddItem -> {
+                val task = action.text.trim()
+                if (!s.entering || s.entryCount >= EisenhowerBoard.MAX_TASKS) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    // the entry's own rule: one task per line
+                    setEntry(
+                        s.entryText.trimEnd().let {
+                            if (it.isEmpty()) {
+                                task
+                            } else {
+                                it + "\n" +
+                                    task
+                            }
+                        }
+                    )
+                    VoiceOutcome.Done(VoiceFeedback.Added(task))
+                }
+            }
+            VoiceAction.CompleteExercise ->
+                if (s.entering || s.board.gate != EisenhowerGate.READY || s.busy) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    finish()
+                    VoiceOutcome.Done(VoiceFeedback.Handover)
+                }
+            else -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        }
     }
 
     companion object {

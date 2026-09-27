@@ -5,11 +5,17 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- Milestone 012 / ADR-0022: foreground, user-initiated, single-utterance on-device voice only. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <queries>
         <intent>
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="text/markdown" />
+        </intent>
+        <!-- Lets SpeechRecognizer find the on-device recognition service (API 30+ package visibility). -->
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
     <application

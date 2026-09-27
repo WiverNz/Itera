@@ -15,8 +15,16 @@ import com.wivernz.itera.domain.model.ActivityState
 import com.wivernz.itera.domain.model.FocusTimerState
 import com.wivernz.itera.domain.model.TechniqueId
 import com.wivernz.itera.domain.repository.TrainingPlanRepository
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
 import com.wivernz.itera.feature.exercise.combination.ChainCarry
 import com.wivernz.itera.feature.exercise.runner.capped
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Clock
 import java.time.Instant
@@ -53,7 +61,9 @@ data class FocusUiState(
     val timer: FocusTimerUi? = null,
     val confirmingEnd: Boolean = false,
     val busy: Boolean = false,
-    val failed: Boolean = false
+    val failed: Boolean = false,
+    // a voice-requested length that is not one of [minuteOptions]: explained, never rounded
+    val unsupportedMinutes: Int? = null
 )
 
 sealed interface FocusEffect {
@@ -77,15 +87,20 @@ class FocusViewModel @Inject constructor(
     private val analytics: Analytics,
     private val clock: Clock,
     private val logger: Logger
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val activityId: Long = checkNotNull(saved.get<Long>(ARG_ACTIVITY))
     private val techniqueId: String = saved.get<String>(ARG_TECHNIQUE) ?: POMODORO
     private val seedMinutes: Int = saved.get<Int>(ARG_MINUTES) ?: DEFAULT_MINUTES
+    private val requested: Int = saved.get<Int>(ARG_REQUESTED) ?: 0
     private val mutable = MutableStateFlow(
-        FocusUiState(
-            minutes = seedMinutes,
-            minuteOptions = (OPTIONS + seedMinutes).distinct().sorted()
-        )
+        optionsFor(seedMinutes).let { options ->
+            FocusUiState(
+                minutes = requested.takeIf { it in options } ?: seedMinutes,
+                minuteOptions = options,
+                unsupportedMinutes = requested.takeIf { it > 0 && it !in options }
+            )
+        }
     )
     val state: StateFlow<FocusUiState> = mutable.asStateFlow()
     private val effectChannel = Channel<FocusEffect>(Channel.BUFFERED)
@@ -155,7 +170,9 @@ class FocusViewModel @Inject constructor(
 
     fun setTask(text: String) = mutable.update { it.copy(task = capped(text)) }
 
-    fun setMinutes(minutes: Int) = mutable.update { it.copy(minutes = minutes) }
+    fun setMinutes(minutes: Int) = mutable.update {
+        it.copy(minutes = minutes, unsupportedMinutes = null)
+    }
 
     fun start() {
         val s = mutable.value
@@ -205,10 +222,110 @@ class FocusViewModel @Inject constructor(
         )
     }
 
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    override val voiceCommands: Set<VoiceCommandKind>
+        get() = if (mutable.value.timer == null) {
+            setOf(VoiceCommandKind.START_FOCUS)
+        } else {
+            setOf(
+                VoiceCommandKind.PAUSE_FOCUS,
+                VoiceCommandKind.RESUME_FOCUS,
+                VoiceCommandKind.END_FOCUS
+            )
+        }
+
+    override fun planVoice(command: VoiceCommand): VoicePlan {
+        val s = mutable.value
+        val timer = s.timer
+        return when (command) {
+            is VoiceCommand.StartFocus -> when {
+                timer != null -> VoicePlan.Reject(VoiceRejection.FocusActive)
+                s.loading || s.busy -> VoicePlan.Reject(VoiceRejection.Stale)
+                command.minutes != null && command.minutes !in s.minuteOptions ->
+                    VoicePlan.Reject(VoiceRejection.FocusDuration(command.minutes, s.minuteOptions))
+                else -> VoicePlan.Run(VoiceAction.StartFocus(command.minutes))
+            }
+            VoiceCommand.PauseFocus -> when {
+                timer == null -> VoicePlan.Reject(VoiceRejection.FocusNotRunning)
+                timer.paused -> VoicePlan.Reject(VoiceRejection.FocusAlreadyPaused)
+                else -> VoicePlan.Run(VoiceAction.PauseFocus)
+            }
+            VoiceCommand.ResumeFocus -> when {
+                timer == null -> VoicePlan.Reject(VoiceRejection.FocusNotRunning)
+                !timer.paused -> VoicePlan.Reject(VoiceRejection.FocusNotPaused)
+                else -> VoicePlan.Run(VoiceAction.ResumeFocus)
+            }
+            // the existing end-session confirmation always follows
+            VoiceCommand.EndFocus ->
+                if (timer == null) {
+                    VoicePlan.Reject(VoiceRejection.FocusNotRunning)
+                } else {
+                    VoicePlan.Run(VoiceAction.EndFocus)
+                }
+            else -> VoicePlan.Reject(VoiceRejection.NotHere)
+        }
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome {
+        val s = mutable.value
+        val timer = controller.current()
+        return when (action) {
+            is VoiceAction.StartFocus -> {
+                val minutes = action.minutes
+                when {
+                    timer != null || s.timer != null -> VoiceOutcome.Rejected(
+                        VoiceRejection.FocusActive
+                    )
+                    minutes != null && minutes !in s.minuteOptions ->
+                        VoiceOutcome.Rejected(
+                            VoiceRejection.FocusDuration(minutes, s.minuteOptions)
+                        )
+                    else -> {
+                        minutes?.let(::setMinutes)
+                        if (mutable.value.task.isBlank()) {
+                            // setup incomplete: the normal Start stays with the user
+                            VoiceOutcome.Done(VoiceFeedback.FocusSetup(mutable.value.minutes))
+                        } else {
+                            start()
+                            VoiceOutcome.Done(VoiceFeedback.FocusStarted)
+                        }
+                    }
+                }
+            }
+            VoiceAction.PauseFocus ->
+                if (timer == null || timer.pausedAt != null) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    controller.pause()
+                    VoiceOutcome.Done(VoiceFeedback.FocusPaused)
+                }
+            VoiceAction.ResumeFocus ->
+                if (timer == null || timer.pausedAt == null) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    controller.resume()
+                    VoiceOutcome.Done(VoiceFeedback.FocusResumed)
+                }
+            VoiceAction.EndFocus ->
+                if (timer == null) {
+                    VoiceOutcome.Rejected(VoiceRejection.Stale)
+                } else {
+                    requestEnd()
+                    VoiceOutcome.Done(VoiceFeedback.Handover)
+                }
+            else -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        }
+    }
+
     companion object {
         const val ARG_ACTIVITY = "activityId"
         const val ARG_MINUTES = "minutes"
         const val ARG_TECHNIQUE = "technique"
+        const val ARG_REQUESTED = "requested"
+
+        /** The setup's minute choices: 15/25/50 plus the seeded suggestion. */
+        fun optionsFor(seed: Int): List<Int> = (OPTIONS + seed).distinct().sorted()
         private const val TAG = "Focus"
         private const val POMODORO = "pomodoro"
         private const val DEFAULT_MINUTES = 25

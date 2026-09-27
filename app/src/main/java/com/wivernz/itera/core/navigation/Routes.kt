@@ -105,8 +105,13 @@ data class ExerciseResult(val activityId: Long, val technique: String) : AppRout
 
 @Serializable
 @SerialName("FocusSession")
-data class FocusSession(val activityId: Long, val minutes: Int, val technique: String? = null) :
-    AppRoute
+data class FocusSession(
+    val activityId: Long,
+    val minutes: Int,
+    val technique: String? = null,
+    // a voice-requested length (milestone 012); 0 when none
+    val requested: Int = 0
+) : AppRoute
 
 @Serializable
 @SerialName("DayComplete")

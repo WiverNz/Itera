@@ -5,8 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wivernz.itera.domain.model.ActivityResult
 import com.wivernz.itera.domain.repository.PreferencesRepository
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
 import com.wivernz.itera.feature.exercise.runner.ExerciseSession
 import com.wivernz.itera.feature.exercise.runner.ExerciseSessionDeps
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalTime
 import javax.inject.Inject
@@ -74,7 +82,8 @@ class HabitStackViewModel @Inject constructor(
     saved: SavedStateHandle,
     deps: ExerciseSessionDeps,
     private val preferences: PreferencesRepository
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val session =
         ExerciseSession(deps, checkNotNull(saved.get<Long>(ARG_ACTIVITY)), viewModelScope)
     private val mutable = MutableStateFlow(HabitStackUiState())
@@ -191,8 +200,32 @@ class HabitStackViewModel @Inject constructor(
         nudgeTime = s.nudgeTime.takeIf { s.nudgeEnabled || s.nudgeTimeEdited }
     )
 
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    override val voiceCommands: Set<VoiceCommandKind> =
+        setOf(VoiceCommandKind.COMPLETE_CURRENT_EXERCISE)
+
+    override fun planVoice(command: VoiceCommand): VoicePlan = when (command) {
+        VoiceCommand.CompleteCurrentExercise ->
+            if (mutable.value.ready && !mutable.value.busy) {
+                VoicePlan.Confirm(VoiceAction.CompleteExercise)
+            } else {
+                VoicePlan.Reject(VoiceRejection.ExerciseNotReady)
+            }
+        else -> VoicePlan.Reject(VoiceRejection.NotHere)
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome = when {
+        action != VoiceAction.CompleteExercise -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        !mutable.value.ready || mutable.value.busy -> VoiceOutcome.Rejected(VoiceRejection.Stale)
+        else -> {
+            save()
+            VoiceOutcome.Done(VoiceFeedback.Handover)
+        }
+    }
+
     companion object {
         const val ARG_ACTIVITY = "activityId"
-        private const val CUSTOM_MAX = 120
+        const val CUSTOM_MAX = 120
     }
 }

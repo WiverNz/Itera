@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.itera.app.R
 import com.itera.app.model.Skill
+import com.itera.app.ui.components.VoiceCommandPill
 import com.itera.app.ui.components.IteraIcons
 import com.itera.app.ui.components.screenInsets
 import com.itera.app.ui.theme.Itera
@@ -108,6 +109,7 @@ private fun FocusContent(minutes: Int, onEnd: () -> Unit) {
             Text(stringResource(R.string.focus_label), style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold), color = accent, modifier = Modifier.padding(start = 8.dp).weight(1f))
             Text(stringResource(R.string.focus_silenced), style = Itera.type.caption, color = c.ink2)
         }
+        VoiceCommandPill(Modifier.align(Alignment.End).padding(top = 8.dp))
         Spacer(Modifier.weight(1f))
         Box(Modifier.size(300.dp), contentAlignment = Alignment.Center) {
             Canvas(Modifier.fillMaxSize()) {

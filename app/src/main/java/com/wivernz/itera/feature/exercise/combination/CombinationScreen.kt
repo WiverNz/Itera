@@ -53,6 +53,10 @@ import com.wivernz.itera.feature.exercise.runner.ConfirmDialog
 import com.wivernz.itera.feature.exercise.runner.ExerciseBody
 import com.wivernz.itera.feature.exercise.runner.gated
 import com.wivernz.itera.feature.exercise.template.PickOneBody
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 
 class CombinationActions(
     val entry: (String) -> Unit,
@@ -72,6 +76,8 @@ fun CombinationRoute(
     onDone: () -> Unit
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = rememberExerciseVoice(vm, vm::leave)
+    val toToday = LocalVoiceToToday.current
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is CombinationEffect.OpenFocus -> openFocus(
@@ -84,22 +90,24 @@ fun CombinationRoute(
                 effect.techniqueId,
                 effect.body
             )
-            CombinationEffect.Close -> onClose()
+            CombinationEffect.Close -> voice.onClosed(onClose, toToday)
             CombinationEffect.Done -> onDone()
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    CombinationScreen(
-        state,
-        CombinationActions(
-            vm::setEntry,
-            EisenhowerActions(vm::select, { q: Quadrant -> vm.place(q) }, vm::choose),
-            vm::setOption,
-            vm::chooseOption,
-            vm::onPrimary,
-            vm::leave
+    ProvideVoiceCommands(voice.host) {
+        CombinationScreen(
+            state,
+            CombinationActions(
+                vm::setEntry,
+                EisenhowerActions(vm::select, { q: Quadrant -> vm.place(q) }, vm::choose),
+                vm::setOption,
+                vm::chooseOption,
+                vm::onPrimary,
+                vm::leave
+            )
         )
-    )
+    }
 }
 
 /** Prototype `CombinationScreen` and `ChainStep` (Practice.kt): a rail of steps, each body inline. */
@@ -152,6 +160,7 @@ fun CombinationScreen(state: CombinationUiState, actions: CombinationActions) {
         TopBar(stringResource(R.string.combo_label, state.programDay), close, trailing = {
             Pill(stringResource(R.string.minutes_short, state.totalMinutes), c.surface2, c.ink2)
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         Text(
             stringResource(
                 if (state.curriculum) R.string.combo_title else R.string.activity_combination_title

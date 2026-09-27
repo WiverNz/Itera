@@ -50,18 +50,28 @@ import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.feature.exercise.runner.CappedNoteField
 import com.wivernz.itera.feature.exercise.runner.ConfirmDialog
 import com.wivernz.itera.feature.exercise.runner.LeaveExerciseDialog
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.NoVoiceCommands
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 
 @Composable
 fun ReviewRoute(vm: ReviewViewModel, showResult: (Long, String) -> Unit, onClose: () -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
+    // completion needs the user's own recall grade, so voice offers only ShowCurrentRecommendation here
+    val voice = rememberExerciseVoice(NoVoiceCommands, vm::leave)
+    val toToday = LocalVoiceToToday.current
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is ReviewEffect.ShowResult -> showResult(effect.activityId, effect.techniqueId)
-            ReviewEffect.Close -> onClose()
+            ReviewEffect.Close -> voice.onClosed(onClose, toToday)
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    ReviewScreen(state, vm::setAnswer, vm::reveal, vm::grade, vm::leave)
+    ProvideVoiceCommands(voice.host) {
+        ReviewScreen(state, vm::setAnswer, vm::reveal, vm::grade, vm::leave)
+    }
 }
 
 private val RecallGrade.label: Int get() = when (this) {
@@ -132,6 +142,7 @@ fun ReviewScreen(
         TopBar(stringResource(R.string.review_label), close, trailing = {
             Pill(stringResource(Skill.LEARNING.title), sc.container, sc.content)
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         TechniqueToken(Skill.LEARNING, IteraIcons.Spaced, 48.dp)
         Text(
             pluralStringResource(R.plurals.review_days_ago, state.daysAgo, state.daysAgo),

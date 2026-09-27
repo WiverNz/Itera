@@ -56,6 +56,7 @@ import com.itera.app.model.MatrixTask
 import com.itera.app.model.Quadrant
 import com.itera.app.model.Skill
 import com.itera.app.model.Technique
+import com.itera.app.ui.components.VoiceCommandPill
 import com.itera.app.ui.components.ButtonKind
 import com.itera.app.ui.components.ChoiceChip
 import com.itera.app.ui.components.Eyebrow
@@ -84,6 +85,7 @@ fun CombinationScreen(vm: AppViewModel, onClose: () -> Unit, onContinue: () -> U
         TopBar(stringResource(R.string.combo_label, vm.programDay), onClose) {
             Pill(stringResource(R.string.minutes_short, 70), c.surface2, c.ink2)
         }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(stringResource(R.string.combo_title), style = Itera.type.display, color = c.ink)
         Text(stringResource(R.string.combo_sub), style = Itera.type.body, color = c.ink2)
         Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
@@ -175,6 +177,7 @@ fun EisenhowerScreen(onClose: () -> Unit, onDone: () -> Unit) {
 
     ScreenColumn(gap = 16.dp, bottom = { IteraButton(stringResource(R.string.eis_cta), onDone) }) {
         TopBar(stringResource(Technique.Eisenhower.title), onClose) { Pill(stringResource(Skill.Planning.title), sc.container, sc.content) }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(stringResource(R.string.eis_title), style = Itera.type.title, color = c.ink)
         Row(verticalAlignment = Alignment.Bottom) {
             Text(stringResource(R.string.eis_to_sort), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))
@@ -278,6 +281,7 @@ fun FeynmanScreen(onClose: () -> Unit, onDone: () -> Unit) {
     val words = text.split(Regex("\\s+")).count { it.isNotBlank() }
     ScreenColumn(gap = 16.dp, bottom = { IteraButton(stringResource(R.string.fey_done), onDone, enabled = words > 0) }) {
         TopBar(stringResource(Technique.Feynman.title), onClose) { Pill(stringResource(Skill.Learning.title), sc.container, sc.content) }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         IteraCard(color = sc.container, gap = 10.dp) {
             Eyebrow(stringResource(R.string.fey_topic), sc.content)
             Text(stringResource(R.string.fey_topic_value), style = Itera.type.headline, color = c.ink)
@@ -292,7 +296,7 @@ fun FeynmanScreen(onClose: () -> Unit, onDone: () -> Unit) {
         }
         Text(stringResource(R.string.fey_instruction), style = Itera.type.body, color = c.ink2)
         Text(stringResource(R.string.fey_your_expl), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2)
-        NoteField(text, { text = it }, stringResource(R.string.fey_hint), minLines = 9, textStyle = Itera.type.bodyLarge, bordered = true)
+        NoteField(text, { text = it }, stringResource(R.string.fey_hint), minLines = 9, textStyle = Itera.type.bodyLarge, bordered = true, dictation = true)
         Row {
             Text(pluralStringResource(R.plurals.words, words, words), style = Itera.type.caption, color = c.ink2, modifier = Modifier.weight(1f))
             Text(stringResource(R.string.fey_no_notes), style = Itera.type.caption, color = c.ink2)
@@ -311,6 +315,7 @@ fun FeynmanFeedbackScreen(onBack: () -> Unit, onDone: () -> Unit) {
     val chips = listOf(R.string.fey_chip_crash, R.string.fey_chip_which, R.string.fey_chip_tradeoffs)
     ScreenColumn(gap = 18.dp, bottom = { IteraButton(stringResource(R.string.action_finish), onDone) }) {
         TopBar(stringResource(Technique.Feynman.title), onBack, IteraIcons.Back)
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(stringResource(R.string.fey_back_title), style = Itera.type.title, color = c.ink)
         Text(stringResource(R.string.fey_hardest), style = Itera.type.label, color = c.ink)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -318,7 +323,7 @@ fun FeynmanFeedbackScreen(onBack: () -> Unit, onDone: () -> Unit) {
                 ChoiceChip(stringResource(res), i in picked, onClick = { if (i in picked) picked.remove(i) else picked.add(i) })
             }
         }
-        NoteField(note, { note = it }, stringResource(R.string.fey_note_hint))
+        NoteField(note, { note = it }, stringResource(R.string.fey_note_hint), dictation = true)
 
         // Placeholder for the future AI coach: layout is final, content is sample.
         Column(
@@ -369,11 +374,12 @@ fun ReviewScreen(onClose: () -> Unit, onDone: () -> Unit) {
     var text by remember { mutableStateOf("") }
     ScreenColumn(gap = 16.dp, bottom = { IteraButton(stringResource(R.string.review_compare), onDone, enabled = text.isNotBlank()) }) {
         TopBar(stringResource(R.string.review_label), onClose) { Pill(stringResource(Skill.Learning.title), sc.container, sc.content) }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         TechniqueToken(Technique.Spaced, 48.dp)
         Text(pluralStringResource(R.plurals.review_days_ago, 4, 4), style = Itera.type.body, color = c.ink2)
         Text(stringResource(R.string.review_topic), style = Itera.type.title, color = c.ink)
         Text(stringResource(R.string.review_again), style = Itera.type.bodyLarge, color = c.ink2)
-        NoteField(text, { text = it }, stringResource(R.string.review_field), minLines = 7, textStyle = Itera.type.bodyLarge, bordered = true)
+        NoteField(text, { text = it }, stringResource(R.string.review_field), minLines = 7, textStyle = Itera.type.bodyLarge, bordered = true, dictation = true)
         Row(
             Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface2).padding(16.dp),
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
@@ -425,6 +431,7 @@ fun PremortemScreen(onClose: () -> Unit, onDone: () -> Unit) {
     )
     ScreenColumn(gap = 18.dp, bottom = { IteraButton(stringResource(R.string.pm_cta), onDone) }) {
         TopBar(stringResource(Technique.Premortem.title), onClose) { Pill(stringResource(Skill.Reflection.title), sc.container, sc.content) }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(
             buildAnnotatedString {
                 append(stringResource(R.string.pm_project) + " ")
@@ -452,10 +459,10 @@ fun PremortemScreen(onClose: () -> Unit, onDone: () -> Unit) {
                     else Pill(stringResource(R.string.pm_possible), c.surface2, c.ink2)
                 }
             }
-            NoteField(extra, { extra = it }, stringResource(R.string.pm_add), minLines = 1)
+            NoteField(extra, { extra = it }, stringResource(R.string.pm_add), minLines = 1, dictation = true)
         }
         Text(stringResource(R.string.pm_today_q), style = Itera.type.headline, color = c.ink, modifier = Modifier.padding(top = 6.dp))
-        NoteField(action, { action = it }, stringResource(R.string.pm_action_hint), bordered = true)
+        NoteField(action, { action = it }, stringResource(R.string.pm_action_hint), bordered = true, dictation = true)
         Text(stringResource(R.string.pm_idea), style = Itera.type.caption, color = c.ink2)
     }
 }
@@ -483,6 +490,7 @@ fun HabitStackScreen(onClose: () -> Unit, onDone: () -> Unit) {
         IteraButton(stringResource(R.string.hs_save), onDone)
     }) {
         TopBar(stringResource(Technique.HabitStack.title), onClose) { Pill(stringResource(Skill.Habits.title), sc.container, sc.content) }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(
             buildAnnotatedString {
                 append(sentence)

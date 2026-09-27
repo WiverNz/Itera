@@ -385,29 +385,47 @@ fun NoteField(
     minLines: Int = 2,
     textStyle: TextStyle = Itera.type.userText,
     bordered: Boolean = false,
+    // milestone 012: a push-to-talk mic in the field's end padding, with the shared voice panel below
+    dictation: Boolean = false,
 ) {
     val c = Itera.colors
-    androidx.compose.foundation.text.BasicTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier.fillMaxWidth(),
-        textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
-        minLines = minLines,
-        cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
-        decorationBox = { inner ->
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(c.surface)
-                    .then(if (bordered) Modifier.border(2.dp, c.ink, RoundedCornerShape(16.dp)) else Modifier)
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
-            ) {
-                if (value.isEmpty()) Text(placeholder, style = textStyle, color = c.ink2)
-                inner()
-            }
-        },
-    )
+    var voice by remember { mutableStateOf(VoiceDemoState.Idle) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        androidx.compose.foundation.text.BasicTextField(
+            value = value,
+            onValueChange = {
+                voice = VoiceDemoState.Idle
+                onValueChange(it)
+            },
+            modifier = modifier.fillMaxWidth(),
+            textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
+            minLines = minLines,
+            cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
+            decorationBox = { inner ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(c.surface)
+                        .then(if (bordered) Modifier.border(2.dp, c.ink, RoundedCornerShape(16.dp)) else Modifier)
+                        .padding(start = 16.dp, end = if (dictation) 4.dp else 16.dp),
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    Box(Modifier.weight(1f).padding(vertical = 14.dp)) {
+                        if (value.isEmpty()) Text(placeholder, style = textStyle, color = c.ink2)
+                        inner()
+                    }
+                    if (dictation) Box(Modifier.padding(vertical = 2.dp)) { DictationMic(placeholder, voice) { voice = it } }
+                }
+            },
+        )
+        VoicePanel(
+            voice,
+            command = false,
+            onPrimary = { voice = if (voice == VoiceDemoState.Listening) VoiceDemoState.NoSpeech else VoiceDemoState.Listening },
+            onCancel = { voice = VoiceDemoState.Idle },
+        )
+    }
 }
 
 @Composable

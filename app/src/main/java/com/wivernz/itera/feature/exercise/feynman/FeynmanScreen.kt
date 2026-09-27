@@ -50,7 +50,6 @@ import com.wivernz.itera.core.designsystem.component.ErrorState
 import com.wivernz.itera.core.designsystem.component.Eyebrow
 import com.wivernz.itera.core.designsystem.component.IteraButton
 import com.wivernz.itera.core.designsystem.component.IteraCard
-import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.component.Pill
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.TopBar
@@ -62,6 +61,11 @@ import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.feature.exercise.runner.CappedNoteField
 import com.wivernz.itera.feature.exercise.runner.LeaveExerciseDialog
 import com.wivernz.itera.feature.exercise.runner.gated
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.VoiceNoteField
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 
 /** "What part was hardest to explain?" - stored by id, rendered in the current language. */
 internal val FEYNMAN_CHIPS: List<Pair<String, Int>> = listOf(
@@ -88,20 +92,25 @@ class FeynmanActions(
 @Composable
 fun FeynmanRoute(vm: FeynmanViewModel, showResult: (Long, String) -> Unit, onClose: () -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = rememberExerciseVoice(vm, vm::leave)
+    val toToday = LocalVoiceToToday.current
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is FeynmanEffect.ShowResult -> showResult(effect.activityId, effect.techniqueId)
-            FeynmanEffect.Close -> onClose()
+            FeynmanEffect.Close -> voice.onClosed(onClose, toToday)
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    FeynmanScreen(
-        state,
-        FeynmanActions(
-            vm::openPicker, vm::pickTopic, vm::setNewTopic, vm::addTopic, vm::setExplanation,
-            vm::toReflect, vm::backToExplain, vm::toggleHardest, vm::setNote, vm::finish, vm::leave
+    ProvideVoiceCommands(voice.host) {
+        FeynmanScreen(
+            state,
+            FeynmanActions(
+                vm::openPicker, vm::pickTopic, vm::setNewTopic, vm::addTopic,
+                vm::setExplanation, vm::toReflect, vm::backToExplain, vm::toggleHardest,
+                vm::setNote, vm::finish, vm::leave
+            )
         )
-    )
+    }
 }
 
 /** Prototype `FeynmanScreen` and `FeynmanFeedbackScreen` (Practice.kt), as two steps of one exercise. */
@@ -157,6 +166,7 @@ private fun Explain(state: FeynmanUiState, actions: FeynmanActions, onClose: () 
         TopBar(state.name, onClose, trailing = {
             Pill(stringResource(Skill.LEARNING.title), sc.container, sc.content)
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         IteraCard(color = sc.container, gap = 10.dp) {
             Eyebrow(stringResource(R.string.fey_topic), sc.content)
             state.topic?.let {
@@ -213,10 +223,11 @@ private fun Explain(state: FeynmanUiState, actions: FeynmanActions, onClose: () 
                         color = c.ink
                     )
                 }
-                NoteField(
+                VoiceNoteField(
                     state.newTopic,
                     actions.newTopic,
                     stringResource(R.string.fey_topic_new_hint),
+                    maxChars = FeynmanViewModel.TOPIC_MAX,
                     minLines = 1,
                     modifier = Modifier.testTag("FeynmanNewTopic"),
                     onDone = actions.addTopic
@@ -282,6 +293,7 @@ private fun Reflect(state: FeynmanUiState, actions: FeynmanActions) {
         }
     ) {
         TopBar(state.name, actions.backToExplain, IteraIcons.Back)
+        VoiceCommandAction(Modifier.align(Alignment.End))
         Text(stringResource(R.string.fey_back_title), style = Itera.type.title, color = c.ink)
         Text(stringResource(R.string.fey_hardest), style = Itera.type.label, color = c.ink)
         FlowRow(

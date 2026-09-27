@@ -39,7 +39,6 @@ import com.wivernz.itera.core.common.time.formatMonthYear
 import com.wivernz.itera.core.designsystem.component.ButtonKind
 import com.wivernz.itera.core.designsystem.component.ErrorState
 import com.wivernz.itera.core.designsystem.component.IteraButton
-import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.component.Pill
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.TopBar
@@ -52,6 +51,11 @@ import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.feature.exercise.runner.CappedNoteField
 import com.wivernz.itera.feature.exercise.runner.LeaveExerciseDialog
 import com.wivernz.itera.feature.exercise.runner.gated
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.VoiceNoteField
+import com.wivernz.itera.feature.voice.rememberExerciseVoice
 import java.time.YearMonth
 
 class PremortemActions(
@@ -75,21 +79,25 @@ fun PremortemRoute(
     onClose: () -> Unit
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = rememberExerciseVoice(vm, vm::leave)
+    val toToday = LocalVoiceToToday.current
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is PremortemEffect.ShowResult -> showResult(effect.activityId, effect.techniqueId)
-            PremortemEffect.Close -> onClose()
+            PremortemEffect.Close -> voice.onClosed(onClose, toToday)
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { vm.flushDraft() }
-    PremortemScreen(
-        state,
-        PremortemActions(
-            vm::setProject, vm::setNewReason, vm::addReason, vm::cycleLikelihood, vm::focus,
-            vm::move, vm::remove, vm::setAction, vm::addToToday, vm::finishWithoutAdding,
-            vm::leave
+    ProvideVoiceCommands(voice.host) {
+        PremortemScreen(
+            state,
+            PremortemActions(
+                vm::setProject, vm::setNewReason, vm::addReason, vm::cycleLikelihood, vm::focus,
+                vm::move, vm::remove, vm::setAction, vm::addToToday, vm::finishWithoutAdding,
+                vm::leave
+            )
         )
-    )
+    }
 }
 
 private val Likelihood.label: Int get() = when (this) {
@@ -155,12 +163,14 @@ fun PremortemScreen(state: PremortemUiState, actions: PremortemActions) {
         TopBar(state.name, back, trailing = {
             Pill(stringResource(Skill.REFLECTION.title), sc.container, sc.content)
         })
+        VoiceCommandAction(Modifier.align(Alignment.End))
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(stringResource(R.string.pm_project), style = Itera.type.bodySmall, color = c.ink2)
-            NoteField(
+            VoiceNoteField(
                 state.project,
                 actions.project,
                 stringResource(R.string.pm_project_hint),
+                maxChars = PremortemViewModel.PROJECT_MAX,
                 minLines = 1,
                 modifier = Modifier.testTag("PremortemProject")
             )

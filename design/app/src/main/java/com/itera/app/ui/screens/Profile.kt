@@ -84,6 +84,7 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
             TopBar("", { panel = null }, IteraIcons.Back)
             Text(stringResource(if (panel == "privacy") R.string.privacy else R.string.settings_topics), style = Itera.type.display, color = c.ink)
             if (panel == "privacy") Text(stringResource(R.string.privacy_body), style = Itera.type.body, color = c.ink)
+            if (panel == "privacy") Text(stringResource(R.string.privacy_voice), style = Itera.type.body, color = c.ink)
             else {
                 if (topics.isEmpty()) Text(stringResource(R.string.settings_topics_empty), style = Itera.type.body, color = c.ink2)
                 topics.toList().forEachIndexed { i, topic ->

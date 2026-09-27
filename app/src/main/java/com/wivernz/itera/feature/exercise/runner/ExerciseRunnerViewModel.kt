@@ -22,8 +22,19 @@ import com.wivernz.itera.domain.training.CompleteActivityUseCase
 import com.wivernz.itera.domain.training.SaveDraftUseCase
 import com.wivernz.itera.domain.training.SnoozeActivityUseCase
 import com.wivernz.itera.domain.training.StartActivityUseCase
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
+import com.wivernz.itera.domain.voice.VoiceItem
+import com.wivernz.itera.domain.voice.VoiceItemMatcher
+import com.wivernz.itera.domain.voice.VoiceMatch
 import com.wivernz.itera.feature.exercise.template.CompletionGate
 import com.wivernz.itera.feature.exercise.template.CompletionRules
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Clock
 import java.time.Duration
@@ -95,7 +106,8 @@ class ExerciseRunnerViewModel @Inject constructor(
     private val saveDraft: SaveDraftUseCase,
     private val analytics: Analytics,
     private val clock: Clock
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val activityId: Long = checkNotNull(saved.get<Long>(ARG_ACTIVITY))
     private val mutable = MutableStateFlow(ExerciseRunnerUiState())
     val state: StateFlow<ExerciseRunnerUiState> = mutable.asStateFlow()
@@ -269,11 +281,22 @@ class ExerciseRunnerViewModel @Inject constructor(
 
     fun addItem(key: String, block: ExerciseBlock.Checklist) {
         val label = mutable.value.pendingItems[key]?.trim().orEmpty()
-        val value = mutable.value.values[key] as? BlockValue.Items ?: return
-        if (label.isEmpty() || value.items.size >= block.maxItems) return
+        if (append(key, block, label, pendingSince[key] ?: clock.instant())) {
+            pendingSince.remove(key)
+            mutable.update { it.copy(pendingItems = it.pendingItems - key) }
+        }
+    }
+
+    /** The one Add rule, shared by the field and voice; the stopwatch starts at [startedAt]. */
+    private fun append(
+        key: String,
+        block: ExerciseBlock.Checklist,
+        label: String,
+        startedAt: Instant
+    ): Boolean {
+        val value = mutable.value.values[key] as? BlockValue.Items ?: return false
+        if (label.isEmpty() || value.items.size >= block.maxItems) return false
         val id = ((value.items.mapNotNull { it.id.toIntOrNull() }.maxOrNull() ?: 0) + 1).toString()
-        val now = clock.instant()
-        val startedAt = pendingSince.remove(key) ?: now
         val item = ChecklistItem(
             id,
             label,
@@ -281,8 +304,8 @@ class ExerciseRunnerViewModel @Inject constructor(
             elapsedSeconds = if (block.withStopwatch) 0 else null
         )
         if (block.withStopwatch) running[id] = 0 to startedAt
-        mutable.update { it.copy(pendingItems = it.pendingItems - key) }
         edit(key, value.copy(items = value.items + item))
+        return true
     }
 
     /** Ticking freezes the item's stopwatch; unticking lets it run on from there. */
@@ -317,6 +340,91 @@ class ExerciseRunnerViewModel @Inject constructor(
                 mutable.update { it.copy(busy = false, failed = true) }
             }
         }
+    }
+
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    /** The run step's one checklist, if it has exactly one: the only list voice may add to or tick. */
+    private fun voiceList(): Pair<ExerciseBlock.Checklist, BlockValue.Items>? {
+        val s = mutable.value
+        val block =
+            s.blocks.filterIsInstance<ExerciseBlock.Checklist>().singleOrNull() ?: return null
+        val value = s.values[block.key] as? BlockValue.Items ?: return null
+        return block to value
+    }
+
+    override val voiceCommands: Set<VoiceCommandKind>
+        get() = buildSet {
+            if (voiceList() != null) {
+                add(VoiceCommandKind.ADD_ITEM)
+                add(VoiceCommandKind.COMPLETE_ITEM)
+            }
+            add(VoiceCommandKind.COMPLETE_CURRENT_EXERCISE)
+        }
+
+    override fun planVoice(command: VoiceCommand): VoicePlan {
+        val s = mutable.value
+        if (s.loading || s.missing) return VoicePlan.Reject(VoiceRejection.NotHere)
+        return when (command) {
+            is VoiceCommand.AddItem -> {
+                val (block, value) = voiceList() ?: return VoicePlan.Reject(VoiceRejection.NoList)
+                if (value.items.size >= block.maxItems) {
+                    VoicePlan.Reject(VoiceRejection.ListFull)
+                } else {
+                    VoicePlan.Run(VoiceAction.AddItem(command.text))
+                }
+            }
+            is VoiceCommand.CompleteItem -> {
+                val (_, value) = voiceList() ?: return VoicePlan.Reject(VoiceRejection.NoList)
+                val open = value.items.mapIndexedNotNull { i, item ->
+                    VoiceItem(item.id, item.label, i + 1).takeIf { !item.done }
+                }
+                when (val match = VoiceItemMatcher.match(command.query, open)) {
+                    is VoiceMatch.Unique -> VoicePlan.Run(VoiceAction.CompleteItem(match.item))
+                    is VoiceMatch.Choose -> VoicePlan.Choose(match.candidates)
+                    VoiceMatch.None -> VoicePlan.Reject(VoiceRejection.NoMatch(command.query))
+                }
+            }
+            VoiceCommand.CompleteCurrentExercise ->
+                if (s.gate == CompletionGate.Ready && !s.busy) {
+                    VoicePlan.Confirm(VoiceAction.CompleteExercise)
+                } else {
+                    VoicePlan.Reject(VoiceRejection.ExerciseNotReady)
+                }
+            else -> VoicePlan.Reject(VoiceRejection.NotHere)
+        }
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome = when (action) {
+        is VoiceAction.AddItem -> {
+            val (block, _) = voiceList() ?: return VoiceOutcome.Rejected(VoiceRejection.Stale)
+            val label = capped(action.text.trim())
+            if (append(block.key, block, label, clock.instant())) {
+                VoiceOutcome.Done(VoiceFeedback.Added(label))
+            } else {
+                VoiceOutcome.Rejected(VoiceRejection.ListFull)
+            }
+        }
+        is VoiceAction.CompleteItem -> {
+            val (block, value) = voiceList() ?: return VoiceOutcome.Rejected(VoiceRejection.Stale)
+            val item = value.items.firstOrNull { it.id == action.item.id }
+            if (item == null || item.done || item.label != action.item.label) {
+                VoiceOutcome.Rejected(VoiceRejection.Stale)
+            } else {
+                toggleItem(block.key, item.id)
+                VoiceOutcome.Done(VoiceFeedback.Completed(item.label))
+            }
+        }
+        VoiceAction.CompleteExercise -> {
+            val s = mutable.value
+            if (s.gate != CompletionGate.Ready || s.busy) {
+                VoiceOutcome.Rejected(VoiceRejection.Stale)
+            } else {
+                finish()
+                VoiceOutcome.Done(VoiceFeedback.Handover)
+            }
+        }
+        else -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
     }
 
     /** Back from the run step: the draft is kept and the activity becomes available again. */

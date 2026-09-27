@@ -10,9 +10,17 @@ import com.wivernz.itera.domain.model.TechniqueId
 import com.wivernz.itera.domain.repository.LearningTopicRepository
 import com.wivernz.itera.domain.repository.ReviewRepository
 import com.wivernz.itera.domain.review.ReviewScheduler
+import com.wivernz.itera.domain.voice.VoiceCommand
+import com.wivernz.itera.domain.voice.VoiceCommandKind
 import com.wivernz.itera.feature.exercise.runner.ExerciseSession
 import com.wivernz.itera.feature.exercise.runner.ExerciseSessionDeps
 import com.wivernz.itera.feature.exercise.runner.capped
+import com.wivernz.itera.feature.voice.VoiceAction
+import com.wivernz.itera.feature.voice.VoiceCommandHost
+import com.wivernz.itera.feature.voice.VoiceFeedback
+import com.wivernz.itera.feature.voice.VoiceOutcome
+import com.wivernz.itera.feature.voice.VoicePlan
+import com.wivernz.itera.feature.voice.VoiceRejection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
@@ -75,7 +83,8 @@ class FeynmanViewModel @Inject constructor(
     private val topicsRepository: LearningTopicRepository,
     private val reviews: ReviewRepository,
     coach: CoachFeedbackProvider
-) : ViewModel() {
+) : ViewModel(),
+    VoiceCommandHost {
     private val session =
         ExerciseSession(deps, checkNotNull(saved.get<Long>(ARG_ACTIVITY)), viewModelScope)
     private val mutable = MutableStateFlow(
@@ -230,10 +239,38 @@ class FeynmanViewModel @Inject constructor(
         )
     }
 
+    // ------------------------------------------------------------------ voice commands (milestone 012)
+
+    override val voiceCommands: Set<VoiceCommandKind> =
+        setOf(VoiceCommandKind.COMPLETE_CURRENT_EXERCISE)
+
+    /** "Done explaining" is a next step, not completion: only the reflect step's Finish counts. */
+    private fun canFinish(s: FeynmanUiState) =
+        s.step == 1 && !s.busy && s.wordsMissing == 0 && s.topic != null && !s.loading
+
+    override fun planVoice(command: VoiceCommand): VoicePlan = when (command) {
+        VoiceCommand.CompleteCurrentExercise ->
+            if (canFinish(mutable.value)) {
+                VoicePlan.Confirm(VoiceAction.CompleteExercise)
+            } else {
+                VoicePlan.Reject(VoiceRejection.ExerciseNotReady)
+            }
+        else -> VoicePlan.Reject(VoiceRejection.NotHere)
+    }
+
+    override suspend fun executeVoice(action: VoiceAction): VoiceOutcome = when {
+        action != VoiceAction.CompleteExercise -> VoiceOutcome.Rejected(VoiceRejection.NotHere)
+        !canFinish(mutable.value) -> VoiceOutcome.Rejected(VoiceRejection.Stale)
+        else -> {
+            finish()
+            VoiceOutcome.Done(VoiceFeedback.Handover)
+        }
+    }
+
     companion object {
         const val ARG_ACTIVITY = "activityId"
         private const val KEY_STEP = "feynman.step"
         private const val FEYNMAN = "feynman_technique"
-        private const val TOPIC_MAX = 200
+        const val TOPIC_MAX = 200
     }
 }

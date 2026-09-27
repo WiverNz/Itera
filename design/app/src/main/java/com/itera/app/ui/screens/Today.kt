@@ -24,6 +24,7 @@ import com.itera.app.data.AppViewModel
 import com.itera.app.model.DayStep
 import com.itera.app.model.Skill
 import com.itera.app.model.Technique
+import com.itera.app.ui.components.VoiceCommandPill
 import com.itera.app.ui.components.Eyebrow
 import com.itera.app.ui.components.IteraButton
 import com.itera.app.ui.components.IteraCard
@@ -190,6 +191,7 @@ fun TodayScreen(
                 onClick = if (reflectionDone) null else onReflection,
             )
         }
+        VoiceCommandPill()
     }
 }
 

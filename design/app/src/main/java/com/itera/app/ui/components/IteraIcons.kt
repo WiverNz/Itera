@@ -56,4 +56,5 @@ object IteraIcons {
     val ArrowDown: ImageVector by lazy { icon("ArrowDown", "M12 5v14M6 13l6 6 6-6") }
     val Eye: ImageVector by lazy { icon("Eye", "M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z", "M9,12 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0") }
     val Globe: ImageVector by lazy { icon("Globe", "M3.5,12 a8.5,8.5 0 1,0 17,0 a8.5,8.5 0 1,0 -17,0", "M3.5 12h17", "M12 3.5c2.4 2.6 3.5 5.4 3.5 8.5s-1.1 5.9-3.5 8.5c-2.4-2.6-3.5-5.4-3.5-8.5s1.1-5.9 3.5-8.5z") }
+    val Mic: ImageVector by lazy { icon("Mic", "M9 6.5a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0z", "M5.5 11.5a6.5 6.5 0 0 0 13 0", "M12 18v2.5") }
 }

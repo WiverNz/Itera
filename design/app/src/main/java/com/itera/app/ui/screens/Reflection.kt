@@ -45,6 +45,7 @@ import com.itera.app.model.DayStep
 import com.itera.app.model.Program
 import com.itera.app.model.Skill
 import com.itera.app.model.Technique
+import com.itera.app.ui.components.VoiceCommandPill
 import com.itera.app.ui.components.ButtonKind
 import com.itera.app.ui.components.ChoiceChip
 import com.itera.app.ui.components.Eyebrow
@@ -102,6 +103,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
         TopBar(stringResource(R.string.reflection_label), onClose) {
             Pill(stringResource(R.string.minutes_short, 2), c.surface2, c.ink2)
         }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(stringResource(R.string.reflection_title), style = Itera.type.display, color = c.ink)
         if (vm.programDay % 7 == 0) WeeklyLookBack(vm, accent)
 
@@ -135,7 +137,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
                                     })
                                 }
                             }
-                            NoteField(answers[i], { answers[i] = it }, stringResource(R.string.reflection_one_line))
+                            NoteField(answers[i], { answers[i] = it }, stringResource(R.string.reflection_one_line), dictation = true)
                         }
                         StepState.Next -> Text(stringResource(q), style = Itera.type.body, color = c.ink2, modifier = Modifier.padding(top = 3.dp))
                     }

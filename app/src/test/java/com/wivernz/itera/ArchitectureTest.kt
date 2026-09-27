@@ -57,7 +57,24 @@ class ArchitectureTest {
         ),
         Rule("date patterns", {
             !it.startsWith("core/common/time/")
-        }, Regex("""DateTimeFormatter\.ofPattern\("""))
+        }, Regex("""DateTimeFormatter\.ofPattern\(""")),
+        // milestone 012: only the adapter touches the platform recogniser
+        Rule(
+            "speech adapter boundary",
+            { !it.startsWith("core/voice/") },
+            Regex("""^import android\.speech\.""")
+        ),
+        // recognition and parsing never write storage or analytics; they reach business rules via screens
+        Rule(
+            "voice storage boundary",
+            {
+                it.startsWith("core/voice/") || it.startsWith("domain/voice/") ||
+                    it.startsWith("feature/voice/")
+            },
+            Regex(
+                """^import (?:androidx\.room\.|androidx\.datastore\.|com\.wivernz\.itera\.(?:data|analytics|domain\.repository|domain\.training|domain\.focus)\.)"""
+            )
+        )
     )
     private fun checkRule(index: Int, path: String, bad: String, good: String) {
         val rule = rules[index]
@@ -139,6 +156,20 @@ class ArchitectureTest {
         "feature/Bad.kt",
         "val now = Instant.now()",
         "val now = clock.instant()"
+    )
+
+    @Test fun speechAdapterBoundary() = checkRule(
+        8,
+        "feature/voice/Bad.kt",
+        "import android.speech.SpeechRecognizer",
+        "import com.wivernz.itera.core.voice.VoiceRecognizer"
+    )
+
+    @Test fun voiceStorageBoundary() = checkRule(
+        9,
+        "domain/voice/Bad.kt",
+        "import com.wivernz.itera.domain.repository.TrainingPlanRepository",
+        "import java.text.Normalizer"
     )
 
     @Test fun formatterBoundary() = checkRule(

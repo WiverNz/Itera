@@ -18,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -36,7 +38,6 @@ import com.wivernz.itera.core.designsystem.component.ChoiceChip
 import com.wivernz.itera.core.designsystem.component.Eyebrow
 import com.wivernz.itera.core.designsystem.component.IteraButton
 import com.wivernz.itera.core.designsystem.component.IteraCard
-import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.component.Pill
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.StepDot
@@ -46,6 +47,11 @@ import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.LocalReduceMotion
 import com.wivernz.itera.core.designsystem.theme.colors
 import com.wivernz.itera.domain.model.Skill
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.VoiceNoteField
+import com.wivernz.itera.feature.voice.withRecommendation
 
 /** Chip ids per question; ids are stored, the text is rendered in the current language. */
 internal val REFLECTION_CHIPS: List<List<Pair<String, Int>>> = listOf(
@@ -74,6 +80,13 @@ fun ReflectionRoute(
     onFinished: (ReflectionEffect.Finished) -> Unit
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val toToday = LocalVoiceToToday.current
+    val voice = remember(vm) {
+        vm.withRecommendation(confirm = true) {
+            vm.onClose()
+            toToday()
+        }
+    }
     ObserveEffects(vm.effects) { effect ->
         when (effect) {
             is ReflectionEffect.Finished -> onFinished(effect)
@@ -81,17 +94,19 @@ fun ReflectionRoute(
     }
     val prefill = state.prefill?.let { renderPrefill(it) }
     LaunchedEffect(prefill) { prefill?.let(vm::applyPrefill) }
-    ReflectionScreen(
-        state = state,
-        onAnswer = vm::setAnswer,
-        onChip = vm::toggleChip,
-        onNext = vm::next,
-        onSkip = vm::skipTonight,
-        onClose = {
-            vm.onClose()
-            onClose()
-        }
-    )
+    ProvideVoiceCommands(voice) {
+        ReflectionScreen(
+            state = state,
+            onAnswer = vm::setAnswer,
+            onChip = vm::toggleChip,
+            onNext = vm::next,
+            onSkip = vm::skipTonight,
+            onClose = {
+                vm.onClose()
+                onClose()
+            }
+        )
+    }
 }
 
 /** The pre-filled answer to question 1, one clause per part. */
@@ -160,6 +175,7 @@ fun ReflectionScreen(
             onClose,
             trailing = { Pill(stringResource(R.string.minutes_short, 2), c.surface2, c.ink2) }
         )
+        VoiceCommandAction(Modifier.align(Alignment.End))
         Text(stringResource(R.string.reflection_title), style = Itera.type.display, color = c.ink)
         state.lookBack?.let { LookBack(it, accent) }
         if (state.failed) {
@@ -234,10 +250,12 @@ fun ReflectionScreen(
                                     })
                                 }
                             }
-                            NoteField(
+                            VoiceNoteField(
                                 state.answers[i],
                                 { onAnswer(i, it) },
                                 stringResource(R.string.reflection_one_line),
+                                // answers have no cap of their own; dictation adds none
+                                maxChars = Int.MAX_VALUE,
                                 modifier = Modifier.testTag("ReflectionField")
                             )
                         }

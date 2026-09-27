@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,7 +58,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wivernz.itera.R
 import com.wivernz.itera.core.common.ObserveEffects
 import com.wivernz.itera.core.designsystem.component.IteraButton
-import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.Segmented
 import com.wivernz.itera.core.designsystem.component.TopBar
@@ -68,6 +68,11 @@ import com.wivernz.itera.core.designsystem.theme.LocalReduceMotion
 import com.wivernz.itera.core.designsystem.theme.colors
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.feature.exercise.runner.ConfirmDialog
+import com.wivernz.itera.feature.exercise.template.CompletionRules
+import com.wivernz.itera.feature.voice.ProvideVoiceCommands
+import com.wivernz.itera.feature.voice.VoiceCommandAction
+import com.wivernz.itera.feature.voice.VoiceNoteField
+import com.wivernz.itera.feature.voice.withRecommendation
 
 class FocusNavigation(
     val showResult: (Long, String) -> Unit,
@@ -79,6 +84,7 @@ class FocusNavigation(
 @Composable
 fun FocusSessionRoute(vm: FocusViewModel, navigation: FocusNavigation) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val voice = remember(vm) { vm.withRecommendation(confirm = false) { navigation.toToday() } }
     val context = LocalContext.current
     val haptics = LocalHapticFeedback.current
     ObserveEffects(vm.effects) { effect ->
@@ -97,19 +103,21 @@ fun FocusSessionRoute(vm: FocusViewModel, navigation: FocusNavigation) {
             FocusEffect.TooShort -> navigation.toToday()
         }
     }
-    FocusScreen(
-        state = state,
-        notificationsAllowed = notificationsAllowed(context),
-        onTask = vm::setTask,
-        onMinutes = vm::setMinutes,
-        onStart = vm::start,
-        onClose = navigation.close,
-        onExtend = vm::extend,
-        onTogglePause = vm::togglePause,
-        onEnd = vm::requestEnd,
-        onConfirmEnd = vm::confirmEnd,
-        onDismissEnd = vm::dismissEnd
-    )
+    ProvideVoiceCommands(voice) {
+        FocusScreen(
+            state = state,
+            notificationsAllowed = notificationsAllowed(context),
+            onTask = vm::setTask,
+            onMinutes = vm::setMinutes,
+            onStart = vm::start,
+            onClose = navigation.close,
+            onExtend = vm::extend,
+            onTogglePause = vm::togglePause,
+            onEnd = vm::requestEnd,
+            onConfirmEnd = vm::confirmEnd,
+            onDismissEnd = vm::dismissEnd
+        )
+    }
 }
 
 private fun notificationsAllowed(context: Context): Boolean =
@@ -187,12 +195,14 @@ private fun FocusSetup(
         }
     ) {
         TopBar(stringResource(R.string.focus_label), onClose)
+        VoiceCommandAction(Modifier.align(Alignment.End))
         Text(stringResource(R.string.focus_setup_title), style = Itera.type.title, color = c.ink)
         Text(stringResource(R.string.focus_setup_sub), style = Itera.type.body, color = c.ink2)
-        NoteField(
+        VoiceNoteField(
             state.task,
             onTask,
             stringResource(R.string.focus_task_hint),
+            maxChars = CompletionRules.MAX_CHARS,
             minLines = 1,
             bordered = true,
             modifier = Modifier.testTag("FocusTask")
@@ -203,6 +213,23 @@ private fun FocusSetup(
             color = c.ink
         )
         Segmented(minutesLabel, state.minutes, onMinutes)
+        state.unsupportedMinutes?.let { requested ->
+            Text(
+                stringResource(
+                    R.string.voice_focus_duration,
+                    stringResource(R.string.minutes_short, requested),
+                    state.minuteOptions.joinToString(" · ") {
+                        minutesLabel.first { m ->
+                            m.first ==
+                                it
+                        }.second
+                    }
+                ),
+                style = Itera.type.bodySmall,
+                color = c.ink2,
+                modifier = Modifier.testTag("FocusUnsupportedMinutes")
+            )
+        }
         if (!notificationsAllowed) {
             Text(
                 stringResource(R.string.focus_permission_note),
@@ -270,6 +297,7 @@ private fun FocusTimerContent(
                 color = c.ink2
             )
         }
+        VoiceCommandAction(Modifier.align(Alignment.End).padding(top = 8.dp))
         Spacer(Modifier.weight(1f))
         Box(Modifier.size(300.dp), contentAlignment = Alignment.Center) {
             Canvas(Modifier.fillMaxSize().testTag("FocusRing")) {

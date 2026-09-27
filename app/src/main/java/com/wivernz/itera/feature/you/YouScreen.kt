@@ -154,6 +154,7 @@ fun YouScreen(
                 TopBar("", { panel = null }, IteraIcons.Back)
                 Text(stringResource(R.string.privacy), style = Itera.type.display, color = c.ink)
                 Text(stringResource(R.string.privacy_body), style = Itera.type.body, color = c.ink)
+                Text(stringResource(R.string.privacy_voice), style = Itera.type.body, color = c.ink)
             }
         } else {
             TopicsScreen(state.topics, onEvent) { panel = null }

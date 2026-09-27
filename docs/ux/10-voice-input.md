@@ -1,6 +1,6 @@
 # Voice input and commands
 
-Planned MVP capability, owned by [milestone 012](../issues/012-voice-input-and-commands.md); no implementation yet. Voice speeds up existing interactions. It is not a conversational assistant, task manager or global inbox.
+Planned MVP capability, owned by [milestone 012](../issues/012-voice-input-and-commands.md); implemented 2026-09-27. Voice speeds up existing interactions. It is not a conversational assistant, task manager or global inbox.
 
 ## Entry points and dictation
 

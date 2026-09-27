@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Prototype-only sample data for the voice ambiguity demo. -->
+<resources>
+    <string name="voice_sample_item">Llamar a Ana</string>
+</resources>

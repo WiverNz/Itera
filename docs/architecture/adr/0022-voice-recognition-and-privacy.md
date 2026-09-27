@@ -1,6 +1,6 @@
 # ADR-0022: Explicit on-device voice input
 
-Status: accepted for planned milestone 012 (2026-09-26); not implemented.
+Status: accepted (2026-09-26); implemented in milestone 012 (2026-09-27).
 
 ## Decision
 

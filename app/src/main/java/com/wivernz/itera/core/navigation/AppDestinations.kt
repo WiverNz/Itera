@@ -1,6 +1,7 @@
 package com.wivernz.itera.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.wivernz.itera.domain.model.ActivityState
@@ -34,12 +35,20 @@ import com.wivernz.itera.feature.train.TechniqueDetailEffect
 import com.wivernz.itera.feature.train.TechniqueDetailRoute
 import com.wivernz.itera.feature.train.TrainEffect
 import com.wivernz.itera.feature.train.TrainRoute
+import com.wivernz.itera.feature.voice.LocalVoiceToToday
 import com.wivernz.itera.feature.you.ExportRoute
 import com.wivernz.itera.feature.you.YouRoute
 
 /** Production destination content. Routes owned by later milestones keep the milestone 003 placeholder. */
 @Composable
 fun AppDestination(route: AppRoute, actions: NavigationActions) {
+    CompositionLocalProvider(LocalVoiceToToday provides actions.backToToday) {
+        Destination(route, actions)
+    }
+}
+
+@Composable
+private fun Destination(route: AppRoute, actions: NavigationActions) {
     when (route) {
         Progress -> ProgressRoute(hiltViewModel(), {
             actions.navigate(History)
@@ -56,7 +65,14 @@ fun AppDestination(route: AppRoute, actions: NavigationActions) {
         Goals -> GoalsRoute(onboardingViewModel(), actions.back) { actions.navigate(Rhythm) }
         Rhythm -> RhythmRoute(onboardingViewModel(), actions.back) { actions.navigate(FirstWeek) }
         FirstWeek -> FirstWeekRoute(onboardingViewModel(), actions.back, actions.finishOnboarding)
-        Today -> TodayRoute(hiltViewModel()) { actions.navigate(it.toRoute()) }
+        Today -> TodayRoute(
+            hiltViewModel(),
+            onVoiceFocus = { target, requested ->
+                actions.navigate(
+                    FocusSession(target.activityId, target.minutes, target.techniqueId, requested)
+                )
+            }
+        ) { actions.navigate(it.toRoute()) }
         Train -> TrainRoute(hiltViewModel()) { effect ->
             actions.navigate(
                 when (effect) {

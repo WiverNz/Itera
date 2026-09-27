@@ -50,6 +50,7 @@ import com.itera.app.model.DayStep
 import com.itera.app.model.ExerciseKind
 import com.itera.app.model.Feeling
 import com.itera.app.model.Technique
+import com.itera.app.ui.components.VoiceCommandPill
 import com.itera.app.ui.components.ButtonKind
 import com.itera.app.ui.components.Eyebrow
 import com.itera.app.ui.components.IteraButton
@@ -105,6 +106,7 @@ fun TwoMinuteScreen(onClose: () -> Unit, onFinish: () -> Unit) {
         TopBar(stringResource(Technique.TwoMinute.title), onClose, IteraIcons.Back) {
             Pill("$done / ${tasks.size}", sc.container, sc.content)
         }
+        VoiceCommandPill(Modifier.align(Alignment.End))
         Text(stringResource(R.string.two_title), style = Itera.type.title, color = c.ink)
         Text(stringResource(R.string.two_sub), style = Itera.type.body, color = c.ink2)
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -129,7 +131,7 @@ fun TwoMinuteScreen(onClose: () -> Unit, onFinish: () -> Unit) {
                     )
                 }
             }
-            NoteField(extra, { extra = it }, stringResource(R.string.two_add_hint), minLines = 1)
+            NoteField(extra, { extra = it }, stringResource(R.string.two_add_hint), minLines = 1, dictation = true)
         }
     }
 }
@@ -188,7 +190,7 @@ fun ExerciseResultScreen(vm: AppViewModel, technique: Technique, onDone: () -> U
                 ) { Text(stringResource(f.title), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink) }
             }
         }
-        NoteField(note, { note = it }, stringResource(R.string.result_note_hint))
+        NoteField(note, { note = it }, stringResource(R.string.result_note_hint), dictation = true)
         IteraCard(padding = PaddingValues(18.dp), gap = 12.dp) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(stringResource(technique.title), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))

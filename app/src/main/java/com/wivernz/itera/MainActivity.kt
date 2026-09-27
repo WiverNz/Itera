@@ -39,14 +39,19 @@ import com.wivernz.itera.core.navigation.ExerciseResult
 import com.wivernz.itera.core.navigation.FocusSession
 import com.wivernz.itera.core.navigation.RouteCodec
 import com.wivernz.itera.core.navigation.ShellViewModel
+import com.wivernz.itera.core.voice.VoiceRecognizer
 import com.wivernz.itera.feature.focus.FocusRestoreTarget
 import com.wivernz.itera.feature.focus.FocusRestoreViewModel
+import com.wivernz.itera.feature.voice.VoiceHost
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val shell: ShellViewModel by viewModels()
     private val focusRestore: FocusRestoreViewModel by viewModels()
+
+    @Inject lateinit var voiceRecognizer: VoiceRecognizer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
@@ -66,12 +71,14 @@ class MainActivity : AppCompatActivity() {
             val preferences = state.preferences
             if (preferences != null) {
                 IteraTheme(dark = preferences.theme.isDark()) {
-                    AppNavHost(
-                        preferences.onboardingCompleted,
-                        pending,
-                        shell::consumeDeepLink,
-                        destination = { route, actions -> AppDestination(route, actions) }
-                    )
+                    VoiceHost(voiceRecognizer) {
+                        AppNavHost(
+                            preferences.onboardingCompleted,
+                            pending,
+                            shell::consumeDeepLink,
+                            destination = { route, actions -> AppDestination(route, actions) }
+                        )
+                    }
                 }
             } else if (state.failed) {
                 IteraTheme {

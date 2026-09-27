@@ -51,6 +51,7 @@ import com.wivernz.itera.core.designsystem.icon.techniqueIcon
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.colors
 import com.wivernz.itera.domain.model.Skill
+import com.wivernz.itera.feature.voice.VoiceCommandAction
 
 /**
  * Answers one question: what should I do right now? One hero card with a single action, then the day's steps.
@@ -103,6 +104,7 @@ fun TodayScreen(
                 }
                 state.steps.forEach { step -> Step(step, onTarget) }
             }
+            VoiceCommandAction()
         }
         SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).padding(16.dp))
     }

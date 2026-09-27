@@ -1,6 +1,6 @@
 # 012 - Voice input & commands
 
-**Status:** planned; not started. **Depends on** 006, 007, 008 | **Blocks** 009 (and therefore 010, 011). Appended without renumbering; execute after core features and their outstanding visual acceptance, before quality passes/hardening/release. Absorbs no historical issue.
+**Status:** implemented (2026-09-27); prototype comparison partial (see Verification gap). **Depends on** 006, 007, 008 | **Blocks** 009 (and therefore 010, 011). Appended without renumbering; execute after core features and their outstanding visual acceptance, before quality passes/hardening/release. Absorbs no historical issue.
 
 ## Goal and scope
 
@@ -40,3 +40,7 @@ Run `design/` first. Use `ui/screens/Today.kt`, `Exercise.kt`, `Practice.kt`, `R
 ## Non-goals
 
 Conversational assistant, generated feedback, AI/NLU dependency, continuous/background listening, custom “Hey Itera”, spoken responses, arbitrary focus-duration expansion, global task CRUD/inbox, cross-exercise item search, voice reset/delete/export, new schema or new Gradle module.
+
+## Verification gap
+
+Required tests, `./gradlew build` (format, lint, unit tests, coverage) and the prototype build pass. On the API 36 emulator the Today action, command sheet and permission rationale were checked against the prototype in light theme only. Full light/dark, always-dark, 2.0 font scale, TalkBack/Switch Access, four-language and real-recogniser (installed model, API 26-30) checks are deferred to 009/010 with the earlier deferred visual checks. Implementation choices are in `docs/00-source-of-truth.md` ("Milestone 012 implementation decisions").
