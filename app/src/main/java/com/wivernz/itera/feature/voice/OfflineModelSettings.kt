@@ -20,36 +20,61 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.wivernz.itera.R
+import com.wivernz.itera.core.common.currentLocale
 import com.wivernz.itera.core.designsystem.component.ButtonKind
 import com.wivernz.itera.core.designsystem.component.IteraButton
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.voice.VoiceModelInfo
 import com.wivernz.itera.core.voice.VoiceModelState
 import com.wivernz.itera.domain.voice.VoiceLanguage
+import java.text.NumberFormat
 
 /** Document-picker types for a model archive; some providers report zips as a generic binary. */
 val MODEL_TYPES =
     arrayOf("application/zip", "application/x-zip-compressed", "application/octet-stream")
 
+private const val PERCENT = 100.0
+
 @Composable
 private fun size(bytes: Long): String = Formatter.formatShortFileSize(LocalContext.current, bytes)
 
-/** The Settings → Voice row value for the active language's offline model (milestone 013). */
+/**
+ * The active language's offline model state (milestone 013). [short] is the Settings row value: one or two words,
+ * so it fits at large text in every language; the sheet shows the full state with sizes.
+ */
 @Composable
 fun offlineModelValue(
     models: Map<VoiceLanguage, VoiceModelState>,
     info: Map<VoiceLanguage, VoiceModelInfo>,
-    language: VoiceLanguage
+    language: VoiceLanguage,
+    short: Boolean = false
 ): String {
     val download = info[language]?.let { size(it.downloadBytes) }.orEmpty()
-    return when (val state = models[language] ?: VoiceModelState.NotInstalled) {
+    val state = models[language] ?: VoiceModelState.NotInstalled
+    if (short) {
+        when (state) {
+            is VoiceModelState.Installed -> return stringResource(
+                R.string.voice_offline_row_installed
+            )
+            VoiceModelState.NotInstalled -> return stringResource(
+                R.string.voice_offline_row_missing
+            )
+            VoiceModelState.Damaged -> return stringResource(R.string.voice_offline_row_damaged)
+            VoiceModelState.DownloadFailed -> return stringResource(
+                R.string.voice_offline_row_failed
+            )
+            else -> Unit
+        }
+    }
+    return when (state) {
         is VoiceModelState.Installed -> stringResource(
             R.string.voice_offline_value_installed,
             size(state.bytes)
         )
         is VoiceModelState.Downloading -> stringResource(
             R.string.voice_offline_value_downloading,
-            state.percent
+            // locale-aware ("40%", "40 %")
+            NumberFormat.getPercentInstance(currentLocale()).format(state.percent / PERCENT)
         )
         VoiceModelState.WaitingForWifi -> stringResource(R.string.voice_offline_value_wifi)
         VoiceModelState.Damaged -> stringResource(R.string.voice_offline_value_damaged)

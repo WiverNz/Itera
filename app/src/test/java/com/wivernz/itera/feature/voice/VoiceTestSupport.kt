@@ -73,7 +73,11 @@ class FakeRecognizer(
         consentRequired = false
     }
 
-    override fun start(languageTag: String, listener: VoiceRecognitionListener, grammar: List<String>?) {
+    override fun start(
+        languageTag: String,
+        listener: VoiceRecognitionListener,
+        grammar: List<String>?
+    ) {
         languages += languageTag
         listeners += listener
         grammars += grammar
@@ -244,8 +248,13 @@ class FakeOfflineModels(vararg installed: VoiceLanguage) : OfflineModels {
     val installed = installed.toMutableSet()
     val unusable = mutableListOf<VoiceLanguage>()
 
-    override fun installed(language: VoiceLanguage) =
-        if (language in installed) OfflineModel(language, File("models/${language.tag}"), "test-${language.tag}") else null
+    override fun installed(language: VoiceLanguage) = if (language in
+        installed
+    ) {
+        OfflineModel(language, File("models/${language.tag}"), "test-${language.tag}")
+    } else {
+        null
+    }
 
     override fun reportUnusable(language: VoiceLanguage) {
         unusable += language

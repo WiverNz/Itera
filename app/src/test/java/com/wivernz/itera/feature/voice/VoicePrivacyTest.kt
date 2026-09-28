@@ -63,7 +63,9 @@ class VoicePrivacyTest {
         // may hand audio to a recogniser. Nothing else in voice code may touch audio.
         val allowed = mapOf(
             "CallerAudio.kt" to setOf("MediaRecorder", "AudioRecord", "EXTRA_AUDIO_SOURCE"),
-            "VoiceRecognizer.kt" to setOf("EXTRA_AUDIO_SOURCE")
+            "VoiceRecognizer.kt" to setOf("EXTRA_AUDIO_SOURCE"),
+            // milestone 013: Itera's own offline recogniser records in memory only (VoiceOfflineTest)
+            "VoskSpeechEngine.kt" to setOf("MediaRecorder", "AudioRecord")
         )
         val offenders = voiceSources.flatMap { file ->
             val text = file.readText()

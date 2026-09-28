@@ -79,24 +79,29 @@ class AndroidVoiceModelStoreTest {
     private val ru = archive()
     private val catalog = listOf(
         VoiceModelArchive(VoiceLanguage.RU, "vosk-model-small-ru-test", ru.size.toLong(), sha(ru)),
-        VoiceModelArchive(VoiceLanguage.EN, "vosk-model-small-en-test", 1, "0".repeat(64))
+        VoiceModelArchive(VoiceLanguage.EN, "vosk-model-small-en-test", 1, "0".repeat(64)),
+        VoiceModelArchive(VoiceLanguage.DE, "vosk-model-small-de-test", 1, "1".repeat(64)),
+        VoiceModelArchive(VoiceLanguage.ES, "vosk-model-small-es-test", 1, "2".repeat(64))
     )
     private val uploads = mutableMapOf<String, ByteArray>()
 
-    private fun store(root: File = File(folder.root, "voice-models"), packs: FakePacks = FakePacks()) =
-        AndroidVoiceModelStore(
-            root,
-            packs,
-            { uri -> uploads[uri]?.let(::ByteArrayInputStream) },
-            Dispatchers.Unconfined,
-            TestLogger(),
-            catalog
-        )
+    private fun store(
+        root: File = File(folder.root, "voice-models"),
+        packs: FakePacks = FakePacks()
+    ) = AndroidVoiceModelStore(
+        root,
+        packs,
+        { uri -> uploads[uri]?.let(::ByteArrayInputStream) },
+        Dispatchers.Unconfined,
+        TestLogger(),
+        catalog
+    )
 
-    private fun import(store: AndroidVoiceModelStore, bytes: ByteArray): VoiceModelImport = runBlocking {
-        uploads["content://picked"] = bytes
-        store.import("content://picked")
-    }
+    private fun import(store: AndroidVoiceModelStore, bytes: ByteArray): VoiceModelImport =
+        runBlocking {
+            uploads["content://picked"] = bytes
+            store.import("content://picked")
+        }
 
     @Test fun nothingIsInstalledByDefault() {
         val models = store()
@@ -114,7 +119,9 @@ class AndroidVoiceModelStoreTest {
         assertTrue(File(installed.path, "am/final.mdl").isFile)
         val state = models.states.value[VoiceLanguage.RU] as VoiceModelState.Installed
         assertEquals(VoiceModelSource.IMPORTED, state.source)
-        val manifest = Properties().apply { File(root, "ru/manifest.properties").reader().use(::load) }
+        val manifest = Properties().apply {
+            File(root, "ru/manifest.properties").reader().use(::load)
+        }
         assertEquals(sha(ru), manifest.getProperty("sha256"))
         assertEquals("no staging left", listOf("ru"), root.list()!!.toList())
         // persisted: a new store (app restart) finds it
@@ -124,7 +131,10 @@ class AndroidVoiceModelStoreTest {
     @Test fun unknownArchivesAreRejectedAndLeaveNothing() {
         val root = File(folder.root, "voice-models")
         val models = store(root)
-        assertEquals(VoiceModelImport.NOT_A_MODEL, import(models, archive(top = "someone-elses-model")))
+        assertEquals(
+            VoiceModelImport.NOT_A_MODEL,
+            import(models, archive(top = "someone-elses-model"))
+        )
         assertNull(models.installed(VoiceLanguage.RU))
         assertTrue(root.list().orEmpty().isEmpty())
     }
@@ -137,7 +147,13 @@ class AndroidVoiceModelStoreTest {
 
         // pinned checksum but missing a required file: incompatible
         val incomplete = archive(files = VoiceModelCatalog.requiredFiles.drop(1))
-        val pinned = listOf(VoiceModelArchive(VoiceLanguage.RU, "x", incomplete.size.toLong(), sha(incomplete)))
+        val pinned = catalog.map {
+            if (it.language == VoiceLanguage.RU) {
+                VoiceModelArchive(VoiceLanguage.RU, "x", incomplete.size.toLong(), sha(incomplete))
+            } else {
+                it
+            }
+        }
         val strict = AndroidVoiceModelStore(
             File(folder.root, "strict"),
             FakePacks(),
@@ -195,12 +211,14 @@ class AndroidVoiceModelStoreTest {
         assertEquals(VoiceModelState.WaitingForWifi, models.states.value[VoiceLanguage.RU])
 
         val assets = folder.newFolder("pack")
-        VoiceModelCatalog.requiredFiles.forEach { File(assets, "model/$it").apply { parentFile.mkdirs() }.writeText("x") }
+        VoiceModelCatalog.requiredFiles.forEach {
+            File(assets, "voice_model_ru/$it").apply { parentFile.mkdirs() }.writeText("x")
+        }
         packs.folders["voice_model_ru"] = assets
         packs.emit(PackState("voice_model_ru", PackStatus.COMPLETED, 100))
         val state = models.states.value[VoiceLanguage.RU] as VoiceModelState.Installed
         assertEquals(VoiceModelSource.PLAY, state.source)
-        assertEquals(File(assets, "model"), models.installed(VoiceLanguage.RU)!!.path)
+        assertEquals(File(assets, "voice_model_ru"), models.installed(VoiceLanguage.RU)!!.path)
 
         packs.emit(PackState("voice_model_en", PackStatus.FAILED))
         assertEquals(VoiceModelState.DownloadFailed, models.states.value[VoiceLanguage.EN])
@@ -216,23 +234,38 @@ class AndroidVoiceModelStoreTest {
 /** The runtime pins and the build-time pins are the same four archives. */
 class VoiceModelCatalogTest {
     @Test fun catalogMatchesTheBuildPins() {
-        val props = Properties().apply { File("../voicemodels/models.properties").reader().use(::load) }
+        val props = Properties().apply {
+            File("../voicemodels/models.properties").reader().use(::load)
+        }
         assertEquals(4, VoiceModelCatalog.archives.size)
         VoiceModelCatalog.archives.forEach { archive ->
-            val (name, bytes, sha) = props.getProperty(archive.language.name.lowercase())!!.split("|")
+            val (name, bytes, sha) = props.getProperty(
+                archive.language.name.lowercase()
+            )!!.split("|")
             assertEquals(name, archive.name)
             assertEquals(bytes.toLong(), archive.zipBytes)
             assertEquals(sha, archive.sha256)
         }
-        assertEquals(VoiceLanguage.entries.toSet(), VoiceModelCatalog.archives.map { it.language }.toSet())
+        assertEquals(
+            VoiceLanguage.entries.toSet(),
+            VoiceModelCatalog.archives.map {
+                it.language
+            }.toSet()
+        )
     }
 
     @Test fun eachLanguageHasItsOwnOnDemandPack() {
         val packs = VoiceModelCatalog.archives.map { it.pack }
-        assertEquals(listOf("voice_model_en", "voice_model_ru", "voice_model_de", "voice_model_es"), packs)
+        assertEquals(
+            listOf("voice_model_en", "voice_model_ru", "voice_model_de", "voice_model_es"),
+            packs
+        )
         packs.forEach { pack ->
             val build = File("../voicemodels/$pack/build.gradle.kts").readText()
-            assertTrue(pack, "packName.set(\"$pack\")" in build && "deliveryType.set(\"on-demand\")" in build)
+            assertTrue(
+                pack,
+                "packName.set(\"$pack\")" in build && "deliveryType.set(\"on-demand\")" in build
+            )
         }
         val app = File("build.gradle.kts").readText()
         packs.forEach { assertTrue("app bundles $it", "\":$it\"" in app) }

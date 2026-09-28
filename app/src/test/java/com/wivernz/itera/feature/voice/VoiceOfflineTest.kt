@@ -51,14 +51,19 @@ class VoiceOfflineTest {
             VoiceRoute.NeedsSystemConsent,
             VoiceRoute.select(false, GOOGLE, false, null, installed, null)
         )
-        assertEquals(VoiceRoute.Unavailable, VoiceRoute.select(false, null, false, null, emptyList(), null))
+        assertEquals(
+            VoiceRoute.Unavailable,
+            VoiceRoute.select(false, null, false, null, emptyList(), null)
+        )
     }
 
     @Test fun anInstalledModelIsUsedWithoutConsentOrExternalProvider() {
-        val platform = FakePlatform(systemDefault = GOOGLE, providers = listOf(google), callerAudio = true)
+        val platform =
+            FakePlatform(systemDefault = GOOGLE, providers = listOf(google), callerAudio = true)
         val consent = FakeConsent()
         val engine = FakeOfflineEngine()
-        val recognizer = androidRecognizer(platform, consent, engine, FakeOfflineModels(VoiceLanguage.RU))
+        val recognizer =
+            androidRecognizer(platform, consent, engine, FakeOfflineModels(VoiceLanguage.RU))
         assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability("ru-RU"))
         val voice = VoiceController(recognizer, FakeGate(), VoiceLanguage.RU)
         voice.start(owner) { }
@@ -73,9 +78,14 @@ class VoiceOfflineTest {
     @Test fun theModelIsPerLanguageAndAMissingOneFallsThrough() {
         val platform = FakePlatform(systemDefault = GOOGLE)
         val engine = FakeOfflineEngine()
-        val recognizer = androidRecognizer(platform, FakeConsent(), engine, FakeOfflineModels(VoiceLanguage.RU))
+        val recognizer =
+            androidRecognizer(platform, FakeConsent(), engine, FakeOfflineModels(VoiceLanguage.RU))
         assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability("ru-RU"))
-        assertEquals("EN has no model: system consent next", VoiceAvailability.CONSENT_REQUIRED, recognizer.availability("en-US"))
+        assertEquals(
+            "EN has no model: system consent next",
+            VoiceAvailability.CONSENT_REQUIRED,
+            recognizer.availability("en-US")
+        )
         val voice = VoiceController(recognizer, FakeGate(), VoiceLanguage.EN)
         voice.start(owner) { }
         assertEquals(VoiceSessionState.NeedsSystemConsent(owner), voice.state)
@@ -84,7 +94,12 @@ class VoiceOfflineTest {
 
     @Test fun resultsFlowThroughTheUnchangedController() {
         val engine = FakeOfflineEngine()
-        val recognizer = androidRecognizer(FakePlatform(), offline = engine, models = FakeOfflineModels(VoiceLanguage.RU))
+        val recognizer =
+            androidRecognizer(
+                FakePlatform(),
+                offline = engine,
+                models = FakeOfflineModels(VoiceLanguage.RU)
+            )
         val voice = VoiceController(recognizer, FakeGate(), VoiceLanguage.RU)
         val results = mutableListOf<List<String>>()
         voice.start(owner) { results += it }
@@ -97,7 +112,12 @@ class VoiceOfflineTest {
 
     @Test fun stopCancelAndBackgroundReachTheEngine() {
         val engine = FakeOfflineEngine()
-        val recognizer = androidRecognizer(FakePlatform(), offline = engine, models = FakeOfflineModels(VoiceLanguage.EN))
+        val recognizer =
+            androidRecognizer(
+                FakePlatform(),
+                offline = engine,
+                models = FakeOfflineModels(VoiceLanguage.EN)
+            )
         val voice = VoiceController(recognizer, FakeGate(), VoiceLanguage.EN)
         voice.start(owner) { }
         voice.stop()
@@ -112,7 +132,12 @@ class VoiceOfflineTest {
         val platform = FakePlatform(systemDefault = GOOGLE)
         val engine = FakeOfflineEngine()
         val models = FakeOfflineModels(VoiceLanguage.DE)
-        val voice = VoiceController(androidRecognizer(platform, FakeConsent(), engine, models), FakeGate(), VoiceLanguage.DE)
+        val voice =
+            VoiceController(
+                androidRecognizer(platform, FakeConsent(), engine, models),
+                FakeGate(),
+                VoiceLanguage.DE
+            )
         voice.start(owner) { }
         engine.modelFailed!!.invoke()
         engine.listener!!.onError(VoiceError.FAILED)
@@ -124,7 +149,12 @@ class VoiceOfflineTest {
 
     @Test fun commandContextsWithoutFreeTextGetAGrammar() {
         val engine = FakeOfflineEngine()
-        val recognizer = androidRecognizer(FakePlatform(), offline = engine, models = FakeOfflineModels(VoiceLanguage.RU))
+        val recognizer =
+            androidRecognizer(
+                FakePlatform(),
+                offline = engine,
+                models = FakeOfflineModels(VoiceLanguage.RU)
+            )
         val voice = VoiceController(recognizer, FakeGate(), VoiceLanguage.RU)
         val focus = setOf(
             VoiceCommandKind.START_FOCUS,
@@ -145,17 +175,25 @@ class VoiceOfflineTest {
     }
 
     @Test fun grammarsContainOnlyPhrasesTheParserAccepts() {
-        val fixed = VoiceCommandKind.entries.toSet() - VoiceCommandKind.ADD_ITEM - VoiceCommandKind.COMPLETE_ITEM
+        val fixed =
+            VoiceCommandKind.entries.toSet() - VoiceCommandKind.ADD_ITEM -
+                VoiceCommandKind.COMPLETE_ITEM
         for (language in VoiceLanguage.entries) {
             val grammar = VoiceGrammar.forCommands(fixed, language)!!
             assertTrue(grammar.isNotEmpty())
             grammar.forEach { phrase ->
-                assertTrue("$language: $phrase", VoiceCommandParser.parse(phrase, language) is VoiceParse.Recognised)
+                assertTrue(
+                    "$language: $phrase",
+                    VoiceCommandParser.parse(phrase, language) is VoiceParse.Recognised
+                )
             }
         }
         val ru = VoiceGrammar.forCommands(setOf(VoiceCommandKind.START_FOCUS), VoiceLanguage.RU)!!
         assertTrue("начни фокус на двадцать пять минут" in ru)
-        assertNull("free-text commands need free-form", VoiceGrammar.forCommands(VoiceCommandKind.entries.toSet(), VoiceLanguage.EN))
+        assertNull(
+            "free-text commands need free-form",
+            VoiceGrammar.forCommands(VoiceCommandKind.entries.toSet(), VoiceLanguage.EN)
+        )
         assertNull(VoiceGrammar.forCommands(emptySet(), VoiceLanguage.EN))
     }
 
@@ -166,8 +204,15 @@ class VoiceOfflineTest {
                 """{"alternatives":[{"confidence":0.9,"text":"start focus"},{"text":"stark focus"},{"text":""}]}"""
             )
         )
-        assertEquals(listOf("позвонить сантехнику"), VoskSpeechEngine.alternativesOf("""{"text":"позвонить сантехнику"}"""))
-        assertEquals("grammar unknowns dropped", listOf("pause"), VoskSpeechEngine.alternativesOf("""{"text":"[unk] pause"}"""))
+        assertEquals(
+            listOf("позвонить сантехнику"),
+            VoskSpeechEngine.alternativesOf("""{"text":"позвонить сантехнику"}""")
+        )
+        assertEquals(
+            "grammar unknowns dropped",
+            listOf("pause"),
+            VoskSpeechEngine.alternativesOf("""{"text":"[unk] pause"}""")
+        )
         assertTrue(VoskSpeechEngine.alternativesOf("""{"text":""}""").isEmpty())
         assertTrue(VoskSpeechEngine.alternativesOf("not json").isEmpty())
         assertEquals("начни", VoskSpeechEngine.partialOf("""{"partial":"начни"}"""))
@@ -176,11 +221,23 @@ class VoiceOfflineTest {
     @Test fun onlyTheCoreAdapterTouchesVosk() {
         val users = sourcesUnder("").filter { "org.vosk" in it.readText() }.map { it.name }
         assertEquals(listOf("VoskSpeechEngine.kt"), users)
-        val engine = sourcesUnder("core/voice").first { it.name == "VoskSpeechEngine.kt" }.readText()
-        for (forbidden in listOf("FileOutputStream", "openFileOutput", "cacheDir", "filesDir", "Log.")) {
+        val engine = sourcesUnder("core/voice").first {
+            it.name == "VoskSpeechEngine.kt"
+        }.readText()
+        for (forbidden in listOf(
+            "FileOutputStream",
+            "openFileOutput",
+            "cacheDir",
+            "filesDir",
+            "Log."
+        )) {
             assertFalse("no audio file or raw log: $forbidden", forbidden in engine)
         }
-        val calls = Regex("""logger\.\w\(([^)]*)\)""").findAll(engine).map { it.groupValues[1].trim() }.toList()
-        calls.forEach { assertTrue("literal-only log: $it", Regex("""TAG,\s*"[^"$]*"""").matches(it)) }
+        val calls = Regex("""logger\.\w\(([^)]*)\)""").findAll(engine).map {
+            it.groupValues[1].trim()
+        }.toList()
+        calls.forEach {
+            assertTrue("literal-only log: $it", Regex("""TAG,\s*"[^"$]*"""").matches(it))
+        }
     }
 }

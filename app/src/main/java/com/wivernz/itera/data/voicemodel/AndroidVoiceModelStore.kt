@@ -129,10 +129,10 @@ class AndroidVoiceModelStore internal constructor(
         }
     }
 
-    private fun playModel(language: VoiceLanguage): File? =
-        packs.assets(archiveOf(language).pack)?.let {
-            File(it, MODEL)
-        }?.takeIf(::complete)
+    // asset packs share one namespace: each pack keeps its model under assets/<pack name>/
+    private fun playModel(language: VoiceLanguage): File? = archiveOf(language).pack.let { pack ->
+        packs.assets(pack)?.let { File(it, pack) }?.takeIf(::complete)
+    }
 
     override fun installed(language: VoiceLanguage): OfflineModel? {
         val archive = archiveOf(language)

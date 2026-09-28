@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Milestone 013: built-in offline voice recognition (docs/issues/013-offline-voice-recognition.md). -->
 <resources>
-    <string name="voice_offline_setting">Offline-Sprachmodell</string>
+    <string name="voice_offline_setting">Offline-Modell</string>
     <string name="voice_offline_value_installed">Installiert · %1$s</string>
     <string name="voice_offline_value_missing">Nicht installiert · %1$s</string>
-    <string name="voice_offline_value_downloading">Wird geladen · %1$d%%</string>
+    <string name="voice_offline_value_downloading">Wird geladen · %1$s</string>
     <string name="voice_offline_value_wifi">Wartet auf WLAN</string>
     <string name="voice_offline_value_damaged">Beschädigt · neu installieren</string>
     <string name="voice_offline_value_failed">Download fehlgeschlagen</string>
@@ -17,4 +17,9 @@
     <string name="voice_offline_imported">Offline-Sprachmodell installiert</string>
     <string name="voice_offline_not_model">Diese Datei ist kein unterstütztes Sprachmodell.</string>
     <string name="voice_offline_import_failed">Das Modell konnte nicht importiert werden. Versuch es noch einmal.</string>
+    <!-- the Settings row value: short, so it fits at large text; the sheet shows the size -->
+    <string name="voice_offline_row_installed">Installiert</string>
+    <string name="voice_offline_row_missing">Nicht installiert</string>
+    <string name="voice_offline_row_damaged">Beschädigt</string>
+    <string name="voice_offline_row_failed">Fehlgeschlagen</string>
 </resources>

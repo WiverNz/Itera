@@ -33,7 +33,8 @@ class OfflineTest {
         val permissions = app.packageManager.getPackageInfo(
             app.packageName,
             PackageManager.GET_PERMISSIONS
-        ).requestedPermissions.orEmpty().toSet() - "${app.packageName}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        ).requestedPermissions.orEmpty().toSet() -
+            "${app.packageName}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         assertEquals(
             setOf(
                 "android.permission.POST_NOTIFICATIONS",

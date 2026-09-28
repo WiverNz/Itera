@@ -36,6 +36,7 @@ Old 039 unchanged in intent:
 - [ ] A schema change without a migration fails the build.
 - [ ] No test is flaky or ignored.
 - [ ] A short gap summary (what was missing, what was added) is recorded in this file.
+- [ ] From 013: speaking at the instant of the mic tap can lose the first syllable with the offline recogniser (seen on a vivo, RU); reproduce, find the cause and fix or document it. Until then, recognition should begin after the Listening state appears.
 
 ## Required tests
 

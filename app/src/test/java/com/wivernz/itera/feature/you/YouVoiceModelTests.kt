@@ -27,14 +27,20 @@ import org.robolectric.RobolectricTestRunner
 
 /** Milestone 013: the model store as Settings sees it; tests set states and record actions. */
 class FakeVoiceModelStore : VoiceModelStore {
-    override val states = MutableStateFlow(VoiceLanguage.entries.associateWith<VoiceLanguage, VoiceModelState> { VoiceModelState.NotInstalled })
+    override val states =
+        MutableStateFlow(
+            VoiceLanguage.entries.associateWith<VoiceLanguage, VoiceModelState> {
+                VoiceModelState.NotInstalled
+            }
+        )
     override val downloadAvailable = MutableStateFlow(false)
     val downloads = mutableListOf<VoiceLanguage>()
     val removals = mutableListOf<VoiceLanguage>()
     val imports = mutableListOf<String>()
     var importResult = VoiceModelImport.INSTALLED
 
-    override fun info(language: VoiceLanguage) = VoiceModelInfo("vosk-model-small-${language.tag}.zip", 46_000_000)
+    override fun info(language: VoiceLanguage) =
+        VoiceModelInfo("vosk-model-small-${language.tag}.zip", 46_000_000)
 
     override fun download(language: VoiceLanguage) {
         downloads += language
@@ -63,15 +69,24 @@ class YouVoiceModelTest : YouTestBase() {
             val loaded = vm.state.await { !it.loading }
             assertTrue("never automatic", models.downloads.isEmpty())
             assertEquals(VoiceModelState.NotInstalled, loaded.voiceModels[VoiceLanguage.RU])
-            assertEquals("vosk-model-small-ru-RU.zip", loaded.voiceModelInfo[VoiceLanguage.RU]?.file)
+            assertEquals(
+                "vosk-model-small-ru-RU.zip",
+                loaded.voiceModelInfo[VoiceLanguage.RU]?.file
+            )
             vm.onEvent(YouUiEvent.DownloadModel(VoiceLanguage.RU))
             vm.onEvent(YouUiEvent.ImportModel("content://picked"))
             vm.onEvent(YouUiEvent.RemoveModel(VoiceLanguage.DE))
-            vm.state.await { !it.busy }
+            // the events run on the view model's scope; wait for the last one to land
+            repeat(100) {
+                if (models.removals.isNotEmpty()) return@repeat
+                org.robolectric.shadows.ShadowLooper.idleMainLooper()
+                Thread.sleep(10)
+            }
             assertEquals(listOf(VoiceLanguage.RU), models.downloads)
             assertEquals(listOf("content://picked"), models.imports)
             assertEquals(listOf(VoiceLanguage.DE), models.removals)
-            models.states.value = models.states.value + (VoiceLanguage.RU to VoiceModelState.Downloading(30))
+            models.states.value =
+                models.states.value + (VoiceLanguage.RU to VoiceModelState.Downloading(30))
             vm.state.await { it.voiceModels[VoiceLanguage.RU] == VoiceModelState.Downloading(30) }
             Unit
         } finally {
@@ -122,7 +137,15 @@ class OfflineModelSheetTest {
 
     @Test fun anInstalledModelCanBeRemoved() {
         val actions = mutableListOf<String>()
-        show(VoiceModelState.Installed("vosk-model-small-ru-0.22", 91_289_240, VoiceModelSource.IMPORTED), false, actions)
+        show(
+            VoiceModelState.Installed(
+                "vosk-model-small-ru-0.22",
+                91_289_240,
+                VoiceModelSource.IMPORTED
+            ),
+            false,
+            actions
+        )
         compose.onNodeWithText("Installed", substring = true).assertExists()
         compose.onNodeWithText("Import file").assertDoesNotExist()
         compose.onNodeWithText("Remove").performScrollTo().performClick()

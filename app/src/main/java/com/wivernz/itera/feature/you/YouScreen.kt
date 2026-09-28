@@ -136,13 +136,18 @@ fun YouRoute(
             ).show()
         }
     }
+    // the system document picker: the non-Play way to install a model; Itera needs no network permission
+    val importModel =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            uri?.let { vm.onEvent(YouUiEvent.ImportModel(it.toString())) }
+        }
     YouScreen(state, vm::onEvent, is24Hour(context), resume, {
         context.startActivity(
             Intent(
                 Settings.ACTION_APP_NOTIFICATION_SETTINGS
             ).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
         )
-    }, export)
+    }, export, importModel = { importModel.launch(MODEL_TYPES) })
 }
 
 @Composable
@@ -152,7 +157,9 @@ fun YouScreen(
     use24Hour: Boolean,
     resume: Int = 0,
     systemSettings: () -> Unit = {},
-    export: @Composable (() -> Unit) -> Unit = {}
+    export: @Composable (() -> Unit) -> Unit = {},
+    // milestone 013: opens the system document picker for a model archive (YouRoute owns the launcher)
+    importModel: () -> Unit = {}
 ) {
     val c = Itera.colors
     val p = state.preferences
@@ -168,11 +175,6 @@ fun YouScreen(
     fun change(key: SettingKey, value: SettingValue) = onEvent(YouUiEvent.Change(key, value))
     val providers = recognitionProviders()
     val voiceLanguage = currentVoiceLanguage()
-    // the system document picker: the non-Play way to install a model; Itera needs no network permission
-    val importModel =
-        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            uri?.let { onEvent(YouUiEvent.ImportModel(it.toString())) }
-        }
     if (panel == "privacy" || panel == "topics") {
         BackHandler { panel = null }
         if (panel == "privacy") {
@@ -442,7 +444,12 @@ fun YouScreen(
                 // milestone 013: the active app language's offline model comes first, as in the provider order
                 ValueRow(
                     stringResource(R.string.voice_offline_setting),
-                    offlineModelValue(state.voiceModels, state.voiceModelInfo, voiceLanguage),
+                    offlineModelValue(
+                        state.voiceModels,
+                        state.voiceModelInfo,
+                        voiceLanguage,
+                        short = true
+                    ),
                     { panel = "offline" }
                 )
                 Divider()
@@ -510,7 +517,7 @@ fun YouScreen(
             state.voiceModelInfo[voiceLanguage],
             state.modelDownloadAvailable,
             onDownload = { onEvent(YouUiEvent.DownloadModel(voiceLanguage)) },
-            onImport = { importModel.launch(MODEL_TYPES) },
+            onImport = importModel,
             onRemove = { onEvent(YouUiEvent.RemoveModel(voiceLanguage)) },
             onDismiss = { panel = null }
         )

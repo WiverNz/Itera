@@ -34,8 +34,10 @@ import com.wivernz.itera.domain.voice.VoiceLanguage
 import com.wivernz.itera.feature.reduceMotion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -336,8 +338,8 @@ class VoiceProviderTest {
                 delay(10)
             }
         }
-        first.cancel()
-        delay(50)
+        // the first DataStore must release the file before a second one opens it
+        first.coroutineContext[Job]!!.cancelAndJoin()
 
         val second = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         try {

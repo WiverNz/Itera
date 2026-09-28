@@ -4,7 +4,7 @@
     <string name="voice_offline_setting">Офлайн-модель речи</string>
     <string name="voice_offline_value_installed">Установлена · %1$s</string>
     <string name="voice_offline_value_missing">Не установлена · %1$s</string>
-    <string name="voice_offline_value_downloading">Загрузка · %1$d%%</string>
+    <string name="voice_offline_value_downloading">Загрузка · %1$s</string>
     <string name="voice_offline_value_wifi">Ожидание Wi-Fi</string>
     <string name="voice_offline_value_damaged">Повреждена · установите заново</string>
     <string name="voice_offline_value_failed">Не удалось загрузить</string>
@@ -17,4 +17,9 @@
     <string name="voice_offline_imported">Офлайн-модель речи установлена</string>
     <string name="voice_offline_not_model">Этот файл не является поддерживаемой моделью речи.</string>
     <string name="voice_offline_import_failed">Не удалось импортировать модель. Попробуйте ещё раз.</string>
+    <!-- the Settings row value: short, so it fits at large text; the sheet shows the size -->
+    <string name="voice_offline_row_installed">Установлена</string>
+    <string name="voice_offline_row_missing">Не установлена</string>
+    <string name="voice_offline_row_damaged">Повреждена</string>
+    <string name="voice_offline_row_failed">Ошибка загрузки</string>
 </resources>

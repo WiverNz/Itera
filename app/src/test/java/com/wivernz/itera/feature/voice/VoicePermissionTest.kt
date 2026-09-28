@@ -119,9 +119,12 @@ class VoicePermissionTest {
             "RECORD_AUDIO" in it.readText()
         }.map { it.name }.sorted()
         // the caller-audio capture only checks the grant before opening the microphone; it never requests it
-        assertEquals(listOf("CallerAudio.kt", "VoiceHost.kt"), askers)
-        val capture = sourcesUnder("core/voice").first { it.name == "CallerAudio.kt" }.readText()
-        assertFalse("requestPermission" in capture || "launch(" in capture)
+        assertEquals(listOf("CallerAudio.kt", "VoiceHost.kt", "VoskSpeechEngine.kt"), askers)
+        // the in-memory captures (caller audio, milestone 013 offline engine) only check the grant, never request it
+        listOf("CallerAudio.kt", "VoskSpeechEngine.kt").forEach { name ->
+            val capture = sourcesUnder("core/voice").first { it.name == name }.readText()
+            assertFalse(name, "requestPermission" in capture || "launch(" in capture)
+        }
         // the system recogniser is reachable only through the adapter, which gates it on consent (ADR-0022)
         val platform = sourcesUnder("").filter {
             val text = it.readText()

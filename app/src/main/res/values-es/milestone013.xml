@@ -4,7 +4,7 @@
     <string name="voice_offline_setting">Modelo de voz sin conexión</string>
     <string name="voice_offline_value_installed">Instalado · %1$s</string>
     <string name="voice_offline_value_missing">No instalado · %1$s</string>
-    <string name="voice_offline_value_downloading">Descargando · %1$d%%</string>
+    <string name="voice_offline_value_downloading">Descargando · %1$s</string>
     <string name="voice_offline_value_wifi">Esperando Wi-Fi</string>
     <string name="voice_offline_value_damaged">Dañado · vuelve a instalarlo</string>
     <string name="voice_offline_value_failed">Error en la descarga</string>
@@ -17,4 +17,9 @@
     <string name="voice_offline_imported">Modelo de voz sin conexión instalado</string>
     <string name="voice_offline_not_model">Ese archivo no es un modelo de voz compatible.</string>
     <string name="voice_offline_import_failed">No se pudo importar el modelo. Inténtalo de nuevo.</string>
+    <!-- the Settings row value: short, so it fits at large text; the sheet shows the size -->
+    <string name="voice_offline_row_installed">Instalado</string>
+    <string name="voice_offline_row_missing">No instalado</string>
+    <string name="voice_offline_row_damaged">Dañado</string>
+    <string name="voice_offline_row_failed">Error</string>
 </resources>

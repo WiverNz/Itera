@@ -1,6 +1,6 @@
 # 013 - Built-in offline voice recognition
 
-**Status:** in progress (started 2026-09-28). **Depends on** 012 | **Blocks** 011 (release readiness). Pre-release milestone, appended without renumbering; 010 and 011 are not part of it.
+**Status:** complete (2026-09-28). **Depends on** 012 | **Blocks** 011 (release readiness). Pre-release milestone, appended without renumbering; 010 and 011 are not part of it.
 
 ## Goal and scope
 
@@ -35,6 +35,23 @@ Non-goals: replacing the parser or voice UI/business actions, deleting the exist
 - [ ] Real dictation and at least one command pass in EN, RU, DE and ES on a device.
 - [ ] Tests for order, fallback, engine lifecycle, grammar, store and manifest; build, lint and scoped tests pass.
 
-## Verification
+## Verification (2026-09-28, vivo V2405A, Android 16; production app)
 
-Record device results by language here when the milestone is closed.
+| Language | Model install | Dictation (heard) | Command |
+| --- | --- | --- | --- |
+| RU | import, 3 s; survived two app updates | «позвонить сантехнику завтра утром» (exact, with a short pause after «Слушаю»); «подготовить отчёт ли клиента» («для» → «ли»). Speaking at the instant of the tap lost «по» twice | Today «Начни фокус на двадцать пять минут» → focus setup with 25 min (grammar) |
+| EN | import, 2 s | "of blender about kitchen sink"; "the report for the client" (first words lost). The spike gives the same class of errors with the same model and speaker, so it is model/accent accuracy, not integration | Today "What should I do now?" → "Here's what to do now." (grammar) |
+| DE | import, 2 s; later Play Asset Delivery (local testing) | "dann grip namen morgen früh anrufen"; "den bericht führte kunden für bereiten" | Today "Starte Fokus für fünfundzwanzig Minuten" → setup with 25 min (grammar) |
+| ES | not tested (skipped at the user's request) | - | - |
+
+- Lifecycle: Remove deletes the model; a model missing `graph/Gr.fst` fails the integrity check and voice falls through to the provider picker without loading Vosk; a language without a model falls through; switching language uses that language's model.
+- Play Asset Delivery (`bundletool --local-testing`): Download appears only when Play is available; only `voice_model_de` was installed on tap, extracted to `assetpacks/voice_model_de/…/assets/voice_model_de/`; the offline engine then listened with it. The installed app declares no `INTERNET`; `FOREGROUND_SERVICE_DATA_SYNC` is present, as pinned in `OfflineTest`.
+- Sizes: base download (arm64, bundletool) 6.97 MB; packs EN 41.2, RU 46.2, DE 46.5, ES 39.8 MB; installed EN 68 MB, RU 87 MB, DE 91 MB on disk; release AAB 195.3 MB; universal release APK 45.3 MB (1.0.10: 4.3 MB) because `libvosk.so` for four ABIs is stored uncompressed (40.7 MB).
+- Latency: cold model load about 0.5 s (RU, production log timeline); the spike measured 0.4-0.7 s cold and a final result 17-20 ms after Stop; production ends at the first endpoint with words.
+- Build: full `build`, `spotlessCheck lintDebug testDebugUnitTest verifyRoborazziDebug koverVerify assembleDebug` (600 host tests), `bundleRelease` with the configuration cache, and the prototype build pass.
+
+## Closing decisions (product owner, 2026-09-28)
+
+- **Spanish device run waived** for 013. ES implementation, model metadata, localisation and automated coverage remain required and are in place.
+- **Small Vosk models accepted for MVP.** EN/DE free-form dictation accuracy is best-effort; no move to the larger models. Restricted-grammar commands are the reliability-critical path and pass in RU, EN and DE.
+- **Deferred:** first-syllable loss when speaking at the instant of the tap → [010](010-test-hardening.md); until then recognition should begin after the Listening state appears. Universal sideload APK size / ABI packaging → [011](011-release-readiness.md). Real Play Console Asset Delivery → [011](011-release-readiness.md); bundletool local testing is sufficient for 013.

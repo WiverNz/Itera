@@ -10,7 +10,7 @@ data class VoiceModelArchive(
     val zipBytes: Long,
     val sha256: String
 ) {
-    /** The on-demand Play Asset Delivery pack that carries this model under `model/`. */
+    /** The on-demand Play Asset Delivery pack; it carries the model under `assets/<pack>/`. */
     val pack: String get() = "voice_model_${language.name.lowercase()}"
 }
 

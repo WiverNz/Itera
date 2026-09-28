@@ -23,8 +23,10 @@ Old 040 unchanged in intent: release build type (minify, shrink, not debuggable)
 ## Acceptance criteria
 
 - [ ] The minified release build installs, upgrades cleanly and runs the daily loop in all four languages.
-- [ ] Permissions are exactly the documented five, including 012's `RECORD_AUDIO`; no `INTERNET` or microphone foreground service. Voice follows the amended ADR-0022 chain (on-device, consented system default, user-chosen installed provider); Privacy copy, consent, picker, Settings and unavailable/denied paths match it.
-- [ ] APK/AAB is under 12 MB; start-up and scroll measurements are recorded.
+- [ ] Merged permissions equal the reviewed set pinned in `OfflineTest` (012's `RECORD_AUDIO`; 013's Play Asset Delivery `FOREGROUND_SERVICE_DATA_SYNC`, declared in Play Console); no `INTERNET` or microphone foreground service. Voice follows the amended ADR-0022 chain (on-device, consented system default, user-chosen installed provider); Privacy copy, consent, picker, Settings and unavailable/denied paths match it.
+- [ ] The Play base download is under 12 MB (013 measured 6.97 MB for arm64; the voice-model packs are on-demand and excluded); start-up and scroll measurements are recorded.
+- [ ] From 013: decide universal sideload APK size / ABI packaging (45.3 MB with uncompressed `libvosk.so` for four ABIs; options include compressed native libs, per-ABI APKs, dropping x86 from release).
+- [ ] From 013: verify real Play Console on-demand delivery of the `voice_model_<lang>` packs (Download, progress, install, Remove); 013 verified with bundletool local testing only.
 - [ ] `docs/prd/09-mvp-acceptance-criteria.md` passes in full.
 - [ ] `docs/testing/02-manual-qa-checklist.md` passes on two devices.
 - [ ] `docs/delivery/03-release-checklist.md` is complete.

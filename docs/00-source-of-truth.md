@@ -403,9 +403,11 @@ Decisions the voice documents left to implementation; none changes a product rul
 - **Order (locked by the user).** ON_DEVICE → ITERA OFFLINE (Vosk, model for the current language installed) → usable SYSTEM DEFAULT → USER-SELECTED → UNAVAILABLE. A missing or damaged model continues the chain; the external fallbacks stay.
 - **Consent.** None beyond `RECORD_AUDIO` for the offline recogniser: audio never leaves the device.
 - **Models.** One per language, pinned official Vosk small models; never in the base APK or Git. Play: one on-demand asset pack per language, downloaded only on the user's tap. APK/sideload: document-picker import of the pinned archive. "Erase all data" keeps models (no user data); Settings → Remove deletes one.
-- **Command grammar.** Only where the context's commands are all fixed phrases (focus, Today); exercises with Add/Complete stay free-form. Dictation is always free-form one-best: n-best alternatives lost a leading syllable on the vivo («звонить» for «позвонить»), so alternatives are requested only with a grammar.
+- **Command grammar.** Only where the context's commands are all fixed phrases (focus, Today); exercises with Add/Complete stay free-form. Dictation is always free-form one-best; up to 3 alternatives are requested only with a grammar, where competing interpretations matter. (On the vivo, «Позвонить сантехнику завтра утром» came back as «звонить сантехнику завтра утром» with both n-best and one-best decoding, so the alternatives setting is not the cause; see milestone 013 verification.)
 - **Model lifecycle.** One model loaded app-wide; closed on background and when another language is needed.
 - **Permissions.** Play Asset Delivery adds `FOREGROUND_SERVICE_DATA_SYNC` and its extraction service; no `INTERNET`. The merged set is pinned in `OfflineTest`.
+
+- **Closing (2026-09-28, product owner).** 013 complete. Spanish device run waived (automated and localisation coverage remain). Small models accepted for MVP; EN/DE free-form dictation is best-effort, grammar commands are the reliability-critical path. Recognition should begin after the Listening state appears; the first-syllable loss on an immediate start moves to 010. Sideload APK packaging and real Play Console delivery move to 011.
 
 ## Caller-provided audio (2026-09-28)
 

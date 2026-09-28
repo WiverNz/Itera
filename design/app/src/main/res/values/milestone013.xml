@@ -4,7 +4,7 @@
     <string name="voice_offline_setting">Offline speech model</string>
     <string name="voice_offline_value_installed">Installed · %1$s</string>
     <string name="voice_offline_value_missing">Not installed · %1$s</string>
-    <string name="voice_offline_value_downloading">Downloading · %1$d%%</string>
+    <string name="voice_offline_value_downloading">Downloading · %1$s</string>
     <string name="voice_offline_value_wifi">Waiting for Wi-Fi</string>
     <string name="voice_offline_value_damaged">Damaged · install again</string>
     <string name="voice_offline_value_failed">Download failed</string>
@@ -17,4 +17,9 @@
     <string name="voice_offline_imported">Offline speech model installed</string>
     <string name="voice_offline_not_model">That file isn\'t a supported speech model.</string>
     <string name="voice_offline_import_failed">The model couldn\'t be imported. Try again.</string>
+    <!-- the Settings row value: short, so it fits at large text; the sheet shows the size -->
+    <string name="voice_offline_row_installed">Installed</string>
+    <string name="voice_offline_row_missing">Not installed</string>
+    <string name="voice_offline_row_damaged">Damaged</string>
+    <string name="voice_offline_row_failed">Download failed</string>
 </resources>
