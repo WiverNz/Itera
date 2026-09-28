@@ -1,6 +1,6 @@
 # 009 - Notifications & quality passes
 
-**Depends on** 005, 006, 007, 008, 012 | **Blocks** 010
+**Status:** complete - implementation (2026-09-28). Remaining manual verification moved to [010](010-test-hardening.md#carried-over-from-009-2026-09-28). **Depends on** 005, 006, 007, 008, 012 | **Blocks** 010
 
 ## Goal
 
@@ -31,8 +31,8 @@ Make the app remind the user at the right times, complete the analytics privacy 
 - [x] `rescheduleAll()` is idempotent; each Settings toggle suppresses exactly its own reminder; changing a time or toggle reschedules.
 - [x] Every suppression rule holds, including deferral of the evening reminder during a focus session; permission-denied schedules nothing.
 - [x] `NoUserTextLoggedTest` passes; `event_log` is trimmed, kept by Reset program and deleted by Erase everything.
-- [ ] Every screen passes `AccessibilityAuditTest` and `FontScaleTest`; the TalkBack script completes the daily loop.
-- [ ] All four catalogues are complete; plurals, positional arguments and formatters conform; the app runs in each language and switching persists across force-stop.
+- [x] Every screen passes `AccessibilityAuditTest` and `FontScaleTest` (automated, green). The full TalkBack/Switch Access daily loops moved to 010.
+- [x] All four catalogues are complete; plurals, positional arguments and formatters conform (localisation audit tests, green). Exhaustive four-language runtime/persistence walks moved to 010.
 - [x] A minified release build launches and completes Day 1.
 - [x] Only findings and their fixes are recorded (briefly, in this file); no full audit report.
 
@@ -52,4 +52,4 @@ Make the app remind the user at the right times, complete the analytics privacy 
 
 Verification: production `build lintDebug` passes (537 host tests, zero failures, formatting and coverage gate passed); all six `connectedDebugAndroidTest` tests pass on API 37. Prototype `assembleDebug lintDebug` passes. Existing lint warnings remain; neither lint run failed. Used `--no-daemon --max-workers=1` after intermittent KSP initialization failures; an emulator reboot cleared a stale UiAutomation registration before the successful device run. Production voice rationale, Android permission denial and return-to-manual-input UI were also checked on device. Version 1.0.8 is a development build per the user; no special upgrade migration was added.
 
-Remaining acceptance evidence: full TalkBack and Switch Access daily loops (including voice confirmations), maximum display size/grayscale and exhaustive supporting-surface walks, the remaining 005/006 side-by-side visual checks, full four-language device walks and reboot persistence, real installed speech-model behavior, and API 26-30 language/timer checks. No API 26-30 image/device is installed here; available system images are 36.1 and 37.2. Do not treat the representative render tests as closing these manual gaps. Milestone 010 has not been started.
+Closed 2026-09-28 at the product owner's request as implementation-complete. The remaining manual verification (TalkBack/Switch Access loops, maximum font/display size, 005/006/012 visual comparisons, four-language runtime/persistence walks, reboot/process death, API 26-30, and the voice checks still relevant after 013) is owned by [010](010-test-hardening.md#carried-over-from-009-2026-09-28). Real installed speech-model behaviour was verified in milestone 013. Milestone 010 has not been started.

@@ -16,7 +16,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 
 ## What this is
 
-**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001, 002, 004 and 007 are complete. 003, 005, 006, 008 and 012 are implemented, with visual or device checks still open (009 owns them). 009 is in progress; 010 and 011 have not started. See `docs/issues/README.md` for current status.
+**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001, 002, 004 and 007 are complete. 003, 005, 006, 008 and 012 are implemented, with visual or device checks still open (010 owns them). 009 and 013 are complete; 010 and 011 have not started. See `docs/issues/README.md` for current status.
 
 ## Repository layout
 
@@ -24,7 +24,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 | --- | --- | --- |
 | `docs/` | The full specification - the PRD, UX specs, architecture, data model, engines, testing, delivery, and 12 milestone issues (the detailed 40-issue backlog is kept in `docs/history/issues-detailed/`) | Authoritative |
 | `design/` | **A running Kotlin + Compose prototype of the app.** 24 screens, theme, components, icons, navigation, four languages | The UI/UX source of truth |
-| `app/` | The production Android app | Every MVP feature implemented: core, design system, engine, onboarding, the daily flow, exercises, Train and library, progress/history/settings, voice input. Notifications and quality passes are in progress (009) |
+| `app/` | The production Android app | Every MVP feature implemented: core, design system, engine, onboarding, the daily flow, exercises, Train and library, progress/history/settings, voice input. Notifications, quality passes (009) and built-in offline voice (013) complete |
 | `CLAUDE_START_HERE.md` | Entry point for implementation | |
 
 ## Source priority
@@ -99,4 +99,4 @@ Both apps can be installed at once: `com.itera.app` and `com.wivernz.itera` are 
 
 ## Where to start
 
-`CLAUDE_START_HERE.md`, then `docs/00-source-of-truth.md`, then `docs/issues/README.md`, then the requested milestone. Milestone 009 is in progress. Next is 010. Do not start a milestone without a user request.
+`CLAUDE_START_HERE.md`, then `docs/00-source-of-truth.md`, then `docs/issues/README.md`, then the requested milestone. Next is 010. Do not start a milestone without a user request.
