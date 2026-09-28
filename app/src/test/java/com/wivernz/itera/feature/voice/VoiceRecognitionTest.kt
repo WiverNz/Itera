@@ -99,7 +99,7 @@ class VoiceRecognitionTest {
         assertEquals(VoiceError.BUSY, map(SpeechRecognizer.ERROR_TOO_MANY_REQUESTS))
         assertEquals(VoiceError.PERMISSION, map(SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS))
         assertEquals(
-            VoiceError.LANGUAGE_UNAVAILABLE,
+            VoiceError.LANGUAGE_UNSUPPORTED,
             map(SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED)
         )
         assertEquals(

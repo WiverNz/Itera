@@ -52,7 +52,8 @@ Specified durations use the current focus setup's allowed minute choices (curren
 | Ambiguous / confirmation | Reuse sheet radio rows and confirmation dialog, naming the exact item/action and any lost data; Confirm and Cancel |
 | Unsupported / missing argument | Short explanation plus localised examples valid here; retry explicitly or cancel. Never reinterpret as a different action |
 | No speech / recognition failure | Inline “Couldn't hear that” or specific service failure; Retry and Keep typing. Do not erase the field |
-| Service/language unavailable | Explain that voice is unavailable for this language/device; keep manual controls, offer relevant platform settings. Recogniser order and consent follow ADR-0022; nothing ever switches provider silently |
+| Language not supported | The provider has no model for the Itera language (for example ru-RU with Google's offline recogniser): "The speech recognition in use doesn't support <language>." Keep typing only; never suggest downloading or adding the language |
+| Service/language unavailable | Explain that voice is unavailable for this device, or that the language model is missing; keep manual controls, offer relevant platform settings. Recogniser order and consent follow ADR-0022; nothing ever switches provider silently |
 | Cancelled / interrupted | Stop listening; discard pending transcript/confirmation. Navigation, background, locale change and process death never resume listening or replay a command |
 
 ## Settings

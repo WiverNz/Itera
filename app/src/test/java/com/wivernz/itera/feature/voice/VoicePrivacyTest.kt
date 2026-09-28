@@ -59,9 +59,17 @@ class VoicePrivacyTest {
             "com.wivernz.itera.analytics", "com.wivernz.itera.data.", "java.net.", "HttpURLConnection",
             "EXTRA_AUDIO_SOURCE", "FOREGROUND_SERVICE"
         )
+        // ADR-0022 (API 33+ caller audio): only the in-memory capture may record, and only it and the adapter
+        // may hand audio to a recogniser. Nothing else in voice code may touch audio.
+        val allowed = mapOf(
+            "CallerAudio.kt" to setOf("MediaRecorder", "AudioRecord", "EXTRA_AUDIO_SOURCE"),
+            "VoiceRecognizer.kt" to setOf("EXTRA_AUDIO_SOURCE")
+        )
         val offenders = voiceSources.flatMap { file ->
             val text = file.readText()
-            forbidden.filter { it in text }.map { "${file.name}: $it" }
+            forbidden.filter {
+                it in text && it !in allowed[file.name].orEmpty()
+            }.map { "${file.name}: $it" }
         }
         assertEquals(emptyList<String>(), offenders)
     }

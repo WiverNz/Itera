@@ -22,7 +22,8 @@ interface VoicePermissionGate {
     fun permanentlyDenied(): Boolean
 }
 
-enum class VoiceUnavailable { DEVICE, LANGUAGE }
+/** [LANGUAGE]: the model is missing (speech settings may add it). [LANGUAGE_UNSUPPORTED]: the provider has none. */
+enum class VoiceUnavailable { DEVICE, LANGUAGE, LANGUAGE_UNSUPPORTED }
 
 enum class VoiceFailure { NO_SPEECH, BUSY, FAILED }
 
@@ -253,6 +254,11 @@ class VoiceController(
                             )
                         VoiceError.LANGUAGE_UNAVAILABLE ->
                             VoiceSessionState.Unavailable(owner, VoiceUnavailable.LANGUAGE)
+                        VoiceError.LANGUAGE_UNSUPPORTED ->
+                            VoiceSessionState.Unavailable(
+                                owner,
+                                VoiceUnavailable.LANGUAGE_UNSUPPORTED
+                            )
                         VoiceError.SERVICE_UNAVAILABLE ->
                             VoiceSessionState.Unavailable(owner, VoiceUnavailable.DEVICE)
                         VoiceError.PROVIDER_UNUSABLE -> {

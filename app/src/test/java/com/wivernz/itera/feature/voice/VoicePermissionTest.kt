@@ -115,8 +115,13 @@ class VoicePermissionTest {
     }
 
     @Test fun onlyTheVoiceHostEverAsksForTheMicrophone() {
-        val askers = sourcesUnder("").filter { "RECORD_AUDIO" in it.readText() }.map { it.name }
-        assertEquals(listOf("VoiceHost.kt"), askers)
+        val askers = sourcesUnder("").filter {
+            "RECORD_AUDIO" in it.readText()
+        }.map { it.name }.sorted()
+        // the caller-audio capture only checks the grant before opening the microphone; it never requests it
+        assertEquals(listOf("CallerAudio.kt", "VoiceHost.kt"), askers)
+        val capture = sourcesUnder("core/voice").first { it.name == "CallerAudio.kt" }.readText()
+        assertFalse("requestPermission" in capture || "launch(" in capture)
         // the system recogniser is reachable only through the adapter, which gates it on consent (ADR-0022)
         val platform = sourcesUnder("").filter {
             val text = it.readText()

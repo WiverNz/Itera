@@ -320,14 +320,26 @@ internal fun VoiceStatusPanel(
                     R.string.voice_unavailable_language,
                     language
                 )
+                VoiceUnavailable.LANGUAGE_UNSUPPORTED -> stringResource(
+                    R.string.voice_unsupported_language,
+                    language
+                )
             }
-            actions = listOf(
-                stringResource(R.string.voice_speech_settings) to { openSpeechSettings(context) },
+            val keep =
                 stringResource(
                     if (command) R.string.voice_cancel else R.string.voice_keep_typing
                 ) to
                     cancel
-            )
+            // An unsupported language cannot be added in speech settings: no settings link then.
+            actions = if (state.reason == VoiceUnavailable.LANGUAGE_UNSUPPORTED) {
+                listOf(keep)
+            } else {
+                listOf(
+                    stringResource(R.string.voice_speech_settings) to
+                        { openSpeechSettings(context) },
+                    keep
+                )
+            }
         }
         is VoiceSessionState.Failed -> {
             status = stringResource(
@@ -384,7 +396,12 @@ internal fun VoiceStatusPanel(
         (state as? VoiceSessionState.ChooseProvider)?.let { choosing ->
             ProviderList(choosing.providers, onPick = voice::pickProvider)
         }
-        PanelActions(actions, firstPrimary = state !is VoiceSessionState.ChooseProvider)
+        PanelActions(
+            actions,
+            firstPrimary = state !is VoiceSessionState.ChooseProvider &&
+                (state as? VoiceSessionState.Unavailable)?.reason !=
+                VoiceUnavailable.LANGUAGE_UNSUPPORTED
+        )
     }
 }
 

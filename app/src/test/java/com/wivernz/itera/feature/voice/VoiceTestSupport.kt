@@ -1,9 +1,16 @@
 package com.wivernz.itera.feature.voice
 
+import android.content.ComponentName
+import android.os.ParcelFileDescriptor
+import android.speech.SpeechRecognizer
+import androidx.test.core.app.ApplicationProvider
+import com.wivernz.itera.core.voice.CallerAudioStream
 import com.wivernz.itera.core.voice.RecognitionProviderInfo
+import com.wivernz.itera.core.voice.SpeechPlatform
 import com.wivernz.itera.core.voice.VoiceAvailability
 import com.wivernz.itera.core.voice.VoiceConsentStore
 import com.wivernz.itera.core.voice.VoiceError
+import com.wivernz.itera.core.voice.VoiceProvider
 import com.wivernz.itera.core.voice.VoiceRecognitionListener
 import com.wivernz.itera.core.voice.VoiceRecognizer
 import com.wivernz.itera.domain.voice.VoiceCommand
@@ -146,4 +153,55 @@ val mainSources = File("src/main/java/com/wivernz/itera")
 
 fun sourcesUnder(vararg dirs: String): List<File> = dirs.flatMap { dir ->
     File(mainSources, dir).walkTopDown().filter { it.extension == "kt" }.toList()
+}
+
+/** Records which recogniser the adapter asked for; the instances are Robolectric's shadows. */
+class FakePlatform(
+    var onDevice: Boolean = false,
+    var systemDefault: ComponentName? = null,
+    var providers: List<RecognitionProviderInfo> = emptyList(),
+    var callerAudio: Boolean = false,
+    var micOpens: Boolean = true,
+    var otherCapture: Boolean = false
+) : SpeechPlatform {
+    val created = mutableListOf<VoiceProvider>()
+    val streams = mutableListOf<FakeAudioStream>()
+    var last: SpeechRecognizer? = null
+
+    override fun onDeviceAvailable() = onDevice
+
+    override fun systemDefault() = systemDefault
+
+    override fun providers() = providers
+
+    override fun create(provider: VoiceProvider): SpeechRecognizer {
+        created += provider
+        return SpeechRecognizer.createSpeechRecognizer(ApplicationProvider.getApplicationContext())
+            .also { last = it }
+    }
+
+    override fun callerAudioSupported() = callerAudio
+
+    override fun openCallerAudio(): CallerAudioStream? =
+        if (micOpens) FakeAudioStream().also { streams += it } else null
+
+    override fun otherCaptureActive(ownSession: Int) = otherCapture
+}
+
+/** Caller audio without a microphone: a real pipe, counting end-of-audio and close calls. */
+class FakeAudioStream : CallerAudioStream {
+    private val pipe = ParcelFileDescriptor.createPipe()
+    override val descriptor: ParcelFileDescriptor = pipe[0]
+    override val sessionId = 42
+    var ends = 0
+    var closes = 0
+
+    override fun endOfAudio() {
+        ends++
+    }
+
+    override fun close() {
+        closes++
+        pipe.forEach { runCatching { it.close() } }
+    }
 }

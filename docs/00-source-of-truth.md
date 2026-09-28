@@ -398,6 +398,12 @@ Decisions the voice documents left to implementation; none changes a product rul
 - **Consent UI** is an inline voice-panel state (same panel as the microphone rationale), before the Android permission prompt. Settings → Voice revokes system consent and changes/clears the app.
 - **Verified device limitation.** On the vivo V2405A (Android 16) there is no on-device recogniser, the system selection is empty, and Google's recogniser is hidden and unbindable; the only discoverable provider (Claude) rejects Itera's requests. Voice therefore still cannot recognise speech on that device.
 
+## Caller-provided audio (2026-09-28)
+
+- **Decision (user).** On API 33+, system-default and user-chosen providers receive Itera's own 16 kHz mono PCM16 capture through `EXTRA_AUDIO_SOURCE`; on-device and API 26-32 are unchanged. Audio is memory-only for the phrase, never stored, uploaded by Itera or logged ([ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md)).
+- **Errors.** Unsupported language and missing model are separate states; with caller audio a permission error is attributed to the provider.
+- **vivo result.** Google's provider consumes the stream and Itera's capture is not silenced, but the platform's `RecognitionService` permission check rejects the provider's background app, so recognition still fails there. Russian is unsupported by that provider (error 12); Spanish needs its pack; English and German packs are installed.
+
 ## Milestone 009 implementation decisions (2026-09-27)
 
 - Reminder IDs remain fixed per type; before posting, cancel the other reminder IDs (never the foreground timer). This resolves notification UX section 6's contradictory same-ID/per-type wording while enforcing one visible reminder.

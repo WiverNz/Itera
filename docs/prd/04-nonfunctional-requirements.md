@@ -72,7 +72,7 @@ Full specification in `docs/ux/07-accessibility.md`. Minimums:
 
 Milestone 012 adds `RECORD_AUDIO`, requested only after tapping a voice affordance, never during onboarding. Explain single-utterance use (and, before any non-on-device provider, its consent); refusal/revocation leaves manual controls available and permanent denial offers system settings. Do not repeatedly prompt. Listening stops on cancel, background, route or language change.
 
-No raw audio, provisional transcript, recognition alternative or pending command is retained, logged or sent to analytics. Accepted text is stored only through existing local draft/result paths, like typed text. The Privacy screen explains this in all four languages and that voice may be unavailable. No `INTERNET` permission, microphone foreground service or background listening is introduced; non-on-device recognizers need explicit consent under [ADR-0022](../architecture/adr/0022-voice-recognition-and-privacy.md).
+No raw audio is ever written to disk, retained, uploaded by Itera or logged; on Android 13+ Itera may hold microphone PCM in memory only to pass it to a consented external recognizer (ADR-0022). No provisional transcript, recognition alternative or pending command is retained, logged or sent to analytics. Accepted text is stored only through existing local draft/result paths, like typed text. The Privacy screen explains this in all four languages and that voice may be unavailable. No `INTERNET` permission, microphone foreground service or background listening is introduced; non-on-device recognizers need explicit consent under [ADR-0022](../architecture/adr/0022-voice-recognition-and-privacy.md).
 
 ## Security
 

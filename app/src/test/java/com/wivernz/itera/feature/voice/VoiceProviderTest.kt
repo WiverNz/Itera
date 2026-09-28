@@ -62,29 +62,7 @@ private val GSA =
 private fun info(component: ComponentName, label: String) =
     RecognitionProviderInfo(component.flattenToString(), label)
 
-/** Records which recogniser the adapter asked for; the instances are Robolectric's shadows. */
-private class FakePlatform(
-    var onDevice: Boolean = false,
-    var systemDefault: ComponentName? = null,
-    var providers: List<RecognitionProviderInfo> = emptyList()
-) : SpeechPlatform {
-    val created = mutableListOf<VoiceProvider>()
-    var last: SpeechRecognizer? = null
-
-    override fun onDeviceAvailable() = onDevice
-
-    override fun systemDefault() = systemDefault
-
-    override fun providers() = providers
-
-    override fun create(provider: VoiceProvider): SpeechRecognizer {
-        created += provider
-        return SpeechRecognizer.createSpeechRecognizer(ApplicationProvider.getApplicationContext())
-            .also { last = it }
-    }
-}
-
-private class Errors : VoiceRecognitionListener {
+internal class Errors : VoiceRecognitionListener {
     val errors = mutableListOf<VoiceError>()
     override fun onPartial(text: String) = Unit
     override fun onFinal(alternatives: List<String>) = Unit

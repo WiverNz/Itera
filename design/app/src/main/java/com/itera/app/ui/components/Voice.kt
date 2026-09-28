@@ -54,7 +54,7 @@ import com.itera.app.ui.theme.IteraTheme
  */
 // ADR-0022 (amended): SystemConsent when only the system default exists; ChooseProvider/ProviderConsent when neither
 // exists and installed apps offer recognition. Nothing is pre-selected; the named app needs its own consent.
-enum class VoiceDemoState { Idle, Listening, Partial, SystemConsent, ChooseProvider, ProviderConsent, Permission, Denied, Unavailable, NoSpeech }
+enum class VoiceDemoState { Idle, Listening, Partial, SystemConsent, ChooseProvider, ProviderConsent, Permission, Denied, Unavailable, Unsupported, NoSpeech }
 
 /** The prototype has no real providers; production shows each installed app's own label and icon. */
 const val SAMPLE_PROVIDER = "Speech app"
@@ -119,6 +119,12 @@ fun VoicePanel(state: VoiceDemoState, command: Boolean, onPrimary: () -> Unit, o
             stringResource(R.string.voice_permission_denied),
             stringResource(R.string.voice_permission_settings_body),
             listOf(stringResource(R.string.voice_open_settings), keep),
+        )
+        // the provider has no model for this language at all: no speech-settings link
+        VoiceDemoState.Unsupported -> Triple(
+            stringResource(R.string.voice_unavailable_title),
+            stringResource(R.string.voice_unsupported_language, language),
+            listOf(keep),
         )
         VoiceDemoState.Unavailable -> Triple(
             stringResource(R.string.voice_unavailable_title),

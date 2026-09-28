@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -96,6 +97,15 @@ interface SpeechPlatform {
     fun providers(): List<RecognitionProviderInfo>
 
     fun create(provider: VoiceProvider): SpeechRecognizer?
+
+    /** API 33+: external recognisers can take caller-provided audio (`EXTRA_AUDIO_SOURCE`). */
+    fun callerAudioSupported(): Boolean
+
+    /** Itera's own microphone capture into a pipe, or null when it cannot be opened. */
+    fun openCallerAudio(): CallerAudioStream?
+
+    /** Whether any capture other than [ownSession] is active, e.g. a provider opening its own microphone. */
+    fun otherCaptureActive(ownSession: Int): Boolean
 }
 
 class AndroidSpeechPlatform @Inject constructor(
@@ -135,6 +145,16 @@ class AndroidSpeechPlatform @Inject constructor(
         }
     }.getOrNull()
 
+    override fun callerAudioSupported(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+    override fun openCallerAudio(): CallerAudioStream? = PipedMicrophone.open(context)
+
+    override fun otherCaptureActive(ownSession: Int): Boolean = runCatching {
+        context.getSystemService(AudioManager::class.java).activeRecordingConfigurations
+            .any { it.clientAudioSessionId != ownSession }
+    }.getOrDefault(false)
+
     private fun services() = context.packageManager
         .queryIntentServices(Intent(RecognitionService.SERVICE_INTERFACE), 0)
         .mapNotNull { it.serviceInfo }
@@ -169,7 +189,12 @@ enum class VoiceError {
     NO_SPEECH,
     BUSY,
     PERMISSION,
+
+    /** The language model is missing or not installed; it may be added in speech settings. */
     LANGUAGE_UNAVAILABLE,
+
+    /** The provider does not support the language at all. */
+    LANGUAGE_UNSUPPORTED,
     SERVICE_UNAVAILABLE,
 
     /** The chosen installed provider could not be bound or refused the request; its choice was cleared. */
@@ -279,15 +304,41 @@ class AndroidVoiceRecognizer @Inject constructor(
             return
         }
         recognizer = created
-        val bridge =
-            Bridge(
-                listener,
-                selected = provider is VoiceProvider.Selected,
-                onHeard = ::stopWatchdog
-            ) {
-                logger.w(TAG, "Chosen provider failed before listening")
-                forgetProvider()
+        // API 33+ external providers get Itera's own capture: theirs may be silenced in the background.
+        val injected = provider !is VoiceProvider.OnDevice && platform.callerAudioSupported()
+        val stream = if (injected) platform.openCallerAudio() else null
+        if (injected && stream == null) {
+            logger.w(TAG, "Caller audio could not be opened")
+            release()
+            listener.onError(VoiceError.FAILED)
+            return
+        }
+        audio = stream
+        val bridge = Bridge(
+            listener,
+            selected = provider is VoiceProvider.Selected,
+            callerAudio = stream != null,
+            hooks = object : Bridge.Hooks {
+                override fun heard() = stopWatchdog()
+
+                override fun finished() = closeAudio()
+
+                override fun unusable() {
+                    logger.w(TAG, "Chosen provider failed before listening")
+                    forgetProvider()
+                }
+
+                // A provider that ignores the supplied audio opens its own microphone: end rather than compete.
+                override fun competingCapture(): Boolean {
+                    val competing = stream != null && platform.otherCaptureActive(stream.sessionId)
+                    if (competing) {
+                        logger.w(TAG, "Provider opened its own microphone; session ended")
+                        release()
+                    }
+                    return competing
+                }
             }
+        )
         created.setRecognitionListener(bridge)
         // EXTRA_PREFER_OFFLINE is a hint to the provider, never a privacy guarantee.
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -299,9 +350,11 @@ class AndroidVoiceRecognizer @Inject constructor(
             .putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
             .putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, MAX_RESULTS)
             .putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
+        stream?.let { withCallerAudio(intent, it) }
         runCatching { created.startListening(intent) }.onFailure {
             // category only: platform exceptions may carry speech
             logger.w(TAG, "startListening failed")
+            release()
             listener.onError(VoiceError.FAILED)
             return
         }
@@ -314,12 +367,29 @@ class AndroidVoiceRecognizer @Inject constructor(
         }
     }
 
+    @SuppressLint("InlinedApi") // only reached on API 33+
+    private fun withCallerAudio(intent: Intent, stream: CallerAudioStream) {
+        intent.putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE, stream.descriptor)
+            .putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_CHANNEL_COUNT, CallerAudioStream.CHANNELS)
+            .putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_ENCODING, CallerAudioStream.ENCODING)
+            .putExtra(
+                RecognizerIntent.EXTRA_AUDIO_SOURCE_SAMPLING_RATE,
+                CallerAudioStream.SAMPLE_RATE
+            )
+    }
+
     private val main = Handler(Looper.getMainLooper())
     private var watchdog: Runnable? = null
+    private var audio: CallerAudioStream? = null
 
     private fun stopWatchdog() {
         watchdog?.let(main::removeCallbacks)
         watchdog = null
+    }
+
+    private fun closeAudio() {
+        audio?.close()
+        audio = null
     }
 
     private fun forgetProvider() {
@@ -327,13 +397,16 @@ class AndroidVoiceRecognizer @Inject constructor(
         providerLost = true
     }
 
+    /** Stop: the recogniser is asked for its final result and the supplied audio ends. */
     override fun stop() {
         runCatching { recognizer?.stopListening() }
+        audio?.endOfAudio()
     }
 
     override fun cancel() {
         stopWatchdog()
         runCatching { recognizer?.cancel() }
+        closeAudio()
     }
 
     override fun release() {
@@ -343,34 +416,52 @@ class AndroidVoiceRecognizer @Inject constructor(
             runCatching { r.destroy() }
         }
         recognizer = null
+        closeAudio()
     }
 
     /**
      * For a chosen installed provider, a bind/service failure before it is ready means the provider cannot serve
-     * Itera: [onUnusable] clears the choice and the listener hears [VoiceError.PROVIDER_UNUSABLE].
+     * Itera: the choice is cleared and the listener hears [VoiceError.PROVIDER_UNUSABLE]. A final result or error
+     * ends the supplied audio.
      */
     private class Bridge(
         private val listener: VoiceRecognitionListener,
         private val selected: Boolean,
-        private val onHeard: () -> Unit,
-        private val onUnusable: () -> Unit
+        private val callerAudio: Boolean,
+        private val hooks: Hooks
     ) : RecognitionListener {
+        interface Hooks {
+            fun heard()
+
+            fun finished()
+
+            fun unusable()
+
+            fun competingCapture(): Boolean
+        }
+
         private var ready = false
-        private var timedOut = false
+        private var done = false
 
         /** The chosen provider never answered: unusable. False when it already answered. */
         fun timeOut(): Boolean {
-            if (ready || timedOut) return false
-            timedOut = true
-            onUnusable()
+            if (ready || done) return false
+            done = true
+            hooks.finished()
+            hooks.unusable()
             listener.onError(VoiceError.PROVIDER_UNUSABLE)
             return true
         }
 
         private fun heard(): Boolean {
-            if (timedOut) return false
-            onHeard()
+            if (done) return false
+            hooks.heard()
             return true
+        }
+
+        private fun finish() {
+            done = true
+            hooks.finished()
         }
 
         override fun onPartialResults(partialResults: Bundle?) {
@@ -381,22 +472,34 @@ class AndroidVoiceRecognizer @Inject constructor(
 
         override fun onResults(results: Bundle?) {
             if (!heard()) return
+            finish()
             val alternatives = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             listener.onFinal(alternatives.orEmpty())
         }
 
         override fun onError(error: Int) {
             if (!heard()) return
-            if (selected && !ready && error in UNUSABLE) {
-                onUnusable()
-                listener.onError(VoiceError.PROVIDER_UNUSABLE)
-            } else {
-                listener.onError(errorOf(error))
+            finish()
+            // With caller audio Itera already holds and uses the microphone: a permission error is the provider's.
+            val providerPermission =
+                callerAudio && error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS
+            when {
+                selected && (providerPermission || (!ready && error in UNUSABLE)) -> {
+                    hooks.unusable()
+                    listener.onError(VoiceError.PROVIDER_UNUSABLE)
+                }
+                providerPermission -> listener.onError(VoiceError.SERVICE_UNAVAILABLE)
+                else -> listener.onError(errorOf(error))
             }
         }
 
         override fun onReadyForSpeech(params: Bundle?) {
-            if (heard()) ready = true
+            if (!heard()) return
+            ready = true
+            if (hooks.competingCapture()) {
+                finish()
+                listener.onError(VoiceError.FAILED)
+            }
         }
 
         override fun onBeginningOfSpeech() {
@@ -424,10 +527,6 @@ class AndroidVoiceRecognizer @Inject constructor(
             SpeechRecognizer.ERROR_RECOGNIZER_BUSY,
             SpeechRecognizer.ERROR_TOO_MANY_REQUESTS
         )
-        private val LANGUAGE = setOf(
-            SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED,
-            SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
-        )
         private val SERVICE = setOf(
             SpeechRecognizer.ERROR_NETWORK,
             SpeechRecognizer.ERROR_NETWORK_TIMEOUT,
@@ -452,7 +551,8 @@ class AndroidVoiceRecognizer @Inject constructor(
             in NO_SPEECH -> VoiceError.NO_SPEECH
             in BUSY -> VoiceError.BUSY
             SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> VoiceError.PERMISSION
-            in LANGUAGE -> VoiceError.LANGUAGE_UNAVAILABLE
+            SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> VoiceError.LANGUAGE_UNSUPPORTED
+            SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> VoiceError.LANGUAGE_UNAVAILABLE
             in SERVICE -> VoiceError.SERVICE_UNAVAILABLE
             else -> VoiceError.FAILED
         }

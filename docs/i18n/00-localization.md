@@ -236,7 +236,7 @@ Recognition uses the **effective Itera UI language**, not an unrelated system re
 
 Changing language cancels recognition and pending confirmation, rejects late callbacks, and starts the next explicit session in the new language. Committed user text stays verbatim. Model availability is a platform limitation, not a reason to omit translated UI or parser support.
 
-The ADR-0022 consent, picker and Settings copy (`voice_system_*`, `voice_provider_*`, `sec_voice`, updated `privacy_voice` and `voice_unavailable_*`, 2026-09-28) ships in all four catalogues of both `app/` and `design/`. A provider's name is inserted as the app's own label from `PackageManager` (`%1$s`), never translated; Russian wraps it in «». Which languages a non-on-device provider recognises is that provider's limitation, like model availability.
+The ADR-0022 consent, picker and Settings copy (`voice_system_*`, `voice_provider_*`, `sec_voice`, updated `privacy_voice` and `voice_unavailable_*`, 2026-09-28) ships in all four catalogues of both `app/` and `design/`. A provider's name is inserted as the app's own label from `PackageManager` (`%1$s`), never translated; Russian wraps it in «». `voice_unsupported_language` (provider lacks the language) is distinct from `voice_unavailable_language` (model missing, speech-settings link). Which languages a non-on-device provider recognises is that provider's limitation, like model availability.
 
 Minimum vocabulary below is normative; `{text}` and `{query}` are the untouched argument suffix. Slash-separated entries are explicit aliases, not arbitrary synonyms.
 

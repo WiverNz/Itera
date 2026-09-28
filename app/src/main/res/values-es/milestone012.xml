@@ -85,7 +85,7 @@
     <string name="voice_example_end">«Termina el enfoque»</string>
     <string name="voice_example_complete_exercise">«Completa el ejercicio»</string>
     <string name="voice_example_recommendation">«¿Qué debo hacer ahora?»</string>
-    <string name="privacy_voice">La entrada de voz es opcional y solo funciona cuando tocas un micrófono. Si este dispositivo ofrece reconocimiento de voz local, la voz se reconoce en el dispositivo. Si no, y solo si lo permites, se usa el servicio de voz del sistema Android o una app de reconocimiento de voz que elijas, que pueden procesar el audio de forma remota y usar la red. Itera nunca graba audio ni guarda lo que dijiste, solo el texto que aceptas, como al escribir. Puedes cambiarlo o desactivarlo en Ajustes.</string>
+    <string name="privacy_voice">La entrada de voz es opcional y solo funciona cuando tocas un micrófono. Si este dispositivo ofrece reconocimiento de voz local, la voz se reconoce en el dispositivo. Si no, y solo si lo permites, se usa el servicio de voz del sistema Android o una app de reconocimiento de voz que elijas, que pueden procesar o transmitir el audio de forma remota según sus propias condiciones de privacidad. En Android 13 y posteriores, Itera puede grabar el micrófono y pasar el audio directamente a ese servicio; solo se mantiene en memoria para esa frase. Itera nunca guarda, sube ni registra audio ni guarda lo que dijiste, solo el texto que aceptas, como al escribir. Puedes cambiarlo o desactivarlo en Ajustes.</string>
     <!-- ADR-0022 (amended): system-recogniser consent and its Settings switch. -->
     <string name="voice_system_title">¿Usar el reconocimiento de voz del sistema?</string>
     <string name="voice_system_body">Este dispositivo no tiene reconocimiento de voz local. En su lugar se puede usar el servicio de voz del sistema Android. Puede procesar tu audio de forma remota y usar la red. Itera no guarda el audio ni la transcripción, solo el texto que aceptas.</string>
@@ -103,4 +103,6 @@
     <string name="voice_provider_setting">App de reconocimiento de voz</string>
     <string name="voice_provider_setting_sub">Solo si este dispositivo no tiene reconocimiento de voz local ni del sistema. Antes de elegir verás cómo trata la app tu audio.</string>
     <string name="voice_provider_none">Ninguna</string>
+    <!-- ADR-0022: the provider does not support the language (no settings link). -->
+    <string name="voice_unsupported_language">El reconocimiento de voz en uso no admite %1$s. Escribir funciona como siempre.</string>
 </resources>
