@@ -66,6 +66,8 @@ sealed interface YouUiEvent {
     data class ImportModel(val uri: String) : YouUiEvent
 
     data class RemoveModel(val language: VoiceLanguage) : YouUiEvent
+
+    data class RecheckModel(val language: VoiceLanguage) : YouUiEvent
     data class Topic(val id: Long?, val title: String) : YouUiEvent
     data class Archive(val id: Long) : YouUiEvent
     data class Open(val route: ScreenRoute) : YouUiEvent
@@ -152,6 +154,7 @@ class YouViewModel @Inject constructor(
                     is YouUiEvent.ImportModel ->
                         channel.send(YouEffect.ModelImported(voiceModels.import(event.uri)))
                     is YouUiEvent.RemoveModel -> voiceModels.remove(event.language)
+                    is YouUiEvent.RecheckModel -> voiceModels.revalidate(event.language)
                     is YouUiEvent.Topic -> if (event.title.isNotBlank()) {
                         if (event.id ==
                             null

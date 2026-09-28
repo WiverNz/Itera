@@ -327,8 +327,8 @@ class AndroidVoiceRecognizer @Inject constructor(
         release()
         if (provider is VoiceProvider.Offline) {
             // Itera's own microphone and model: no service, consent or caller audio involved
-            offline.start(provider.model, grammar, listener) {
-                models.reportUnusable(provider.model.language)
+            offline.start(provider.model, grammar, listener) { error ->
+                models.reportLoadFailure(provider.model.language, error)
             }
             return
         }

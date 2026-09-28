@@ -215,7 +215,7 @@ class FakePlatform(
 class FakeOfflineEngine : OfflineSpeechEngine {
     val started = mutableListOf<Pair<OfflineModel, List<String>?>>()
     var listener: VoiceRecognitionListener? = null
-    var modelFailed: (() -> Unit)? = null
+    var modelFailed: ((Throwable) -> Unit)? = null
     var stops = 0
     var cancels = 0
     var trims = 0
@@ -224,7 +224,7 @@ class FakeOfflineEngine : OfflineSpeechEngine {
         model: OfflineModel,
         grammar: List<String>?,
         listener: VoiceRecognitionListener,
-        onModelFailed: () -> Unit
+        onModelFailed: (Throwable) -> Unit
     ) {
         started += model to grammar
         this.listener = listener
@@ -246,7 +246,7 @@ class FakeOfflineEngine : OfflineSpeechEngine {
 
 class FakeOfflineModels(vararg installed: VoiceLanguage) : OfflineModels {
     val installed = installed.toMutableSet()
-    val unusable = mutableListOf<VoiceLanguage>()
+    val failures = mutableListOf<Pair<VoiceLanguage, Throwable>>()
 
     override fun installed(language: VoiceLanguage) = if (language in
         installed
@@ -256,8 +256,9 @@ class FakeOfflineModels(vararg installed: VoiceLanguage) : OfflineModels {
         null
     }
 
-    override fun reportUnusable(language: VoiceLanguage) {
-        unusable += language
+    override fun reportLoadFailure(language: VoiceLanguage, error: Throwable) {
+        failures += language to error
+        // the real store keeps the files but stops offering the model until it is checked again
         installed -= language
     }
 }

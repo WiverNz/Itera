@@ -139,9 +139,15 @@ class VoiceOfflineTest {
                 VoiceLanguage.DE
             )
         voice.start(owner) { }
-        engine.modelFailed!!.invoke()
+        val linkage =
+            UnsatisfiedLinkError("Can't obtain peer field ID for class com.sun.jna.Pointer")
+        engine.modelFailed!!.invoke(linkage)
         engine.listener!!.onError(VoiceError.FAILED)
-        assertEquals(listOf(VoiceLanguage.DE), models.unusable)
+        assertEquals(
+            "the store gets the actual error to classify",
+            listOf(VoiceLanguage.DE to linkage),
+            models.failures
+        )
         assertEquals(VoiceSessionState.Failed(owner, VoiceFailure.FAILED), voice.state)
         voice.retry()
         assertEquals(VoiceSessionState.NeedsSystemConsent(owner), voice.state)
@@ -239,5 +245,15 @@ class VoiceOfflineTest {
         calls.forEach {
             assertTrue("literal-only log: $it", Regex("""TAG,\s*"[^"$]*"""").matches(it))
         }
+    }
+
+    /**
+     * Release builds are minified: without these rules R8 strips JNA, Vosk cannot load any model and every model
+     * looked damaged (1.0.12, vivo X200 Pro: "Can't obtain peer field ID for class com.sun.jna.Pointer").
+     */
+    @Test fun releaseBuildsKeepJnaAndVosk() {
+        val rules = java.io.File("src/main/keepRules/vosk-jna.keep").readText()
+        assertTrue("-keep class com.sun.jna.** { *; }" in rules)
+        assertTrue("-keep class org.vosk.** { *; }" in rules)
     }
 }

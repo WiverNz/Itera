@@ -22,4 +22,11 @@
     <string name="voice_offline_row_missing">Не установлена</string>
     <string name="voice_offline_row_damaged">Повреждена</string>
     <string name="voice_offline_row_failed">Ошибка загрузки</string>
+    <!-- installation validation (Validating / Unusable / Check again) -->
+    <string name="voice_offline_value_validating">Проверка модели…</string>
+    <string name="voice_offline_row_validating">Проверка…</string>
+    <string name="voice_offline_value_unusable">Не удалось загрузить · проверьте снова</string>
+    <string name="voice_offline_row_unusable">Не загружена</string>
+    <string name="voice_offline_recheck">Проверить снова</string>
+    <string name="voice_offline_load_failed">Модель установлена, но не загрузилась. Нажмите «Проверить снова» в настройках.</string>
 </resources>

@@ -13,6 +13,7 @@ import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import com.wivernz.itera.core.common.Logger
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 import org.json.JSONArray
@@ -50,7 +51,7 @@ class VoskSpeechEngine @Inject constructor(
         model: OfflineModel,
         grammar: List<String>?,
         listener: VoiceRecognitionListener,
-        onModelFailed: () -> Unit
+        onModelFailed: (Throwable) -> Unit
     ) {
         cancel()
         val next = Session(model, grammar, listener, onModelFailed)
@@ -86,13 +87,20 @@ class VoskSpeechEngine @Inject constructor(
         trimWhenIdle = false
     }
 
-    /** Loads [model] unless it is the one already loaded; null when it cannot be loaded. */
-    private fun acquire(model: OfflineModel): Model? = synchronized(lock) {
+    /**
+     * Loads [model] at its resolved root unless it is the one already loaded. A failure carries the actual error: it
+     * is not proof of damage (a native, linkage or memory error looks the same from here), so the store decides.
+     */
+    private fun acquire(model: OfflineModel): Result<Model> = synchronized(lock) {
         val path = model.path.absolutePath
-        loaded?.takeIf { it.first == path }?.second ?: run {
+        val cached = loaded?.takeIf { it.first == path }?.second
+        val result = if (cached != null) {
+            Result.success(cached)
+        } else {
             closeModel()
-            runCatching { Model(path) }.getOrNull()?.also { loaded = path to it }
-        }?.also {
+            runCatching { Model(path) }.onSuccess { loaded = path to it }
+        }
+        result.onSuccess {
             decoding++
             trimWhenIdle = false
         }
@@ -107,7 +115,7 @@ class VoskSpeechEngine @Inject constructor(
         private val model: OfflineModel,
         private val grammar: List<String>?,
         private val listener: VoiceRecognitionListener,
-        private val onModelFailed: () -> Unit
+        private val onModelFailed: (Throwable) -> Unit
     ) : Runnable {
         @Volatile var stopRequested = false
 
@@ -128,12 +136,11 @@ class VoskSpeechEngine @Inject constructor(
                 listener.onError(VoiceError.FAILED)
             }
             val t0 = SystemClock.elapsedRealtime()
-            val vosk = acquire(model)
-            if (vosk == null) {
+            val vosk = acquire(model).getOrElse { error ->
                 mic.release()
                 return finish {
                     logger.w(TAG, "Offline model could not be loaded")
-                    onModelFailed()
+                    onModelFailed(error)
                     listener.onError(VoiceError.FAILED)
                 }
             }
@@ -251,4 +258,18 @@ class VoskSpeechEngine @Inject constructor(
             runCatching { JSONObject(json).optString("partial") }.getOrDefault("")
                 .replace(UNKNOWN, " ").trim()
     }
+}
+
+/**
+ * Validation's real model load (milestone 013): opens the Vosk model at the resolved root the engine will later use,
+ * then closes it. Any throwable is returned, never thrown; the caller classifies it.
+ */
+class VoskModelLoader @Inject constructor() : VoiceModelLoader {
+    init {
+        runCatching { LibVosk.setLogLevel(LogLevel.WARNINGS) }
+    }
+
+    override fun check(path: File): Throwable? = runCatching {
+        Model(path.absolutePath).close()
+    }.exceptionOrNull()
 }

@@ -6,8 +6,10 @@ import com.wivernz.itera.core.voice.OfflineModels
 import com.wivernz.itera.core.voice.OfflineSpeechEngine
 import com.wivernz.itera.core.voice.SpeechPlatform
 import com.wivernz.itera.core.voice.VoiceConsentStore
+import com.wivernz.itera.core.voice.VoiceModelLoader
 import com.wivernz.itera.core.voice.VoiceModelStore
 import com.wivernz.itera.core.voice.VoiceRecognizer
+import com.wivernz.itera.core.voice.VoskModelLoader
 import com.wivernz.itera.core.voice.VoskSpeechEngine
 import com.wivernz.itera.data.preferences.PreferencesVoiceConsentStore
 import com.wivernz.itera.data.voicemodel.AndroidVoiceModelStore
@@ -49,4 +51,7 @@ abstract class VoiceConsentModule {
 
     @Binds
     abstract fun packs(impl: PlayModelPacks): ModelPacks
+
+    @Binds
+    abstract fun loader(impl: VoskModelLoader): VoiceModelLoader
 }

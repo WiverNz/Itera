@@ -22,4 +22,11 @@
     <string name="voice_offline_row_missing">No instalado</string>
     <string name="voice_offline_row_damaged">Dañado</string>
     <string name="voice_offline_row_failed">Error</string>
+    <!-- installation validation (Validating / Unusable / Check again) -->
+    <string name="voice_offline_value_validating">Comprobando el modelo…</string>
+    <string name="voice_offline_row_validating">Comprobando…</string>
+    <string name="voice_offline_value_unusable">No se pudo cargar · compruébalo de nuevo</string>
+    <string name="voice_offline_row_unusable">No cargado</string>
+    <string name="voice_offline_recheck">Comprobar de nuevo</string>
+    <string name="voice_offline_load_failed">El modelo se instaló, pero no se pudo cargar. Usa «Comprobar de nuevo» en Ajustes.</string>
 </resources>

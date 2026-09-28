@@ -57,7 +57,13 @@ class FakeVoiceModelStore : VoiceModelStore {
 
     override fun installed(language: VoiceLanguage): OfflineModel? = null
 
-    override fun reportUnusable(language: VoiceLanguage) = Unit
+    override fun reportLoadFailure(language: VoiceLanguage, error: Throwable) = Unit
+
+    val rechecks = mutableListOf<VoiceLanguage>()
+
+    override fun revalidate(language: VoiceLanguage) {
+        rechecks += language
+    }
 }
 
 @RunWith(RobolectricTestRunner::class)
@@ -76,6 +82,7 @@ class YouVoiceModelTest : YouTestBase() {
             vm.onEvent(YouUiEvent.DownloadModel(VoiceLanguage.RU))
             vm.onEvent(YouUiEvent.ImportModel("content://picked"))
             vm.onEvent(YouUiEvent.RemoveModel(VoiceLanguage.DE))
+            vm.onEvent(YouUiEvent.RecheckModel(VoiceLanguage.RU))
             // the events run on the view model's scope; wait for the last one to land
             repeat(100) {
                 if (models.removals.isNotEmpty()) return@repeat
@@ -85,6 +92,12 @@ class YouVoiceModelTest : YouTestBase() {
             assertEquals(listOf(VoiceLanguage.RU), models.downloads)
             assertEquals(listOf("content://picked"), models.imports)
             assertEquals(listOf(VoiceLanguage.DE), models.removals)
+            repeat(100) {
+                if (models.rechecks.isNotEmpty()) return@repeat
+                org.robolectric.shadows.ShadowLooper.idleMainLooper()
+                Thread.sleep(10)
+            }
+            assertEquals(listOf(VoiceLanguage.RU), models.rechecks)
             models.states.value =
                 models.states.value + (VoiceLanguage.RU to VoiceModelState.Downloading(30))
             vm.state.await { it.voiceModels[VoiceLanguage.RU] == VoiceModelState.Downloading(30) }
@@ -112,7 +125,8 @@ class OfflineModelSheetTest {
                     onDownload = { actions += "download" },
                     onImport = { actions += "import" },
                     onRemove = { actions += "remove" },
-                    onDismiss = { actions += "dismiss" }
+                    onDismiss = { actions += "dismiss" },
+                    onRecheck = { actions += "recheck" }
                 )
             }
         }
@@ -157,5 +171,31 @@ class OfflineModelSheetTest {
         compose.onNodeWithText("Downloading · 40%").assertExists()
         compose.onNodeWithText("Download").assertDoesNotExist()
         compose.onNodeWithTag("OfflineModelSheet").assertExists()
+    }
+
+    @Test fun anUnusableModelOffersCheckAgainAndKeepsRemove() {
+        val actions = mutableListOf<String>()
+        show(VoiceModelState.Unusable, downloadable = false, actions)
+        compose.onNodeWithText("Couldn't be loaded · check again").assertExists()
+        compose.onNodeWithText("Import file").assertDoesNotExist()
+        compose.onNodeWithText("Check again").performScrollTo().performClick()
+        compose.runOnIdle { assertEquals(listOf("recheck"), actions) }
+        compose.onNodeWithText("Remove").assertExists()
+    }
+
+    @Test fun aDamagedModelOffersCheckAgainAndReinstall() {
+        val actions = mutableListOf<String>()
+        show(VoiceModelState.Damaged, downloadable = true, actions)
+        compose.onNodeWithText("Check again").assertExists()
+        compose.onNodeWithText("Download").assertExists()
+        compose.onNodeWithText("Import file").assertExists()
+    }
+
+    @Test fun validationIsNeverShownAsReady() {
+        show(VoiceModelState.Validating, downloadable = true, mutableListOf())
+        compose.onNodeWithText("Checking the model…").assertExists()
+        compose.onNodeWithText("Installed", substring = true).assertDoesNotExist()
+        compose.onNodeWithText("Download").assertDoesNotExist()
+        compose.onNodeWithText("Remove").assertDoesNotExist()
     }
 }

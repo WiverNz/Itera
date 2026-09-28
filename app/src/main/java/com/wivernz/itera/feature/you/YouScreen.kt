@@ -130,6 +130,7 @@ fun YouRoute(
                 when (it.result) {
                     VoiceModelImport.INSTALLED -> R.string.voice_offline_imported
                     VoiceModelImport.NOT_A_MODEL -> R.string.voice_offline_not_model
+                    VoiceModelImport.LOAD_FAILED -> R.string.voice_offline_load_failed
                     VoiceModelImport.FAILED -> R.string.voice_offline_import_failed
                 },
                 Toast.LENGTH_LONG
@@ -519,6 +520,7 @@ fun YouScreen(
             onDownload = { onEvent(YouUiEvent.DownloadModel(voiceLanguage)) },
             onImport = importModel,
             onRemove = { onEvent(YouUiEvent.RemoveModel(voiceLanguage)) },
+            onRecheck = { onEvent(YouUiEvent.RecheckModel(voiceLanguage)) },
             onDismiss = { panel = null }
         )
         "recognizer" -> RecognizerSheet(

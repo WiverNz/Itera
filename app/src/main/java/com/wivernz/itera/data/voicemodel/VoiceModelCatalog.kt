@@ -48,12 +48,23 @@ object VoiceModelCatalog {
 
     fun byPack(pack: String): VoiceModelArchive? = archives.firstOrNull { it.pack == pack }
 
-    /** Files every supported Vosk small model has; a model missing any is damaged or incompatible. */
+    /**
+     * Files every supported Vosk small model has (the intersection of the four pinned archives); a model missing any
+     * is incomplete. Includes the i-vector extractor, which Vosk loads with the model.
+     */
     val requiredFiles = listOf(
         "am/final.mdl",
         "conf/model.conf",
         "conf/mfcc.conf",
         "graph/HCLr.fst",
-        "graph/Gr.fst"
+        "graph/Gr.fst",
+        "graph/disambig_tid.int",
+        "graph/phones/word_boundary.int",
+        "ivector/final.dubm",
+        "ivector/final.ie",
+        "ivector/final.mat",
+        "ivector/global_cmvn.stats",
+        "ivector/online_cmvn.conf",
+        "ivector/splice.conf"
     )
 }

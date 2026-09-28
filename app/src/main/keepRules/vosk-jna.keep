@@ -1,0 +1,10 @@
+# Milestone 013 (ADR-0022): the offline recogniser. Neither com.alphacephei:vosk-android nor
+# net.java.dev.jna:jna ships consumer rules. JNA's native dispatcher (libjnidispatch.so) looks up
+# Java classes, fields and methods by their exact names (for example Pointer.peer), and Vosk binds
+# LibVosk's natives through JNA direct mapping. Minified release builds without these rules fail in
+# Native.initIDs() with "Can't obtain peer field ID for class com.sun.jna.Pointer", so no model can
+# ever load (seen in 1.0.12 on a vivo X200 Pro).
+-keep class com.sun.jna.** { *; }
+-keepclassmembers class * extends com.sun.jna.** { public *; }
+-keep class org.vosk.** { *; }
+-dontwarn java.awt.**

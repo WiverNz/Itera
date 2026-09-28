@@ -22,4 +22,11 @@
     <string name="voice_offline_row_missing">Not installed</string>
     <string name="voice_offline_row_damaged">Damaged</string>
     <string name="voice_offline_row_failed">Download failed</string>
+    <!-- installation validation (Validating / Unusable / Check again) -->
+    <string name="voice_offline_value_validating">Checking the model…</string>
+    <string name="voice_offline_row_validating">Checking…</string>
+    <string name="voice_offline_value_unusable">Couldn\'t be loaded · check again</string>
+    <string name="voice_offline_row_unusable">Not loaded</string>
+    <string name="voice_offline_recheck">Check again</string>
+    <string name="voice_offline_load_failed">The model was installed but couldn\'t be loaded. Use Check again in Settings.</string>
 </resources>

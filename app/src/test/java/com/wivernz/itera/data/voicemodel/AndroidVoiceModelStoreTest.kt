@@ -2,12 +2,14 @@ package com.wivernz.itera.data.voicemodel
 
 import com.wivernz.itera.TestLogger
 import com.wivernz.itera.core.voice.VoiceModelImport
+import com.wivernz.itera.core.voice.VoiceModelLoader
 import com.wivernz.itera.core.voice.VoiceModelSource
 import com.wivernz.itera.core.voice.VoiceModelState
 import com.wivernz.itera.domain.voice.VoiceLanguage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
 import java.security.MessageDigest
 import java.util.Properties
 import java.util.zip.ZipEntry
@@ -50,10 +52,23 @@ private class FakePacks(var available: Boolean = false) : ModelPacks {
     fun emit(state: PackState) = listener?.invoke(state)
 }
 
+/** The real Vosk load, replaced: records the exact directory it was asked to open; fails with [error] when set. */
+private class FakeLoader(var error: Throwable? = null) : VoiceModelLoader {
+    val checked = mutableListOf<File>()
+
+    override fun check(path: File): Throwable? {
+        checked += path
+        return error
+    }
+}
+
 private fun sha(bytes: ByteArray) =
     MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 
-/** A synthetic model archive: a top folder with the required files (or [files]) plus optional extra entries. */
+/**
+ * A synthetic model archive: the required files under [top] (an archive's `vosk-model-...` folder; "" for a flat
+ * archive, "a/b" for two levels), plus optional extra entries.
+ */
 private fun archive(
     top: String = "vosk-model-small-ru-test",
     files: List<String> = VoiceModelCatalog.requiredFiles,
@@ -61,7 +76,7 @@ private fun archive(
 ): ByteArray = ByteArrayOutputStream().also { out ->
     ZipOutputStream(out).use { zip ->
         files.forEach {
-            zip.putNextEntry(ZipEntry("$top/$it"))
+            zip.putNextEntry(ZipEntry(if (top.isEmpty()) it else "$top/$it"))
             zip.write("data for $it".toByteArray())
             zip.closeEntry()
         }
@@ -73,28 +88,42 @@ private fun archive(
     }
 }.toByteArray()
 
+/** Writes the required files (with [skip] left out) under [dir]. */
+private fun layOut(dir: File, skip: String? = null) = VoiceModelCatalog.requiredFiles.filter {
+    it !=
+        skip
+}.forEach {
+    File(dir, it).apply { parentFile.mkdirs() }.writeText("data for $it")
+}
+
 class AndroidVoiceModelStoreTest {
     @get:Rule val folder = TemporaryFolder()
 
-    private val ru = archive()
-    private val catalog = listOf(
+    private val root get() = File(folder.root, "voice-models")
+    private val uploads = mutableMapOf<String, ByteArray>()
+
+    /** The RU archive under test is pinned; the other languages have unreachable pins. */
+    private fun catalog(ru: ByteArray) = listOf(
         VoiceModelArchive(VoiceLanguage.RU, "vosk-model-small-ru-test", ru.size.toLong(), sha(ru)),
         VoiceModelArchive(VoiceLanguage.EN, "vosk-model-small-en-test", 1, "0".repeat(64)),
         VoiceModelArchive(VoiceLanguage.DE, "vosk-model-small-de-test", 1, "1".repeat(64)),
         VoiceModelArchive(VoiceLanguage.ES, "vosk-model-small-es-test", 1, "2".repeat(64))
     )
-    private val uploads = mutableMapOf<String, ByteArray>()
+
+    private val ru = archive()
 
     private fun store(
-        root: File = File(folder.root, "voice-models"),
-        packs: FakePacks = FakePacks()
+        loader: FakeLoader = FakeLoader(),
+        packs: FakePacks = FakePacks(),
+        pinned: ByteArray = ru
     ) = AndroidVoiceModelStore(
         root,
         packs,
         { uri -> uploads[uri]?.let(::ByteArrayInputStream) },
         Dispatchers.Unconfined,
         TestLogger(),
-        catalog
+        loader,
+        catalog(pinned)
     )
 
     private fun import(store: AndroidVoiceModelStore, bytes: ByteArray): VoiceModelImport =
@@ -103,125 +132,251 @@ class AndroidVoiceModelStoreTest {
             store.import("content://picked")
         }
 
+    private fun manifest() = Properties().apply {
+        File(root, "ru/manifest.properties").reader().use(::load)
+    }
+
+    private fun ruState(store: AndroidVoiceModelStore) = store.states.value[VoiceLanguage.RU]
+
     @Test fun nothingIsInstalledByDefault() {
         val models = store()
         assertNull(models.installed(VoiceLanguage.RU))
-        assertEquals(VoiceModelState.NotInstalled, models.states.value[VoiceLanguage.RU])
+        assertEquals(VoiceModelState.NotInstalled, ruState(models))
         assertFalse("sideloaded: no Play download", models.downloadAvailable.value)
     }
 
-    @Test fun aPinnedArchiveImportsForTheLanguageItsChecksumNames() {
-        val root = File(folder.root, "voice-models")
-        val models = store(root)
+    @Test fun importValidatesImmediatelyAndRecognitionUsesTheValidatedRoot() {
+        val loader = FakeLoader()
+        val models = store(loader)
         assertEquals(VoiceModelImport.INSTALLED, import(models, ru))
+        val validated = loader.checked.single()
         val installed = models.installed(VoiceLanguage.RU)!!
+        assertEquals(
+            "recognition opens exactly the directory validation loaded",
+            validated,
+            installed.path
+        )
         assertEquals("vosk-model-small-ru-test", installed.version)
-        assertTrue(File(installed.path, "am/final.mdl").isFile)
-        val state = models.states.value[VoiceLanguage.RU] as VoiceModelState.Installed
+        val state = ruState(models) as VoiceModelState.Installed
         assertEquals(VoiceModelSource.IMPORTED, state.source)
-        val manifest = Properties().apply {
-            File(root, "ru/manifest.properties").reader().use(::load)
-        }
-        assertEquals(sha(ru), manifest.getProperty("sha256"))
+        assertEquals(sha(ru), manifest().getProperty("sha256"))
+        assertEquals("true", manifest().getProperty("validated"))
+        assertEquals(
+            VoiceModelLayout.fingerprint(installed.path),
+            manifest().getProperty("fingerprint")
+        )
         assertEquals("no staging left", listOf("ru"), root.list()!!.toList())
-        // persisted: a new store (app restart) finds it
-        assertTrue(store(root).installed(VoiceLanguage.RU) != null)
+
+        // persisted and not revalidated on restart: the cheap checks suffice
+        val restartLoader = FakeLoader()
+        val restarted = store(restartLoader)
+        assertEquals(installed.path, restarted.installed(VoiceLanguage.RU)!!.path)
+        assertTrue(restartLoader.checked.isEmpty())
     }
 
-    @Test fun unknownArchivesAreRejectedAndLeaveNothing() {
-        val root = File(folder.root, "voice-models")
-        val models = store(root)
+    @Test fun theArchiveWrapperFolderIsTheResolvedRoot() {
+        val models = store()
+        import(models, ru)
+        val path = models.installed(VoiceLanguage.RU)!!.path
+        assertEquals("vosk-model-small-ru-test", path.name)
+        assertTrue(File(path, "am/final.mdl").isFile && File(path, "ivector/final.ie").isFile)
+    }
+
+    @Test fun aFlatArchiveResolvesToItsOwnFolder() {
+        val flat = archive(top = "")
+        val models = store(pinned = flat)
+        assertEquals(VoiceModelImport.INSTALLED, import(models, flat))
+        assertEquals(
+            File(root, "ru/model").canonicalPath,
+            models.installed(VoiceLanguage.RU)!!.path.canonicalPath
+        )
+    }
+
+    @Test fun aModelNestedTwoLevelsDeepIsNotFlattened() {
+        val deep = archive(top = "outer/vosk-model-small-ru-test")
+        val loader = FakeLoader()
+        val models = store(loader, pinned = deep)
+        assertEquals(VoiceModelImport.NOT_A_MODEL, import(models, deep))
+        assertNull(models.installed(VoiceLanguage.RU))
+        assertTrue(loader.checked.isEmpty())
+    }
+
+    @Test fun missingRequiredFilesAreRejected() {
+        val incomplete = archive(files = VoiceModelCatalog.requiredFiles - "ivector/final.ie")
+        val loader = FakeLoader()
+        val models = store(loader, pinned = incomplete)
+        assertEquals(VoiceModelImport.NOT_A_MODEL, import(models, incomplete))
+        assertNull(models.installed(VoiceLanguage.RU))
+        assertTrue("no model load for an incomplete package", loader.checked.isEmpty())
+    }
+
+    @Test fun unpinnedAndUnsafeArchivesAreRejectedAndLeaveNothing() {
+        val models = store()
         assertEquals(
             VoiceModelImport.NOT_A_MODEL,
             import(models, archive(top = "someone-elses-model"))
         )
+        assertEquals(
+            VoiceModelImport.NOT_A_MODEL,
+            import(models, archive(extra = mapOf("top/../../escape.txt" to "x")))
+        )
+        assertFalse(File(folder.root, "escape.txt").exists())
         assertNull(models.installed(VoiceLanguage.RU))
         assertTrue(root.list().orEmpty().isEmpty())
+        assertEquals(VoiceModelImport.FAILED, runBlocking { models.import("content://missing") })
     }
 
-    @Test fun unsafeOrIncompleteArchivesAreRejected() {
+    @Test fun aChecksumRecordThatNoLongerMatchesIsDamaged() {
         val models = store()
-        val escaping = archive(extra = mapOf("top/../../escape.txt" to "x"))
-        assertEquals(VoiceModelImport.NOT_A_MODEL, import(models, escaping))
-        assertFalse(File(folder.root, "escape.txt").exists())
-
-        // pinned checksum but missing a required file: incompatible
-        val incomplete = archive(files = VoiceModelCatalog.requiredFiles.drop(1))
-        val pinned = catalog.map {
-            if (it.language == VoiceLanguage.RU) {
-                VoiceModelArchive(VoiceLanguage.RU, "x", incomplete.size.toLong(), sha(incomplete))
-            } else {
-                it
-            }
-        }
-        val strict = AndroidVoiceModelStore(
-            File(folder.root, "strict"),
-            FakePacks(),
-            { ByteArrayInputStream(incomplete) },
-            Dispatchers.Unconfined,
-            TestLogger(),
-            pinned
-        )
-        assertEquals(VoiceModelImport.NOT_A_MODEL, runBlocking { strict.import("content://x") })
-        assertNull(strict.installed(VoiceLanguage.RU))
-    }
-
-    @Test fun anUnreadableUriFails() {
-        assertEquals(VoiceModelImport.FAILED, runBlocking { store().import("content://missing") })
-    }
-
-    @Test fun aTamperedModelIsNotInstalled() {
-        val root = File(folder.root, "voice-models")
-        val models = store(root)
         import(models, ru)
-        File(root, "ru/model/graph/Gr.fst").delete()
-        assertNull("integrity check on every lookup", models.installed(VoiceLanguage.RU))
+        val file = File(root, "ru/manifest.properties")
+        file.writeText(file.readText().replace(sha(ru), "f".repeat(64)))
+        assertNull(models.installed(VoiceLanguage.RU))
+        assertEquals(VoiceModelState.Damaged, ruState(models))
     }
 
-    @Test fun removeAndDamageClearTheModel() {
-        val root = File(folder.root, "voice-models")
+    @Test fun aRuntimeFailureDuringValidationKeepsTheFilesAndIsNotDamage() {
+        val loader =
+            FakeLoader(
+                UnsatisfiedLinkError("Can't obtain peer field ID for class com.sun.jna.Pointer")
+            )
         val packs = FakePacks()
-        val models = store(root, packs)
-        import(models, ru)
-        models.remove(VoiceLanguage.RU)
-        assertNull(models.installed(VoiceLanguage.RU))
-        assertEquals(VoiceModelState.NotInstalled, models.states.value[VoiceLanguage.RU])
-        assertFalse(File(root, "ru").exists())
-
-        import(models, ru)
-        models.reportUnusable(VoiceLanguage.RU)
-        assertNull(models.installed(VoiceLanguage.RU))
-        assertEquals(VoiceModelState.Damaged, models.states.value[VoiceLanguage.RU])
-        assertEquals(listOf("voice_model_ru", "voice_model_ru"), packs.removed)
-        // installing again clears the damaged state
-        import(models, ru)
-        assertTrue(models.states.value[VoiceLanguage.RU] is VoiceModelState.Installed)
+        val models = store(loader, packs)
+        assertEquals(VoiceModelImport.LOAD_FAILED, import(models, ru))
+        assertEquals(VoiceModelState.Unusable, ruState(models))
+        assertNull("not offered for recognition", models.installed(VoiceLanguage.RU))
+        assertTrue("files kept", File(root, "ru/manifest.properties").isFile)
+        assertTrue(packs.removed.isEmpty())
     }
 
-    @Test fun playPacksDownloadOnlyOnRequestAndInstallFromTheirFolder() {
-        val packs = FakePacks(available = true)
+    @Test fun aLoadFailureAtUseDoesNotMarkIntactFilesDamaged() {
+        val packs = FakePacks()
         val models = store(packs = packs)
-        assertTrue(models.downloadAvailable.value)
-        assertTrue("never automatic", packs.fetched.isEmpty())
+        import(models, ru)
+        models.reportLoadFailure(VoiceLanguage.RU, IOException("Failed to create a model"))
+        assertEquals(VoiceModelState.Unusable, ruState(models))
+        assertTrue("files kept", VoiceModelLayout.resolveRoot(File(root, "ru/model")) != null)
+        assertTrue("nothing removed", packs.removed.isEmpty())
+        models.reportLoadFailure(VoiceLanguage.RU, OutOfMemoryError())
+        assertEquals(VoiceModelState.Unusable, ruState(models))
+    }
+
+    @Test fun aLoadFailureWithMissingFilesIsDamageAndReinstallRepairsIt() {
+        val models = store()
+        import(models, ru)
+        val modelRoot = models.installed(VoiceLanguage.RU)!!.path
+        File(modelRoot, "graph/Gr.fst").delete()
+        models.reportLoadFailure(VoiceLanguage.RU, IOException("Failed to create a model"))
+        assertEquals(VoiceModelState.Damaged, ruState(models))
+        assertNull(models.installed(VoiceLanguage.RU))
+        assertEquals(VoiceModelImport.INSTALLED, import(models, ru))
+        assertTrue(ruState(models) is VoiceModelState.Installed)
+    }
+
+    @Test fun theCheapPreUseCheckCatchesMissingOrChangedFilesWithoutLoading() {
+        val loader = FakeLoader()
+        val models = store(loader)
+        import(models, ru)
+        val modelRoot = models.installed(VoiceLanguage.RU)!!.path
+        loader.checked.clear()
+        File(modelRoot, "am/final.mdl").appendText("truncated or replaced")
+        assertNull("changed since validation", models.installed(VoiceLanguage.RU))
+        assertEquals(VoiceModelState.Damaged, ruState(models))
+        assertTrue("no model load before use", loader.checked.isEmpty())
+    }
+
+    @Test fun anUnusableModelRevalidatesBackToReadyWithoutReinstalling() {
+        val loader = FakeLoader(UnsatisfiedLinkError("jna"))
+        val models = store(loader)
+        import(models, ru)
+        assertEquals(VoiceModelState.Unusable, ruState(models))
+        loader.error = null // for example after an app update with the missing keep rules
+        models.revalidate(VoiceLanguage.RU)
+        assertTrue(ruState(models) is VoiceModelState.Installed)
+        assertTrue(models.installed(VoiceLanguage.RU) != null)
+    }
+
+    @Test fun aGenuinelyDamagedModelStaysDamagedOnRevalidation() {
+        val loader = FakeLoader()
+        val models = store(loader)
+        import(models, ru)
+        File(models.installed(VoiceLanguage.RU)!!.path, "conf/model.conf").delete()
+        loader.checked.clear()
+        models.revalidate(VoiceLanguage.RU)
+        assertEquals(VoiceModelState.Damaged, ruState(models))
+        assertTrue("no load attempt for a structurally broken model", loader.checked.isEmpty())
+    }
+
+    @Test fun anInstallationFromAnEarlierBuildIsValidatedOnceAtStartup() {
+        // milestone 013's first builds stripped the archive folder and wrote no fingerprint
+        layOut(File(root, "ru/model"))
+        File(
+            root,
+            "ru/manifest.properties"
+        ).writeText("version=vosk-model-small-ru-test\nsha256=${sha(ru)}\nbytes=1\n")
+        val loader = FakeLoader()
+        val models = store(loader)
+        assertEquals(listOf(File(root, "ru/model")), loader.checked)
+        assertTrue(ruState(models) is VoiceModelState.Installed)
+        assertEquals("true", manifest().getProperty("validated"))
+    }
+
+    @Test fun playPacksValidateOnDeliveryAndUseTheResolvedRoot() {
+        val packs = FakePacks(available = true)
+        val loader = FakeLoader()
+        val models = store(loader, packs)
         models.download(VoiceLanguage.RU)
         assertEquals(listOf("voice_model_ru"), packs.fetched)
         packs.emit(PackState("voice_model_ru", PackStatus.DOWNLOADING, 40))
-        assertEquals(VoiceModelState.Downloading(40), models.states.value[VoiceLanguage.RU])
+        assertEquals(VoiceModelState.Downloading(40), ruState(models))
         packs.emit(PackState("voice_model_ru", PackStatus.WAITING_FOR_WIFI))
-        assertEquals(VoiceModelState.WaitingForWifi, models.states.value[VoiceLanguage.RU])
+        assertEquals(VoiceModelState.WaitingForWifi, ruState(models))
 
         val assets = folder.newFolder("pack")
-        VoiceModelCatalog.requiredFiles.forEach {
-            File(assets, "voice_model_ru/$it").apply { parentFile.mkdirs() }.writeText("x")
-        }
+        layOut(File(assets, "voice_model_ru"))
         packs.folders["voice_model_ru"] = assets
         packs.emit(PackState("voice_model_ru", PackStatus.COMPLETED, 100))
-        val state = models.states.value[VoiceLanguage.RU] as VoiceModelState.Installed
+        assertEquals(listOf(File(assets, "voice_model_ru")), loader.checked)
+        val state = ruState(models) as VoiceModelState.Installed
         assertEquals(VoiceModelSource.PLAY, state.source)
-        assertEquals(File(assets, "voice_model_ru"), models.installed(VoiceLanguage.RU)!!.path)
+        assertEquals(loader.checked.single(), models.installed(VoiceLanguage.RU)!!.path)
 
         packs.emit(PackState("voice_model_en", PackStatus.FAILED))
         assertEquals(VoiceModelState.DownloadFailed, models.states.value[VoiceLanguage.EN])
+    }
+
+    @Test fun aPlayPackThatWillNotLoadIsUnusableNotDamaged() {
+        val packs = FakePacks(available = true)
+        val models = store(FakeLoader(IOException("Failed to create a model")), packs)
+        val assets = folder.newFolder("pack")
+        layOut(File(assets, "voice_model_ru"))
+        packs.folders["voice_model_ru"] = assets
+        packs.emit(PackState("voice_model_ru", PackStatus.COMPLETED, 100))
+        assertEquals(VoiceModelState.Unusable, ruState(models))
+        assertTrue("the pack is kept", packs.removed.isEmpty())
+    }
+
+    @Test fun anIncompletePlayPackIsDamaged() {
+        val packs = FakePacks(available = true)
+        val loader = FakeLoader()
+        val models = store(loader, packs)
+        val assets = folder.newFolder("pack")
+        layOut(File(assets, "voice_model_ru"), skip = "graph/HCLr.fst")
+        packs.folders["voice_model_ru"] = assets
+        packs.emit(PackState("voice_model_ru", PackStatus.COMPLETED, 100))
+        assertEquals(VoiceModelState.Damaged, ruState(models))
+        assertTrue(loader.checked.isEmpty())
+    }
+
+    @Test fun removeClearsTheModel() {
+        val packs = FakePacks()
+        val models = store(packs = packs)
+        import(models, ru)
+        models.remove(VoiceLanguage.RU)
+        assertNull(models.installed(VoiceLanguage.RU))
+        assertEquals(VoiceModelState.NotInstalled, ruState(models))
+        assertFalse(File(root, "ru").exists())
+        assertEquals(listOf("voice_model_ru"), packs.removed)
     }
 
     @Test fun theDownloadSizeAndFileNameComeFromTheCatalog() {

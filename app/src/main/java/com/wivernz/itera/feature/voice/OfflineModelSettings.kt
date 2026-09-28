@@ -60,6 +60,10 @@ fun offlineModelValue(
                 R.string.voice_offline_row_missing
             )
             VoiceModelState.Damaged -> return stringResource(R.string.voice_offline_row_damaged)
+            VoiceModelState.Validating -> return stringResource(
+                R.string.voice_offline_row_validating
+            )
+            VoiceModelState.Unusable -> return stringResource(R.string.voice_offline_row_unusable)
             VoiceModelState.DownloadFailed -> return stringResource(
                 R.string.voice_offline_row_failed
             )
@@ -78,6 +82,8 @@ fun offlineModelValue(
         )
         VoiceModelState.WaitingForWifi -> stringResource(R.string.voice_offline_value_wifi)
         VoiceModelState.Damaged -> stringResource(R.string.voice_offline_value_damaged)
+        VoiceModelState.Validating -> stringResource(R.string.voice_offline_value_validating)
+        VoiceModelState.Unusable -> stringResource(R.string.voice_offline_value_unusable)
         VoiceModelState.DownloadFailed -> stringResource(R.string.voice_offline_value_failed)
         VoiceModelState.NotInstalled -> stringResource(
             R.string.voice_offline_value_missing,
@@ -102,11 +108,15 @@ fun OfflineModelSheet(
     onImport: () -> Unit,
     onRemove: () -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    // validate the installed files again (damaged or unusable): restores the model when it passes
+    onRecheck: () -> Unit = {}
 ) {
     val c = Itera.colors
     val installed = state is VoiceModelState.Installed
-    val busy = state is VoiceModelState.Downloading || state == VoiceModelState.WaitingForWifi
+    val busy = state is VoiceModelState.Downloading || state == VoiceModelState.WaitingForWifi ||
+        state == VoiceModelState.Validating
+    val recheckable = state == VoiceModelState.Unusable || state == VoiceModelState.Damaged
     ModalBottomSheet(
         modifier = modifier.testTag("OfflineModelSheet"),
         tonalElevation = 0.dp,
@@ -143,19 +153,32 @@ fun OfflineModelSheet(
                 style = Itera.type.label,
                 color = c.ink
             )
-            if (installed) {
+            if (recheckable) {
+                IteraButton(stringResource(R.string.voice_offline_recheck), onRecheck)
+            }
+            if (installed || state == VoiceModelState.Unusable) {
                 IteraButton(stringResource(R.string.voice_offline_remove), {
                     onRemove()
                     onDismiss()
                 }, kind = ButtonKind.Secondary)
             } else if (!busy) {
                 if (downloadAvailable) {
-                    IteraButton(stringResource(R.string.voice_offline_download), onDownload)
+                    IteraButton(
+                        stringResource(R.string.voice_offline_download),
+                        onDownload,
+                        kind = if (recheckable) ButtonKind.Secondary else ButtonKind.Primary
+                    )
                 }
                 IteraButton(
                     stringResource(R.string.voice_offline_import),
                     onImport,
-                    kind = if (downloadAvailable) ButtonKind.Secondary else ButtonKind.Primary
+                    kind = if (downloadAvailable ||
+                        recheckable
+                    ) {
+                        ButtonKind.Secondary
+                    } else {
+                        ButtonKind.Primary
+                    }
                 )
                 info?.let {
                     Text(

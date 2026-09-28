@@ -22,4 +22,11 @@
     <string name="voice_offline_row_missing">Nicht installiert</string>
     <string name="voice_offline_row_damaged">Beschädigt</string>
     <string name="voice_offline_row_failed">Fehlgeschlagen</string>
+    <!-- installation validation (Validating / Unusable / Check again) -->
+    <string name="voice_offline_value_validating">Modell wird geprüft …</string>
+    <string name="voice_offline_row_validating">Prüfung …</string>
+    <string name="voice_offline_value_unusable">Konnte nicht geladen werden · erneut prüfen</string>
+    <string name="voice_offline_row_unusable">Nicht geladen</string>
+    <string name="voice_offline_recheck">Erneut prüfen</string>
+    <string name="voice_offline_load_failed">Das Modell wurde installiert, konnte aber nicht geladen werden. Tippe in den Einstellungen auf „Erneut prüfen“.</string>
 </resources>
