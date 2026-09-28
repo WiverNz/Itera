@@ -8,6 +8,10 @@ import com.wivernz.itera.analytics.ScreenRoute
 import com.wivernz.itera.analytics.SettingKey
 import com.wivernz.itera.analytics.SettingValue
 import com.wivernz.itera.core.notifications.ReminderScheduler
+import com.wivernz.itera.core.voice.VoiceModelImport
+import com.wivernz.itera.core.voice.VoiceModelInfo
+import com.wivernz.itera.core.voice.VoiceModelState
+import com.wivernz.itera.core.voice.VoiceModelStore
 import com.wivernz.itera.domain.demo.DemoDataLoader
 import com.wivernz.itera.domain.model.LearningTopic
 import com.wivernz.itera.domain.model.UserPreferences
@@ -15,6 +19,7 @@ import com.wivernz.itera.domain.repository.LearningTopicRepository
 import com.wivernz.itera.domain.repository.PreferencesRepository
 import com.wivernz.itera.domain.training.EraseAllDataUseCase
 import com.wivernz.itera.domain.training.ResetProgramUseCase
+import com.wivernz.itera.domain.voice.VoiceLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Optional
 import javax.inject.Inject
@@ -37,7 +42,11 @@ data class YouUiState(
     val loading: Boolean = true,
     val busy: Boolean = false,
     val failed: Boolean = false,
-    val demoAvailable: Boolean = false
+    val demoAvailable: Boolean = false,
+    /** Milestone 013: each language's offline speech model, and whether Play can download one. */
+    val voiceModels: Map<VoiceLanguage, VoiceModelState> = emptyMap(),
+    val voiceModelInfo: Map<VoiceLanguage, VoiceModelInfo> = emptyMap(),
+    val modelDownloadAvailable: Boolean = false
 )
 sealed interface YouUiEvent {
     data class Name(val text: String) : YouUiEvent
@@ -50,6 +59,13 @@ sealed interface YouUiEvent {
 
     /** ADR-0022: the consented recognition app, or null to turn it off. Not tracked. */
     data class Recognizer(val id: String?) : YouUiEvent
+
+    /** Milestone 013: offline speech model actions for one language. Never started automatically. */
+    data class DownloadModel(val language: VoiceLanguage) : YouUiEvent
+
+    data class ImportModel(val uri: String) : YouUiEvent
+
+    data class RemoveModel(val language: VoiceLanguage) : YouUiEvent
     data class Topic(val id: Long?, val title: String) : YouUiEvent
     data class Archive(val id: Long) : YouUiEvent
     data class Open(val route: ScreenRoute) : YouUiEvent
@@ -60,6 +76,8 @@ sealed interface YouUiEvent {
 sealed interface YouEffect {
     data class ResetDone(val erased: Boolean) : YouEffect
     data object DemoDone : YouEffect
+
+    data class ModelImported(val result: VoiceModelImport) : YouEffect
 }
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
@@ -71,15 +89,29 @@ class YouViewModel @Inject constructor(
     private val reset: ResetProgramUseCase,
     private val erase: EraseAllDataUseCase,
     private val demo: Optional<DemoDataLoader>,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    private val voiceModels: VoiceModelStore
 ) : ViewModel() {
     private val local = MutableStateFlow(YouUiState(demoAvailable = demo.isPresent))
     private val refresh = MutableStateFlow(0)
     private val channel = Channel<YouEffect>(Channel.BUFFERED)
     val effects = channel.receiveAsFlow()
     val state = refresh.flatMapLatest {
-        combine(preferences.preferences, topics.observeTopics(), local) { prefs, rows, ui ->
-            ui.copy(preferences = prefs, topics = rows.filterNot { it.archived }, loading = false)
+        combine(
+            preferences.preferences,
+            topics.observeTopics(),
+            local,
+            voiceModels.states,
+            voiceModels.downloadAvailable
+        ) { prefs, rows, ui, models, downloadable ->
+            ui.copy(
+                preferences = prefs,
+                topics = rows.filterNot { it.archived },
+                loading = false,
+                voiceModels = models,
+                voiceModelInfo = VoiceLanguage.entries.associateWith(voiceModels::info),
+                modelDownloadAvailable = downloadable
+            )
         }.catch { emit(local.value.copy(loading = false, failed = true)) }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), local.value)
     init {
@@ -116,6 +148,10 @@ class YouViewModel @Inject constructor(
                     is YouUiEvent.Recognizer -> preferences.update {
                         it.copy(selectedRecognizer = event.id)
                     }
+                    is YouUiEvent.DownloadModel -> voiceModels.download(event.language)
+                    is YouUiEvent.ImportModel ->
+                        channel.send(YouEffect.ModelImported(voiceModels.import(event.uri)))
+                    is YouUiEvent.RemoveModel -> voiceModels.remove(event.language)
                     is YouUiEvent.Topic -> if (event.title.isNotBlank()) {
                         if (event.id ==
                             null

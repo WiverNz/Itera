@@ -65,7 +65,10 @@ fun VoiceHost(recognizer: VoiceRecognizer, content: @Composable () -> Unit) {
     }
     val controller = remember(recognizer) { VoiceController(recognizer, gate, language) }
     LaunchedEffect(language) { controller.onLanguage(language) }
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) { controller.cancel() }
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        controller.cancel()
+        controller.trim()
+    }
     DisposableEffect(controller) { onDispose { controller.release() } }
     CompositionLocalProvider(LocalVoiceController provides controller, content = content)
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Milestone 013: built-in offline voice recognition (docs/issues/013-offline-voice-recognition.md). -->
+<resources>
+    <string name="voice_offline_setting">Офлайн-модель речи</string>
+    <string name="voice_offline_value_installed">Установлена · %1$s</string>
+    <string name="voice_offline_value_missing">Не установлена · %1$s</string>
+    <string name="voice_offline_value_downloading">Загрузка · %1$d%%</string>
+    <string name="voice_offline_value_wifi">Ожидание Wi-Fi</string>
+    <string name="voice_offline_value_damaged">Повреждена · установите заново</string>
+    <string name="voice_offline_value_failed">Не удалось загрузить</string>
+    <string name="voice_offline_sheet_title">Офлайн-модель речи · %1$s</string>
+    <string name="voice_offline_sheet_body">Распознаёт речь на этом телефоне раньше любых других сервисов речи. Звук не покидает устройство и никогда не сохраняется. Устанавливается модель только для этого языка.</string>
+    <string name="voice_offline_download">Загрузить</string>
+    <string name="voice_offline_import">Импортировать файл</string>
+    <string name="voice_offline_import_hint">Без Google Play скачайте официальный файл %1$s с alphacephei.com/vosk/models и импортируйте его здесь.</string>
+    <string name="voice_offline_remove">Удалить</string>
+    <string name="voice_offline_imported">Офлайн-модель речи установлена</string>
+    <string name="voice_offline_not_model">Этот файл не является поддерживаемой моделью речи.</string>
+    <string name="voice_offline_import_failed">Не удалось импортировать модель. Попробуйте ещё раз.</string>
+</resources>

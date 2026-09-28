@@ -50,6 +50,8 @@ Exact patch versions are whatever is current at implementation time; KSP2 must s
 | `androidx.compose.material3:material3` | components | already present |
 | ~~`material-icons-extended`~~ | **not used** - `IteraIcons.kt` covers every icon (D-12) | no |
 | `org.jetbrains.kotlinx:kotlinx-collections-immutable` | stable list params for Compose | yes |
+| `com.alphacephei:vosk-android` 0.3.75 (+ `net.java.dev.jna:jna` 5.18.1 AAR) | milestone 013: Itera's own offline recogniser (ADR-0022). Apache-2.0 (JNA LGPL-2.1/Apache-2.0). Native `libvosk.so` about 9-10 MB per ABI | milestone 013 |
+| `com.google.android.play:asset-delivery` 2.3.0 (+ `core-common`, `play-services-basement`/`-tasks`) | milestone 013: on-demand delivery of one voice-model pack per language. Play Core SDK terms. Adds no `INTERNET`; adds `FOREGROUND_SERVICE_DATA_SYNC` and its extraction service (`OfflineTest`) | milestone 013 |
 
 ### Notes
 - **kotlinx-datetime**: listed but **not adopted**. `minSdk 26` gives `java.time` natively. Use `java.time` throughout; drop this line.
@@ -86,7 +88,7 @@ Exact patch versions are whatever is current at implementation time; KSP2 must s
 | Timber | one small `Logger` interface, injected, is enough and keeps release logging honest |
 | Mockito / MockK | see testing strategy |
 | Anything from `design/` | the prototype is a reference, never a dependency; production must not import it (ADR-0018) |
-| Dynamic feature modules | single APK |
+| Dynamic feature modules | single APK. Milestone 013's `voice_model_<lang>` modules are asset packs (data only, no code), not feature modules |
 
 ## 5. Build plugins
 

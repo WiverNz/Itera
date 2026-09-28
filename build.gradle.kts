@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.asset.pack) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
@@ -27,7 +28,12 @@ spotless {
             )
     }
     kotlinGradle {
-        target("*.gradle.kts", "app/*.gradle.kts", "buildSrc/*.gradle.kts")
+        target(
+            "*.gradle.kts",
+            "app/*.gradle.kts",
+            "buildSrc/*.gradle.kts",
+            "voicemodels/*/*.gradle.kts"
+        )
         ktlint(libs.versions.ktlint.get()).setEditorConfigPath(rootProject.file(".editorconfig"))
             .editorConfigOverride(
                 mapOf("ktlint_function_naming_ignore_when_annotated_with" to composeNaming.get())

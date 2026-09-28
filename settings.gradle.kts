@@ -24,3 +24,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Itera"
 include(":app")
+
+// Milestone 013: one on-demand Play Asset Delivery pack per offline voice model (ADR-0022). The model files are
+// fetched and checksum-verified at bundle time (see voicemodels/README.md); none are committed.
+listOf("en", "ru", "de", "es").forEach { language ->
+    include(":voice_model_$language")
+    project(":voice_model_$language").projectDir = file("voicemodels/voice_model_$language")
+}

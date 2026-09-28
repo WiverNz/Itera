@@ -398,6 +398,15 @@ Decisions the voice documents left to implementation; none changes a product rul
 - **Consent UI** is an inline voice-panel state (same panel as the microphone rationale), before the Android permission prompt. Settings → Voice revokes system consent and changes/clears the app.
 - **Verified device limitation.** On the vivo V2405A (Android 16) there is no on-device recogniser, the system selection is empty, and Google's recogniser is hidden and unbindable; the only discoverable provider (Claude) rejects Itera's requests. Voice therefore still cannot recognise speech on that device.
 
+## Milestone 013 decisions: built-in offline voice (2026-09-28)
+
+- **Order (locked by the user).** ON_DEVICE → ITERA OFFLINE (Vosk, model for the current language installed) → usable SYSTEM DEFAULT → USER-SELECTED → UNAVAILABLE. A missing or damaged model continues the chain; the external fallbacks stay.
+- **Consent.** None beyond `RECORD_AUDIO` for the offline recogniser: audio never leaves the device.
+- **Models.** One per language, pinned official Vosk small models; never in the base APK or Git. Play: one on-demand asset pack per language, downloaded only on the user's tap. APK/sideload: document-picker import of the pinned archive. "Erase all data" keeps models (no user data); Settings → Remove deletes one.
+- **Command grammar.** Only where the context's commands are all fixed phrases (focus, Today); exercises with Add/Complete stay free-form. Dictation is always free-form one-best: n-best alternatives lost a leading syllable on the vivo («звонить» for «позвонить»), so alternatives are requested only with a grammar.
+- **Model lifecycle.** One model loaded app-wide; closed on background and when another language is needed.
+- **Permissions.** Play Asset Delivery adds `FOREGROUND_SERVICE_DATA_SYNC` and its extraction service; no `INTERNET`. The merged set is pinned in `OfflineTest`.
+
 ## Caller-provided audio (2026-09-28)
 
 - **Decision (user).** On API 33+, system-default and user-chosen providers receive Itera's own 16 kHz mono PCM16 capture through `EXTRA_AUDIO_SOURCE`; on-device and API 26-32 are unchanged. Audio is memory-only for the phrase, never stored, uploaded by Itera or logged ([ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md)).

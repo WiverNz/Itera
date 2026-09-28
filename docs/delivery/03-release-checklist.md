@@ -30,6 +30,7 @@ Scheme: `versionName = MAJOR.MINOR.PATCH`, `versionCode` a monotonically increas
 - [ ] ProGuard/R8 keep rules exist for: Room entities, `kotlinx.serialization` serializers, Hilt-generated classes, `@HiltWorker` workers, and every `@Serializable` route type.
 - [ ] `isDebuggable = false`; no debug-only code path reachable.
 - [ ] The merged release manifest declares **no `INTERNET` permission** (`OfflineTest` asserts this, but check the merged output too).
+- [ ] Milestone 013: the AAB carries four on-demand `voice_model_<lang>` packs built from the pinned, verified archives; the base APK carries no model; the merged permissions equal `OfflineTest`'s reviewed set (no `INTERNET`; Play Asset Delivery's `FOREGROUND_SERVICE_DATA_SYNC` declared in Play Console for the extraction service); Play download, document-picker import and Remove work on a release build; offline dictation and a command pass in EN/RU/DE/ES.
 - [ ] After milestone 012, declared permissions are exactly: `POST_NOTIFICATIONS`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `RECEIVE_BOOT_COMPLETED`, `RECORD_AUDIO`. Microphone is requested only on voice use, never onboarding; no microphone foreground service. ADR-0022 is the permission decision.
 - [ ] `FOREGROUND_SERVICE_SPECIAL_USE` carries its `PROPERTY_SPECIAL_USE_FGS_SUBTYPE` declaration.
 - [ ] Only `MainActivity` is exported.

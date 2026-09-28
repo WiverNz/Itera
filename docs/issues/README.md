@@ -17,6 +17,7 @@ This index is the implementation status entry point; each milestone owns its acc
 - **008: implemented; one device acceptance check pending (2026-09-27).** Required tests, build, lint, formatting and light/dark prototype comparisons pass. API 26-30 language persistence remains open; see [008](008-progress-history-and-settings.md#verification-gaps).
 - **012: implemented (2026-09-27).** Required tests, build, lint and formatting pass; the full visual/device voice comparison is deferred to 009/010. See [012](012-voice-input-and-commands.md#verification-gap).
 - **009: in progress (2026-09-28).** Real reminders and analytics/privacy checks are implemented. Fixed the 1.0.8 resource-shrinking regression; the minified release completed Day 1 on API 37. Closed 003's gallery gap and added representative accessibility/localisation coverage. Manual accessibility, remaining 005/006/012 visual checks, real voice-model checks and API 26-30 verification remain open. See [009](009-notifications-and-quality-passes.md).
+- **013: in progress (2026-09-28).** Built-in offline voice recognition (Vosk), pre-release; blocks 011. See [013](013-offline-voice-recognition.md).
 - **010-011: not started.**
 
 Current milestone: **009**. Next after it: **010**. Readiness is not authorization to start another milestone.
@@ -37,6 +38,7 @@ Current milestone: **009**. Next after it: **010**. Readiness is not authorizati
 | [010](010-test-hardening.md) | Test hardening | 009 | 039 |
 | [011](011-release-readiness.md) | Release readiness | 010 | 040 |
 | [012](012-voice-input-and-commands.md) | Voice input & commands - **implemented; visual/device comparison deferred to 009/010** | 006, 007, 008 | New scope; none |
+| [013](013-offline-voice-recognition.md) | Built-in offline voice recognition - **in progress** | 012 | New scope; none |
 
 Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 012 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007 and must finish before 012. The solo sequence after 007 is **008, 012, 009, 010, 011**. Finish outstanding core visual acceptance before 012; numbering is not execution order.
 

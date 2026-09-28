@@ -34,10 +34,9 @@ private class Recording : VoiceRecognitionListener {
 class VoiceRecognitionTest {
     private val owner = Any()
 
-    private fun android(consent: FakeConsent = FakeConsent()) = AndroidVoiceRecognizer(
+    private fun android(consent: FakeConsent = FakeConsent()) = androidRecognizer(
         AndroidSpeechPlatform(ApplicationProvider.getApplicationContext()),
-        consent,
-        TestLogger()
+        consent
     )
 
     @Test fun api26To30WithoutAnyServiceIsUnavailable() {
@@ -49,7 +48,7 @@ class VoiceRecognitionTest {
         )
         try {
             val recognizer = android(FakeConsent(granted = true))
-            assertEquals(VoiceAvailability.UNAVAILABLE, recognizer.availability())
+            assertEquals(VoiceAvailability.UNAVAILABLE, recognizer.availability("en-US"))
             val listener = Recording()
             recognizer.start("en-US", listener)
             assertEquals(listOf(VoiceError.SERVICE_UNAVAILABLE), listener.errors)
@@ -62,7 +61,7 @@ class VoiceRecognitionTest {
         ShadowSpeechRecognizer.setIsOnDeviceRecognitionAvailable(false)
         try {
             val recognizer = android(FakeConsent(granted = true))
-            assertEquals(VoiceAvailability.UNAVAILABLE, recognizer.availability())
+            assertEquals(VoiceAvailability.UNAVAILABLE, recognizer.availability("en-US"))
             val listener = Recording()
             recognizer.start("de-DE", listener)
             assertEquals(listOf(VoiceError.SERVICE_UNAVAILABLE), listener.errors)
@@ -77,7 +76,7 @@ class VoiceRecognitionTest {
         try {
             val consent = FakeConsent()
             val recognizer = android(consent)
-            assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability())
+            assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability("en-US"))
             val listener = Recording()
             recognizer.start("es-ES", listener)
             assertTrue(listener.errors.isEmpty())

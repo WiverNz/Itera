@@ -94,12 +94,17 @@ class VoiceController(
 
     private var token = 0L
     private var onFinal: ((List<String>) -> Unit)? = null
+    private var grammar: List<String>? = null
 
-    /** A mic or "Speak" tap. Ends any other session first. */
-    fun start(owner: Any, onFinal: (List<String>) -> Unit) {
+    /**
+     * A mic or "Speak" tap. Ends any other session first. [grammar]: the command sheet's fixed phrases where the
+     * context has no free-text command; recognisers that support it restrict themselves to them.
+     */
+    fun start(owner: Any, grammar: List<String>? = null, onFinal: (List<String>) -> Unit) {
         cancel()
         this.onFinal = onFinal
-        when (recognizer.availability()) {
+        this.grammar = grammar
+        when (recognizer.availability(language.tag)) {
             VoiceAvailability.UNAVAILABLE ->
                 state = VoiceSessionState.Unavailable(owner, VoiceUnavailable.DEVICE)
             VoiceAvailability.CONSENT_REQUIRED ->
@@ -175,7 +180,7 @@ class VoiceController(
     fun retry() {
         val owner = state.owner ?: return
         val callback = onFinal ?: return
-        start(owner, callback)
+        start(owner, grammar, callback)
     }
 
     fun stop() {
@@ -211,6 +216,9 @@ class VoiceController(
         cancel()
         recognizer.release()
     }
+
+    /** The app went to the background (after [cancel]): free the loaded offline model. */
+    fun trim() = recognizer.trim()
 
     private fun listen(owner: Any) {
         val session = ++token
@@ -273,7 +281,8 @@ class VoiceController(
                         VoiceError.FAILED -> VoiceSessionState.Failed(owner, VoiceFailure.FAILED)
                     }
                 }
-            }
+            },
+            grammar
         )
     }
 }

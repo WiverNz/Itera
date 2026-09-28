@@ -175,6 +175,13 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
         }
 
         Group(stringResource(R.string.sec_voice)) {
+            // milestone 013: the current language's offline model first; production opens a sheet with
+            // Download (Play only) / Import file / Remove. Here a tap toggles installed for comparison.
+            ValueRow(
+                stringResource(R.string.voice_offline_setting),
+                if (vm.offlineModel) stringResource(R.string.voice_offline_value_installed, "91 MB") else stringResource(R.string.voice_offline_value_missing, "46 MB"),
+            ) { vm.offlineModel = !vm.offlineModel }
+            Divider()
             SwitchRow(stringResource(R.string.voice_system_setting), vm.systemRecognition, habits, sub = stringResource(R.string.voice_system_setting_sub)) { vm.systemRecognition = it }
             Divider()
             // production: opens the picker sheet (None + installed apps); an app needs its named consent first

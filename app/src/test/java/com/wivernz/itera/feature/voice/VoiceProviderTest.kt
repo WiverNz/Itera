@@ -85,7 +85,7 @@ class VoiceProviderTest {
     @Before fun setUp() = reduceMotion()
 
     private fun adapter(platform: FakePlatform, consent: FakeConsent) =
-        AndroidVoiceRecognizer(platform, consent, TestLogger())
+        androidRecognizer(platform, consent)
 
     private fun controller(
         platform: FakePlatform,
@@ -143,7 +143,7 @@ class VoiceProviderTest {
         )
         val consent = FakeConsent()
         val recognizer = adapter(platform, consent)
-        assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability())
+        assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability("en-US"))
         val listener = Errors()
         recognizer.start("en-US", listener)
         assertEquals(listOf<VoiceProvider>(VoiceProvider.OnDevice), platform.created)
@@ -186,7 +186,7 @@ class VoiceProviderTest {
         val platform = FakePlatform(providers = providers)
         val consent = FakeConsent()
         val recognizer = adapter(platform, consent)
-        assertEquals(VoiceAvailability.CHOICE_REQUIRED, recognizer.availability())
+        assertEquals(VoiceAvailability.CHOICE_REQUIRED, recognizer.availability("en-US"))
         // even a direct start cannot reach an installed provider without a choice
         val listener = Errors()
         recognizer.start("ru-RU", listener)
@@ -360,22 +360,22 @@ class VoiceProviderTest {
         val store = PreferencesVoiceConsentStore(prefs, Dispatchers.Unconfined)
         val platform =
             FakePlatform(providers = listOf(info(CLAUDE, "Claude"), info(OTHER, "Speech")))
-        val recognizer = AndroidVoiceRecognizer(platform, store, TestLogger())
+        val recognizer = androidRecognizer(platform, store)
         recognizer.selectProvider(CLAUDE.flattenToString())
         assertEquals(CLAUDE.flattenToString(), prefs.state.value.selectedRecognizer)
-        assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability())
+        assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability("en-US"))
         // Settings: another app (after its consent in the sheet), then None
         prefs.state.value = prefs.state.value.copy(selectedRecognizer = OTHER.flattenToString())
         recognizer.start("en-US", Errors())
         assertEquals(VoiceProvider.Selected(OTHER), platform.created.last())
         prefs.state.value = prefs.state.value.copy(selectedRecognizer = null)
-        assertEquals(VoiceAvailability.CHOICE_REQUIRED, recognizer.availability())
+        assertEquals(VoiceAvailability.CHOICE_REQUIRED, recognizer.availability("en-US"))
         // the system-default consent is revoked the same way
         platform.systemDefault = GSA
         prefs.state.value = prefs.state.value.copy(systemRecognitionAllowed = true)
-        assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability())
+        assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability("en-US"))
         prefs.state.value = prefs.state.value.copy(systemRecognitionAllowed = false)
-        assertEquals(VoiceAvailability.CONSENT_REQUIRED, recognizer.availability())
+        assertEquals(VoiceAvailability.CONSENT_REQUIRED, recognizer.availability("en-US"))
         // an id that is not an installed provider is never stored
         recognizer.selectProvider("com.evil/.Service")
         assertNull(prefs.state.value.selectedRecognizer)

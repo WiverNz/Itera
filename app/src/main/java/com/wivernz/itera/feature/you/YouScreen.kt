@@ -6,6 +6,8 @@ import android.content.Intent
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -82,13 +84,19 @@ import com.wivernz.itera.core.designsystem.component.title
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.colors
+import com.wivernz.itera.core.voice.VoiceModelImport
+import com.wivernz.itera.core.voice.VoiceModelState
 import com.wivernz.itera.domain.model.LearningTopic
 import com.wivernz.itera.domain.model.ProgramPace
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.ThemePreference
 import com.wivernz.itera.domain.model.TimeBudget
 import com.wivernz.itera.feature.onboarding.FocusAreaRows
+import com.wivernz.itera.feature.voice.MODEL_TYPES
+import com.wivernz.itera.feature.voice.OfflineModelSheet
 import com.wivernz.itera.feature.voice.RecognizerSheet
+import com.wivernz.itera.feature.voice.currentVoiceLanguage
+import com.wivernz.itera.feature.voice.offlineModelValue
 import com.wivernz.itera.feature.voice.recognitionProviders
 
 @Composable
@@ -117,6 +125,15 @@ fun YouRoute(
                 resetNavigation(it.erased)
             }
             YouEffect.DemoDone -> resetNavigation(false)
+            is YouEffect.ModelImported -> Toast.makeText(
+                context,
+                when (it.result) {
+                    VoiceModelImport.INSTALLED -> R.string.voice_offline_imported
+                    VoiceModelImport.NOT_A_MODEL -> R.string.voice_offline_not_model
+                    VoiceModelImport.FAILED -> R.string.voice_offline_import_failed
+                },
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
     YouScreen(state, vm::onEvent, is24Hour(context), resume, {
@@ -150,6 +167,12 @@ fun YouScreen(
     }
     fun change(key: SettingKey, value: SettingValue) = onEvent(YouUiEvent.Change(key, value))
     val providers = recognitionProviders()
+    val voiceLanguage = currentVoiceLanguage()
+    // the system document picker: the non-Play way to install a model; Itera needs no network permission
+    val importModel =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            uri?.let { onEvent(YouUiEvent.ImportModel(it.toString())) }
+        }
     if (panel == "privacy" || panel == "topics") {
         BackHandler { panel = null }
         if (panel == "privacy") {
@@ -416,6 +439,13 @@ fun YouScreen(
                 )
             }
             Group(stringResource(R.string.sec_voice)) {
+                // milestone 013: the active app language's offline model comes first, as in the provider order
+                ValueRow(
+                    stringResource(R.string.voice_offline_setting),
+                    offlineModelValue(state.voiceModels, state.voiceModelInfo, voiceLanguage),
+                    { panel = "offline" }
+                )
+                Divider()
                 SwitchRow(
                     stringResource(R.string.voice_system_setting),
                     p.systemRecognitionAllowed,
@@ -474,6 +504,16 @@ fun YouScreen(
         }
     }
     when (panel) {
+        "offline" -> OfflineModelSheet(
+            voiceLanguage,
+            state.voiceModels[voiceLanguage] ?: VoiceModelState.NotInstalled,
+            state.voiceModelInfo[voiceLanguage],
+            state.modelDownloadAvailable,
+            onDownload = { onEvent(YouUiEvent.DownloadModel(voiceLanguage)) },
+            onImport = { importModel.launch(MODEL_TYPES) },
+            onRemove = { onEvent(YouUiEvent.RemoveModel(voiceLanguage)) },
+            onDismiss = { panel = null }
+        )
         "recognizer" -> RecognizerSheet(
             providers,
             p.selectedRecognizer,

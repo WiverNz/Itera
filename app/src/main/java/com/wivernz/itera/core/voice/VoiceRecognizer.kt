@@ -16,6 +16,7 @@ import android.speech.RecognitionService
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import com.wivernz.itera.core.common.Logger
+import com.wivernz.itera.domain.voice.VoiceLanguage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -32,6 +33,9 @@ data class RecognitionProviderInfo(val id: String, val label: String, val icon: 
 /** Which recogniser a session uses. Internal to the adapter; UI and features never see it. */
 sealed interface VoiceProvider {
     data object OnDevice : VoiceProvider
+
+    /** Itera's own Vosk recogniser with the active language's installed model (milestone 013). */
+    data class Offline(val model: OfflineModel) : VoiceProvider
     data class SystemDefault(val component: ComponentName) : VoiceProvider
     data class Selected(val component: ComponentName) : VoiceProvider
 }
@@ -48,14 +52,20 @@ sealed interface VoiceRoute {
     data object Unavailable : VoiceRoute
 
     companion object {
+        /**
+         * ON_DEVICE -> ITERA OFFLINE (model installed for the language) -> SYSTEM DEFAULT -> USER-SELECTED ->
+         * UNAVAILABLE (milestone 013). A missing offline model never blocks: the chain simply continues.
+         */
         fun select(
             onDevice: Boolean,
             systemDefault: ComponentName?,
             systemConsent: Boolean,
             selected: ComponentName?,
-            installed: List<ComponentName>
+            installed: List<ComponentName>,
+            offline: OfflineModel? = null
         ): VoiceRoute = when {
             onDevice -> Use(VoiceProvider.OnDevice)
+            offline != null -> Use(VoiceProvider.Offline(offline))
             systemDefault != null && systemConsent -> Use(
                 VoiceProvider.SystemDefault(systemDefault)
             )
@@ -138,6 +148,8 @@ class AndroidSpeechPlatform @Inject constructor(
                 } else {
                     null
                 }
+            // Itera's own engine, not a platform SpeechRecognizer
+            is VoiceProvider.Offline -> null
             is VoiceProvider.SystemDefault ->
                 SpeechRecognizer.createSpeechRecognizer(context, provider.component)
             is VoiceProvider.Selected ->
@@ -217,7 +229,8 @@ interface VoiceRecognitionListener {
  * consent. Carries no business logic and cannot reach storage.
  */
 interface VoiceRecognizer {
-    fun availability(): VoiceAvailability
+    /** For the recognition language [languageTag] (BCP-47): the offline model is per language. */
+    fun availability(languageTag: String): VoiceAvailability
 
     /** The user chose "Use system recognition"; stored so they are not asked again. */
     fun allowSystemRecognition()
@@ -231,7 +244,12 @@ interface VoiceRecognizer {
     /** True once after a chosen provider disappeared or failed, so the picker can say why it is back. */
     fun consumeProviderLost(): Boolean
 
-    fun start(languageTag: String, listener: VoiceRecognitionListener)
+    /** [grammar]: command phrases a recogniser may restrict itself to; null is free-form dictation. */
+    fun start(
+        languageTag: String,
+        listener: VoiceRecognitionListener,
+        grammar: List<String>? = null
+    )
 
     /** Ask for the final result of the current utterance. */
     fun stop()
@@ -240,23 +258,33 @@ interface VoiceRecognizer {
     fun cancel()
 
     fun release()
+
+    /** The app went to the background: free what can be rebuilt (the loaded offline model). */
+    fun trim() = Unit
 }
 
 class AndroidVoiceRecognizer @Inject constructor(
     private val platform: SpeechPlatform,
     private val consent: VoiceConsentStore,
+    private val offline: OfflineSpeechEngine,
+    private val models: OfflineModels,
     private val logger: Logger
 ) : VoiceRecognizer {
     private var recognizer: SpeechRecognizer? = null
     private var providerLost = false
 
-    private fun route(): VoiceRoute {
+    private fun route(languageTag: String): VoiceRoute {
+        val language = VoiceLanguage.entries.firstOrNull { it.tag == languageTag }
+            ?: VoiceLanguage.of(languageTag.substringBefore('-'))
         val installed = platform.providers().mapNotNull { ComponentName.unflattenFromString(it.id) }
         val selected = consent.selectedProvider()?.let(ComponentName::unflattenFromString)
         val onDevice = platform.onDeviceAvailable()
-        val systemDefault = if (onDevice) null else platform.systemDefault()
+        val offlineModel = if (onDevice) null else models.installed(language)
+        val systemDefault = if (onDevice || offlineModel != null) null else platform.systemDefault()
         // A chosen provider that is gone or disabled is forgotten, and the user chooses again.
-        if (!onDevice && systemDefault == null && selected != null && selected !in installed) {
+        if (!onDevice && offlineModel == null && systemDefault == null && selected != null &&
+            selected !in installed
+        ) {
             forgetProvider()
         }
         return VoiceRoute.select(
@@ -264,11 +292,12 @@ class AndroidVoiceRecognizer @Inject constructor(
             systemDefault = systemDefault,
             systemConsent = consent.systemGranted(),
             selected = selected?.takeIf { it in installed },
-            installed = installed
+            installed = installed,
+            offline = offlineModel
         )
     }
 
-    override fun availability(): VoiceAvailability = when (route()) {
+    override fun availability(languageTag: String): VoiceAvailability = when (route(languageTag)) {
         is VoiceRoute.Use -> VoiceAvailability.AVAILABLE
         VoiceRoute.NeedsSystemConsent -> VoiceAvailability.CONSENT_REQUIRED
         VoiceRoute.NeedsChoice -> VoiceAvailability.CHOICE_REQUIRED
@@ -285,13 +314,24 @@ class AndroidVoiceRecognizer @Inject constructor(
 
     override fun consumeProviderLost(): Boolean = providerLost.also { providerLost = false }
 
-    override fun start(languageTag: String, listener: VoiceRecognitionListener) {
-        val provider = (route() as? VoiceRoute.Use)?.provider
+    override fun start(
+        languageTag: String,
+        listener: VoiceRecognitionListener,
+        grammar: List<String>?
+    ) {
+        val provider = (route(languageTag) as? VoiceRoute.Use)?.provider
         if (provider == null) {
             listener.onError(VoiceError.SERVICE_UNAVAILABLE)
             return
         }
         release()
+        if (provider is VoiceProvider.Offline) {
+            // Itera's own microphone and model: no service, consent or caller audio involved
+            offline.start(provider.model, grammar, listener) {
+                models.reportUnusable(provider.model.language)
+            }
+            return
+        }
         val created = platform.create(provider)
         if (created == null) {
             logger.w(TAG, "Recogniser could not be created")
@@ -305,7 +345,9 @@ class AndroidVoiceRecognizer @Inject constructor(
         }
         recognizer = created
         // API 33+ external providers get Itera's own capture: theirs may be silenced in the background.
-        val injected = provider !is VoiceProvider.OnDevice && platform.callerAudioSupported()
+        val injected =
+            (provider is VoiceProvider.SystemDefault || provider is VoiceProvider.Selected) &&
+                platform.callerAudioSupported()
         val stream = if (injected) platform.openCallerAudio() else null
         if (injected && stream == null) {
             logger.w(TAG, "Caller audio could not be opened")
@@ -399,17 +441,22 @@ class AndroidVoiceRecognizer @Inject constructor(
 
     /** Stop: the recogniser is asked for its final result and the supplied audio ends. */
     override fun stop() {
+        offline.stop()
         runCatching { recognizer?.stopListening() }
         audio?.endOfAudio()
     }
 
     override fun cancel() {
+        offline.cancel()
         stopWatchdog()
         runCatching { recognizer?.cancel() }
         closeAudio()
     }
 
+    override fun trim() = offline.trim()
+
     override fun release() {
+        offline.cancel()
         stopWatchdog()
         recognizer?.let { r ->
             runCatching { r.cancel() }

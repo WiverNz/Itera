@@ -66,7 +66,7 @@ class VoiceCallerAudioTest {
 
     private fun start(platform: FakePlatform, consent: FakeConsent = chosen()): VoiceController {
         val voice = VoiceController(
-            AndroidVoiceRecognizer(platform, consent, TestLogger()),
+            androidRecognizer(platform, consent),
             FakeGate(),
             VoiceLanguage.EN
         )
@@ -150,7 +150,7 @@ class VoiceCallerAudioTest {
         val platform = selectedPlatform()
         val results = mutableListOf<List<String>>()
         val voice = VoiceController(
-            AndroidVoiceRecognizer(platform, chosen(), TestLogger()),
+            androidRecognizer(platform, chosen()),
             FakeGate(),
             VoiceLanguage.EN
         )

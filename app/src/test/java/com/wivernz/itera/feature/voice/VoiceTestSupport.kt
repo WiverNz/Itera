@@ -4,7 +4,12 @@ import android.content.ComponentName
 import android.os.ParcelFileDescriptor
 import android.speech.SpeechRecognizer
 import androidx.test.core.app.ApplicationProvider
+import com.wivernz.itera.TestLogger
+import com.wivernz.itera.core.voice.AndroidVoiceRecognizer
 import com.wivernz.itera.core.voice.CallerAudioStream
+import com.wivernz.itera.core.voice.OfflineModel
+import com.wivernz.itera.core.voice.OfflineModels
+import com.wivernz.itera.core.voice.OfflineSpeechEngine
 import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.core.voice.SpeechPlatform
 import com.wivernz.itera.core.voice.VoiceAvailability
@@ -35,7 +40,20 @@ class FakeRecognizer(
 
     val listener: VoiceRecognitionListener get() = listeners.last()
 
-    override fun availability() = when {
+    val grammars = mutableListOf<List<String>?>()
+    val availabilityLanguages = mutableListOf<String>()
+    var trims = 0
+
+    override fun trim() {
+        trims++
+    }
+
+    override fun availability(languageTag: String): VoiceAvailability {
+        availabilityLanguages += languageTag
+        return availabilityNow()
+    }
+
+    private fun availabilityNow() = when {
         !available -> VoiceAvailability.UNAVAILABLE
         consentRequired -> VoiceAvailability.CONSENT_REQUIRED
         providers.isNotEmpty() && selected == null -> VoiceAvailability.CHOICE_REQUIRED
@@ -55,9 +73,10 @@ class FakeRecognizer(
         consentRequired = false
     }
 
-    override fun start(languageTag: String, listener: VoiceRecognitionListener) {
+    override fun start(languageTag: String, listener: VoiceRecognitionListener, grammar: List<String>?) {
         languages += languageTag
         listeners += listener
+        grammars += grammar
     }
 
     override fun stop() {
@@ -187,6 +206,60 @@ class FakePlatform(
 
     override fun otherCaptureActive(ownSession: Int) = otherCapture
 }
+
+/** Milestone 013: the offline engine without Vosk; tests drive its callbacks. */
+class FakeOfflineEngine : OfflineSpeechEngine {
+    val started = mutableListOf<Pair<OfflineModel, List<String>?>>()
+    var listener: VoiceRecognitionListener? = null
+    var modelFailed: (() -> Unit)? = null
+    var stops = 0
+    var cancels = 0
+    var trims = 0
+
+    override fun start(
+        model: OfflineModel,
+        grammar: List<String>?,
+        listener: VoiceRecognitionListener,
+        onModelFailed: () -> Unit
+    ) {
+        started += model to grammar
+        this.listener = listener
+        modelFailed = onModelFailed
+    }
+
+    override fun stop() {
+        stops++
+    }
+
+    override fun cancel() {
+        cancels++
+    }
+
+    override fun trim() {
+        trims++
+    }
+}
+
+class FakeOfflineModels(vararg installed: VoiceLanguage) : OfflineModels {
+    val installed = installed.toMutableSet()
+    val unusable = mutableListOf<VoiceLanguage>()
+
+    override fun installed(language: VoiceLanguage) =
+        if (language in installed) OfflineModel(language, File("models/${language.tag}"), "test-${language.tag}") else null
+
+    override fun reportUnusable(language: VoiceLanguage) {
+        unusable += language
+        installed -= language
+    }
+}
+
+/** The real adapter over fakes. */
+fun androidRecognizer(
+    platform: SpeechPlatform,
+    consent: VoiceConsentStore = FakeConsent(),
+    offline: OfflineSpeechEngine = FakeOfflineEngine(),
+    models: OfflineModels = FakeOfflineModels()
+) = AndroidVoiceRecognizer(platform, consent, offline, models, TestLogger())
 
 /** Caller audio without a microphone: a real pipe, counting end-of-audio and close calls. */
 class FakeAudioStream : CallerAudioStream {

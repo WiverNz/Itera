@@ -31,6 +31,9 @@ kover = "0.9.9"
 spotless = "7.2.1"
 ktlint = "1.7.1"
 lint = "32.4.1"
+# milestone 013 (ADR-0022): built-in offline recogniser and its per-language model packs
+vosk = "0.3.75"
+playAssetDelivery = "2.3.0"
 
 [libraries]
 lint-api = { module = "com.android.tools.lint:lint-api", version.ref = "lint" }
@@ -79,7 +82,11 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidxTestCore" }
 
+vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "vosk" }
+play-asset-delivery = { module = "com.google.android.play:asset-delivery", version.ref = "playAssetDelivery" }
+
 [plugins]
+android-asset-pack = { id = "com.android.asset-pack", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

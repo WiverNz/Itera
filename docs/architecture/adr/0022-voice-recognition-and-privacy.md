@@ -1,6 +1,6 @@
 # ADR-0022: Explicit voice input and recogniser consent
 
-Status: accepted (2026-09-26); implemented in milestone 012 (2026-09-27). **Amended 2026-09-28** by an explicit product/privacy decision from the user: the earlier "strictly on-device or unavailable" rule is replaced by the consented fallback chain below.
+Status: accepted (2026-09-26); implemented in milestone 012 (2026-09-27). **Amended 2026-09-28** by an explicit product/privacy decision from the user: the earlier "strictly on-device or unavailable" rule is replaced by the consented fallback chain below, with Itera's own offline recogniser (milestone 013) second in the order.
 
 ## Decision
 
@@ -11,6 +11,7 @@ Add `RECORD_AUDIO` only for user-initiated, foreground, single-utterance dictati
 Itera picks one recogniser per session, in this order, inside the `core/voice` adapter (`AndroidVoiceRecognizer`). Features and UI only see availability states, never which provider listens.
 
 1. **ON_DEVICE.** When `SpeechRecognizer.isOnDeviceRecognitionAvailable` is true (API 31+), use `createOnDeviceSpeechRecognizer`. No consent beyond `RECORD_AUDIO`.
+1a. **ITERA OFFLINE (milestone 013, locked order 2026-09-28).** Otherwise, if the Vosk model for the current recognition language is installed and intact, Itera recognises speech itself: its own `AudioRecord` (16 kHz mono PCM16) feeds the model in memory. Audio never leaves the device, so no consent beyond `RECORD_AUDIO` is asked. A missing or damaged model never blocks voice: the chain continues with step 2. See "Built-in offline recogniser" below.
 2. **Usable SYSTEM DEFAULT, with consent.** Otherwise, if `Settings.Secure.voice_recognition_service` names a component that actually resolves as an enabled, exported `RecognitionService`, use it through `createSpeechRecognizer(context, component)`. First use shows a consent panel: on-device recognition is unavailable, the system provider may process audio remotely and use the network, Itera does not store the audio or transcript. "Use system recognition" / "Not now".
 3. **USER-SELECTED INSTALLED PROVIDER, with consent.** Otherwise, if installed apps expose an enabled, exported `RecognitionService`, show a picker with each app's own label and icon. Nothing is pre-selected. Picking an app opens a consent panel naming it: it is a separate app, may process audio remotely and use the network under its own privacy terms, Itera does not store the audio or transcript. Only "Use <app>" stores the choice; the flattened `ComponentName` is persisted only after that acceptance, so a stored component is that consent. Sessions use `createSpeechRecognizer(context, component)`.
 4. **UNAVAILABLE.** No recogniser: explain, offer speech settings, keep typing.
@@ -39,6 +40,17 @@ External recognisers (steps 2 and 3) may open the microphone under their own bac
 - **Language errors are split.** `ERROR_LANGUAGE_NOT_SUPPORTED` means the provider has no model for the Itera language: explain that, with no speech-settings link. `ERROR_LANGUAGE_UNAVAILABLE` means the model is missing: explain and offer speech settings.
 
 **Verified result on the vivo V2405A (Android 16).** Google Speech Recognition & Synthesis (`com.google.android.tts/…GoogleTTSRecognitionService`) consumes the supplied stream (it opens an external PFD audio session and no microphone of its own), and Itera's capture is not silenced. Android's `RecognitionService` framework then still cancels the session ("caller without permission RECORD_AUDIO") because its data-delivery check includes the provider's own app, whose microphone access is foreground-only and which runs in the background. Voice therefore still does not work on that device; no further workaround was added.
+
+## Built-in offline recogniser (milestone 013, 2026-09-28)
+
+Decided by the user after every Android service path failed on the vivo test device (no on-device recogniser; Google's provider accepts caller audio but the platform rejects its background microphone access; Claude does not serve third-party clients; Russian unsupported by Google). Proven by `spikes/vosk-android/` (exact Russian dictation, `StartFocus(25)`).
+
+- **Engine.** Vosk Android (`com.alphacephei:vosk-android`, Apache-2.0) with JNA, only in `core/voice/VoskSpeechEngine`. One model stays loaded app-wide for the active language; it is replaced when another language is needed and closed when the app goes to the background (`VoiceRecognizer.trim`), never while a session decodes. The record buffer holds two seconds, so speech during a cold load (about 0.5-0.7 s) is kept. One utterance ends at the first endpoint with words, on Stop, after 8 s without speech (no-speech) or at 30 s. Vosk's native log level is warnings.
+- **Recognition.** Dictation is free-form one-best. The command sheet passes a restricted phrase grammar (`VoiceGrammar`, built from the parser's own vocabulary plus `[unk]`) only where every available command is a fixed phrase (focus, Today); contexts with Add/Complete stay free-form. The deterministic parser and all UI/business actions are unchanged.
+- **Models.** The four official Vosk small models (EN 0.15, RU 0.22, DE 0.15, ES 0.42; Apache-2.0), pinned by archive SHA-256 in `voicemodels/models.properties` and `VoiceModelCatalog`. Never in the base APK or in Git.
+- **Delivery.** Google Play: one on-demand Play Asset Delivery pack per language (`voice_model_<lang>`), fetched only when the user taps Download; the Play Store downloads and extracts it, and Itera loads it from the pack folder. The build fetches and verifies the models only for `bundle*` tasks. PAD adds no `INTERNET` permission; it adds `FOREGROUND_SERVICE_DATA_SYNC` and its extraction service (pinned in `OfflineTest`). APK/sideload builds: Settings → Import file through the system document picker; only the pinned archives are accepted (the checksum identifies the language); extracted to `noBackupFilesDir/voice-models/<lang>` with a manifest (version, SHA-256, size). Zip-slip and size limits apply.
+- **Integrity.** A model counts as installed only while its required files exist; one that fails to load is removed and shown as damaged, and voice continues down the chain.
+- **Privacy.** Fully offline; no audio file, no transcript log, no network. "Erase all data" does not remove models (they hold no user data); Remove in Settings does.
 
 ## Earlier rule (superseded)
 

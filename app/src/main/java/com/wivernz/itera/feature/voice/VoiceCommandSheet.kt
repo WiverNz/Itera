@@ -51,6 +51,7 @@ import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.domain.voice.VoiceCommand
 import com.wivernz.itera.domain.voice.VoiceCommandKind
+import com.wivernz.itera.domain.voice.VoiceGrammar
 import com.wivernz.itera.domain.voice.VoiceParse
 import com.wivernz.itera.feature.exercise.runner.ConfirmDialog
 
@@ -125,7 +126,9 @@ fun VoiceCommandSheet(voice: VoiceController, host: VoiceCommandHost, onClose: (
             )
             val listen = {
                 flow.reset()
-                voice.start(flow) { flow.onFinal(it, voice.language) }
+                // fixed-phrase contexts (focus, Today) let an offline recogniser use a restricted grammar
+                val grammar = VoiceGrammar.forCommands(host.voiceCommands, voice.language)
+                voice.start(flow, grammar) { flow.onFinal(it, voice.language) }
             }
             if (voice.isActive(flow)) {
                 VoiceStatusPanel(voice, voice.state, command = true, onDismiss = {})

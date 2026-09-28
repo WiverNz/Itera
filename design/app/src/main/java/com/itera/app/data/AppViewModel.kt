@@ -37,6 +37,7 @@ class AppViewModel : ViewModel() {
     val notifications = mutableStateListOf(true, true, true, true)
     var systemRecognition by mutableStateOf(false)
     var recognitionApp by mutableStateOf(false)
+    var offlineModel by mutableStateOf(false)
 
     fun toggleFocusSkill(skill: Skill) {
         if (skill in focusSkills) {

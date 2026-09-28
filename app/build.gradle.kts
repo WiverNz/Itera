@@ -61,6 +61,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Milestone 013: offline voice models ship as on-demand asset packs, never in the base APK.
+    assetPacks += listOf(":voice_model_en", ":voice_model_ru", ":voice_model_de", ":voice_model_es")
+
     // All four languages must remain available for offline runtime switching.
     bundle {
         language {
@@ -132,6 +135,9 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.appcompat)
+    // milestone 013: Itera-owned offline recogniser (Vosk + JNA) and Play delivery of its per-language models
+    implementation(libs.vosk.android)
+    implementation(libs.play.asset.delivery)
     testImplementation(libs.turbine)
     testImplementation(libs.robolectric)
     testImplementation(libs.roborazzi.compose)

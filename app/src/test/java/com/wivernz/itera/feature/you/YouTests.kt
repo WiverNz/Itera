@@ -39,9 +39,12 @@ open class YouTestBase : ProgressTestBase() {
             h.resetProgram,
             h.eraseAll,
             Optional.empty(),
-            h.analytics
+            h.analytics,
+            models
         )
     )
+
+    protected val models = FakeVoiceModelStore()
 }
 
 @RunWith(RobolectricTestRunner::class)

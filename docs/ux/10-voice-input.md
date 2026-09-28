@@ -58,7 +58,9 @@ Specified durations use the current focus setup's allowed minute choices (curren
 
 ## Settings
 
-You → Voice holds “Use system speech recognition” (switch; revokes the system consent) and “Speech recognition app” (value row: the chosen app's label or None; shown when installed apps offer recognition or one is chosen). The row opens a sheet with None and each app; None turns it off at once, and choosing a different app shows that app's named consent in the sheet before it is stored.
+**Offline speech model (milestone 013)** is the first row: “Offline speech model” with the current app language's state as its value (“Not installed · 46 MB”, “Downloading · 40%”, “Waiting for Wi-Fi”, “Installed · 91 MB”, “Damaged · install again”, “Download failed”). It opens a sheet titled with the language: what the model does (recognises speech on the phone before any other service; audio never leaves the device), its state, then Remove when installed, otherwise Download (only when Play can deliver packs) and Import file (system document picker) with the exact official file name for builds without Play. Nothing downloads without that tap. Changing the app language makes the row and sheet offer the new language's model; it is never fetched automatically. When the model is missing, voice uses the rest of the provider chain as before.
+
+You → Voice then holds “Use system speech recognition” (switch; revokes the system consent) and “Speech recognition app” (value row: the chosen app's label or None; shown when installed apps offer recognition or one is chosen). The row opens a sheet with None and each app; None turns it off at once, and choosing a different app shows that app's named consent in the sheet before it is stored.
 
 ## Design and accessibility
 
