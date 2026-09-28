@@ -54,7 +54,7 @@ Rule 2 is the less obvious half. Without it, an English UI showing a Russian not
 - Two extra variable font files, roughly 300-400 KB each pre-compression. The 12 MB artifact budget absorbs this; `docs/architecture/06-dependency-catalog.md` section 6 records it.
 - Russian loses the brand display character. It keeps the display/body hierarchy, the type scale, and every other token. This is the honest cost of shipping Russian without commissioning type.
 - An English screen showing user-authored Cyrillic renders that text in Inter while the chrome is Instrument Sans. Both are neutral grotesques and the difference is slight; it is intentional and documented rather than accidental.
-- Switching language re-resolves the families through the normal activity recreate; no extra machinery.
+- Switching language re-resolves the families when `LocalConfiguration` changes (the activity handles the locale change in place); no extra machinery.
 - Adding a fifth language requires checking its script against the table and, if it is not Latin or Cyrillic, extending the rule and the coverage test.
 
 ## Migration implications

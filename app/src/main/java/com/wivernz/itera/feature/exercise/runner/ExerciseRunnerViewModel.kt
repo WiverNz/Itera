@@ -173,7 +173,7 @@ class ExerciseRunnerViewModel @Inject constructor(
         startTicker()
     }
 
-    /** Refresh translated copy after recreation without reloading drafts or restarting stopwatches. */
+    /** Refresh translated copy after a language switch without reloading drafts or restarting stopwatches. */
     fun refreshLanguage() {
         if (mutable.value.loading || mutable.value.missing) return
         viewModelScope.launch {

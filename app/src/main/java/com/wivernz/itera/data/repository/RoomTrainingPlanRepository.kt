@@ -1,6 +1,7 @@
 package com.wivernz.itera.data.repository
 
 import androidx.room.withTransaction
+import com.wivernz.itera.core.common.AppLanguage
 import com.wivernz.itera.core.common.dispatchers.IoDispatcher
 import com.wivernz.itera.data.copy.CopyResolver
 import com.wivernz.itera.data.database.IteraDatabase
@@ -22,7 +23,7 @@ import java.time.Instant
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -45,11 +46,9 @@ class RoomTrainingPlanRepository @Inject constructor(
         LocalDate.now(clock)
             .toEpochDay()
     )
-        .map {
-            it?.toDomain(copy, codec)
-        }
-    override fun observeDay(id: Long) =
-        days.observeWithActivities(id).map { it?.toDomain(copy, codec) }
+        .combine(AppLanguage.locale) { row, _ -> row?.toDomain(copy, codec) }
+    override fun observeDay(id: Long) = days.observeWithActivities(id)
+        .combine(AppLanguage.locale) { row, _ -> row?.toDomain(copy, codec) }
     override suspend fun updateActivityState(activityId: Long, state: ActivityState) =
         withContext(io) { activities.updateState(activityId, state.name) }
     override suspend fun saveDraft(activityId: Long, draft: ActivityResult) = withContext(io) {

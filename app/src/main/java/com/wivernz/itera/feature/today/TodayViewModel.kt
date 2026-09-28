@@ -8,6 +8,7 @@ import com.wivernz.itera.analytics.Analytics
 import com.wivernz.itera.analytics.AnalyticsTechnique
 import com.wivernz.itera.analytics.Event
 import com.wivernz.itera.analytics.ScreenRoute
+import com.wivernz.itera.core.common.AppLanguage
 import com.wivernz.itera.domain.model.ActivityResult
 import com.wivernz.itera.domain.model.ActivitySource
 import com.wivernz.itera.domain.model.ActivityState
@@ -89,7 +90,8 @@ class TodayViewModel @Inject constructor(
     }.catch { emit(emptyMap()) }
 
     private val catalogRefresh = MutableStateFlow(0)
-    private val catalogFlow = catalogRefresh.flatMapLatest {
+    private val catalogTrigger = combine(catalogRefresh, AppLanguage.locale) { n, _ -> n }
+    private val catalogFlow = catalogTrigger.flatMapLatest {
         flow {
             emit(
                 Catalog(

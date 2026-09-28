@@ -32,7 +32,7 @@ The language is **not** mirrored into DataStore.
 
 - `AppCompatActivity` is mandatory, which pulls in `appcompat` and an AppCompat theme parent. Accepted; it is a small dependency and the only one that solves this below API 33.
 - The language appears in Android 13+ system settings for free.
-- Switching recreates the activity. Any state that is not persisted is lost at that moment, which is one more reason drafts live in the database rather than in `remember`.
+- Switching does not recreate the activity: `MainActivity` declares `android:configChanges="locale|layoutDirection"`, so the new configuration reaches Compose in place and the screen does not flash. Drafts still live in the database rather than in `remember`, because other configuration changes and process death do recreate.
 - Adding a fifth language is four small edits (`docs/i18n/00-localization.md` section 10).
 
 ## Migration implications

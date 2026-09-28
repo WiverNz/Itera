@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wivernz.itera.analytics.Analytics
 import com.wivernz.itera.analytics.Event
+import com.wivernz.itera.core.common.AppLanguage
 import com.wivernz.itera.domain.demo.DemoDataLoader
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.TimeBudget
@@ -16,12 +17,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalTime
 import java.util.Optional
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -58,6 +60,7 @@ sealed interface OnboardingEffect {
 }
 
 /** One instance for the whole onboarding flow, scoped to the Welcome back-stack entry. */
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val saved: SavedStateHandle,
@@ -104,20 +107,18 @@ class OnboardingViewModel @Inject constructor(
         demoAvailable = demo.isPresent
     )
 
-    val firstWeek: StateFlow<List<FirstWeekRow>> = flow {
+    val firstWeek: StateFlow<List<FirstWeekRow>> = AppLanguage.locale.mapLatest {
         val techniques = catalog.catalog().associateBy { it.id }
-        emit(
-            catalog.curriculum().days.take(FIRST_WEEK_DAYS).mapNotNull { day ->
-                val technique = day.newTechniqueId?.let(techniques::get) ?: return@mapNotNull null
-                FirstWeekRow(
-                    day.day,
-                    technique.id.value,
-                    technique.name,
-                    technique.skill,
-                    day.day == REVIEW_DAY
-                )
-            }
-        )
+        catalog.curriculum().days.take(FIRST_WEEK_DAYS).mapNotNull { day ->
+            val technique = day.newTechniqueId?.let(techniques::get) ?: return@mapNotNull null
+            FirstWeekRow(
+                day.day,
+                technique.id.value,
+                technique.name,
+                technique.skill,
+                day.day == REVIEW_DAY
+            )
+        }
     }.catch { emit(emptyList()) }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun onGetStarted() = analytics.track(Event.OnboardingStarted)

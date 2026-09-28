@@ -1,6 +1,7 @@
 package com.wivernz.itera
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.wivernz.itera.core.common.AppLanguage
 import com.wivernz.itera.core.designsystem.component.ErrorState
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.theme.IteraTheme
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
+        AppLanguage.publish(resources.configuration.locales[0])
         splash.setKeepOnScreenCondition { shell.state.value.loading }
         if (savedInstanceState == null) {
             val hasDeepLink = intent.getStringExtra(RouteCodec.EXTRA) != null
@@ -97,6 +100,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /** A language switch lands here instead of recreating the activity (manifest configChanges): no flash. */
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        AppLanguage.publish(newConfig.locales[0])
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)

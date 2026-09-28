@@ -1,5 +1,6 @@
 package com.wivernz.itera.data.repository
 
+import com.wivernz.itera.core.common.AppLanguage
 import com.wivernz.itera.core.common.dispatchers.IoDispatcher
 import com.wivernz.itera.data.copy.CopyResolver
 import com.wivernz.itera.data.copy.ResolvedCopy
@@ -32,7 +33,7 @@ class RoomProgressRepository @Inject constructor(
     @param:IoDispatcher private val io: CoroutineDispatcher
 ) : ProgressRepository {
     override fun observeRecentPractice(id: TechniqueId) = dao.observeRecentPractice(id.value)
-        .map { rows ->
+        .combine(AppLanguage.locale) { rows, _ ->
             rows.map {
                 HistoryEntry(LocalDate.ofEpochDay(it.practiceDate), it.toDomain(copy, codec))
             }
@@ -44,7 +45,7 @@ class RoomProgressRepository @Inject constructor(
         month.atEndOfMonth()
             .toEpochDay()
     )
-        .map { rows ->
+        .combine(AppLanguage.locale) { rows, _ ->
             val labels = mutableMapOf<Triple<String, String, String>, ResolvedCopy>()
             rows.map {
                 HistoryEntry(

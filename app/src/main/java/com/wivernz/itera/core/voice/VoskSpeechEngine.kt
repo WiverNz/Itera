@@ -25,7 +25,7 @@ import org.vosk.Recognizer
 
 /**
  * Vosk behind [OfflineSpeechEngine] (milestone 013). One model stays loaded app-wide for the active language, so
- * repeated taps and activity recreation (a language switch) reuse it; it is closed when another language is needed,
+ * repeated taps and activity recreation reuse it; it is closed when another language is needed,
  * on [trim] (app in background) and never while a session decodes. Audio: 16 kHz mono PCM16 from Itera's own
  * `AudioRecord`, in memory only. The record buffer holds two seconds, so speech during a cold model load is kept.
  */
