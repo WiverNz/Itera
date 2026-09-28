@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        com.wivernz.itera.core.notifications.NotificationChannels.register(this)
         lifecycleScope.launch { reminders.rescheduleAll() }
     }
 }

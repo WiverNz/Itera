@@ -15,17 +15,23 @@ import com.wivernz.itera.core.navigation.Train
 import com.wivernz.itera.domain.EngineHarness
 import com.wivernz.itera.domain.model.ActivitySource
 import com.wivernz.itera.domain.model.ActivityState
+import com.wivernz.itera.domain.model.FocusTimerState
+import com.wivernz.itera.domain.model.TechniqueId
+import com.wivernz.itera.domain.repository.FocusTimerRepository
 import com.wivernz.itera.domain.repository.HabitStackRecord
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.TimeZone
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -309,11 +315,54 @@ class DeepLinkTest : ReminderTestBase() {
 
 @RunWith(RobolectricTestRunner::class)
 class ReminderDeliveryTest : ReminderTestBase() {
-    private fun delivery() = ReminderDelivery(
-        context, h.plans, h.prefs, h.focusTimer,
+    private fun delivery(timers: FocusTimerRepository = h.focusTimer) = ReminderDelivery(
+        context, h.plans, h.prefs, timers,
         h.db.habitStackDao(), h.db.learningTopicDao(), h.reviews, notifier, environment,
         h.analytics, h.clock
     )
+
+    @Test fun eveningDefersForRunningAndPausedFocusThenPostsOnceAfterFocusEnds() = runBlocking {
+        val previousZone = TimeZone.getDefault()
+        TimeZone.setDefault(TimeZone.getTimeZone(h.clock.zone))
+        try {
+            h.at(LocalTime.of(21, 0))
+            val reflection = h.ensureToday().activities.first {
+                it.source == ActivitySource.REFLECTION
+            }
+            h.plans.makeAvailable(reflection.id)
+            val now = h.clock.instant()
+            val timer = FocusTimerState(
+                99, TechniqueId("pomodoro"), "Synthetic task", 600, 0,
+                now, now.plusSeconds(600), null, 0
+            )
+            val current = MutableStateFlow<FocusTimerState?>(timer)
+            val timers = object : FocusTimerRepository by h.focusTimer {
+                override fun observe() = current
+            }
+            val engine = delivery(timers)
+            val manager = context.getSystemService(NotificationManager::class.java)
+            assertEquals(timer.endsAt.plusSeconds(1), engine.deliver(NotificationType.EVENING, 0))
+            assertTrue(manager.activeNotifications.isEmpty())
+            current.value = timer.copy(pausedAt = now)
+            h.clock.advance(Duration.ofMinutes(20))
+            assertEquals(
+                h.clock.instant().plusSeconds(300),
+                engine.deliver(NotificationType.EVENING, 0)
+            )
+            engine.deliver(NotificationType.MORNING, 0)
+            assertTrue(manager.activeNotifications.isEmpty())
+            h.at(LocalTime.of(22, 58))
+            assertNull(engine.deliver(NotificationType.EVENING, 0)) // no deferral beyond 23:00
+            assertTrue(manager.activeNotifications.isEmpty())
+            current.value = null
+            assertNull(engine.deliver(NotificationType.EVENING, 0))
+            assertEquals(1, manager.activeNotifications.size)
+            engine.deliver(NotificationType.EVENING, 0)
+            assertEquals(1, h.eventNames().count { it == "notification_posted" })
+        } finally {
+            TimeZone.setDefault(previousZone)
+        }
+    }
 
     @Test fun completedProgramAndDuplicateMorningDoNotPost() = runBlocking {
         val day = h.ensureToday()

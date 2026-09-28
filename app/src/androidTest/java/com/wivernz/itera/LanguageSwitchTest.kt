@@ -1,5 +1,6 @@
 package com.wivernz.itera
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
@@ -46,6 +47,11 @@ class LanguageSwitchTest {
                 scenario.onActivity {
                     assertEquals("de", it.resources.configuration.locales[0].language)
                     assertEquals("de", AppLanguage.current())
+                    assertEquals(
+                        it.getString(R.string.notification_channel_training),
+                        it.getSystemService(NotificationManager::class.java)
+                            .getNotificationChannel("training").name.toString()
+                    )
                 }
             }
             prefs.update { it.copy(onboardingCompleted = true) }
@@ -63,6 +69,11 @@ class LanguageSwitchTest {
                 scenario.onActivity {
                     assertEquals("es", it.resources.configuration.locales[0].language)
                     assertEquals("es", AppLanguage.current())
+                    assertEquals(
+                        it.getString(R.string.notification_channel_training),
+                        it.getSystemService(NotificationManager::class.java)
+                            .getNotificationChannel("training").name.toString()
+                    )
                 }
             }
         } finally {
