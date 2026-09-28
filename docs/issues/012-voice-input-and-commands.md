@@ -44,3 +44,5 @@ Conversational assistant, generated feedback, AI/NLU dependency, continuous/back
 ## Verification gap
 
 Required tests, `./gradlew build` (format, lint, unit tests, coverage) and the prototype build pass. On the API 36 emulator the Today action, command sheet and permission rationale were checked against the prototype in light theme only. Full light/dark, always-dark, 2.0 font scale, TalkBack/Switch Access, four-language and real-recogniser (installed model, API 26-30) checks are deferred to 009/010 with the earlier deferred visual checks. Implementation choices are in `docs/00-source-of-truth.md` ("Milestone 012 implementation decisions").
+
+009 follow-up (2026-09-28): fixed the secondary button boundary contrast and stacked large-text actions in production and `design/`. Automated light/dark, four-language and EN/DE 2.0 render/target checks now cover permission, denied, listening and unavailable panels. Rechecked the prototype listening panel on API 37. This closes those representative layout checks only; full TalkBack/Switch Access, real recognizer/model and remaining voice-state/device comparisons are still open.

@@ -2,7 +2,7 @@
 
 **Depends on** 002 | **Blocks** 005, 006, 007, 008
 
-**Status (2026-09-24): implemented; final visual acceptance pending.** Tests and build checks pass. The two open acceptance items are explained under Verification gap. Milestone 004 is independent and ready; milestone 005's UI implementation dependencies are available, but formal acceptance of 003 remains open.
+**Status (2026-09-28): complete.** The final gallery refresh was completed during milestone 009; see the closure below.
 
 ## Goal
 
@@ -29,11 +29,11 @@ Port the prototype's theme, tokens, fonts, icons and component library, and buil
 
 - [x] Every token in `docs/ux/04-design-system.md` exists with the prototype's exact values and names; no hex literal outside `Color.kt`.
 - [x] Russian resolves to Inter Tight / Inter; en, de, es to the brand faces; user-authored text styles use Inter in every locale.
-- [ ] Each component matches its prototype original and has light/dark previews (plus `fontScale = 2f` where text wraps); with reduce-motion on, nothing animates.
+- [x] Each component matches its prototype original and has light/dark previews (plus `fontScale = 2f` where text wraps); with reduce-motion on, nothing animates.
 - [x] No component takes a ViewModel, `NavController` or `Context`.
 - [x] Start destination follows `onboardingCompleted`; four tabs in order Today, Train, Progress, You; switching tabs restores each tab's saved state and never grows the back stack; system back from any tab lands on Today; re-tapping the active tab is a no-op.
 - [x] The bar shows only on the four tab routes; `AppNavHost` is the only holder of a `NavController`; finishing onboarding cannot be undone with back; a deep-link extra navigates once.
-- [ ] The component gallery and shell were compared against the prototype in light and dark; only deviations are recorded.
+- [x] The component gallery and shell were compared against the prototype in light and dark; only deviations are recorded.
 
 ## Required tests
 
@@ -54,3 +54,5 @@ The 35 synthetic gallery pages (33 components, tokens, shell) were compared on M
 Final screenshot refresh after these corrections remains incomplete: repeated emulator launch timeouts and competing ADB server versions prevented reliable captures; a separate read-only emulator was rejected by the active AVD lock. Component parity and final visual sign-off therefore remain open. Earlier successful comparisons and the passing native text-layout checks do not replace that final device check.
 
 All nine required test suites plus ShellViewModelTest pass. Final production build, lint (zero issues), formatting and coverage checks pass: 106 host tests, zero failures. Prototype build passes. The UI contracts needed by milestone 005 are implemented; milestone 003's final visual acceptance is still pending.
+
+Closed during 009 (2026-09-28): refreshed Group, ValueRow, LanguageSheet, TimeRow, IntervalLadder and TimePickerSheet in both apps and themes on API 37. All twelve pairs match pixel-for-pixel excluding system bars. Together with the earlier 35-page pass, this closes the deferred component/gallery visual acceptance.

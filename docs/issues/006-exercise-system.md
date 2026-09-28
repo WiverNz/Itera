@@ -56,4 +56,4 @@ Recorded per "Verification scope". Decisions that resolve gaps are in `docs/00-s
 
 - The side-by-side comparison with `design/` in light and dark was not done for these screens (no device session in this change). It stays open with 003's and 005's visual acceptance.
 - The timer's process-death behaviour on the oldest supported device was not checked manually; `FocusTimerServiceTest` covers restore on the JVM.
-- `HabitNudgeTest` and the `NotificationSuppressionTest` additions need the real `ReminderScheduler` and belong to 009.
+- Closed in 009: `HabitNudgeTest` and `NotificationSuppressionTest` run against the real reminder scheduling/policy implementation, including focus suppression. The minified release completed the real Day 1 exercise/reflection/result flow on API 37. The older-device timer and full visual checks above remain open.

@@ -58,3 +58,5 @@ Recorded per "Verification scope"; each is required by a product or engine rule,
 ## Verification gap
 
 The production screens were exercised on an emulator (Welcome -> Goals -> Rhythm with permission request -> First week -> Today, Day 1), but the side-by-side comparison against `design/` in light and dark has not been done for these screens. It stays open alongside 003's pending visual acceptance.
+
+009 follow-up (2026-09-28): the optimized release completed the real Day 1 two-minute exercise, rating/note, reflection and Day complete on API 37, closing the former runner-dependent Day 1 smoke gap. Milestone 003's gallery gap is now closed; this milestone's full light/dark visual comparison remains open.

@@ -2,6 +2,7 @@
 
 package com.wivernz.itera.feature.exercise.runner
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,9 +16,17 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.lifecycle.SavedStateHandle
+import androidx.test.core.app.ApplicationProvider
+import com.wivernz.itera.TestLogger
+import com.wivernz.itera.core.common.RuntimeChecks
 import com.wivernz.itera.core.designsystem.component.StepState
 import com.wivernz.itera.core.designsystem.theme.IteraTheme
+import com.wivernz.itera.data.catalog.AssetTechniqueCatalogRepository
+import com.wivernz.itera.data.catalog.ResourceCatalogStrings
+import com.wivernz.itera.data.fileAssets
 import com.wivernz.itera.domain.EngineHarness
+import com.wivernz.itera.domain.MemoryCatalogCache
 import com.wivernz.itera.domain.model.ActivityResult
 import com.wivernz.itera.domain.model.ActivityState
 import com.wivernz.itera.domain.model.BlockValue
@@ -41,6 +50,7 @@ import com.wivernz.itera.feature.subscribe
 import com.wivernz.itera.feature.todayViewModel
 import java.time.Duration
 import java.time.LocalTime
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -51,6 +61,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 private val EngineHarness.twoMinuteId: Long
     get() = runBlocking { ensureToday() }.activities.first {
@@ -94,6 +105,43 @@ class ExerciseRunnerViewModelTest {
 
     @Test fun unknownActivityIsAnErrorState() {
         assertTrue(h.runnerViewModel(9_999).state.await { !it.loading }.missing)
+    }
+
+    @Test fun languageRefreshKeepsCommittedAndPendingInputAndStopwatch() {
+        RuntimeEnvironment.setQualifiers("en")
+        val catalog = AssetTechniqueCatalogRepository(
+            fileAssets,
+            ResourceCatalogStrings(ApplicationProvider.getApplicationContext<Context>()),
+            MemoryCatalogCache(),
+            RuntimeChecks(true),
+            TestLogger(),
+            Dispatchers.IO
+        )
+        val vm = main.track(
+            ExerciseRunnerViewModel(
+                SavedStateHandle(mapOf("activityId" to h.twoMinuteId)), h.plans, catalog,
+                h.start, h.snooze, h.abandon, h.complete, h.saveDraft, h.analytics, h.clock
+            )
+        )
+        try {
+            vm.state.await { !it.loading }
+            vm.addTask("Eigener unveränderter Text")
+            vm.setPendingItem("tasks", "Noch nicht hinzugefügt")
+            h.clock.advance(Duration.ofSeconds(42))
+            vm.toggleItem("tasks", "1")
+            val before = vm.state.value
+            RuntimeEnvironment.setQualifiers("de")
+            vm.refreshLanguage()
+            val translated = vm.state.await { it.name != before.name }
+            assertEquals(before.values, translated.values)
+            assertEquals(before.pendingItems, translated.pendingItems)
+            assertEquals(before.elapsed, translated.elapsed)
+            assertEquals(before.gate, translated.gate)
+            assertTrue(before.blocks != translated.blocks)
+            assertTrue(before.task != translated.task)
+        } finally {
+            RuntimeEnvironment.setQualifiers("en")
+        }
     }
 
     @Test fun startOpensTheBodyAndMovesToInProgress() {

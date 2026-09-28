@@ -57,6 +57,8 @@ class ExerciseRunnerNavigation(
 @Composable
 fun ExerciseIntroRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNavigation) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val locale = currentLocale()
+    LaunchedEffect(locale, state.loading) { vm.refreshLanguage() }
     ObserveRunnerEffects(vm, navigation)
     ExerciseIntroScreen(
         state,
@@ -69,6 +71,8 @@ fun ExerciseIntroRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNa
 @Composable
 fun ExerciseRunRoute(vm: ExerciseRunnerViewModel, navigation: ExerciseRunnerNavigation) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val locale = currentLocale()
+    LaunchedEffect(locale, state.loading) { vm.refreshLanguage() }
     val voice = rememberExerciseVoice(vm, vm::leave)
     val toToday = LocalVoiceToToday.current
     LaunchedEffect(state.loading) { if (!state.loading) vm.enterRun() }

@@ -30,12 +30,23 @@ Make the app remind the user at the right times, complete the analytics privacy 
 - [ ] Four channels exist with documented importance; every notification type posts its documented copy and deep link; no exact alarms are declared.
 - [ ] `rescheduleAll()` is idempotent; each Settings toggle suppresses exactly its own reminder; changing a time or toggle reschedules.
 - [ ] Every suppression rule holds, including deferral of the evening reminder during a focus session; permission-denied schedules nothing.
-- [ ] `NoUserTextLoggedTest` passes; `event_log` is trimmed, kept by Reset program and deleted by Erase everything.
+- [x] `NoUserTextLoggedTest` passes; `event_log` is trimmed, kept by Reset program and deleted by Erase everything.
 - [ ] Every screen passes `AccessibilityAuditTest` and `FontScaleTest`; the TalkBack script completes the daily loop.
 - [ ] All four catalogues are complete; plurals, positional arguments and formatters conform; the app runs in each language and switching persists across force-stop.
-- [ ] A minified release build launches and completes Day 1.
-- [ ] Only findings and their fixes are recorded (briefly, in this file); no full audit report.
+- [x] A minified release build launches and completes Day 1.
+- [x] Only findings and their fixes are recorded (briefly, in this file); no full audit report.
 
 ## Required tests
 
 `NotificationContentTest`, `NotificationSuppressionTest`, `ReminderSchedulerTest`, `RescheduleTest`, `WorkerIdempotencyTest`, `DeepLinkTest`, `AnalyticsFlowTest`, `EventLogTrimTest`, `ResetAnalyticsTest`, `NoUserTextLoggedTest`, `AccessibilityAuditTest`, `FontScaleTest`, `TranslationCompletenessTest`, `UntranslatedStringTest`, `UnreferencedStringTest`, `PluralCategoryTest`, `NoConcatenationTest`, `LanguageSwitchTest`, `LanguageHistoryTest`, `LocalizedRenderTest`, `PseudoLocaleTest`.
+
+## Findings and fixes (2026-09-28)
+
+- Replaced the no-op scheduler with unique WorkManager reminders, delivery-time suppression, focus-session deferral, habit nudges, immutable deep links and boot/time-change rescheduling. Added notification analytics, progression/review events and bounded local log trimming. Privacy/reset tests cover no user text, retention on Reset program and deletion on Erase everything.
+- Release 1.0.8's resource shrinking removed catalogue strings resolved by name, leaving the first-week list empty and training unavailable. Added an explicit resource keep file and a catalogue-key regression test. Checked all 82 dynamically referenced catalogue strings in the compiled APK. A locally signed copy of the optimized release (about 4.3 MB) completed onboarding, two-minute exercise, rating/note, reflection and Day 1 on API 37 in an isolated QA Android user. Small APK size is expected with optimization; missing resources were the defect.
+- Corrected the voice panel's indistinguishable secondary button with a contrasting outline in production and `design/`; actions stack at large font scales. Also mirrored large-text fixes for the focus timer, Eisenhower labels, Feynman metadata and meaningful titles, and minimum-target/semantics fixes for History and habit-stack controls.
+- Fixed non-positional string substitutions in all four catalogues. Background catalogue/notification copy uses the selected app language. Today/Library reload localized catalogue content; the exercise runner now refreshes translated copy without replacing answers, pending checklist input or stopwatches. The runner regression test covers an English-to-German change with user-authored text retained.
+- Closed 003's final six gallery refreshes: Group, ValueRow, LanguageSheet, TimeRow, IntervalLadder and TimePickerSheet match production/prototype pixels in both themes on API 37 (system bars excluded). The earlier gallery comparisons remain recorded in 003.
+- Automated render/semantics checks cover 31 representative screen/state fixtures in both themes, EN/DE at font scale 2.0, all four languages at 1.0/1.5, and Android's `en-XA`/`ar-XB` pseudo-locales. These do not establish manual TalkBack/Switch Access completion or exhaustive coverage of every dialog and populated state. Week-of-history language integration preserves stored results and resolves current-language copy. Both live language-picker entry points and force-stop persistence were exercised on API 37.
+
+Remaining acceptance evidence: full TalkBack and Switch Access daily loops (including voice confirmations), maximum display size/grayscale and exhaustive supporting-surface walks, the remaining 005/006 side-by-side visual checks, full four-language device walks and reboot persistence, real installed speech-model behavior, and API 26-30 language/timer checks. No API 26-30 image/device is installed here; available system images are 36.1 and 37.2. Do not treat the representative render tests as closing these manual gaps. Milestone 010 has not been started.

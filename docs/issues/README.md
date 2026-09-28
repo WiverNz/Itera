@@ -4,19 +4,19 @@ Twelve milestone issues cover the Itera MVP. Each milestone points to the specif
 
 The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed/). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
-## Current status (2026-09-27)
+## Current status (2026-09-28)
 
 This index is the implementation status entry point; each milestone owns its acceptance checklist and evidence.
 
 - **001 and 002: complete.** Milestone 002's acceptance checklist is reconciled with its passing host and device results.
-- **003: implemented; final visual acceptance pending.** Required tests and build checks pass. The remaining component parity and gallery/shell sign-off are tracked in [003](003-design-system-and-app-shell.md#verification-gap-2026-09-24).
+- **003: complete (2026-09-28).** Milestone 009 closed the final component-gallery refresh in both themes; see [003](003-design-system-and-app-shell.md#verification-gap-2026-09-24).
 - **004: complete (2026-09-25).** Catalogue, engine and lifecycle are implemented with all required tests passing; see its decisions in `docs/00-source-of-truth.md`.
 - **005: implemented (2026-09-25).** Required tests pass; the prototype comparison in light and dark remains open with 003's visual acceptance. See [005](005-onboarding-and-daily-flow.md#verification-gap).
 - **006: implemented (2026-09-26).** Required tests pass; the prototype comparison in light and dark and the oldest-device timer check remain open. See [006](006-exercise-system.md#verification-gap).
 - **007: complete (2026-09-26).** Train, Library and Technique Detail use the real catalog, progress, history and exercise flows. Required tests, build, lint and formatting pass; prototype comparisons completed in light and dark. See [007](007-train-and-technique-library.md#reconciled-differences).
 - **008: implemented; one device acceptance check pending (2026-09-27).** Required tests, build, lint, formatting and light/dark prototype comparisons pass. API 26-30 language persistence remains open; see [008](008-progress-history-and-settings.md#verification-gaps).
 - **012: implemented (2026-09-27).** Required tests, build, lint and formatting pass; the full visual/device voice comparison is deferred to 009/010. See [012](012-voice-input-and-commands.md#verification-gap).
-- **009: in progress (2026-09-27).** Reminders, workers, receivers, the notification channels and analytics completion are implemented. All of the milestone's required tests exist. Still open: the acceptance checklist, the manual accessibility and localisation walks, the minified release smoke test, and the visual and device checks deferred from 003, 005, 006, 008 and 012. See [009](009-notifications-and-quality-passes.md).
+- **009: in progress (2026-09-28).** Real reminders and analytics/privacy checks are implemented. Fixed the 1.0.8 resource-shrinking regression; the minified release completed Day 1 on API 37. Closed 003's gallery gap and added representative accessibility/localisation coverage. Manual accessibility, remaining 005/006/012 visual checks, real voice-model checks and API 26-30 verification remain open. See [009](009-notifications-and-quality-passes.md).
 - **010-011: not started.**
 
 Current milestone: **009**. Next after it: **010**. Readiness is not authorization to start another milestone.
@@ -27,7 +27,7 @@ Current milestone: **009**. Next after it: **010**. Readiness is not authorizati
 | --- | --- | --- | --- |
 | [001](001-project-bootstrap.md) | Project bootstrap - **complete** | - | 001 |
 | [002](002-core-architecture-and-storage.md) | Core architecture & storage - **complete** | 001 | 002, 005, 006, 007, analytics core of 036 |
-| [003](003-design-system-and-app-shell.md) | Design system & app shell - **implemented; visual acceptance pending** | 002 | 003, 004, 015 |
+| [003](003-design-system-and-app-shell.md) | Design system & app shell - **complete** | 002 | 003, 004, 015 |
 | [004](004-content-and-training-engine.md) | Content & training engine - **complete** | 002 | 008-014 |
 | [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow - **implemented; visual comparison pending** | 003, 004 | 016, 017, 019, 020 |
 | [006](006-exercise-system.md) | Exercise system - **implemented; visual comparison pending** | 005 | 018, 021-027 |

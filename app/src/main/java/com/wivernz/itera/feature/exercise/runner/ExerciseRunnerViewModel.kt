@@ -173,6 +173,24 @@ class ExerciseRunnerViewModel @Inject constructor(
         startTicker()
     }
 
+    /** Refresh translated copy after recreation without reloading drafts or restarting stopwatches. */
+    fun refreshLanguage() {
+        if (mutable.value.loading || mutable.value.missing) return
+        viewModelScope.launch {
+            val activity = plans.activity(activityId) ?: return@launch
+            val technique = catalog.technique(activity.techniqueId) ?: return@launch
+            mutable.update { state ->
+                state.copy(
+                    name = technique.name,
+                    why = technique.explanation,
+                    task = (state.values[MITIGATION_KEY] as? BlockValue.Text)?.text
+                        ?.takeIf { state.blocks.isEmpty() } ?: activity.instruction,
+                    blocks = technique.template?.blocks.orEmpty()
+                )
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ intro
 
     /** "Start exercise" or, for a generic technique, "I did it". */
