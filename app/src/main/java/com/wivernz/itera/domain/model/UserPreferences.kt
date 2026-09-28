@@ -20,7 +20,11 @@ data class UserPreferences(
     val currentProgramDay: Int = 1,
     val contentVersion: Int = 0,
     val lastSeenDayComplete: LocalDate? = null,
-    val displayName: String = ""
+    val displayName: String = "",
+    /** ADR-0022: the user agreed to the system speech recogniser where no on-device one exists. */
+    val systemRecognitionAllowed: Boolean = false,
+    /** ADR-0022: the installed recognition service the user chose and agreed to (flattened ComponentName). */
+    val selectedRecognizer: String? = null
 ) {
     init {
         require(currentProgramDay >= 1)

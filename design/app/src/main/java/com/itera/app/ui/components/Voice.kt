@@ -52,7 +52,12 @@ import com.itera.app.ui.theme.IteraTheme
  * Milestone 012 voice affordances (docs/ux/10-voice-input.md). The prototype has no recogniser: the mic and the
  * command sheet walk through the shared states so they can be compared with production.
  */
-enum class VoiceDemoState { Idle, Listening, Partial, Permission, Denied, Unavailable, NoSpeech }
+// ADR-0022 (amended): SystemConsent when only the system default exists; ChooseProvider/ProviderConsent when neither
+// exists and installed apps offer recognition. Nothing is pre-selected; the named app needs its own consent.
+enum class VoiceDemoState { Idle, Listening, Partial, SystemConsent, ChooseProvider, ProviderConsent, Permission, Denied, Unavailable, NoSpeech }
+
+/** The prototype has no real providers; production shows each installed app's own label and icon. */
+const val SAMPLE_PROVIDER = "Speech app"
 
 @Composable
 fun VoiceMic(label: String, listening: Boolean, onClick: () -> Unit) {
@@ -90,6 +95,21 @@ fun VoicePanel(state: VoiceDemoState, command: Boolean, onPrimary: () -> Unit, o
             stringResource(if (command) R.string.voice_mode_command else R.string.voice_mode_dictation, language),
             listOf(stringResource(R.string.voice_stop), stringResource(R.string.voice_cancel)),
         )
+        VoiceDemoState.SystemConsent -> Triple(
+            stringResource(R.string.voice_system_title),
+            stringResource(R.string.voice_system_body),
+            listOf(stringResource(R.string.voice_system_use), stringResource(R.string.voice_not_now)),
+        )
+        VoiceDemoState.ChooseProvider -> Triple(
+            stringResource(R.string.voice_provider_title),
+            stringResource(R.string.voice_provider_body),
+            listOf(keep),
+        )
+        VoiceDemoState.ProviderConsent -> Triple(
+            stringResource(R.string.voice_provider_consent_title, SAMPLE_PROVIDER),
+            stringResource(R.string.voice_provider_consent_body, SAMPLE_PROVIDER),
+            listOf(stringResource(R.string.voice_provider_use, SAMPLE_PROVIDER), stringResource(R.string.voice_not_now)),
+        )
         VoiceDemoState.Permission -> Triple(
             stringResource(R.string.voice_permission_title),
             stringResource(R.string.voice_permission_body),
@@ -119,7 +139,20 @@ fun VoicePanel(state: VoiceDemoState, command: Boolean, onPrimary: () -> Unit, o
         if (state == VoiceDemoState.Partial) {
             Text(stringResource(R.string.voice_preview), style = Itera.type.body.copy(fontStyle = FontStyle.Italic), color = c.ink2)
         }
-        if (LocalDensity.current.fontScale > 1.3f) {
+        if (state == VoiceDemoState.ChooseProvider) {
+            Row(
+                Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(12.dp)).background(c.surface)
+                    .clickable(role = Role.Button, onClick = onPrimary).padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Icon(IteraIcons.Mic, null, tint = c.ink2, modifier = Modifier.size(20.dp))
+                Text(SAMPLE_PROVIDER, style = Itera.type.body, color = c.ink)
+            }
+        }
+        if (actions.size == 1) {
+            IteraButton(actions[0], onCancel, Modifier.fillMaxWidth().border(1.dp, c.ink2, RoundedCornerShape(18.dp)), kind = ButtonKind.Secondary, height = 44.dp)
+        } else if (LocalDensity.current.fontScale > 1.3f) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 IteraButton(actions[0], onPrimary, height = 44.dp)
                 IteraButton(actions[1], onCancel, Modifier.border(1.dp, c.ink2, RoundedCornerShape(18.dp)), kind = ButtonKind.Secondary, height = 44.dp)

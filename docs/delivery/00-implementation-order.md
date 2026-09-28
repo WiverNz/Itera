@@ -16,7 +16,7 @@ Twelve milestones ([milestone index](../issues/README.md)). Current implementati
 | 006 | Exercise system | 005 | Complete Days 1-14 with every technique's real experience |
 | 007 | Train & technique library | 006 | Browse the curriculum and every technique |
 | 008 | Progress, history & settings | 005 | Show progress and history, configure, switch language, export, reset |
-| 012 | Voice input & commands | 006, 007, 008 | Dictate and use contextual commands in four languages; safely degrade without on-device recognition |
+| 012 | Voice input & commands | 006, 007, 008 | Dictate and use contextual commands in four languages; consented fallback recognizers; safely degrade without any |
 | 009 | Notifications & quality passes | 006, 007, 008, 012 | Remind; pass the accessibility and localisation sweeps including voice |
 | 010 | Test hardening | 009 | Pass the full test matrix, goldens and instrumented CI |
 | 011 | Release readiness | 010 | Be released internally |

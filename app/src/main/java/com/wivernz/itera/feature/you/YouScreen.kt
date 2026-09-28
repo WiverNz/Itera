@@ -88,6 +88,8 @@ import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.ThemePreference
 import com.wivernz.itera.domain.model.TimeBudget
 import com.wivernz.itera.feature.onboarding.FocusAreaRows
+import com.wivernz.itera.feature.voice.RecognizerSheet
+import com.wivernz.itera.feature.voice.recognitionProviders
 
 @Composable
 fun YouRoute(
@@ -147,6 +149,7 @@ fun YouScreen(
         }
     }
     fun change(key: SettingKey, value: SettingValue) = onEvent(YouUiEvent.Change(key, value))
+    val providers = recognitionProviders()
     if (panel == "privacy" || panel == "topics") {
         BackHandler { panel = null }
         if (panel == "privacy") {
@@ -412,6 +415,24 @@ fun YouScreen(
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
             }
+            Group(stringResource(R.string.sec_voice)) {
+                SwitchRow(
+                    stringResource(R.string.voice_system_setting),
+                    p.systemRecognitionAllowed,
+                    Skill.HABITS.colors(c.isDark).content,
+                    sub = stringResource(R.string.voice_system_setting_sub),
+                    onChange = { onEvent(YouUiEvent.SystemRecognition(it)) }
+                )
+                if (providers.isNotEmpty() || p.selectedRecognizer != null) {
+                    Divider()
+                    ValueRow(
+                        stringResource(R.string.voice_provider_setting),
+                        providers.firstOrNull { it.id == p.selectedRecognizer }?.label
+                            ?: stringResource(R.string.voice_provider_none),
+                        { panel = "recognizer" }
+                    )
+                }
+            }
             Group(stringResource(R.string.sec_coach)) {
                 SwitchRow(
                     stringResource(
@@ -453,6 +474,12 @@ fun YouScreen(
         }
     }
     when (panel) {
+        "recognizer" -> RecognizerSheet(
+            providers,
+            p.selectedRecognizer,
+            { onEvent(YouUiEvent.Recognizer(it)) },
+            { panel = null }
+        )
         "language" -> LanguageSheet(AppLanguage.current(), { tag ->
             change(
                 SettingKey.LANGUAGE,

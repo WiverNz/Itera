@@ -4,6 +4,7 @@ import android.os.Build
 import android.speech.SpeechRecognizer
 import androidx.test.core.app.ApplicationProvider
 import com.wivernz.itera.TestLogger
+import com.wivernz.itera.core.voice.AndroidSpeechPlatform
 import com.wivernz.itera.core.voice.AndroidVoiceRecognizer
 import com.wivernz.itera.core.voice.VoiceAvailability
 import com.wivernz.itera.core.voice.VoiceError
@@ -33,10 +34,13 @@ private class Recording : VoiceRecognitionListener {
 class VoiceRecognitionTest {
     private val owner = Any()
 
-    private fun android() =
-        AndroidVoiceRecognizer(ApplicationProvider.getApplicationContext(), TestLogger())
+    private fun android(consent: FakeConsent = FakeConsent()) = AndroidVoiceRecognizer(
+        AndroidSpeechPlatform(ApplicationProvider.getApplicationContext()),
+        consent,
+        TestLogger()
+    )
 
-    @Test fun api26To30IsUnavailableAndNeverFallsBack() {
+    @Test fun api26To30WithoutAnyServiceIsUnavailable() {
         val real = Build.VERSION.SDK_INT
         ReflectionHelpers.setStaticField(
             Build.VERSION::class.java,
@@ -44,7 +48,7 @@ class VoiceRecognitionTest {
             Build.VERSION_CODES.R
         )
         try {
-            val recognizer = android()
+            val recognizer = android(FakeConsent(granted = true))
             assertEquals(VoiceAvailability.UNAVAILABLE, recognizer.availability())
             val listener = Recording()
             recognizer.start("en-US", listener)
@@ -54,10 +58,10 @@ class VoiceRecognitionTest {
         }
     }
 
-    @Test fun missingOnDeviceServiceIsUnavailable() {
+    @Test fun noRecognitionServiceAtAllIsUnavailable() {
         ShadowSpeechRecognizer.setIsOnDeviceRecognitionAvailable(false)
         try {
-            val recognizer = android()
+            val recognizer = android(FakeConsent(granted = true))
             assertEquals(VoiceAvailability.UNAVAILABLE, recognizer.availability())
             val listener = Recording()
             recognizer.start("de-DE", listener)
@@ -71,12 +75,14 @@ class VoiceRecognitionTest {
     @Test fun anOnDeviceServiceIsUsedAndReleased() {
         ShadowSpeechRecognizer.setIsOnDeviceRecognitionAvailable(true)
         try {
-            val recognizer = android()
+            val consent = FakeConsent()
+            val recognizer = android(consent)
             assertEquals(VoiceAvailability.AVAILABLE, recognizer.availability())
             val listener = Recording()
             recognizer.start("es-ES", listener)
             assertTrue(listener.errors.isEmpty())
             assertTrue(ShadowSpeechRecognizer.getLatestSpeechRecognizer() != null)
+            assertEquals("no consent needed on-device", 0, consent.grants)
             recognizer.stop()
             recognizer.cancel()
             recognizer.release()

@@ -117,10 +117,12 @@ class VoicePermissionTest {
     @Test fun onlyTheVoiceHostEverAsksForTheMicrophone() {
         val askers = sourcesUnder("").filter { "RECORD_AUDIO" in it.readText() }.map { it.name }
         assertEquals(listOf("VoiceHost.kt"), askers)
-        // no default-platform recogniser, not even as a fallback
-        val all = sourcesUnder("").joinToString("\n") { it.readText() }
-        assertFalse("createSpeechRecognizer(" in all)
-        assertFalse("isRecognitionAvailable(" in all)
+        // the system recogniser is reachable only through the adapter, which gates it on consent (ADR-0022)
+        val platform = sourcesUnder("").filter {
+            val text = it.readText()
+            "createSpeechRecognizer(" in text || "isRecognitionAvailable(" in text
+        }.map { it.name }
+        assertEquals(listOf("VoiceRecognizer.kt"), platform)
     }
 
     @Test fun deniedMicrophoneLeavesTypingComplete() {

@@ -35,6 +35,8 @@ class AppViewModel : ViewModel() {
     var themeMode by mutableStateOf(ThemeMode.System)
     var pace by mutableStateOf(1) // 0 gentle, 1 standard, 2 intense
     val notifications = mutableStateListOf(true, true, true, true)
+    var systemRecognition by mutableStateOf(false)
+    var recognitionApp by mutableStateOf(false)
 
     fun toggleFocusSkill(skill: Skill) {
         if (skill in focusSkills) {

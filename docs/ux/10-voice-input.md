@@ -41,6 +41,9 @@ Specified durations use the current focus setup's allowed minute choices (curren
 | State | UI and next step |
 | --- | --- |
 | Ready | Field mic or command action; keyboard/touch remains available |
+| System recognition consent | Only when there is no on-device recogniser but a usable system default: “Use system speech recognition?” explains that on-device recognition is unavailable, the system provider may process audio remotely and use the network, and Itera does not store the audio or transcript. “Use system recognition” (stored, not asked again) or Not now. Shown before the microphone rationale |
+| Choose a recognition app | No on-device recogniser and no usable system default, but installed apps offer recognition: “Choose a speech recognition app” with one row per app (its own label and icon), nothing pre-selected, and Keep typing/Cancel. After a chosen app disappeared or failed, the body says it can't be used any more |
+| Named app consent | After tapping an app: “Use speech recognition from <app>?” explains it is a separate app that may process audio remotely and use the network under its own privacy terms, and that Itera does not store the audio or transcript. “Use <app>” stores the choice; Not now stores nothing |
 | Permission needed / denied | Brief microphone rationale, Android permission request after the tap; denial keeps typing available. On permanent denial offer system settings, without repeated prompts |
 | Listening | Explicit “Listening”, Stop and Cancel; visible language and recognition mode. Static icon/text works with reduced motion |
 | Partial / processing | Optional interim text, clearly provisional; Stop waits for final, Cancel still works. No command executes from partial text |
@@ -49,8 +52,12 @@ Specified durations use the current focus setup's allowed minute choices (curren
 | Ambiguous / confirmation | Reuse sheet radio rows and confirmation dialog, naming the exact item/action and any lost data; Confirm and Cancel |
 | Unsupported / missing argument | Short explanation plus localised examples valid here; retry explicitly or cancel. Never reinterpret as a different action |
 | No speech / recognition failure | Inline “Couldn't hear that” or specific service failure; Retry and Keep typing. Do not erase the field |
-| Service/language unavailable | Explain that voice is unavailable for this language/device; keep manual controls, offer relevant platform settings. Fallback follows the privacy decision in ADR-0022 |
+| Service/language unavailable | Explain that voice is unavailable for this language/device; keep manual controls, offer relevant platform settings. Recogniser order and consent follow ADR-0022; nothing ever switches provider silently |
 | Cancelled / interrupted | Stop listening; discard pending transcript/confirmation. Navigation, background, locale change and process death never resume listening or replay a command |
+
+## Settings
+
+You → Voice holds “Use system speech recognition” (switch; revokes the system consent) and “Speech recognition app” (value row: the chosen app's label or None; shown when installed apps offer recognition or one is chosen). The row opens a sheet with None and each app; None turns it off at once, and choosing a different app shows that app's named consent in the sheet before it is stored.
 
 ## Design and accessibility
 

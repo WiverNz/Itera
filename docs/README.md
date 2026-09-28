@@ -66,7 +66,7 @@ See the [milestone index](issues/README.md#current-status-2026-09-24) for curren
 | [`04-navigation-architecture.md`](architecture/04-navigation-architecture.md) | How the graph is wired in code. |
 | [`05-error-handling-and-logging.md`](architecture/05-error-handling-and-logging.md) | Error classes, presentation, logging policy, what must never be logged. |
 | [`06-dependency-catalog.md`](architecture/06-dependency-catalog.md) | Every dependency, why, and what is deliberately excluded. |
-| [`07-voice-input.md`](architecture/07-voice-input.md) | Planned recognition adapter, typed commands, deterministic parsing and existing-action dispatch; [ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md) defines on-device privacy/permission policy. |
+| [`07-voice-input.md`](architecture/07-voice-input.md) | Planned recognition adapter, typed commands, deterministic parsing and existing-action dispatch; [ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md) defines the recognizer order (on-device, then consented system default or user-chosen app) and privacy/permission policy. |
 | [`adr/`](architecture/adr/) | 19 architecture decision records. |
 
 ### Data (`data/`)

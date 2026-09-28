@@ -16,7 +16,7 @@ Old 039 unchanged in intent:
 - Record the full Roborazzi golden set per `docs/testing/04-visual-regression.md`.
 - Add the instrumented CI job, the schema-change guard, and disable animations in the instrumented runner.
 - Remove flakiness; nothing `@Ignore`d.
-- Include milestone 012's voice matrix and shared-state goldens, with fake recognition in CI and device checks for real service/model availability. “Milestone 012” rows are not historical detailed issue 012.
+- Include milestone 012's voice matrix and shared-state goldens (including the ADR-0022 system-consent, recognition-app picker and named-consent states, and the Settings Voice section), with fake recognition in CI and device checks for real service/model availability. “Milestone 012” rows are not historical detailed issue 012.
 
 ## Source documents
 

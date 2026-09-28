@@ -46,6 +46,22 @@ open class YouTestBase : ProgressTestBase() {
 
 @RunWith(RobolectricTestRunner::class)
 class YouViewModelTest : YouTestBase() {
+    @Test fun systemRecognitionConsentCanBeGivenAndRevoked() = runBlocking {
+        val vm = you()
+        val stop = vm.state.subscribe()
+        try {
+            vm.state.await { !it.loading }
+            assertFalse(vm.state.value.preferences.systemRecognitionAllowed)
+            vm.onEvent(YouUiEvent.SystemRecognition(true))
+            vm.state.await { it.preferences.systemRecognitionAllowed }
+            vm.onEvent(YouUiEvent.SystemRecognition(false))
+            vm.state.await { !it.preferences.systemRecognitionAllowed }
+            assertFalse(h.prefs.preferences.awaitFirst().systemRecognitionAllowed)
+        } finally {
+            stop()
+        }
+    }
+
     @Test fun settingsPersistWithoutRegeneratingTodayAndRescheduleOnlyReminders() = runBlocking {
         val vm = you()
         val stop = vm.state.subscribe()

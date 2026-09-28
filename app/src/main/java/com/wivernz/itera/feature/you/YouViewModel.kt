@@ -44,6 +44,12 @@ sealed interface YouUiEvent {
     data class Change(val key: SettingKey, val value: SettingValue, val minute: Int = 0) :
         YouUiEvent
     data class Permission(val granted: Boolean) : YouUiEvent
+
+    /** ADR-0022: allow or revoke the system speech recogniser. Not tracked. */
+    data class SystemRecognition(val allowed: Boolean) : YouUiEvent
+
+    /** ADR-0022: the consented recognition app, or null to turn it off. Not tracked. */
+    data class Recognizer(val id: String?) : YouUiEvent
     data class Topic(val id: Long?, val title: String) : YouUiEvent
     data class Archive(val id: Long) : YouUiEvent
     data class Open(val route: ScreenRoute) : YouUiEvent
@@ -104,6 +110,12 @@ class YouViewModel @Inject constructor(
                         if (event.key in reminderKeys) reminders.rescheduleAll()
                     }
                     is YouUiEvent.Permission -> local.update { it.copy(permission = event.granted) }
+                    is YouUiEvent.SystemRecognition -> preferences.update {
+                        it.copy(systemRecognitionAllowed = event.allowed)
+                    }
+                    is YouUiEvent.Recognizer -> preferences.update {
+                        it.copy(selectedRecognizer = event.id)
+                    }
                     is YouUiEvent.Topic -> if (event.title.isNotBlank()) {
                         if (event.id ==
                             null

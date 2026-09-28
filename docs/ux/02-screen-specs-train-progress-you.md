@@ -128,12 +128,13 @@ Production adds bounded month navigation (P-06) - previous/next chevrons in the 
 | **Language & region** | Language (opens `LanguageSheet`; value is the current language in its own language). **Time format** - a **read-only** row: no chevron, not clickable, showing "24-hour" or "12-hour" as resolved from `DateFormat.is24HourFormat(context)`, with a caption naming Android settings as where to change it. There is no in-app override (D-16) |
 | **Appearance** | A theme block padded `vertical = 14`, `spacedBy(8)`: label in `body` Medium, then a `Segmented` (System / Light / Dark) |
 | **Notifications** | Four `SwitchRow`s: morning exercise, focus suggestions, review reminders, evening reflection |
+| **Voice** | ADR-0022 (amended 2026-09-28): `SwitchRow` "Use system speech recognition" (sub: only without on-device recognition; the system service may process audio remotely), and, when installed apps offer recognition or one is chosen, `ValueRow` "Speech recognition app" (chosen app's label or "None") opening a sheet with None and each app; choosing an app shows its named consent before it is stored. See [voice UX](10-voice-input.md#settings) |
 | **Coach** | One **disabled** `SwitchRow`: "AI feedback on explanations", sub "Coming later" |
 | **Data** | Export journal ("Markdown"), Privacy |
 | Footer | "Load demo data" as a `Secondary` `IteraButton` at `height = 48` - **debug builds only** (D-11) |
 
 Production adds: real Material 3 time pickers (D-17), a focus-areas picker, the Reset program and Erase everything rows in the Data section, the denied-notification-permission state, and a working export and privacy screen. Everything keeps the row styling above.
 
-Planned milestone 012 extends the existing Privacy screen with on-device microphone use, transient speech handling, local storage of accepted text and manual input when voice is unavailable. No platform recognizer fallback or additional voice-settings screen; see [voice UX](10-voice-input.md) and ADR-0022.
+Milestone 012 extends the existing Privacy screen with microphone use, transient speech handling, local storage of accepted text and manual input when voice is unavailable. Since the ADR-0022 amendment it also states that recognition is on-device where the device offers it, and otherwise, only with consent, uses Android's system speech service or a recognition app the user chose, which may process audio remotely; both can be changed or turned off in the Voice settings section. No separate voice-settings screen; see [voice UX](10-voice-input.md) and ADR-0022.
 
 The **Language** row is the primary runtime language switch and is built in issue `034`, not deferred to the audit issue (D-15).

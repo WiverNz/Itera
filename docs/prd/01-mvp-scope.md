@@ -15,7 +15,7 @@ A user can:
 9. export their journal,
 10. use the whole app in English, Russian, German or Spanish, switching at any time,
 11. do all of it with no network connection, no account and no subscription,
-12. dictate exercise text and trigger a small set of contextual voice commands on devices with suitable on-device recognition; keyboard/touch remains complete everywhere.
+12. dictate exercise text and trigger a small set of contextual voice commands on devices with suitable on-device recognition, or with a system or user-chosen recognizer the user has agreed to (ADR-0022); keyboard/touch remains complete everywhere.
 
 ## Technique coverage
 
@@ -67,7 +67,7 @@ Plus the supporting surfaces the design does not draw (pickers, topic editor, pr
 | Journal export (Markdown) | Drawn in the You tab; local-only; one small issue (R-09) |
 | Combination days | Drawn, and they are the mechanism that earns `INTEGRATED` (R-15) |
 | A local display name | Drawn in the You tab; optional, never required, never leaves the device |
-| Explicit voice input | Milestone 012: field dictation and eight deterministic commands in all four languages; on-device only, no assistant or global inbox ([UX contract](../ux/10-voice-input.md)) |
+| Explicit voice input | Milestone 012: field dictation and eight deterministic commands in all four languages; on-device first, other providers only with named consent; no assistant or global inbox ([UX contract](../ux/10-voice-input.md)) |
 | The `CoachFeedbackProvider` interface | One file; the seam that keeps the Feynman feature from needing rework later (ADR-0016) |
 
 ## Out of scope but partially built

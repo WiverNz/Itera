@@ -28,14 +28,14 @@ Run `design/` first. Use `ui/screens/Today.kt`, `Exercise.kt`, `Practice.kt`, `R
 - [ ] Matching ambiguity, competing recognition alternatives, EndFocus and CompleteCurrentExercise require visible confirmation; cancel/stale targets never mutate.
 - [ ] Focus start/default/specified duration, pause, resume and confirmed end reuse the controller and preserve timer, early-end and combination rules. Exercise completion retains every existing gate.
 - [ ] App locale controls recognition and parser; switching cancels the old session and retains committed text.
-- [ ] Strictly on-device recognition, blocked platform fallback, missing service/model, denied/revoked permission and retry follow ADR-0022 and UX. API 26-30 remains fully usable through manual input.
+- [ ] Recognizer order ON_DEVICE → consented SYSTEM DEFAULT → user-chosen, consented installed provider → UNAVAILABLE (ADR-0022, amended 2026-09-28); no pre-selection or silent fall-through; unusable chosen providers are cleared and re-asked; missing service/model, denied/revoked permission and retry follow ADR-0022 and UX. API 26-30 remains fully usable through manual input.
 - [ ] No background listening/hotword, raw audio storage, transcript logging, AI parser, direct recognition-to-Room writes or new network permission.
 - [ ] TalkBack, Switch Access, large text and four-language copy cover all voice states; keyboard/touch can perform every action.
 - [ ] Required tests, scoped build/lint and prototype comparison pass; record deviations only. 009 audits these surfaces, 010 owns final goldens/full regression, 011 checks release privacy/permissions.
 
 ## Required tests (to implement with this milestone)
 
-`VoiceCommandParserTest`, `VoiceDurationTest`, `VoiceItemMatchingTest`, `VoiceRecognitionTest`, `VoicePermissionTest`, `VoiceConfirmationTest`, `VoiceDictationTest`, `VoiceLocaleTest`, `VoiceFocusIntegrationTest`, `VoiceExerciseIntegrationTest`, `VoicePrivacyTest`; extend `ArchitectureTest`, translation checks and scoped accessibility tests. Cases and test types are specified in the test matrix. This planning change adds test requirements, not executable tests.
+`VoiceCommandParserTest`, `VoiceDurationTest`, `VoiceItemMatchingTest`, `VoiceRecognitionTest`, `VoicePermissionTest`, `VoiceProviderTest` (added with the 2026-09-28 amendment), `VoiceConfirmationTest`, `VoiceDictationTest`, `VoiceLocaleTest`, `VoiceFocusIntegrationTest`, `VoiceExerciseIntegrationTest`, `VoicePrivacyTest`; extend `ArchitectureTest`, translation checks and scoped accessibility tests. Cases and test types are specified in the test matrix. This planning change adds test requirements, not executable tests.
 
 ## Non-goals
 

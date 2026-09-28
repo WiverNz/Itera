@@ -1,6 +1,8 @@
 package com.wivernz.itera.feature.voice
 
+import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.core.voice.VoiceAvailability
+import com.wivernz.itera.core.voice.VoiceConsentStore
 import com.wivernz.itera.core.voice.VoiceError
 import com.wivernz.itera.core.voice.VoiceRecognitionListener
 import com.wivernz.itera.core.voice.VoiceRecognizer
@@ -10,8 +12,15 @@ import com.wivernz.itera.domain.voice.VoiceLanguage
 import java.io.File
 
 /** Deterministic recogniser: tests drive partial/final/error callbacks, including late ones. */
-class FakeRecognizer(var available: Boolean = true) : VoiceRecognizer {
+class FakeRecognizer(
+    var available: Boolean = true,
+    var consentRequired: Boolean = false,
+    var providers: List<RecognitionProviderInfo> = emptyList()
+) : VoiceRecognizer {
     val languages = mutableListOf<String>()
+    var consents = 0
+    var selected: String? = null
+    var lost = false
     val listeners = mutableListOf<VoiceRecognitionListener>()
     var stops = 0
     var cancels = 0
@@ -19,8 +28,25 @@ class FakeRecognizer(var available: Boolean = true) : VoiceRecognizer {
 
     val listener: VoiceRecognitionListener get() = listeners.last()
 
-    override fun availability() =
-        if (available) VoiceAvailability.AVAILABLE else VoiceAvailability.UNAVAILABLE
+    override fun availability() = when {
+        !available -> VoiceAvailability.UNAVAILABLE
+        consentRequired -> VoiceAvailability.CONSENT_REQUIRED
+        providers.isNotEmpty() && selected == null -> VoiceAvailability.CHOICE_REQUIRED
+        else -> VoiceAvailability.AVAILABLE
+    }
+
+    override fun providers() = providers
+
+    override fun selectProvider(id: String) {
+        selected = id
+    }
+
+    override fun consumeProviderLost() = lost.also { lost = false }
+
+    override fun allowSystemRecognition() {
+        consents++
+        consentRequired = false
+    }
 
     override fun start(languageTag: String, listener: VoiceRecognitionListener) {
         languages += languageTag
@@ -44,6 +70,29 @@ class FakeRecognizer(var available: Boolean = true) : VoiceRecognizer {
     fun final(vararg alternatives: String) = listener.onFinal(alternatives.toList())
 
     fun error(error: VoiceError) = listener.onError(error)
+}
+
+class FakeConsent(var granted: Boolean = false, var selected: String? = null) : VoiceConsentStore {
+    var grants = 0
+    var clears = 0
+
+    override fun systemGranted() = granted
+
+    override fun grantSystem() {
+        grants++
+        granted = true
+    }
+
+    override fun selectedProvider() = selected
+
+    override fun selectProvider(id: String) {
+        selected = id
+    }
+
+    override fun clearProvider() {
+        clears++
+        selected = null
+    }
 }
 
 class FakeGate(

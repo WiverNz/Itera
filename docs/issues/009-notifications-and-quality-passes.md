@@ -13,7 +13,7 @@ Make the app remind the user at the right times, complete the analytics privacy 
 - **Accessibility pass** (old 037): audit every screen against `docs/ux/07-accessibility.md`, run the TalkBack script, font scales 1.0-2.0 in English and German, reduced motion, Switch Access; add `FontScaleTest` and `AccessibilityAuditTest`; fix findings.
 - **Localisation audit** (old 041): integration and audit only. Strings, plurals, formatters and entry points were built by 001-008 and 012; this milestone diffs catalogues, checks plurals/concatenation/formatting, walks the app in German and Russian, checks pseudo-locales, runtime switching and persistence. A missing translation found here is fixed here, but is a defect of the milestone that introduced the string.
 - Build and smoke-test a minified release build once here, so R8 problems surface before 011.
-- Include 012's voice states, `voice_*` catalogues, permission-denied/unavailable paths, locale switching and no-transcript logging in the accessibility, localisation and privacy sweeps. Platform fallback must remain disabled.
+- Include 012's voice states, `voice_*` catalogues, permission-denied/unavailable paths, the ADR-0022 consent/picker states (amended 2026-09-28; the vivo device check is recorded in `docs/00-source-of-truth.md`), locale switching and no-transcript logging in the accessibility, localisation and privacy sweeps. Platform fallback must remain disabled.
 
 ## Source documents
 

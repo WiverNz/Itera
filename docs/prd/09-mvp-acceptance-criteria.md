@@ -30,7 +30,7 @@ Thirteen groups: A first run, B daily loop, C reliability, D program mechanics, 
 - [ ] **C2** A focus session survives force-stop and resumes with the correct remaining time (within 2 s).
 - [ ] **C3** A focus session survives a device reboot mid-session by completing correctly on next open.
 - [ ] **C4** Rotating the device on every screen loses nothing.
-- [ ] **C5** Airplane mode preserves the entire training session; voice works with an installed on-device model or degrades to manual input without blocking training.
+- [ ] **C5** Airplane mode preserves the entire training session; voice works with an installed on-device model (a consented non-on-device provider may need the network) or degrades to manual input without blocking training.
 - [ ] **C6** Changing the device timezone does not shift a running timer or corrupt the day.
 - [ ] **C7** Crossing midnight with the app open rolls the day over correctly on next interaction.
 

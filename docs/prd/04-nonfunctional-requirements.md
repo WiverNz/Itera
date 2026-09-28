@@ -6,7 +6,7 @@ Core functionality works with no network access. The manifest declares **no `INT
 
 No screen shows a connectivity banner, a sync indicator, or a retry-because-network message.
 
-Voice (planned milestone 012) is optional and strictly on-device. Availability depends on API 31+, the installed speech service and the current app language model; keyboard/touch remains fully functional on all supported devices. Do not silently use a network-capable platform recognizer or download a model. ADR-0022 records this decision.
+Voice (milestone 012) is optional. It is on-device where the device offers it (API 31+); otherwise it uses the system default or a user-chosen installed recognizer only after consent that names the risk of remote processing. Availability depends on these services and the current app language model; keyboard/touch remains fully functional on all supported devices. Never silently use a network-capable recognizer and never download a model. ADR-0022 records this decision.
 
 ## Performance
 
@@ -70,9 +70,9 @@ Full specification in `docs/ux/07-accessibility.md`. Minimums:
 
 ### Microphone permission and speech privacy
 
-Milestone 012 adds `RECORD_AUDIO`, requested only after tapping a voice affordance, never during onboarding. Explain single-utterance on-device use; refusal/revocation leaves manual controls available and permanent denial offers system settings. Do not repeatedly prompt. Listening stops on cancel, background, route or language change.
+Milestone 012 adds `RECORD_AUDIO`, requested only after tapping a voice affordance, never during onboarding. Explain single-utterance use (and, before any non-on-device provider, its consent); refusal/revocation leaves manual controls available and permanent denial offers system settings. Do not repeatedly prompt. Listening stops on cancel, background, route or language change.
 
-No raw audio, provisional transcript, recognition alternative or pending command is retained, logged or sent to analytics. Accepted text is stored only through existing local draft/result paths, like typed text. The Privacy screen explains this in all four languages and that voice may be unavailable. No `INTERNET` permission, microphone foreground service or background listening is introduced; platform fallback stays blocked under [ADR-0022](../architecture/adr/0022-voice-recognition-and-privacy.md).
+No raw audio, provisional transcript, recognition alternative or pending command is retained, logged or sent to analytics. Accepted text is stored only through existing local draft/result paths, like typed text. The Privacy screen explains this in all four languages and that voice may be unavailable. No `INTERNET` permission, microphone foreground service or background listening is introduced; non-on-device recognizers need explicit consent under [ADR-0022](../architecture/adr/0022-voice-recognition-and-privacy.md).
 
 ## Security
 

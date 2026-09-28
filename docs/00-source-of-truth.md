@@ -10,9 +10,9 @@ Milestone [012](issues/012-voice-input-and-commands.md) is appended without renu
 - Dictation uses focused editable exercise fields; a separate command mode supports eight typed commands through existing business actions. No global inbox/task model, AI parser, chat assistant, background listening or hotword.
 - Item commands are context-bound. Eisenhower supports Add but has sorting/selection rather than item completion. Only existing checklists support CompleteItem; Premortem's reason list supports Add. Dictation handles other free-text fields.
 - Focus commands preserve the controller, setup task, unlock and completion rules. Specified minutes use the existing setup choices plus the seeded suggestion; unsupported durations return to setup without silent substitution. This milestone does not expand duration choices.
-- **Privacy decision explicitly selected by the user:** strictly on-device recognition; generic platform fallback remains blocked until product/privacy policy changes. No new `INTERNET` permission and no transmitted/logged user speech. ADR-0022 documents the real permission/platform boundary decision for `RECORD_AUDIO`; no other ADR is needed.
+- **Privacy decision explicitly selected by the user (amended 2026-09-28):** recognition order ON_DEVICE → usable SYSTEM DEFAULT (with consent) → USER-SELECTED INSTALLED PROVIDER (picked by the user and agreed to by name) → UNAVAILABLE. Never a first-installed or assistant-app fallback, never a silent switch; consent is local and revocable in Settings ([ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md)). No new `INTERNET` permission and no transmitted/logged user speech. ADR-0022 documents the real permission/platform boundary decision for `RECORD_AUDIO`; no other ADR is needed.
 - UI follows [voice UX](ux/10-voice-input.md). Minimal prototype affordances/states are pending milestone 012 and must be added together with production, not silently assumed present in `design/` today.
-- No unresolved MVP product decisions. Future permission to enable platform fallback is outside the approved scope, not a prerequisite for on-device voice.
+- No unresolved MVP product decisions. The earlier "strictly on-device" rule was replaced by the consented chain above at the user's explicit request.
 
 ## 1. Source priority
 
@@ -386,8 +386,17 @@ Decisions the voice documents left to implementation; none changes a product rul
 - **ShowCurrentRecommendation.** On Today the hero is already on screen: feedback only, nothing created. In an exercise it asks first (existing leave copy), takes the screen's normal leave path (draft kept, activity released) and opens Today. From focus it opens Today directly; a running session keeps running.
 - **StartFocus from Today** uses only Today's actionable focus entry and always opens its setup (Today has no task), carrying the requested length as the `FocusSession.requested` route argument; an unoffered length is explained in setup, never rounded. EndFocus raises the existing end-session dialog.
 - **Spoken minutes** cover 15/25/50 and the seeded suggestions 25/30/50 (Pomodoro's 30-minute estimate is a Today seed).
-- **Availability.** The mic and command action are shown on every API level; on API 26-30 or without an on-device service a tap explains that voice is unavailable. Missing language models are detected from the recogniser's language errors, not a pre-check; settings links go to the platform voice-input settings.
+- **Availability.** The mic and command action are shown on every API level. A tap walks the ADR-0022 chain: on-device (API 31+), else the resolvable system default after its consent, else a picker of installed recognition apps with a named consent, else an explanation that voice is unavailable (amended 2026-09-28). Missing language models are detected from the recogniser's language errors, not a pre-check; settings links go to the platform voice-input settings.
 - **Placement.** The "Voice command" action sits end-aligned under each exercise/focus top bar and after Today's steps, never in the hero. The field mic sits in the note field's end padding. Prototype and production carry the same affordances and `milestone012.xml` catalogues.
+
+## Voice recogniser amendment (2026-09-28)
+
+- **Decision.** The user replaced "strictly on-device or unavailable" with ON_DEVICE → usable SYSTEM DEFAULT → USER-SELECTED INSTALLED PROVIDER → UNAVAILABLE ([ADR-0022](architecture/adr/0022-voice-recognition-and-privacy.md)).
+- **System default** means only the component in `Settings.Secure.voice_recognition_service`, and only when it resolves. The assistant app is never inferred as the default; an empty or hidden selection counts as absent.
+- **Installed providers** are chosen explicitly from a picker (app label and icon, nothing pre-selected) and need a consent naming the app; the component is stored only on acceptance. No first-installed fallback.
+- **Unusable provider.** Disappeared/disabled, a bind or service error before ready, or no callback within 8 seconds: the choice is cleared and the picker returns with an explanation. No fall-through to another provider.
+- **Consent UI** is an inline voice-panel state (same panel as the microphone rationale), before the Android permission prompt. Settings → Voice revokes system consent and changes/clears the app.
+- **Verified device limitation.** On the vivo V2405A (Android 16) there is no on-device recogniser, the system selection is empty, and Google's recogniser is hidden and unbindable; the only discoverable provider (Claude) rejects Itera's requests. Voice therefore still cannot recognise speech on that device.
 
 ## Milestone 009 implementation decisions (2026-09-27)
 

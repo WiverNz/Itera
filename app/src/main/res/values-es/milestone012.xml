@@ -16,15 +16,15 @@
     <string name="voice_retry">Reintentar</string>
     <string name="voice_keep_typing">Seguir escribiendo</string>
     <string name="voice_permission_title">¿Usar el micrófono?</string>
-    <string name="voice_permission_body">Itera solo escucha después de tocar el micrófono, una frase, con el reconocimiento de voz de este dispositivo. No se graba ni se guarda nada.</string>
+    <string name="voice_permission_body">Itera solo escucha después de tocar el micrófono, una frase. Itera no graba ni guarda el audio.</string>
     <string name="voice_permission_continue">Continuar</string>
     <string name="voice_not_now">Ahora no</string>
     <string name="voice_permission_denied">El acceso al micrófono está desactivado</string>
     <string name="voice_permission_settings_body">Actívalo en los ajustes de la app para usar la voz. Escribir funciona como siempre.</string>
     <string name="voice_open_settings">Abrir ajustes</string>
     <string name="voice_unavailable_title">La voz no está disponible</string>
-    <string name="voice_unavailable_device">Este dispositivo no tiene reconocimiento de voz en el dispositivo que Itera pueda usar. Escribir funciona como siempre.</string>
-    <string name="voice_unavailable_language">El reconocimiento en el dispositivo para %1$s no está disponible aquí. Puedes añadir el idioma en los ajustes de voz o seguir escribiendo.</string>
+    <string name="voice_unavailable_device">Este dispositivo no tiene reconocimiento de voz que Itera pueda usar. Escribir funciona como siempre.</string>
+    <string name="voice_unavailable_language">El reconocimiento de voz para %1$s no está disponible aquí. Puedes añadir el idioma en los ajustes de voz o seguir escribiendo.</string>
     <string name="voice_speech_settings">Ajustes de voz</string>
     <string name="voice_too_long">Es más largo de lo que admite este campo. Acórtalo aquí y luego insértalo.</string>
     <string name="voice_preview">Texto dictado</string>
@@ -85,5 +85,22 @@
     <string name="voice_example_end">«Termina el enfoque»</string>
     <string name="voice_example_complete_exercise">«Completa el ejercicio»</string>
     <string name="voice_example_recommendation">«¿Qué debo hacer ahora?»</string>
-    <string name="privacy_voice">La entrada de voz es opcional y solo funciona cuando tocas un micrófono. La voz se reconoce en este dispositivo; Itera nunca graba audio ni guarda lo que dijiste, solo el texto que aceptas, como al escribir.</string>
+    <string name="privacy_voice">La entrada de voz es opcional y solo funciona cuando tocas un micrófono. Si este dispositivo ofrece reconocimiento de voz local, la voz se reconoce en el dispositivo. Si no, y solo si lo permites, se usa el servicio de voz del sistema Android o una app de reconocimiento de voz que elijas, que pueden procesar el audio de forma remota y usar la red. Itera nunca graba audio ni guarda lo que dijiste, solo el texto que aceptas, como al escribir. Puedes cambiarlo o desactivarlo en Ajustes.</string>
+    <!-- ADR-0022 (amended): system-recogniser consent and its Settings switch. -->
+    <string name="voice_system_title">¿Usar el reconocimiento de voz del sistema?</string>
+    <string name="voice_system_body">Este dispositivo no tiene reconocimiento de voz local. En su lugar se puede usar el servicio de voz del sistema Android. Puede procesar tu audio de forma remota y usar la red. Itera no guarda el audio ni la transcripción, solo el texto que aceptas.</string>
+    <string name="voice_system_use">Usar el del sistema</string>
+    <string name="sec_voice">Voz</string>
+    <string name="voice_system_setting">Reconocimiento de voz del sistema</string>
+    <string name="voice_system_setting_sub">Solo si este dispositivo no tiene reconocimiento local. El servicio del sistema puede procesar el audio de forma remota.</string>
+    <!-- ADR-0022 (amended): a speech recognition app the user chooses and agrees to. -->
+    <string name="voice_provider_title">Elige una app de reconocimiento de voz</string>
+    <string name="voice_provider_body">Este dispositivo no tiene reconocimiento de voz local ni del sistema. Estas apps instaladas lo ofrecen. Elige una para ver cómo trata tu audio.</string>
+    <string name="voice_provider_lost">La app de voz que elegiste ya no se puede usar. Elige otra o sigue escribiendo.</string>
+    <string name="voice_provider_consent_title">¿Usar el reconocimiento de voz de %1$s?</string>
+    <string name="voice_provider_consent_body">%1$s es una app independiente, no forma parte de Itera ni de Android. Puede procesar tu audio de forma remota y usar la red, según sus propias condiciones de privacidad. Itera no guarda el audio ni la transcripción, solo el texto que aceptas.</string>
+    <string name="voice_provider_use">Usar %1$s</string>
+    <string name="voice_provider_setting">App de reconocimiento de voz</string>
+    <string name="voice_provider_setting_sub">Solo si este dispositivo no tiene reconocimiento de voz local ni del sistema. Antes de elegir verás cómo trata la app tu audio.</string>
+    <string name="voice_provider_none">Ninguna</string>
 </resources>

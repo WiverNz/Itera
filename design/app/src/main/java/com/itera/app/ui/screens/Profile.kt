@@ -30,6 +30,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import com.itera.app.ui.components.NoteField
+import com.itera.app.ui.components.SAMPLE_PROVIDER
 import com.itera.app.ui.components.TopBar
 import com.itera.app.ui.components.TimePickerSheet
 import androidx.compose.runtime.getValue
@@ -171,6 +172,13 @@ fun ProfileScreen(vm: AppViewModel, onReset: (Boolean) -> Unit = {}) {
                 SwitchRow(stringResource(res), permission && vm.notifications[i], habits, enabled = permission) { vm.notifications[i] = it }
             }
             Text(stringResource(R.string.notif_system_hint), style = Itera.type.caption, color = c.ink2, modifier = Modifier.padding(bottom = 12.dp))
+        }
+
+        Group(stringResource(R.string.sec_voice)) {
+            SwitchRow(stringResource(R.string.voice_system_setting), vm.systemRecognition, habits, sub = stringResource(R.string.voice_system_setting_sub)) { vm.systemRecognition = it }
+            Divider()
+            // production: opens the picker sheet (None + installed apps); an app needs its named consent first
+            ValueRow(stringResource(R.string.voice_provider_setting), if (vm.recognitionApp) SAMPLE_PROVIDER else stringResource(R.string.voice_provider_none)) { vm.recognitionApp = !vm.recognitionApp }
         }
 
         Group(stringResource(R.string.sec_coach)) {

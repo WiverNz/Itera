@@ -50,6 +50,9 @@ class DataStorePreferencesRepository @Inject constructor(
             prefs[notifyReviewsKey] = value.notifyReviews
             prefs[notifyEveningKey] = value.notifyEvening
             prefs[aiCoachEnabledKey] = value.aiCoachEnabled
+            prefs[systemRecognitionKey] = value.systemRecognitionAllowed
+            value.selectedRecognizer?.let { prefs[selectedRecognizerKey] = it }
+                ?: prefs.remove(selectedRecognizerKey)
             value.programStartedOn?.let {
                 prefs[programStartedOnKey] =
                     it.toEpochDay()
@@ -123,7 +126,9 @@ class DataStorePreferencesRepository @Inject constructor(
         programStartedOn = prefs[programStartedOnKey]?.let(LocalDate::ofEpochDay),
         currentProgramDay = (prefs[currentProgramDayKey] ?: 1).coerceAtLeast(1),
         contentVersion = (prefs[contentVersionKey] ?: 0).coerceAtLeast(0),
-        lastSeenDayComplete = prefs[lastSeenDayCompleteKey]?.let(LocalDate::ofEpochDay)
+        lastSeenDayComplete = prefs[lastSeenDayCompleteKey]?.let(LocalDate::ofEpochDay),
+        systemRecognitionAllowed = prefs[systemRecognitionKey] ?: false,
+        selectedRecognizer = prefs[selectedRecognizerKey]?.takeIf { it.isNotBlank() }
     )
     private inline fun <reified T : Enum<T>> enumValue(raw: String?, default: T): T {
         if (raw == null) return default

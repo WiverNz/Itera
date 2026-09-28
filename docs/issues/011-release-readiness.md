@@ -23,7 +23,7 @@ Old 040 unchanged in intent: release build type (minify, shrink, not debuggable)
 ## Acceptance criteria
 
 - [ ] The minified release build installs, upgrades cleanly and runs the daily loop in all four languages.
-- [ ] Permissions are exactly the documented five, including 012's `RECORD_AUDIO`; no `INTERNET` or microphone foreground service. Voice remains strictly on-device; Privacy copy and unavailable/denied paths match ADR-0022.
+- [ ] Permissions are exactly the documented five, including 012's `RECORD_AUDIO`; no `INTERNET` or microphone foreground service. Voice follows the amended ADR-0022 chain (on-device, consented system default, user-chosen installed provider); Privacy copy, consent, picker, Settings and unavailable/denied paths match it.
 - [ ] APK/AAB is under 12 MB; start-up and scroll measurements are recorded.
 - [ ] `docs/prd/09-mvp-acceptance-criteria.md` passes in full.
 - [ ] `docs/testing/02-manual-qa-checklist.md` passes on two devices.

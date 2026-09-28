@@ -53,7 +53,7 @@ The release build, not a debug build, because R8 is a real source of failure.
 - [ ] A notification fires and deep-links correctly.
 - [ ] Journal export produces a valid file.
 - [ ] Both reset tiers work.
-- [ ] Voice dictation/commands pass in EN/RU/DE/ES on a capable device; absent service/model, API 26-30 and denied/revoked permission keep all manual paths usable. No generic platform fallback, background listening or transcript logging. Privacy copy describes on-device use and normal local draft storage accurately.
+- [ ] Voice dictation/commands pass in EN/RU/DE/ES on a capable device; absent service/model, API 26-30 and denied/revoked permission keep all manual paths usable. No automatic or silent provider fallback (consent before system/installed recognizers, picker never pre-selected), no background listening or transcript logging. Privacy copy describes on-device use, the consented remote-capable providers and normal local draft storage accurately.
 - [ ] Cold start under 1.5 s on the reference device.
 - [ ] APK/AAB under 12 MB.
 

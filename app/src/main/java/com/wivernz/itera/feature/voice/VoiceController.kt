@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.core.voice.VoiceAvailability
 import com.wivernz.itera.core.voice.VoiceError
 import com.wivernz.itera.core.voice.VoiceRecognitionListener
@@ -32,6 +33,28 @@ sealed interface VoiceSessionState {
     data object Idle : VoiceSessionState {
         override val owner: Any? get() = null
     }
+
+    /**
+     * No on-device recogniser: explain the system recogniser, "Use system recognition" or Not now. Shown until the
+     * user accepts; accepting is stored and never asked again.
+     */
+    data class NeedsSystemConsent(override val owner: Any) : VoiceSessionState
+
+    /**
+     * No on-device or usable system recogniser: installed apps that offer one, for the user to pick from. Nothing
+     * is pre-selected. [lost]: a previously chosen app disappeared or failed and was forgotten.
+     */
+    data class ChooseProvider(
+        override val owner: Any,
+        val providers: List<RecognitionProviderInfo>,
+        val lost: Boolean = false
+    ) : VoiceSessionState
+
+    /** The consent naming the picked app: "Use <app>" or Not now. Accepting stores the choice. */
+    data class NeedsProviderConsent(
+        override val owner: Any,
+        val provider: RecognitionProviderInfo
+    ) : VoiceSessionState
 
     /** Before the system dialog: the brief rationale, Continue or Not now. */
     data class NeedsPermission(override val owner: Any) : VoiceSessionState
@@ -75,11 +98,57 @@ class VoiceController(
     fun start(owner: Any, onFinal: (List<String>) -> Unit) {
         cancel()
         this.onFinal = onFinal
-        when {
-            recognizer.availability() != VoiceAvailability.AVAILABLE ->
+        when (recognizer.availability()) {
+            VoiceAvailability.UNAVAILABLE ->
                 state = VoiceSessionState.Unavailable(owner, VoiceUnavailable.DEVICE)
-            !permission.granted() -> state = VoiceSessionState.NeedsPermission(owner)
-            else -> listen(owner)
+            VoiceAvailability.CONSENT_REQUIRED ->
+                state =
+                    VoiceSessionState.NeedsSystemConsent(owner)
+            VoiceAvailability.CHOICE_REQUIRED -> chooseAgain(owner)
+            VoiceAvailability.AVAILABLE -> microphoneThenListen(owner)
+        }
+    }
+
+    /** "Use system recognition": stored once, then the usual microphone step. */
+    fun acceptSystemRecognition() {
+        val current = state as? VoiceSessionState.NeedsSystemConsent ?: return
+        recognizer.allowSystemRecognition()
+        microphoneThenListen(current.owner)
+    }
+
+    /** Installed recognition apps, for Settings. */
+    fun providers(): List<RecognitionProviderInfo> = recognizer.providers()
+
+    /** A row in the picker: show the consent for that app. Nothing is stored yet. */
+    fun pickProvider(provider: RecognitionProviderInfo) {
+        val current = state as? VoiceSessionState.ChooseProvider ?: return
+        if (provider !in current.providers) return
+        state = VoiceSessionState.NeedsProviderConsent(current.owner, provider)
+    }
+
+    /** "Use <app>": the choice and its consent are stored, then the usual microphone step. */
+    fun acceptProvider() {
+        val current = state as? VoiceSessionState.NeedsProviderConsent ?: return
+        recognizer.selectProvider(current.provider.id)
+        microphoneThenListen(current.owner)
+    }
+
+    private fun chooseAgain(owner: Any) {
+        val lost = recognizer.consumeProviderLost()
+        val providers = recognizer.providers()
+        state = if (providers.isEmpty()) {
+            VoiceSessionState.Unavailable(owner, VoiceUnavailable.DEVICE)
+        } else {
+            VoiceSessionState.ChooseProvider(owner, providers, lost)
+        }
+    }
+
+    private fun microphoneThenListen(owner: Any) {
+        if (permission.granted()) {
+            listen(owner)
+        } else {
+            state =
+                VoiceSessionState.NeedsPermission(owner)
         }
     }
 
@@ -186,6 +255,10 @@ class VoiceController(
                             VoiceSessionState.Unavailable(owner, VoiceUnavailable.LANGUAGE)
                         VoiceError.SERVICE_UNAVAILABLE ->
                             VoiceSessionState.Unavailable(owner, VoiceUnavailable.DEVICE)
+                        VoiceError.PROVIDER_UNUSABLE -> {
+                            chooseAgain(owner)
+                            return
+                        }
                         VoiceError.NO_SPEECH -> VoiceSessionState.Failed(
                             owner,
                             VoiceFailure.NO_SPEECH

@@ -86,7 +86,7 @@ Summarised here, detailed in `05-error-handling-and-logging.md`.
 
 ## 7. Offline-first
 
-There is no online. No network permission is declared in the manifest. Every training interaction works in airplane mode through manual input. Optional voice (012) uses only an available on-device recognizer/model and otherwise leaves manual input intact (ADR-0022). Fonts, the technique catalog and all copy are bundled.
+There is no online. No network permission is declared in the manifest. Every training interaction works in airplane mode through manual input. Optional voice (012) prefers an on-device recognizer; a system or user-chosen recognizer, which may use the network in its own process, is used only after consent; otherwise manual input stays intact (ADR-0022). Fonts, the technique catalog and all copy are bundled.
 
 ## 8. Startup
 

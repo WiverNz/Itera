@@ -48,11 +48,11 @@ All fourteen are visible in the library from the start. Locked ones can be opene
 - **Dedicated exercises:** Eisenhower matrix, Feynman technique, habit stacking, premortem, the focus timer and combination days. Simpler techniques use a shared exercise runner.
 - **Progress without pressure:** five skill rows, a 14-day regularity strip, a history calendar, and a weekly look-back in the evening reflection.
 - **Four languages:** English, Russian, German and Spanish, covering the whole app including technique content. You can switch from Welcome or Settings at any time, and the choice survives restarts. It uses Android's per-app language setting, so the phone's system language is left alone. Switching recreates the screen in the new language; no app restart is needed.
-- **Push-to-talk voice input** (Android 12 and later):
+- **Push-to-talk voice input:**
   - dictation into text fields
   - a small, fixed set of commands in all four languages, such as adding or completing an item, starting, pausing or ending a focus session, and completing the current exercise
   - commands come from explicit phrase tables, not AI, and actions that are hard to undo ask for confirmation first
-  - recognition runs **only on the device**. Voice is available only when the phone has an on-device speech recognizer and the language model for the current app language. Without them, the microphone reports voice as unavailable, and Itera never falls back to a cloud or default platform recognizer.
+  - recognition prefers the phone's **on-device** recognizer (Android 12+). Without one, Itera can use the system's selected speech service, or a speech recognition app you pick from the installed ones, but only after a consent screen that says it may process audio remotely. Itera never picks a provider for you and never switches silently; both choices can be changed or turned off in Settings. Without any usable recognizer, the microphone reports voice as unavailable.
   - keyboard and touch always work.
 - **Journal export:** your practice journal can be exported as Markdown through the Android share sheet.
 
@@ -88,7 +88,7 @@ Rest days are shown honestly, never hidden or scolded.
 - **No account and no backend.** There is no sign-in, server or cloud sync.
 - **No `INTERNET` permission.** The manifest does not declare it. The permissions it does declare cover notifications, rescheduling reminders after a reboot, the focus-timer foreground service, and the microphone for voice.
 - **Your data stays on the device.** Room and DataStore files are excluded from Android cloud backup. They are included only in direct device-to-device transfer. Journal export happens only when you ask for it.
-- **Voice is on-device only.** Listening starts only when you tap the microphone, and it stops after one utterance. There is no continuous listening, no hotword and no background microphone use.
+- **Voice is on-device when the phone allows it.** Otherwise a system or installed speech service is used only after you agree to it by name, and it may process audio remotely; Itera itself has no network access. Listening starts only when you tap the microphone, and it stops after one utterance. There is no continuous listening, no hotword and no background microphone use.
 - **Nothing you write or say is logged.** Audio is never stored, and transcripts are never logged or sent to analytics. Final dictated text is saved exactly like typed text. The local analytics log records only fixed event names and enumerated values, never text you wrote.
 
 The full voice decision is [ADR-0022](docs/architecture/adr/0022-voice-recognition-and-privacy.md).
@@ -103,7 +103,7 @@ Production app (`app/`):
 - Room for persistence and DataStore for preferences
 - WorkManager for reminders and background upkeep, plus a foreground service for the focus timer
 - AppCompat per-app locales (`AppCompatDelegate.setApplicationLocales`)
-- Android `SpeechRecognizer`, on-device recognizer only, for voice
+- Android `SpeechRecognizer` for voice: on-device first, then a consented system or user-chosen recognition service
 - kotlinx.serialization and kotlinx.collections.immutable
 - Testing: JUnit, Robolectric, Compose UI tests, Turbine, Roborazzi and Kover
 - Build tooling: KSP, Spotless and custom Compose lint checks
@@ -128,7 +128,7 @@ Single Gradle module with enforced package boundaries. minSdk 26 (Android 8.0), 
 - Android Studio Ladybug (2024.2) or newer
 - JDK 25 for the production app (the committed daemon JVM criteria select it; it can be provisioned automatically); JDK 17+ for the prototype
 - Android SDK with platform `android-37.0` and build tools `36.0.0`. Point to it with `ANDROID_HOME` or with `sdk.dir` in the ignored `local.properties`.
-- A device or emulator on Android 8.0 (API 26) or newer. Voice needs Android 12+ and an on-device recognizer.
+- A device or emulator on Android 8.0 (API 26) or newer. Voice needs an on-device recognizer (Android 12+), a usable system recognizer, or an installed recognition app that accepts requests from other apps.
 
 The first build needs network access for Gradle and dependencies. The app itself never does.
 

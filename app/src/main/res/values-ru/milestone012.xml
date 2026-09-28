@@ -16,15 +16,15 @@
     <string name="voice_retry">Ещё раз</string>
     <string name="voice_keep_typing">Печатать</string>
     <string name="voice_permission_title">Использовать микрофон?</string>
-    <string name="voice_permission_body">Itera слушает только после нажатия на микрофон, одну фразу, с распознаванием речи на этом устройстве. Ничего не записывается и не хранится.</string>
+    <string name="voice_permission_body">Itera слушает только после нажатия на микрофон, одну фразу. Itera не записывает и не хранит звук.</string>
     <string name="voice_permission_continue">Продолжить</string>
     <string name="voice_not_now">Не сейчас</string>
     <string name="voice_permission_denied">Доступ к микрофону выключен</string>
     <string name="voice_permission_settings_body">Включите его в настройках приложения, чтобы пользоваться голосом. Печатать можно как обычно.</string>
     <string name="voice_open_settings">Открыть настройки</string>
     <string name="voice_unavailable_title">Голос недоступен</string>
-    <string name="voice_unavailable_device">На этом устройстве нет распознавания речи на устройстве, которое может использовать Itera. Печатать можно как обычно.</string>
-    <string name="voice_unavailable_language">Распознавание на устройстве для языка «%1$s» здесь недоступно. Добавьте язык в настройках речи или продолжайте печатать.</string>
+    <string name="voice_unavailable_device">На этом устройстве нет распознавания речи, которое может использовать Itera. Печатать можно как обычно.</string>
+    <string name="voice_unavailable_language">Распознавание речи для языка «%1$s» здесь недоступно. Добавьте язык в настройках речи или продолжайте печатать.</string>
     <string name="voice_speech_settings">Настройки речи</string>
     <string name="voice_too_long">Это длиннее, чем допускает поле. Сократите текст здесь и вставьте.</string>
     <string name="voice_preview">Надиктованный текст</string>
@@ -85,5 +85,22 @@
     <string name="voice_example_end">«Закончи фокус»</string>
     <string name="voice_example_complete_exercise">«Заверши упражнение»</string>
     <string name="voice_example_recommendation">«Что мне делать сейчас?»</string>
-    <string name="privacy_voice">Голосовой ввод необязателен и работает, только когда вы нажимаете на микрофон. Речь распознаётся на этом устройстве; Itera не записывает звук и не хранит сказанное - только принятый вами текст, как при наборе.</string>
+    <string name="privacy_voice">Голосовой ввод необязателен и работает, только когда вы нажимаете на микрофон. Если устройство умеет распознавать речь локально, речь распознаётся на нём. Иначе, и только с вашего разрешения, используется системный сервис речи Android или выбранное вами приложение для распознавания речи, которые могут обрабатывать звук удалённо и использовать сеть. Itera не записывает звук и не хранит сказанное - только принятый вами текст, как при наборе. Это можно изменить или отключить в настройках.</string>
+    <!-- ADR-0022 (amended): system-recogniser consent and its Settings switch. -->
+    <string name="voice_system_title">Использовать системное распознавание речи?</string>
+    <string name="voice_system_body">На этом устройстве нет локального распознавания речи. Вместо него можно использовать системный сервис речи Android. Он может обрабатывать звук удалённо и использовать сеть. Сама Itera не хранит ни звук, ни расшифровку - только принятый вами текст.</string>
+    <string name="voice_system_use">Использовать системное</string>
+    <string name="sec_voice">Голос</string>
+    <string name="voice_system_setting">Системное распознавание речи</string>
+    <string name="voice_system_setting_sub">Только если на устройстве нет локального распознавания. Системный сервис может обрабатывать звук удалённо.</string>
+    <!-- ADR-0022 (amended): a speech recognition app the user chooses and agrees to. -->
+    <string name="voice_provider_title">Выберите приложение для распознавания речи</string>
+    <string name="voice_provider_body">На этом устройстве нет ни локального, ни системного распознавания речи. Его предлагают эти установленные приложения. Выберите одно, чтобы узнать, как оно обращается со звуком.</string>
+    <string name="voice_provider_lost">Выбранное приложение для распознавания речи больше недоступно. Выберите другое или продолжайте печатать.</string>
+    <string name="voice_provider_consent_title">Использовать распознавание речи из «%1$s»?</string>
+    <string name="voice_provider_consent_body">«%1$s» - отдельное приложение, не часть Itera или Android. Оно может обрабатывать звук удалённо и использовать сеть по своим правилам конфиденциальности. Сама Itera не хранит ни звук, ни расшифровку - только принятый вами текст.</string>
+    <string name="voice_provider_use">Использовать «%1$s»</string>
+    <string name="voice_provider_setting">Приложение для распознавания речи</string>
+    <string name="voice_provider_setting_sub">Используется, только если на устройстве нет ни локального, ни системного распознавания. Перед выбором вы увидите, как приложение обращается со звуком.</string>
+    <string name="voice_provider_none">Нет</string>
 </resources>

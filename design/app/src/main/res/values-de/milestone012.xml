@@ -16,15 +16,15 @@
     <string name="voice_retry">Nochmal</string>
     <string name="voice_keep_typing">Weiter tippen</string>
     <string name="voice_permission_title">Mikrofon verwenden?</string>
-    <string name="voice_permission_body">Itera hört erst zu, wenn du auf das Mikrofon tippst - für einen Satz, mit Spracherkennung auf diesem Gerät. Nichts wird aufgenommen oder gespeichert.</string>
+    <string name="voice_permission_body">Itera hört erst zu, wenn du auf das Mikrofon tippst - für einen Satz. Itera nimmt kein Audio auf und speichert es nicht.</string>
     <string name="voice_permission_continue">Weiter</string>
     <string name="voice_not_now">Nicht jetzt</string>
     <string name="voice_permission_denied">Mikrofonzugriff ist aus</string>
     <string name="voice_permission_settings_body">Schalte ihn in den App-Einstellungen ein, um die Stimme zu nutzen. Tippen funktioniert wie immer.</string>
     <string name="voice_open_settings">Einstellungen öffnen</string>
     <string name="voice_unavailable_title">Sprache nicht verfügbar</string>
-    <string name="voice_unavailable_device">Dieses Gerät hat keine On-Device-Spracherkennung, die Itera nutzen kann. Tippen funktioniert wie immer.</string>
-    <string name="voice_unavailable_language">On-Device-Erkennung für %1$s ist hier nicht verfügbar. Füge die Sprache in den Spracheinstellungen hinzu oder tippe weiter.</string>
+    <string name="voice_unavailable_device">Dieses Gerät hat keine Spracherkennung, die Itera nutzen kann. Tippen funktioniert wie immer.</string>
+    <string name="voice_unavailable_language">Spracherkennung für %1$s ist hier nicht verfügbar. Füge die Sprache in den Spracheinstellungen hinzu oder tippe weiter.</string>
     <string name="voice_speech_settings">Spracheinstellungen</string>
     <string name="voice_too_long">Das ist länger, als dieses Feld erlaubt. Kürze es hier und füge es dann ein.</string>
     <string name="voice_preview">Diktierter Text</string>
@@ -85,5 +85,22 @@
     <string name="voice_example_end">„Beende Fokus“</string>
     <string name="voice_example_complete_exercise">„Schließe Übung ab“</string>
     <string name="voice_example_recommendation">„Was soll ich jetzt tun?“</string>
-    <string name="privacy_voice">Spracheingabe ist optional und funktioniert nur, wenn du auf ein Mikrofon tippst. Sprache wird auf diesem Gerät erkannt; Itera nimmt nie Audio auf und behält nicht, was du gesagt hast - nur den Text, den du übernimmst, wie beim Tippen.</string>
+    <string name="privacy_voice">Spracheingabe ist optional und funktioniert nur, wenn du auf ein Mikrofon tippst. Bietet dieses Gerät lokale Spracherkennung, wird Sprache auf dem Gerät erkannt. Sonst - und nur, wenn du es erlaubst - wird der Sprachdienst von Android oder eine von dir gewählte Spracherkennungs-App genutzt, die Audio möglicherweise extern verarbeiten und das Netzwerk nutzen. Itera nimmt nie Audio auf und behält nicht, was du gesagt hast - nur den Text, den du übernimmst, wie beim Tippen. Das kannst du in den Einstellungen ändern oder ausschalten.</string>
+    <!-- ADR-0022 (amended): system-recogniser consent and its Settings switch. -->
+    <string name="voice_system_title">System-Spracherkennung verwenden?</string>
+    <string name="voice_system_body">Dieses Gerät hat keine lokale Spracherkennung. Stattdessen kann der Sprachdienst von Android genutzt werden. Er verarbeitet dein Audio möglicherweise extern und nutzt das Netzwerk. Itera selbst speichert weder Audio noch Transkript - nur den Text, den du übernimmst.</string>
+    <string name="voice_system_use">System-Erkennung nutzen</string>
+    <string name="sec_voice">Spracheingabe</string>
+    <string name="voice_system_setting">System-Spracherkennung verwenden</string>
+    <string name="voice_system_setting_sub">Nur wenn dieses Gerät keine lokale Erkennung hat. Der Systemdienst verarbeitet Audio möglicherweise extern.</string>
+    <!-- ADR-0022 (amended): a speech recognition app the user chooses and agrees to. -->
+    <string name="voice_provider_title">Spracherkennungs-App wählen</string>
+    <string name="voice_provider_body">Dieses Gerät hat weder lokale noch System-Spracherkennung. Diese installierten Apps bieten sie an. Wähle eine, um zu sehen, wie sie mit deinem Audio umgeht.</string>
+    <string name="voice_provider_lost">Die gewählte Spracherkennungs-App kann nicht mehr genutzt werden. Wähle eine andere oder tippe weiter.</string>
+    <string name="voice_provider_consent_title">Spracherkennung von %1$s verwenden?</string>
+    <string name="voice_provider_consent_body">%1$s ist eine eigene App, nicht Teil von Itera oder Android. Sie verarbeitet dein Audio möglicherweise extern und nutzt das Netzwerk - nach ihren eigenen Datenschutzregeln. Itera selbst speichert weder Audio noch Transkript - nur den Text, den du übernimmst.</string>
+    <string name="voice_provider_use">%1$s verwenden</string>
+    <string name="voice_provider_setting">Spracherkennungs-App</string>
+    <string name="voice_provider_setting_sub">Nur wenn dieses Gerät weder lokale noch System-Spracherkennung hat. Vor der Auswahl siehst du, wie die App mit deinem Audio umgeht.</string>
+    <string name="voice_provider_none">Keine</string>
 </resources>

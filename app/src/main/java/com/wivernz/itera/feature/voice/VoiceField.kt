@@ -3,6 +3,7 @@
 
 package com.wivernz.itera.feature.voice
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -43,6 +46,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toBitmap
 import com.wivernz.itera.R
 import com.wivernz.itera.core.common.AppLanguage
 import com.wivernz.itera.core.common.currentLocale
@@ -51,6 +55,7 @@ import com.wivernz.itera.core.designsystem.component.IteraButton
 import com.wivernz.itera.core.designsystem.component.NoteField
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
+import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.domain.voice.VoiceLanguage
 import com.wivernz.itera.domain.voice.VoiceText
 
@@ -251,6 +256,35 @@ internal fun VoiceStatusPanel(
                 stringResource(R.string.voice_cancel) to cancel
             )
         }
+        is VoiceSessionState.NeedsSystemConsent -> {
+            status = stringResource(R.string.voice_system_title)
+            detail = stringResource(R.string.voice_system_body)
+            actions = listOf(
+                stringResource(R.string.voice_system_use) to voice::acceptSystemRecognition,
+                stringResource(R.string.voice_not_now) to cancel
+            )
+        }
+        is VoiceSessionState.ChooseProvider -> {
+            status = stringResource(R.string.voice_provider_title)
+            detail = stringResource(
+                if (state.lost) R.string.voice_provider_lost else R.string.voice_provider_body
+            )
+            actions = listOf(
+                stringResource(
+                    if (command) R.string.voice_cancel else R.string.voice_keep_typing
+                ) to
+                    cancel
+            )
+        }
+        is VoiceSessionState.NeedsProviderConsent -> {
+            val app = state.provider.label
+            status = stringResource(R.string.voice_provider_consent_title, app)
+            detail = stringResource(R.string.voice_provider_consent_body, app)
+            actions = listOf(
+                stringResource(R.string.voice_provider_use, app) to voice::acceptProvider,
+                stringResource(R.string.voice_not_now) to cancel
+            )
+        }
         is VoiceSessionState.NeedsPermission -> {
             status = stringResource(R.string.voice_permission_title)
             detail = stringResource(R.string.voice_permission_body)
@@ -347,23 +381,24 @@ internal fun VoiceStatusPanel(
                 }
             )
         }
-        PanelActions(actions)
+        (state as? VoiceSessionState.ChooseProvider)?.let { choosing ->
+            ProviderList(choosing.providers, onPick = voice::pickProvider)
+        }
+        PanelActions(actions, firstPrimary = state !is VoiceSessionState.ChooseProvider)
     }
 }
 
 @Composable
-internal fun PanelActions(actions: List<Pair<String, () -> Unit>>) {
+internal fun PanelActions(actions: List<Pair<String, () -> Unit>>, firstPrimary: Boolean = true) {
     val c = Itera.colors
 
     @Composable fun Action(index: Int, label: String, action: () -> Unit, modifier: Modifier) {
         IteraButton(
             label,
             action,
-            kind = if (index == 0) ButtonKind.Primary else ButtonKind.Secondary,
+            kind = if (index == 0 && firstPrimary) ButtonKind.Primary else ButtonKind.Secondary,
             height = 44.dp,
-            modifier = if (index ==
-                0
-            ) {
+            modifier = if (index == 0 && firstPrimary) {
                 modifier
             } else {
                 modifier.border(1.dp, c.ink2, RoundedCornerShape(18.dp))
@@ -427,6 +462,41 @@ private fun OverflowPreview(
                 height = 44.dp,
                 modifier = Modifier.weight(1f)
             )
+        }
+    }
+}
+
+/** The picker rows: each app's own label and icon. Nothing is pre-selected; a tap only opens that app's consent. */
+@Composable
+private fun ProviderList(
+    providers: List<RecognitionProviderInfo>,
+    onPick: (RecognitionProviderInfo) -> Unit
+) {
+    val c = Itera.colors
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        providers.forEach { provider ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(c.surface)
+                    .clickable(role = Role.Button) { onPick(provider) }
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .testTag("VoiceProvider"),
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                val icon = remember(provider.id) {
+                    runCatching { provider.icon?.toBitmap(96, 96)?.asImageBitmap() }.getOrNull()
+                }
+                if (icon != null) {
+                    Image(icon, contentDescription = null, modifier = Modifier.size(28.dp))
+                } else {
+                    Icon(IteraIcons.Mic, null, tint = c.ink2, modifier = Modifier.size(20.dp))
+                }
+                Text(provider.label, style = Itera.type.body, color = c.ink)
+            }
         }
     }
 }

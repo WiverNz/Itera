@@ -77,7 +77,7 @@ Each requirement links to the document that specifies it fully. `FR-` ids are re
 
 ## Constraints that are requirements
 
-- **FR-41** Every training interaction works with no network via touch/keyboard. Optional voice requires an available on-device recognizer and language model; unavailable voice never blocks training. The app declares no `INTERNET` permission.
+- **FR-41** Every training interaction works with no network via touch/keyboard. Optional voice requires a usable recognizer (on-device, or a consented system/user-chosen provider per ADR-0022) and language model; unavailable voice never blocks training. The app declares no `INTERNET` permission.
 - **FR-42** No account, no backend, no subscription, no AI dependency.
 - **FR-43** No user-authored text is ever logged or transmitted.
 
@@ -88,4 +88,4 @@ Each requirement links to the document that specifies it fully. `FR-` ids are re
 - **FR-46** A deterministic EN/RU/DE/ES parser extracts arguments; no AI, conversation, background listening or hotword. Recognition follows the selected app language.
 - **FR-47** Ambiguous/destructive actions require confirmation. Unsupported, invalid and out-of-context commands change nothing; recognition cannot write Room or bypass use cases.
 - **FR-48** Listening, optional partial/final transcript, failure, permission, service/language unavailable, ambiguity, confirmation and cancellation states remain accessible, localised and consistent with `design/`.
-- **FR-49** Use Android on-device recognition only, request microphone permission on explicit use, and preserve manual input on denial/unavailability. Platform recognizer fallback is documented but blocked by ADR-0022 until privacy policy changes.
+- **FR-49** Select the recognizer as ON_DEVICE → usable SYSTEM DEFAULT → USER-SELECTED INSTALLED PROVIDER → UNAVAILABLE (ADR-0022, amended 2026-09-28). Anything but on-device needs explicit, locally stored, revocable consent that says the provider may process audio remotely; installed providers are picked by the user from a list and named in the consent. Never pre-select, never use the assistant app as an implied default, never fall through silently. Request microphone permission on explicit use and preserve manual input on denial/unavailability.
