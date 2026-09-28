@@ -45,7 +45,7 @@ The app theme is `Theme.AppCompat.DayNight.NoActionBar`.
 
 ## 2. Switching at runtime
 
-Calling `AppLanguage.set(tag)` applies the new configuration to the running activity without recreating it (`android:configChanges="locale|layoutDirection"` on `MainActivity`), so the screen does not flash. Compose re-reads every `stringResource` and everything keyed on `currentLocale()`, and the whole UI, including the open bottom sheet, renders in the new language immediately. Text a ViewModel already resolved (plan copy, catalogue names) is re-resolved because the flows that produce it combine with `AppLanguage.locale`, which `MainActivity` publishes from `onConfigurationChanged`.
+Calling `AppLanguage.set(tag)` applies the new configuration to the running activity without recreating it (`android:configChanges="locale|layoutDirection|screenLayout"` on `MainActivity`), so the screen does not flash. Compose re-reads every `stringResource` and everything keyed on `currentLocale()`, and the whole UI, including the open bottom sheet, renders in the new language immediately. Text a ViewModel already resolved (plan copy, catalogue names) is re-resolved because the flows that produce it combine with `AppLanguage.locale`, which `MainActivity` publishes from `onConfigurationChanged`.
 
 No restart, no dialog, no "changes take effect later".
 

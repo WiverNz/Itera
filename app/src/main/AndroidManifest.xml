@@ -35,7 +35,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Itera"
-            android:configChanges="locale|layoutDirection"
+            android:configChanges="locale|layoutDirection|screenLayout"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
