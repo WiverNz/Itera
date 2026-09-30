@@ -56,6 +56,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -385,6 +390,8 @@ fun NoteField(
     bordered: Boolean = false,
     // milestone 012: a push-to-talk mic in the field's end padding, with the shared voice panel below
     dictation: Boolean = false,
+    // a visible alternative to the keyboard's Done key for fields that add an entry to a list
+    onAdd: (() -> Unit)? = null,
 ) {
     val c = Itera.colors
     var voice by remember { mutableStateOf(VoiceDemoState.Idle) }
@@ -398,6 +405,8 @@ fun NoteField(
             modifier = modifier.fillMaxWidth(),
             textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
             minLines = minLines,
+            keyboardOptions = if (onAdd != null) KeyboardOptions(imeAction = ImeAction.Done) else KeyboardOptions.Default,
+            keyboardActions = if (onAdd != null) KeyboardActions(onDone = { if (value.isNotBlank()) onAdd() }) else KeyboardActions.Default,
             cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
             decorationBox = { inner ->
                 Row(
@@ -406,7 +415,7 @@ fun NoteField(
                         .clip(RoundedCornerShape(16.dp))
                         .background(c.surface)
                         .then(if (bordered) Modifier.border(2.dp, c.ink, RoundedCornerShape(16.dp)) else Modifier)
-                        .padding(start = 16.dp, end = if (dictation) 4.dp else 16.dp),
+                        .padding(start = 16.dp, end = if (dictation || onAdd != null) 4.dp else 16.dp),
                     verticalAlignment = Alignment.Top,
                 ) {
                     Box(Modifier.weight(1f).padding(vertical = 14.dp)) {
@@ -414,6 +423,7 @@ fun NoteField(
                         inner()
                     }
                     if (dictation) Box(Modifier.padding(vertical = 2.dp)) { DictationMic(placeholder, voice) { voice = it } }
+                    if (onAdd != null) Box(Modifier.padding(vertical = 2.dp)) { FieldAddButton(placeholder, value.isNotBlank(), onAdd) }
                 }
             },
         )
@@ -423,6 +433,24 @@ fun NoteField(
             onPrimary = { voice = if (voice == VoiceDemoState.Listening) VoiceDemoState.NoSpeech else VoiceDemoState.Listening },
             onCancel = { voice = VoiceDemoState.Idle },
         )
+    }
+}
+
+/** Round "+" in a field's end padding; filled ink once there is something to add. */
+@Composable
+fun FieldAddButton(placeholder: String, enabled: Boolean, onClick: () -> Unit) {
+    val c = Itera.colors
+    val label = stringResource(R.string.field_add_a11y, placeholder)
+    Box(
+        Modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .background(if (enabled) c.ink else c.surface2)
+            .clickable(enabled = enabled, role = Role.Button, onClickLabel = label, onClick = onClick)
+            .semantics { contentDescription = label },
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(IteraIcons.Plus, null, tint = if (enabled) c.onInk else c.ink2, modifier = Modifier.size(20.dp))
     }
 }
 

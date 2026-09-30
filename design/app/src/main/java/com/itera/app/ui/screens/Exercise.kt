@@ -99,7 +99,8 @@ fun ExerciseIntroScreen(vm: AppViewModel, technique: Technique, onClose: () -> U
 fun TwoMinuteScreen(onClose: () -> Unit, onFinish: () -> Unit) {
     val c = Itera.colors
     val sc = Technique.TwoMinute.skill.colors(c.isDark)
-    val tasks = remember { mutableStateListOf(R.string.two_sample_1 to true, R.string.two_sample_2 to false) }
+    val samples = listOf(stringResource(R.string.two_sample_1), stringResource(R.string.two_sample_2))
+    val tasks = remember { mutableStateListOf(samples[0] to true, samples[1] to false) }
     var extra by remember { mutableStateOf("") }
     val done = tasks.count { it.second }
     ScreenColumn(gap = 22.dp, bottom = { IteraButton(stringResource(R.string.two_finish), onFinish, enabled = done > 0) }) {
@@ -124,14 +125,17 @@ fun TwoMinuteScreen(onClose: () -> Unit, onFinish: () -> Unit) {
                 ) {
                     CheckCircle(checked, sc.content)
                     Text(
-                        stringResource(label),
+                        label,
                         style = Itera.type.body.copy(fontWeight = FontWeight.Medium, textDecoration = if (checked) TextDecoration.LineThrough else null),
                         color = if (checked) c.ink2 else c.ink,
                         modifier = Modifier.weight(1f),
                     )
                 }
             }
-            NoteField(extra, { extra = it }, stringResource(R.string.two_add_hint), minLines = 1, dictation = true)
+            NoteField(extra, { extra = it }, stringResource(R.string.two_add_hint), minLines = 1, dictation = true, onAdd = {
+                tasks += extra.trim() to false
+                extra = ""
+            })
         }
     }
 }
