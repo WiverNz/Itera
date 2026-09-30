@@ -75,7 +75,8 @@ fun VoiceNoteField(
     textStyle: TextStyle = Itera.type.userText,
     bordered: Boolean = false,
     modifier: Modifier = Modifier,
-    onDone: (() -> Unit)? = null
+    onDone: (() -> Unit)? = null,
+    onAdd: (() -> Unit)? = null
 ) {
     val voice = LocalVoiceController.current
     var field by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
@@ -132,26 +133,39 @@ fun VoiceNoteField(
             bordered = bordered,
             modifier = modifier.focusRequester(focus),
             onDone = onDone,
-            trailing = voice?.let { controller ->
+            trailing = if (voice == null && onAdd == null) {
+                null
+            } else {
                 {
-                    MicButton(
-                        stringResource(R.string.voice_dictate_a11y, placeholder),
-                        listening = active && controller.state is VoiceSessionState.Listening,
-                        onClick = {
-                            if (active) {
-                                controller.cancel()
-                                captured = null
-                            } else {
-                                overflow = null
-                                runCatching { focus.requestFocus() }
-                                captured = latest
-                                controller.start(owner) { alternatives ->
-                                    val best = alternatives.first { it.isNotBlank() }
-                                    if (!apply(best)) overflow = best.trim()
+                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        if (voice != null) {
+                            MicButton(
+                                stringResource(R.string.voice_dictate_a11y, placeholder),
+                                listening = active && voice.state is VoiceSessionState.Listening,
+                                onClick = {
+                                    if (active) {
+                                        voice.cancel()
+                                        captured = null
+                                    } else {
+                                        overflow = null
+                                        runCatching { focus.requestFocus() }
+                                        captured = latest
+                                        voice.start(owner) { alternatives ->
+                                            val best = alternatives.first { it.isNotBlank() }
+                                            if (!apply(best)) overflow = best.trim()
+                                        }
+                                    }
                                 }
-                            }
+                            )
                         }
-                    )
+                        if (onAdd != null) {
+                            AddButton(
+                                stringResource(R.string.field_add_a11y, placeholder),
+                                enabled = value.isNotBlank(),
+                                onClick = onAdd
+                            )
+                        }
+                    }
                 }
             }
         )
@@ -210,6 +224,34 @@ internal fun MicButton(
             IteraIcons.Mic,
             contentDescription = null,
             tint = if (listening) c.onInk else c.ink2,
+            modifier = Modifier.size(20.dp)
+        )
+    }
+}
+
+/** Adds the field's entry to its list: the visible alternative to the keyboard's Done key. */
+@Composable
+internal fun AddButton(
+    label: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val c = Itera.colors
+    Box(
+        modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .background(if (enabled) c.ink else c.surface2)
+            .clickable(enabled = enabled, role = Role.Button, onClickLabel = label, onClick = onClick)
+            .semantics { contentDescription = label }
+            .testTag("FieldAdd"),
+        contentAlignment = androidx.compose.ui.Alignment.Center
+    ) {
+        Icon(
+            IteraIcons.Plus,
+            contentDescription = null,
+            tint = if (enabled) c.onInk else c.ink2,
             modifier = Modifier.size(20.dp)
         )
     }
