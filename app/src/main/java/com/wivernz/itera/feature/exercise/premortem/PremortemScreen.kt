@@ -192,7 +192,8 @@ fun PremortemScreen(state: PremortemUiState, actions: PremortemActions) {
                     stringResource(R.string.pm_add),
                     minLines = 1,
                     modifier = Modifier.testTag("PremortemNewReason"),
-                    onDone = actions.addReason
+                    onDone = actions.addReason,
+                    onAdd = actions.addReason
                 )
             }
         }
