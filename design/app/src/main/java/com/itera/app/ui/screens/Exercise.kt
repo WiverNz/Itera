@@ -94,13 +94,15 @@ fun ExerciseIntroScreen(vm: AppViewModel, technique: Technique, onClose: () -> U
     }
 }
 
+private const val TWO_MINUTE_MAX_TASKS = 5
+
 /** 2-minute rule: find two quick tasks, do them, tick them off. */
 @Composable
 fun TwoMinuteScreen(onClose: () -> Unit, onFinish: () -> Unit) {
     val c = Itera.colors
     val sc = Technique.TwoMinute.skill.colors(c.isDark)
-    val samples = listOf(stringResource(R.string.two_sample_1), stringResource(R.string.two_sample_2))
-    val tasks = remember { mutableStateListOf(samples[0] to true, samples[1] to false) }
+    // sample rows keep their string id so a language switch re-reads them; typed rows are plain text
+    val tasks = remember { mutableStateListOf<Pair<Any, Boolean>>(R.string.two_sample_1 to true, R.string.two_sample_2 to false) }
     var extra by remember { mutableStateOf("") }
     val done = tasks.count { it.second }
     ScreenColumn(gap = 22.dp, bottom = { IteraButton(stringResource(R.string.two_finish), onFinish, enabled = done > 0) }) {
@@ -125,17 +127,20 @@ fun TwoMinuteScreen(onClose: () -> Unit, onFinish: () -> Unit) {
                 ) {
                     CheckCircle(checked, sc.content)
                     Text(
-                        label,
+                        if (label is Int) stringResource(label) else label.toString(),
                         style = Itera.type.body.copy(fontWeight = FontWeight.Medium, textDecoration = if (checked) TextDecoration.LineThrough else null),
                         color = if (checked) c.ink2 else c.ink,
                         modifier = Modifier.weight(1f),
                     )
                 }
             }
-            NoteField(extra, { extra = it }, stringResource(R.string.two_add_hint), minLines = 1, dictation = true, onAdd = {
-                tasks += extra.trim() to false
-                extra = ""
-            })
+            // the app hides the add field at the checklist's maxItems (techniques.v1.json)
+            if (tasks.size < TWO_MINUTE_MAX_TASKS) {
+                NoteField(extra, { extra = it }, stringResource(R.string.two_add_hint), minLines = 1, dictation = true, onAdd = {
+                    tasks += extra.trim() to false
+                    extra = ""
+                })
+            }
         }
     }
 }
