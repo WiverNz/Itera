@@ -43,7 +43,7 @@ class VoiceDictationTest {
 
     @Before fun setUp() = reduceMotion()
 
-    private fun field(initial: String, maxChars: Int = 200) {
+    private fun field(initial: String, maxChars: Int = 200, onAdd: (() -> Unit)? = null) {
         text = initial
         compose.setContent {
             IteraTheme {
@@ -57,7 +57,8 @@ class VoiceDictationTest {
                             },
                             "Task",
                             maxChars = maxChars,
-                            modifier = Modifier.testTag("Field")
+                            modifier = Modifier.testTag("Field"),
+                            onAdd = onAdd
                         )
                     }
                 }
@@ -114,6 +115,21 @@ class VoiceDictationTest {
             stale.onFinal(listOf("late words"))
         }
         compose.runOnIdle { assertEquals("Plan trip", text) }
+    }
+
+    @Test fun addingWhileListeningStopsDictation() {
+        var added = 0
+        field("Call Anna", onAdd = { added++ })
+        compose.onNodeWithTag("VoiceMic").performClick()
+        val stale = fake.listener
+        compose.onNodeWithTag("FieldAdd").performClick()
+        compose.runOnIdle {
+            assertEquals(1, added)
+            assertEquals(VoiceSessionState.Idle, voice.state)
+            stale.onFinal(listOf("late words"))
+        }
+        compose.runOnIdle { assertEquals("Call Anna", text) }
+        compose.onNodeWithTag("VoicePanel").assertDoesNotExist()
     }
 
     @Test fun cancelKeepsTheFieldUntouched() {

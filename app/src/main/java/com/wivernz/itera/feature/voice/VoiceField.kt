@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -115,6 +116,15 @@ fun VoiceNoteField(
     DisposableEffect(voice, owner) { onDispose { voice?.cancelIfOwner(owner) } }
 
     val active = voice?.isActive(owner) == true
+
+    // Adding the entry changes the field and would drop a pending transcript: stop listening first.
+    fun stopDictation() {
+        if (active) {
+            voice?.cancelIfOwner(owner)
+            captured = null
+        }
+    }
+
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         NoteField(
             shown,
@@ -132,12 +142,17 @@ fun VoiceNoteField(
             textStyle = textStyle,
             bordered = bordered,
             modifier = modifier.focusRequester(focus),
-            onDone = onDone,
+            onDone = onDone?.let { done ->
+                {
+                    stopDictation()
+                    done()
+                }
+            },
             trailing = if (voice == null && onAdd == null) {
                 null
             } else {
                 {
-                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         if (voice != null) {
                             MicButton(
                                 stringResource(R.string.voice_dictate_a11y, placeholder),
@@ -162,7 +177,10 @@ fun VoiceNoteField(
                             AddButton(
                                 stringResource(R.string.field_add_a11y, placeholder),
                                 enabled = value.isNotBlank(),
-                                onClick = onAdd
+                                onClick = {
+                                    stopDictation()
+                                    onAdd()
+                                }
                             )
                         }
                     }
@@ -218,7 +236,7 @@ internal fun MicButton(
                 if (state != null) stateDescription = state
             }
             .testTag("VoiceMic"),
-        contentAlignment = androidx.compose.ui.Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             IteraIcons.Mic,
@@ -251,7 +269,7 @@ internal fun AddButton(
             )
             .semantics { contentDescription = label }
             .testTag("FieldAdd"),
-        contentAlignment = androidx.compose.ui.Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             IteraIcons.Plus,
@@ -415,7 +433,7 @@ internal fun VoiceStatusPanel(
             .testTag("VoicePanel"),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(IteraIcons.Mic, null, tint = c.ink, modifier = Modifier.size(18.dp))
             Text(
                 status,
@@ -548,7 +566,7 @@ private fun ProviderList(
                     .clickable(role = Role.Button) { onPick(provider) }
                     .padding(horizontal = 12.dp, vertical = 8.dp)
                     .testTag("VoiceProvider"),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 val icon = remember(provider.id) {

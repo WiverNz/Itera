@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -178,8 +179,11 @@ class PremortemScreenTest {
 
     @Before fun setup() = reduceMotion()
 
-    private fun actions(onCycle: (Int) -> Unit = {}, onAdd: () -> Unit = {}) =
-        PremortemActions({}, {}, {}, onCycle, {}, { _, _ -> }, {}, {}, onAdd, {}, {})
+    private fun actions(
+        onCycle: (Int) -> Unit = {},
+        onAdd: () -> Unit = {},
+        onAddReason: () -> Unit = {}
+    ) = PremortemActions({}, {}, onAddReason, onCycle, {}, { _, _ -> }, {}, {}, onAdd, {}, {})
 
     private val base = PremortemUiState(
         loading = false,
@@ -211,6 +215,31 @@ class PremortemScreenTest {
         }
         compose.onNodeWithTag("Likelihood_1").performClick()
         compose.runOnIdle { assertEquals(1, cycled) }
+    }
+
+    @Test fun theAddButtonAddsTheTypedReason() {
+        var added = 0
+        compose.setContent {
+            IteraTheme {
+                PremortemScreen(
+                    base.copy(newReason = "Scope creep"),
+                    actions(onAddReason = { added++ })
+                )
+            }
+        }
+        compose.onNodeWithTag("FieldAdd").assertIsEnabled().performClick()
+        compose.runOnIdle { assertEquals(1, added) }
+    }
+
+    @Test fun theAddButtonIsDisabledWhileTheReasonIsBlank() {
+        var added = 0
+        compose.setContent {
+            IteraTheme {
+                PremortemScreen(base.copy(newReason = "  "), actions(onAddReason = { added++ }))
+            }
+        }
+        compose.onNodeWithTag("FieldAdd").assertIsNotEnabled().performClick()
+        compose.runOnIdle { assertEquals(0, added) }
     }
 
     @Test fun addToTodayFiresOnceOnADoubleTap() {
