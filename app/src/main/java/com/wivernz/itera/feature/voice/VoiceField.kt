@@ -243,7 +243,12 @@ internal fun AddButton(
             .size(44.dp)
             .clip(CircleShape)
             .background(if (enabled) c.ink else c.surface2)
-            .clickable(enabled = enabled, role = Role.Button, onClickLabel = label, onClick = onClick)
+            .clickable(
+                enabled = enabled,
+                role = Role.Button,
+                onClickLabel = label,
+                onClick = onClick
+            )
             .semantics { contentDescription = label }
             .testTag("FieldAdd"),
         contentAlignment = androidx.compose.ui.Alignment.Center
