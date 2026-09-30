@@ -545,7 +545,11 @@ fun HabitStackScreen(onClose: () -> Unit, onDone: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             Icon(IteraIcons.Bell, null, tint = c.ink2, modifier = Modifier.size(20.dp))
-            Text(stringResource(R.string.hs_new == R.string.hs_new).let { "" }, style = Itera.type.body, color = c.ink)
+            Text(stringResource(R.string.hs_nudge), style = Itera.type.body, color = c.ink, modifier = Modifier.weight(1f))
+            Switch(
+                checked = nudge, onCheckedChange = null,
+                colors = SwitchDefaults.colors(checkedTrackColor = sc.content, checkedThumbColor = c.surface, uncheckedTrackColor = c.surface2, uncheckedBorderColor = c.line),
+            )
         }
     }
 }
