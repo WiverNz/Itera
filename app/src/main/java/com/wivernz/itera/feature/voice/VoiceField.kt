@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -22,16 +24,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -59,6 +66,7 @@ import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.domain.voice.VoiceLanguage
 import com.wivernz.itera.domain.voice.VoiceText
+import kotlinx.coroutines.launch
 
 /**
  * A note field with push-to-talk dictation (docs/ux/10-voice-input.md). The mic captures the field and its
@@ -92,6 +100,9 @@ fun VoiceNoteField(
     val focus = remember { FocusRequester() }
     val latest by rememberUpdatedState(shown)
     val emit by rememberUpdatedState(onValueChange)
+    val reveal = remember { BringIntoViewRequester() }
+    val scope = rememberCoroutineScope()
+    var top by remember { mutableFloatStateOf(0f) }
 
     fun apply(transcript: String): Boolean {
         val snapshot = captured ?: return true
@@ -125,6 +136,22 @@ fun VoiceNoteField(
         }
     }
 
+    // An added entry lands above this field and pushes it under the bottom action while the keyboard is up.
+    // The new row can arrive a frame or more later, so wait until the field has moved, then scroll it back.
+    fun revealAfterAdd() {
+        if (onAdd == null) return
+        val from = top
+        scope.launch {
+            repeat(REVEAL_WAIT_FRAMES) {
+                withFrameNanos { }
+                if (top != from) {
+                    reveal.bringIntoView()
+                    return@launch
+                }
+            }
+        }
+    }
+
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         NoteField(
             shown,
@@ -141,11 +168,15 @@ fun VoiceNoteField(
             minLines = minLines,
             textStyle = textStyle,
             bordered = bordered,
-            modifier = modifier.focusRequester(focus),
+            modifier = modifier
+                .focusRequester(focus)
+                .bringIntoViewRequester(reveal)
+                .onGloballyPositioned { top = it.positionInRoot().y },
             onDone = onDone?.let { done ->
                 {
                     stopDictation()
                     done()
+                    revealAfterAdd()
                 }
             },
             trailing = if (voice == null && onAdd == null) {
@@ -180,6 +211,7 @@ fun VoiceNoteField(
                                 onClick = {
                                     stopDictation()
                                     onAdd()
+                                    revealAfterAdd()
                                 }
                             )
                         }
@@ -246,6 +278,8 @@ internal fun MicButton(
         )
     }
 }
+
+private const val REVEAL_WAIT_FRAMES = 30
 
 /** Adds the field's entry to its list: the visible alternative to the keyboard's Done key. */
 @Composable
