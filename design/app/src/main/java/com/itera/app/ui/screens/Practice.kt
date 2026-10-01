@@ -426,6 +426,8 @@ fun IntervalLadder(accent: Color, stageIndex: Int = 1) {
 
 // ------------------------------------------------------------------ premortem
 
+private const val PREMORTEM_MAX_REASONS = 6
+
 @Composable
 fun PremortemScreen(onClose: () -> Unit, onDone: () -> Unit) {
     val c = Itera.colors
@@ -433,6 +435,7 @@ fun PremortemScreen(onClose: () -> Unit, onDone: () -> Unit) {
     val inSixMonths = LocalDate.now().plusMonths(6).format(DateTimeFormatter.ofPattern("LLLL yyyy", currentLocale()))
     var action by remember { mutableStateOf("") }
     var extra by remember { mutableStateOf("") }
+    val added = remember { mutableStateListOf<String>() }
     val reasons = listOf(
         Triple(R.string.pm_reason_1, true, true),
         Triple(R.string.pm_reason_2, true, false),
@@ -468,7 +471,29 @@ fun PremortemScreen(onClose: () -> Unit, onDone: () -> Unit) {
                     else Pill(stringResource(R.string.pm_possible), c.surface2, c.ink2)
                 }
             }
-            NoteField(extra, { extra = it }, stringResource(R.string.pm_add), minLines = 1, dictation = true)
+            added.forEachIndexed { j, text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 54.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(c.surface)
+                        .padding(horizontal = 14.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Text("${reasons.size + j + 1}", style = Itera.type.bodySmall.copy(fontWeight = FontWeight.Bold), color = c.ink2)
+                    Text(text, style = Itera.type.bodySmall.copy(fontWeight = FontWeight.Medium), color = c.ink, modifier = Modifier.weight(1f))
+                    Pill(stringResource(R.string.pm_possible), c.surface2, c.ink2)
+                }
+            }
+            // the app hides the add field at PremortemRules.MAX_REASONS
+            if (reasons.size + added.size < PREMORTEM_MAX_REASONS) {
+                NoteField(extra, { extra = it }, stringResource(R.string.pm_add), minLines = 1, dictation = true, onAdd = {
+                    added += extra.trim()
+                    extra = ""
+                })
+            }
         }
         Text(stringResource(R.string.pm_today_q), style = Itera.type.headline, color = c.ink, modifier = Modifier.padding(top = 6.dp))
         NoteField(action, { action = it }, stringResource(R.string.pm_action_hint), bordered = true, dictation = true)

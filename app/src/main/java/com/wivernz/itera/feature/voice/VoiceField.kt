@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -22,15 +24,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -58,6 +66,7 @@ import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.domain.voice.VoiceLanguage
 import com.wivernz.itera.domain.voice.VoiceText
+import kotlinx.coroutines.launch
 
 /**
  * A note field with push-to-talk dictation (docs/ux/10-voice-input.md). The mic captures the field and its
@@ -75,7 +84,8 @@ fun VoiceNoteField(
     textStyle: TextStyle = Itera.type.userText,
     bordered: Boolean = false,
     modifier: Modifier = Modifier,
-    onDone: (() -> Unit)? = null
+    onDone: (() -> Unit)? = null,
+    onAdd: (() -> Unit)? = null
 ) {
     val voice = LocalVoiceController.current
     var field by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
@@ -90,6 +100,9 @@ fun VoiceNoteField(
     val focus = remember { FocusRequester() }
     val latest by rememberUpdatedState(shown)
     val emit by rememberUpdatedState(onValueChange)
+    val reveal = remember { BringIntoViewRequester() }
+    val scope = rememberCoroutineScope()
+    var top by remember { mutableFloatStateOf(0f) }
 
     fun apply(transcript: String): Boolean {
         val snapshot = captured ?: return true
@@ -114,6 +127,31 @@ fun VoiceNoteField(
     DisposableEffect(voice, owner) { onDispose { voice?.cancelIfOwner(owner) } }
 
     val active = voice?.isActive(owner) == true
+
+    // Adding the entry changes the field and would drop a pending transcript: stop listening first.
+    fun stopDictation() {
+        if (active) {
+            voice?.cancelIfOwner(owner)
+            captured = null
+        }
+    }
+
+    // An added entry lands above this field and pushes it under the bottom action while the keyboard is up.
+    // The new row can arrive a frame or more later, so wait until the field has moved, then scroll it back.
+    fun revealAfterAdd() {
+        if (onAdd == null) return
+        val from = top
+        scope.launch {
+            repeat(REVEAL_WAIT_FRAMES) {
+                withFrameNanos { }
+                if (top != from) {
+                    reveal.bringIntoView()
+                    return@launch
+                }
+            }
+        }
+    }
+
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         NoteField(
             shown,
@@ -130,28 +168,54 @@ fun VoiceNoteField(
             minLines = minLines,
             textStyle = textStyle,
             bordered = bordered,
-            modifier = modifier.focusRequester(focus),
-            onDone = onDone,
-            trailing = voice?.let { controller ->
+            modifier = modifier
+                .focusRequester(focus)
+                .bringIntoViewRequester(reveal)
+                .onGloballyPositioned { top = it.positionInRoot().y },
+            onDone = onDone?.let { done ->
                 {
-                    MicButton(
-                        stringResource(R.string.voice_dictate_a11y, placeholder),
-                        listening = active && controller.state is VoiceSessionState.Listening,
-                        onClick = {
-                            if (active) {
-                                controller.cancel()
-                                captured = null
-                            } else {
-                                overflow = null
-                                runCatching { focus.requestFocus() }
-                                captured = latest
-                                controller.start(owner) { alternatives ->
-                                    val best = alternatives.first { it.isNotBlank() }
-                                    if (!apply(best)) overflow = best.trim()
+                    stopDictation()
+                    done()
+                    revealAfterAdd()
+                }
+            },
+            trailing = if (voice == null && onAdd == null) {
+                null
+            } else {
+                {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (voice != null) {
+                            MicButton(
+                                stringResource(R.string.voice_dictate_a11y, placeholder),
+                                listening = active && voice.state is VoiceSessionState.Listening,
+                                onClick = {
+                                    if (active) {
+                                        voice.cancel()
+                                        captured = null
+                                    } else {
+                                        overflow = null
+                                        runCatching { focus.requestFocus() }
+                                        captured = latest
+                                        voice.start(owner) { alternatives ->
+                                            val best = alternatives.first { it.isNotBlank() }
+                                            if (!apply(best)) overflow = best.trim()
+                                        }
+                                    }
                                 }
-                            }
+                            )
                         }
-                    )
+                        if (onAdd != null) {
+                            AddButton(
+                                stringResource(R.string.field_add_a11y, placeholder),
+                                enabled = value.isNotBlank(),
+                                onClick = {
+                                    stopDictation()
+                                    onAdd()
+                                    revealAfterAdd()
+                                }
+                            )
+                        }
+                    }
                 }
             }
         )
@@ -204,12 +268,47 @@ internal fun MicButton(
                 if (state != null) stateDescription = state
             }
             .testTag("VoiceMic"),
-        contentAlignment = androidx.compose.ui.Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             IteraIcons.Mic,
             contentDescription = null,
             tint = if (listening) c.onInk else c.ink2,
+            modifier = Modifier.size(20.dp)
+        )
+    }
+}
+
+private const val REVEAL_WAIT_FRAMES = 30
+
+/** Adds the field's entry to its list: the visible alternative to the keyboard's Done key. */
+@Composable
+internal fun AddButton(
+    label: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val c = Itera.colors
+    Box(
+        modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .background(if (enabled) c.ink else c.surface2)
+            .clickable(
+                enabled = enabled,
+                role = Role.Button,
+                onClickLabel = label,
+                onClick = onClick
+            )
+            .semantics { contentDescription = label }
+            .testTag("FieldAdd"),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            IteraIcons.Plus,
+            contentDescription = null,
+            tint = if (enabled) c.onInk else c.ink2,
             modifier = Modifier.size(20.dp)
         )
     }
@@ -368,7 +467,7 @@ internal fun VoiceStatusPanel(
             .testTag("VoicePanel"),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(IteraIcons.Mic, null, tint = c.ink, modifier = Modifier.size(18.dp))
             Text(
                 status,
@@ -501,7 +600,7 @@ private fun ProviderList(
                     .clickable(role = Role.Button) { onPick(provider) }
                     .padding(horizontal = 12.dp, vertical = 8.dp)
                     .testTag("VoiceProvider"),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 val icon = remember(provider.id) {

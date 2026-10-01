@@ -208,7 +208,8 @@ private fun Checklist(
                 block.addItemLabel,
                 minLines = 1,
                 modifier = Modifier.testTag("AddItem_${block.key}"),
-                onDone = { actions.onAddItem(block) }
+                onDone = { actions.onAddItem(block) },
+                onAdd = { actions.onAddItem(block) }
             )
         }
     }

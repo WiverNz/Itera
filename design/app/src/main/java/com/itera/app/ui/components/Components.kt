@@ -56,6 +56,20 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
+import kotlinx.coroutines.launch
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -374,6 +388,7 @@ fun ProgressBar(fraction: Float, color: Color, modifier: Modifier = Modifier, he
 
 // ---------------------------------------------------------------- text field
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteField(
     value: String,
@@ -385,9 +400,31 @@ fun NoteField(
     bordered: Boolean = false,
     // milestone 012: a push-to-talk mic in the field's end padding, with the shared voice panel below
     dictation: Boolean = false,
+    // a visible alternative to the keyboard's Done key for fields that add an entry to a list
+    onAdd: (() -> Unit)? = null,
 ) {
     val c = Itera.colors
     var voice by remember { mutableStateOf(VoiceDemoState.Idle) }
+    // the added row lands above the field and pushes it under the bottom action while the keyboard is up:
+    // once it has moved, scroll it back into view
+    val reveal = remember { BringIntoViewRequester() }
+    val scope = rememberCoroutineScope()
+    var top by remember { mutableFloatStateOf(0f) }
+    val add: (() -> Unit)? = onAdd?.let { added ->
+        {
+            val from = top
+            added()
+            scope.launch {
+                repeat(30) {
+                    withFrameNanos { }
+                    if (top != from) {
+                        reveal.bringIntoView()
+                        return@launch
+                    }
+                }
+            }
+        }
+    }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         androidx.compose.foundation.text.BasicTextField(
             value = value,
@@ -395,9 +432,14 @@ fun NoteField(
                 voice = VoiceDemoState.Idle
                 onValueChange(it)
             },
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .bringIntoViewRequester(reveal)
+                .onGloballyPositioned { top = it.positionInRoot().y },
             textStyle = textStyle.copy(color = c.ink, fontFamily = Itera.type.userText.fontFamily),
             minLines = minLines,
+            keyboardOptions = if (add != null) KeyboardOptions(imeAction = ImeAction.Done) else KeyboardOptions.Default,
+            keyboardActions = if (add != null) KeyboardActions(onDone = { if (value.isNotBlank()) add() }) else KeyboardActions.Default,
             cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
             decorationBox = { inner ->
                 Row(
@@ -406,7 +448,7 @@ fun NoteField(
                         .clip(RoundedCornerShape(16.dp))
                         .background(c.surface)
                         .then(if (bordered) Modifier.border(2.dp, c.ink, RoundedCornerShape(16.dp)) else Modifier)
-                        .padding(start = 16.dp, end = if (dictation) 4.dp else 16.dp),
+                        .padding(start = 16.dp, end = if (dictation || onAdd != null) 4.dp else 16.dp),
                     verticalAlignment = Alignment.Top,
                 ) {
                     Box(Modifier.weight(1f).padding(vertical = 14.dp)) {
@@ -414,6 +456,7 @@ fun NoteField(
                         inner()
                     }
                     if (dictation) Box(Modifier.padding(vertical = 2.dp)) { DictationMic(placeholder, voice) { voice = it } }
+                    if (add != null) Box(Modifier.padding(vertical = 2.dp)) { FieldAddButton(placeholder, value.isNotBlank(), add) }
                 }
             },
         )
@@ -423,6 +466,24 @@ fun NoteField(
             onPrimary = { voice = if (voice == VoiceDemoState.Listening) VoiceDemoState.NoSpeech else VoiceDemoState.Listening },
             onCancel = { voice = VoiceDemoState.Idle },
         )
+    }
+}
+
+/** Round "+" in a field's end padding; filled ink once there is something to add. */
+@Composable
+fun FieldAddButton(placeholder: String, enabled: Boolean, onClick: () -> Unit) {
+    val c = Itera.colors
+    val label = stringResource(R.string.field_add_a11y, placeholder)
+    Box(
+        Modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .background(if (enabled) c.ink else c.surface2)
+            .clickable(enabled = enabled, role = Role.Button, onClickLabel = label, onClick = onClick)
+            .semantics { contentDescription = label },
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(IteraIcons.Plus, null, tint = if (enabled) c.onInk else c.ink2, modifier = Modifier.size(20.dp))
     }
 }
 

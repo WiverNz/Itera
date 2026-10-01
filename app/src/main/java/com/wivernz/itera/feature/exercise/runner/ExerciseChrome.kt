@@ -86,7 +86,8 @@ fun CappedNoteField(
     textStyle: TextStyle = Itera.type.userText,
     bordered: Boolean = false,
     modifier: Modifier = Modifier,
-    onDone: (() -> Unit)? = null
+    onDone: (() -> Unit)? = null,
+    onAdd: (() -> Unit)? = null
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         VoiceNoteField(
@@ -98,7 +99,8 @@ fun CappedNoteField(
             textStyle = textStyle,
             bordered = bordered,
             modifier = modifier,
-            onDone = onDone
+            onDone = onDone,
+            onAdd = onAdd
         )
         if (value.length > CompletionRules.COUNTER_FROM) {
             Text(
