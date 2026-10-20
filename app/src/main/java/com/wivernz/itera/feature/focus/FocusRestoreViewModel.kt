@@ -19,7 +19,16 @@ sealed interface FocusRestoreTarget {
     data class Chain(val parentActivityId: Long) : FocusRestoreTarget
 }
 
-/** Runs the focus restore table once per cold start (docs/engine/05-timer-lifecycle.md section 2). */
+/**
+ * Whether activity creation runs the restore table. A fresh start runs it unless a notification tap already names its
+ * destination. A recreation with saved state runs it too: after the process was killed in the background the system
+ * recreates the activity with its back stack, and only the restore table restarts the foreground service and
+ * auto-completes an elapsed session (010; it was skipped there). On a configuration change the retained
+ * [FocusRestoreViewModel] has already run and does nothing.
+ */
+fun runsFocusRestore(recreated: Boolean, deepLink: Boolean): Boolean = recreated || !deepLink
+
+/** Runs the focus restore table once per process (docs/engine/05-timer-lifecycle.md section 2). */
 @HiltViewModel
 class FocusRestoreViewModel @Inject constructor(
     private val controller: FocusSessionController,

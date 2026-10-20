@@ -77,7 +77,8 @@ These are test requirements for future implementation, not tests added by this d
 | Catalog: forbidden change detection | U | `CatalogCompatibilityTest` | 008 |
 | Content reconciler idempotence and no re-lock | U | `ContentReconcilerTest` | 008 |
 | Room schema v1 opens and seeds | I | `DatabaseCreationTest` | 006 |
-| Migration per version step | I | `MigrationTest` | (each schema change) |
+| Migration per version step | I | `MigrationTest` (from schema 2; none exists while version 1 is the only schema) | (each schema change) |
+| Schema version, exports and `IteraMigrations.ALL` agree; a version without its migration fails | R | `SchemaMigrationGuardTest` (+ CI `git diff --exit-code -- app/schemas`) | 039 |
 | Journal export golden file | U | `MarkdownJournalWriterTest` | 035 |
 | Journal export: empty DB, special characters | U | same | 035 |
 
@@ -110,7 +111,7 @@ One per screen. Each covers: initial state, every event, the error path, the emp
 
 | Subject | Type | Test | Issue |
 | --- | --- | --- | --- |
-| Every design-system component, light + dark | C | `ComponentScreenshotTest` (assertions, not screenshots) | 004 |
+| Every design-system component, light + dark | C | `ComponentTest` (assertions, not screenshots) | 004 |
 | Onboarding: 3 steps, max-2 selection, continue with zero | C | `OnboardingScreenTest` | 016 |
 | Today: hero per source, checklist states, counter | C | `TodayScreenTest` | 017 |
 | Today: practice-prompt tap completes in place with undo | C | same | 017 |
@@ -181,6 +182,7 @@ Ownership follows D-15: each test belongs to the issue that builds the thing it 
 | Every screen matches its golden at `fontScale 2.0` | Golden | same | 039 |
 | Every screen matches its Russian golden (light, default scale) | Golden | same | 039 |
 | Every design-system component matches its golden | Golden | `ComponentGoldenTest` | 039 |
+| Voice states (panels in normal and always-dark hosts, command sheet, Settings voice section and sheets) match their goldens | Golden | `VoicePanelGoldenTest`, `VoiceSheetGoldenTest` | Milestone 012 / 010 |
 | Per-screen element presence and order | C | each screen's test | per screen |
 | Side-by-side comparison against `design/` | Manual | recorded in the issue | per screen |
 
@@ -195,7 +197,7 @@ Ownership follows D-15: each test belongs to the issue that builds the thing it 
 | No user text reaches the logger | U | `NoUserTextLoggedTest` | 036 |
 | Every table assigned a reset tier | U | `ResetCoverageTest` | 034 |
 | No `INTERNET` permission in the merged manifest | U | `OfflineTest` | 001 |
-| Every screen at `fontScale 2.0` | C | `FontScaleTest` | 037 |
+| Every screen at `fontScale 2.0`, no English word split across lines | C | `FontScaleTest` | 037 |
 | Every screen has a content description for each control | C | `AccessibilityAuditTest` | 037 |
 | Pseudo-locale `en-XA` / `en-XB` render | C | `PseudoLocaleTest` | 041 |
 

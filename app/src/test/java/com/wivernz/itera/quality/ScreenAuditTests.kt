@@ -22,10 +22,20 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 open class ScreenAuditBase {
     @get:Rule val compose = createComposeRule()
-    protected fun audit(locales: List<String>, scales: List<Float>, controls: Boolean = false) {
+
+    /** [wholeWords]: languages in which no word may be split across lines (long German compounds can't avoid it). */
+    protected fun audit(
+        locales: List<String>,
+        scales: List<Float>,
+        controls: Boolean = false,
+        wholeWords: Set<String> = emptySet(),
+        // the platform's own (non-linear on API 34+) font scaling, as a device applies it, instead of linear
+        deviceScaling: Boolean = false
+    ) {
         var selection by mutableStateOf(Triple("Welcome", "en", 1f))
         var dark by mutableStateOf(false)
         val failures = linkedSetOf<String>()
@@ -43,7 +53,8 @@ open class ScreenAuditBase {
             CompositionLocalProvider(
                 LocalContext provides context,
                 LocalConfiguration provides configuration,
-                LocalDensity provides Density(density, scale),
+                LocalDensity provides
+                    if (deviceScaling) Density(context) else Density(density, scale),
                 LocalReduceMotion provides true
             ) {
                 key(selection, dark) { IteraTheme(dark = dark) { AuditScreen(screen) } }
@@ -68,6 +79,17 @@ open class ScreenAuditBase {
                                 node.config.getOrNull(
                                     SemanticsActions.GetTextLayoutResult
                                 )?.action?.invoke(layouts)
+                                if (language in wholeWords) {
+                                    layouts.forEach { layout ->
+                                        val text = layout.layoutInput.text.text
+                                        (0 until layout.lineCount - 1).map(
+                                            layout::getLineEnd
+                                        ).filter { end ->
+                                            end in 1 until text.length && text[end - 1].isLetter() &&
+                                                text[end].isLetter()
+                                        }.forEach { _ -> failures += "$label splits a word: $text" }
+                                    }
+                                }
                                 layouts.filter { layout ->
                                     // MultiParagraph keeps the max constraint width for short text; TextLayoutResult
                                     // shrinks its reported size. Inspect visible extents (excluding trailing spaces).
@@ -158,7 +180,14 @@ open class ScreenAuditBase {
 
 @RunWith(RobolectricTestRunner::class)
 class FontScaleTest : ScreenAuditBase() {
-    @Test fun englishAndGermanAtDoubleSize() = audit(listOf("en", "de"), listOf(2f))
+    // largest display size on a 1080 px, 420 dpi phone: 332 dp wide
+    @Config(qualifiers = "en-rUS-w332dp-h738dp-520dpi")
+    @Test
+    fun englishAtDoubleSizeOnTheLargestDisplaySize() =
+        audit(listOf("en"), listOf(2f), wholeWords = setOf("en"), deviceScaling = true)
+
+    @Test fun englishAndGermanAtDoubleSize() =
+        audit(listOf("en", "de"), listOf(2f), wholeWords = setOf("en"))
 }
 
 @RunWith(RobolectricTestRunner::class)

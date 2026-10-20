@@ -6,6 +6,7 @@ import com.wivernz.itera.data.catalog.CatalogAssetSource
 import com.wivernz.itera.data.catalog.seedTechniques
 import com.wivernz.itera.data.database.IteraDatabase
 import com.wivernz.itera.data.database.SeedCallback
+import com.wivernz.itera.data.database.migration.IteraMigrations
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +26,7 @@ object DatabaseModule {
         context,
         IteraDatabase::class.java,
         "itera.db"
-    ).addCallback(
+    ).addMigrations(*IteraMigrations.ALL).addCallback(
         SeedCallback(clock) { seedTechniques(assets) }
     ).setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING).build()
 

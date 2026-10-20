@@ -1,11 +1,15 @@
 package com.wivernz.itera.feature.voice
 
 import android.content.ComponentName
+import android.os.Looper
+import androidx.test.core.app.ApplicationProvider
+import com.wivernz.itera.TestLogger
 import com.wivernz.itera.core.voice.OfflineModel
 import com.wivernz.itera.core.voice.RecognitionProviderInfo
 import com.wivernz.itera.core.voice.VoiceAvailability
 import com.wivernz.itera.core.voice.VoiceError
 import com.wivernz.itera.core.voice.VoiceProvider
+import com.wivernz.itera.core.voice.VoiceRecognitionListener
 import com.wivernz.itera.core.voice.VoiceRoute
 import com.wivernz.itera.core.voice.VoskSpeechEngine
 import com.wivernz.itera.domain.voice.VoiceCommandKind
@@ -17,10 +21,12 @@ import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 
 private val GOOGLE = ComponentName("com.google.android.tts", "g.GoogleTTSRecognitionService")
 
@@ -32,6 +38,39 @@ private val GOOGLE = ComponentName("com.google.android.tts", "g.GoogleTTSRecogni
 class VoiceOfflineTest {
     private val owner = Any()
     private val google = RecognitionProviderInfo(GOOGLE.flattenToString(), "Google")
+
+    @Test fun theMicrophoneStartsBeforeStartReturnsSoListeningNeverPrecedesCapture() {
+        // 013 closing decision, fixed in 010: the controller shows Listening in the same frame it calls start, so
+        // capture must already be running when start returns; opening it later on the session thread lost the
+        // first syllable of speech at the instant of the tap.
+        var openedOn: Thread? = null
+        val errors = mutableListOf<VoiceError>()
+        val engine = VoskSpeechEngine(ApplicationProvider.getApplicationContext(), TestLogger()) {
+            openedOn = Thread.currentThread()
+            null
+        }
+        engine.start(
+            OfflineModel(VoiceLanguage.RU, File("missing"), "v"),
+            null,
+            object : VoiceRecognitionListener {
+                override fun onPartial(text: String) = Unit
+
+                override fun onFinal(alternatives: List<String>) = Unit
+
+                override fun onError(error: VoiceError) {
+                    errors += error
+                }
+            }
+        ) {}
+        assertSame("opened synchronously on the calling thread", Thread.currentThread(), openedOn)
+        val deadline = System.currentTimeMillis() + 5_000
+        while (errors.isEmpty() &&
+            System.currentTimeMillis() < deadline
+        ) {
+            shadowOf(Looper.getMainLooper()).idle()
+        }
+        assertEquals("no microphone: one failure, no model load", listOf(VoiceError.FAILED), errors)
+    }
 
     @Test fun routeOrder() {
         val model = OfflineModel(VoiceLanguage.RU, File("m"), "v")

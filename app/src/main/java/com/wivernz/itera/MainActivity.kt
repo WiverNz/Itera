@@ -45,6 +45,7 @@ import com.wivernz.itera.core.navigation.ShellViewModel
 import com.wivernz.itera.core.voice.VoiceRecognizer
 import com.wivernz.itera.feature.focus.FocusRestoreTarget
 import com.wivernz.itera.feature.focus.FocusRestoreViewModel
+import com.wivernz.itera.feature.focus.runsFocusRestore
 import com.wivernz.itera.feature.voice.VoiceHost
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -69,12 +70,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AppLanguage.publish(resources.configuration.locales[0])
         splash.setKeepOnScreenCondition { shell.state.value.loading }
-        if (savedInstanceState == null) {
-            val hasDeepLink = intent.getStringExtra(RouteCodec.EXTRA) != null
-            takeDeepLink(intent)
-            // A notification tap already names its destination; otherwise re-attach a stored timer.
-            if (!hasDeepLink) {
-                focusRestore.restore { shell.acceptDeepLink(RouteCodec.encode(it.toRoute())) }
+        val hasDeepLink = intent.getStringExtra(RouteCodec.EXTRA) != null
+        val recreated = savedInstanceState != null
+        if (!recreated) takeDeepLink(intent)
+        if (runsFocusRestore(recreated, deepLink = hasDeepLink)) {
+            focusRestore.restore { target ->
+                // a recreation keeps the restored back stack; only a session that finished meanwhile moves the user
+                if (!recreated || target !is FocusRestoreTarget.Session) {
+                    shell.acceptDeepLink(RouteCodec.encode(target.toRoute()))
+                }
             }
         }
         enableEdgeToEdge()

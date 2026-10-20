@@ -71,7 +71,7 @@ Exact patch versions are whatever is current at implementation time; KSP2 must s
 | `androidx.compose.ui:ui-test-junit4`, `ui-test-manifest` | androidTest / debug | already present |
 | `com.google.dagger:hilt-android-testing` + compiler | androidTest | `@HiltAndroidTest` |
 | `org.robolectric:robolectric` | test | JVM-side Android tests (notification builders, `CopyResolver`, `AppLanguage`) and the golden-image host |
-| `io.github.takahirom.roborazzi:roborazzi-compose` + the Gradle plugin | test | golden images (`docs/testing/04-visual-regression.md`) |
+| `io.github.takahirom.roborazzi:roborazzi` + `roborazzi-compose` + the Gradle plugin | test | golden images (`docs/testing/04-visual-regression.md`) |
 
 **No mocking framework.** Fakes are hand-written. Rationale in `docs/testing/00-strategy.md`.
 

@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,6 +55,7 @@ import com.itera.app.model.Program
 import com.itera.app.model.Skill
 import com.itera.app.model.Technique
 import com.itera.app.ui.components.ChoiceChip
+import com.itera.app.ui.components.rememberTextFit
 import com.itera.app.ui.components.Divider
 import com.itera.app.ui.components.Eyebrow
 import com.itera.app.ui.components.IteraButton
@@ -107,18 +109,29 @@ fun TrainScreen(
                 val label = stringResource(R.string.day_n, day)
                 val lockedLabel = stringResource(R.string.train_locked)
                 when {
-                    day == vm.programDay -> Row(
+                    day == vm.programDay -> {
+                      val title = t?.let { stringResource(it.title) } ?: stringResource(R.string.train_first_combo)
+                      val dayStyle = Itera.type.caption.copy(fontWeight = FontWeight.Bold)
+                      val dayFit = rememberTextFit(label, dayStyle)
+                      val titleFit = rememberTextFit(title, Itera.type.label)
+                      androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+                      // At large text the day label moves above the name rather than split the name's words.
+                      val stacked = maxWidth - 28.dp - (maxOf(52.dp, dayFit.full) + 40.dp + 18.dp + 42.dp) < titleFit.longestWord
+                      Row(
                         Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface)
                             .clickable(role = Role.Button, onClick = onToday).padding(horizontal = 14.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
-                    ) {
-                        Text(label, style = Itera.type.caption.copy(fontWeight = FontWeight.Bold), color = c.accent, modifier = Modifier.width(52.dp))
+                      ) {
+                        if (!stacked) Text(label, style = dayStyle, color = c.accent, modifier = Modifier.widthIn(min = 52.dp))
                         TechniqueToken(t ?: Technique.Pareto, 40.dp)
                         Column(Modifier.weight(1f)) {
-                            Text(t?.let { stringResource(it.title) } ?: stringResource(R.string.train_first_combo), style = Itera.type.label, color = c.ink)
+                            if (stacked) Text(label, style = dayStyle, color = c.accent)
+                            Text(title, style = Itera.type.label, color = c.ink)
                             Text(stringResource(R.string.nav_today) + " · " + stringResource((t?.skill ?: Skill.Planning).title), style = Itera.type.caption, color = c.ink2)
                         }
                         Icon(IteraIcons.Chevron, null, tint = c.ink2, modifier = Modifier.size(18.dp))
+                      }
+                      }
                     }
                     else -> Row(
                         Modifier.fillMaxWidth().heightIn(min = 44.dp)
@@ -126,7 +139,7 @@ fun TrainScreen(
                             .padding(horizontal = 14.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
                     ) {
-                        Text(label, style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, modifier = Modifier.width(52.dp))
+                        Text(label, style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, modifier = Modifier.widthIn(min = 52.dp))
                         Box(Modifier.width(40.dp), contentAlignment = Alignment.Center) {
                             val color = (t?.skill ?: Skill.Planning).colors(c.isDark).content
                             if (day < vm.programDay) Icon(IteraIcons.Check, null, tint = color, modifier = Modifier.size(20.dp))

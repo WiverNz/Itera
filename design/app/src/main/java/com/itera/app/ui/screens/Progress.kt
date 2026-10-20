@@ -189,7 +189,9 @@ fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
                         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             repeat(7) { col ->
                                 val num = row * 7 + col - offset + 1
-                                Box(Modifier.weight(1f).aspectRatio(0.95f), contentAlignment = Alignment.Center) {
+                                // the 0.95 aspect ratio is a minimum: at the largest text sizes the cell grows rather than clip its day number
+                                androidx.compose.foundation.layout.BoxWithConstraints(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                                  Box(Modifier.fillMaxWidth().heightIn(min = maxWidth / 0.95f), contentAlignment = Alignment.Center) {
                                     if (num in 1..month.lengthOfMonth()) {
                                         val date = month.atDay(num)
                                         val skills = Skill.entries.filter { it in vm.practicedOn(date) }.take(3)
@@ -202,6 +204,7 @@ fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
                                             Row(Modifier.height(5.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) { skills.forEach { skill -> Box(Modifier.size(5.dp).clip(CircleShape).background(skill.colors(c.isDark).content)) } }
                                         }
                                     }
+                                  }
                                 }
                             }
                         }

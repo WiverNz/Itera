@@ -77,7 +77,9 @@ data class TodayStep(
     val state: StepState,
     // null for a skipped row, which is drawn in the line colour
     val accent: Skill?,
-    val target: TodayTarget?
+    val target: TodayTarget?,
+    // the evening reflection row reads "Evening reflection" as in the prototype and the hero, not the catalogue name
+    val reflection: Boolean = false
 )
 
 data class TodayUiState(
@@ -229,7 +231,8 @@ private fun stepFor(activity: PlanActivity, input: TodayInput, done: Boolean): T
         subtitle = subtitle,
         state = state,
         accent = if (skipped) null else accentFor(activity, input),
-        target = targetFor(activity).takeIf { !done && !skipped && activity.actionable }
+        target = targetFor(activity).takeIf { !done && !skipped && activity.actionable },
+        reflection = activity.source == ActivitySource.REFLECTION
     )
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -68,6 +70,7 @@ import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.SectionTitle
 import com.wivernz.itera.core.designsystem.component.TechniqueToken
 import com.wivernz.itera.core.designsystem.component.TopBar
+import com.wivernz.itera.core.designsystem.component.rememberTextFit
 import com.wivernz.itera.core.designsystem.component.screenInsets
 import com.wivernz.itera.core.designsystem.component.summaryText
 import com.wivernz.itera.core.designsystem.component.title
@@ -267,19 +270,48 @@ private fun TrainNodeRow(node: TrainNode, onClick: () -> Unit) {
             }
         )
         .padding(horizontal = 14.dp, vertical = if (today) 12.dp else 0.dp)
+    val dayText = stringResource(R.string.day_n, node.day)
+    val dayStyle = Itera.type.caption.copy(
+        fontWeight = if (today) FontWeight.Bold else FontWeight.SemiBold
+    )
+    val titleStyle = if (today) Itera.type.label else Itera.type.body
+    val dayFit = rememberTextFit(dayText, dayStyle)
+    val titleFit = rememberTextFit(title, titleStyle)
+    val day = @Composable { dayModifier: Modifier ->
+        Text(
+            dayText,
+            style = dayStyle,
+            color = if (today) c.accent else c.ink2,
+            modifier = dayModifier
+        )
+    }
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // At large text the day label moves above the name rather than split the name's words.
+        val fixed = maxOf(52.dp, dayFit.full) + 40.dp + if (today) 18.dp + 42.dp else 28.dp
+        val stacked = maxWidth - 28.dp - fixed < titleFit.longestWord
+        TrainNodeContent(node, modifier, today, stacked, day, title, titleStyle, skill, t)
+    }
+}
+
+@Composable
+private fun TrainNodeContent(
+    node: TrainNode,
+    modifier: Modifier,
+    today: Boolean,
+    stacked: Boolean,
+    day: @Composable (Modifier) -> Unit,
+    title: String,
+    titleStyle: androidx.compose.ui.text.TextStyle,
+    skill: Skill,
+    t: Technique?
+) {
+    val c = Itera.colors
     Row(
         modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Text(
-            stringResource(R.string.day_n, node.day),
-            style = Itera.type.caption.copy(
-                fontWeight = if (today) FontWeight.Bold else FontWeight.SemiBold
-            ),
-            color = if (today) c.accent else c.ink2,
-            modifier = Modifier.width(52.dp)
-        )
+        if (!stacked) day(Modifier.widthIn(min = 52.dp))
         if (today) {
             TechniqueToken(skill, techniqueIcon(t?.id?.value ?: "pareto_principle"), 40.dp)
         } else {
@@ -297,15 +329,24 @@ private fun TrainNodeRow(node: TrainNode, onClick: () -> Unit) {
                     Box(
                         Modifier.size(
                             8.dp
-                        ).clip(CircleShape).background(skill.colors(c.isDark).content)
+                        ).clip(CircleShape).background(
+                            if (t ==
+                                null
+                            ) {
+                                c.ink
+                            } else {
+                                skill.colors(c.isDark).content
+                            }
+                        )
                     )
                 }
             }
         }
         Column(Modifier.weight(1f)) {
+            if (stacked) day(Modifier)
             Text(
                 title,
-                style = if (today) Itera.type.label else Itera.type.body,
+                style = titleStyle,
                 color = if (node.state ==
                     TrainNodeState.PAST
                 ) {

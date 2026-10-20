@@ -1,5 +1,7 @@
 package com.itera.app.ui.screens
 
+import com.itera.app.ui.components.rememberWordFittingStyle
+import com.itera.app.ui.components.rememberTextFit
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.background
@@ -266,8 +268,14 @@ private fun QuadrantBox(
             .animateContentSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text(title, style = Itera.type.headline.copy(fontSize = Itera.type.label.fontSize), color = fg)
-        Text(sub, style = Itera.type.caption, color = c.ink2)
+        // at the largest sizes a word too long for half the board shrinks rather than split
+        androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+            val width = maxWidth
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(title, style = rememberWordFittingStyle(title, Itera.type.headline.copy(fontSize = Itera.type.label.fontSize), width), color = fg)
+                Text(sub, style = rememberWordFittingStyle(sub, Itera.type.caption, width), color = c.ink2)
+            }
+        }
         items.forEach {
             Text(
                 stringResource(it.label),
@@ -345,10 +353,21 @@ fun FeynmanFeedbackScreen(onBack: () -> Unit, onDone: () -> Unit) {
                 .padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Icon(IteraIcons.Spark, null, tint = sc.content, modifier = Modifier.size(20.dp))
-                Text(stringResource(R.string.coach_feedback), style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))
-                Pill(stringResource(R.string.coach_later), sc.container, sc.content)
+            val coachTitle = stringResource(R.string.coach_feedback)
+            val coachStyle = Itera.type.body.copy(fontWeight = FontWeight.SemiBold)
+            val titleFit = rememberTextFit(coachTitle, coachStyle)
+            val pillFit = rememberTextFit(stringResource(R.string.coach_later), Itera.type.caption.copy(fontWeight = FontWeight.SemiBold))
+            androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+                // At large text the pill moves under the title rather than split the title's words.
+                val stacked = maxWidth - 36.dp - (pillFit.full + 20.dp) < titleFit.longestWord
+                Row(verticalAlignment = if (stacked) Alignment.Top else Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Icon(IteraIcons.Spark, null, tint = sc.content, modifier = Modifier.size(20.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(coachTitle, style = coachStyle, color = c.ink)
+                        if (stacked) Pill(stringResource(R.string.coach_later), sc.container, sc.content)
+                    }
+                    if (!stacked) Pill(stringResource(R.string.coach_later), sc.container, sc.content)
+                }
             }
             FeedbackRow(IteraIcons.Check, stringResource(R.string.coach_clear), stringResource(R.string.coach_clear_text), sc.content)
             FeedbackRow(IteraIcons.Eye, stringResource(R.string.coach_gap), stringResource(R.string.coach_gap_text), sc.content)

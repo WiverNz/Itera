@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,6 +43,7 @@ import com.itera.app.data.AppViewModel
 import com.itera.app.model.ExerciseKind
 import com.itera.app.model.Technique
 import com.itera.app.ui.components.Divider
+import com.itera.app.ui.components.rememberFittingStyle
 import com.itera.app.ui.components.IteraIcons
 import com.itera.app.ui.screens.CombinationScreen
 import com.itera.app.ui.screens.DayCompleteScreen
@@ -307,8 +309,10 @@ private fun BottomBar(current: String?, onSelect: (String) -> Unit) {
     val c = Itera.colors
     Column(Modifier.fillMaxWidth().background(c.bg)) {
         Divider()
+        // Four equal slots: at the largest text and display sizes a long label shrinks inside its own slot
+        // instead of pushing the last tab off screen; the bar grows rather than clip.
         Row(
-            Modifier.fillMaxWidth().navigationBarsPadding().height(68.dp).padding(horizontal = 8.dp),
+            Modifier.fillMaxWidth().navigationBarsPadding().heightIn(min = 68.dp).padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -316,7 +320,7 @@ private fun BottomBar(current: String?, onSelect: (String) -> Unit) {
                 val selected = tab.route == current
                 Column(
                     Modifier
-                        .widthIn(min = 72.dp)
+                        .weight(1f)
                         .clip(RoundedCornerShape(16.dp))
                         .clickable(role = Role.Tab) { onSelect(tab.route) }
                         .padding(vertical = 6.dp, horizontal = 8.dp),
@@ -326,12 +330,11 @@ private fun BottomBar(current: String?, onSelect: (String) -> Unit) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(tab.icon, contentDescription = null, tint = if (selected) c.ink else c.ink2, modifier = Modifier.size(24.dp))
                     }
-                    Text(
-                        stringResource(tab.label),
-                        style = Itera.type.caption.copy(fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium),
-                        color = if (selected) c.ink else c.ink2,
-                        maxLines = 1,
-                    )
+                    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        val text = stringResource(tab.label)
+                        val style = Itera.type.caption.copy(fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium)
+                        Text(text, style = rememberFittingStyle(text, style, maxWidth), color = if (selected) c.ink else c.ink2, maxLines = 1, softWrap = false)
+                    }
                 }
             }
         }

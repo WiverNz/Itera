@@ -102,6 +102,8 @@ android {
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
+        // instrumented runs (local and CI) with window, transition and animator scales at 0
+        animationsDisabled = true
     }
     buildFeatures {
         compose = true
@@ -140,6 +142,7 @@ dependencies {
     implementation(libs.play.asset.delivery)
     testImplementation(libs.turbine)
     testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.test.core)
     kspAndroidTest(libs.hilt.compiler)

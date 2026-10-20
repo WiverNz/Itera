@@ -220,13 +220,11 @@ fun TopBar(
     val label = stringResource(if (icon == IteraIcons.Back) R.string.action_back else R.string.action_close)
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         CircleIconButton(icon, label, onNavigate)
-        Text(
-            title,
-            modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
-            style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-            color = Itera.colors.ink2,
-            textAlign = TextAlign.Center
-        )
+        androidx.compose.foundation.layout.BoxWithConstraints(Modifier.weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+            val style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold)
+            // at the largest sizes a word too long for the slot shrinks rather than split
+            Text(title, style = rememberWordFittingStyle(title, style, maxWidth), color = Itera.colors.ink2, textAlign = TextAlign.Center)
+        }
         Box(Modifier.widthIn(min = 44.dp), contentAlignment = Alignment.CenterEnd) { trailing() }
     }
 }
@@ -357,20 +355,36 @@ fun StepDot(state: StepState, accent: Color, size: Dp = 28.dp, modifier: Modifie
 fun MasteryLadder(level: Mastery?, color: Color, modifier: Modifier = Modifier) {
     val c = Itera.colors
     val reached = level?.ordinal?.plus(1) ?: 0
-    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        Mastery.entries.forEachIndexed { i, m ->
-            val target = if (i < reached) 1f else 0f
-            val fill by animateFloatAsState(target, animationSpec = IteraMotion.mastery(i, LocalReduceMotion.current), label = "ladder$i")
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Box(
-                    Modifier.fillMaxWidth().height(8.dp).clip(CircleShape).background(c.surface2)
-                        .drawBehind { drawRect(color, size = size.copy(width = size.width * fill)) },
-                )
-                Text(
-                    stringResource(m.title),
-                    style = Itera.type.caption.copy(fontWeight = if (i < reached) FontWeight.SemiBold else FontWeight.Normal),
-                    color = if (i < reached) c.ink else c.ink2
-                )
+    val longest = Mastery.entries.maxOf { rememberTextFit(stringResource(it.title), Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)).longestWord }
+    val label = @Composable { i: Int, m: Mastery ->
+        Text(
+            stringResource(m.title),
+            style = Itera.type.caption.copy(fontWeight = if (i < reached) FontWeight.SemiBold else FontWeight.Normal),
+            color = if (i < reached) c.ink else c.ink2
+        )
+    }
+    androidx.compose.foundation.layout.BoxWithConstraints(modifier.fillMaxWidth()) {
+        // At large text the labels flow under the bars rather than split their words in a quarter of the width.
+        val underBars = (maxWidth - 18.dp) / Mastery.entries.size >= longest
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Mastery.entries.forEachIndexed { i, m ->
+                    val target = if (i < reached) 1f else 0f
+                    val fill by animateFloatAsState(target, animationSpec = IteraMotion.mastery(i, LocalReduceMotion.current), label = "ladder$i")
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Box(
+                            Modifier.fillMaxWidth().height(8.dp).clip(CircleShape).background(c.surface2)
+                                .drawBehind { drawRect(color, size = size.copy(width = size.width * fill)) },
+                        )
+                        if (underBars) label(i, m)
+                    }
+                }
+            }
+            if (!underBars) {
+                @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+                androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Mastery.entries.forEachIndexed { i, m -> label(i, m) }
+                }
             }
         }
     }
@@ -489,9 +503,22 @@ fun FieldAddButton(placeholder: String, enabled: Boolean, onClick: () -> Unit) {
 
 @Composable
 fun SectionTitle(text: String, trailing: String? = null) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
-        Text(text, style = Itera.type.label, color = Itera.colors.ink, modifier = Modifier.weight(1f))
-        if (trailing != null) Text(trailing, style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold), color = Itera.colors.ink2)
+    val trailingStyle = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold)
+    val textFit = rememberTextFit(text, Itera.type.label)
+    val trailingFit = rememberTextFit(trailing.orEmpty(), trailingStyle)
+    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // At large text the trailing value moves under the title rather than split the title's words.
+        if (trailing != null && maxWidth - trailingFit.full < textFit.longestWord) {
+            Column {
+                Text(text, style = Itera.type.label, color = Itera.colors.ink)
+                Text(trailing, style = trailingStyle, color = Itera.colors.ink2)
+            }
+        } else {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
+                Text(text, style = Itera.type.label, color = Itera.colors.ink, modifier = Modifier.weight(1f))
+                if (trailing != null) Text(trailing, style = trailingStyle, color = Itera.colors.ink2)
+            }
+        }
     }
 }
 

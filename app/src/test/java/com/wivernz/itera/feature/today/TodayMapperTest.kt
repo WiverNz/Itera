@@ -91,6 +91,15 @@ class TodayMapperTest {
         )
     )
 
+    @Test fun onlyTheEveningReflectionRowIsFlaggedForTheReflectionLabel() {
+        val steps = map(listOf(program(), focus(), reflection())).steps.associateBy {
+            it.activityId
+        }
+        assertEquals(true, steps.getValue(3).reflection)
+        assertEquals(false, steps.getValue(1).reflection)
+        assertEquals(false, steps.getValue(2).reflection)
+    }
+
     @Test fun greetingThresholds() {
         assertEquals(Greeting.MORNING, greetingFor(LocalTime.of(11, 59)))
         assertEquals(Greeting.AFTERNOON, greetingFor(LocalTime.of(12, 0)))

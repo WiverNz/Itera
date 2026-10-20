@@ -15,6 +15,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -290,18 +291,22 @@ private fun FocusTimerContent(
             .padding(horizontal = 24.dp, vertical = 16.dp).testTag("FocusTimer"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Icon(IteraIcons.DeepWork, null, tint = accent, modifier = Modifier.size(18.dp))
-            Text(
-                stringResource(R.string.focus_label),
-                style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                color = accent,
-                modifier = Modifier.padding(start = 8.dp).weight(1f)
-            )
+        // At large text the status wraps below the label instead of squeezing it to one syllable per line.
+        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(IteraIcons.DeepWork, null, tint = accent, modifier = Modifier.size(18.dp))
+                Text(
+                    stringResource(R.string.focus_label),
+                    style = Itera.type.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                    color = accent,
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                )
+            }
             Text(
                 stringResource(R.string.focus_own_paused),
                 style = Itera.type.caption,
-                color = c.ink2
+                color = c.ink2,
+                modifier = Modifier.align(Alignment.CenterVertically)
             )
         }
         VoiceCommandAction(Modifier.align(Alignment.End).padding(top = 8.dp))

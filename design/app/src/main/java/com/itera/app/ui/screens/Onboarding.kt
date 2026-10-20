@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
@@ -63,6 +64,7 @@ import com.itera.app.model.Program
 import com.itera.app.model.Skill
 import com.itera.app.model.Technique
 import com.itera.app.ui.components.ButtonKind
+import com.itera.app.ui.components.rememberTextFit
 import com.itera.app.ui.components.CircleIconButton
 import com.itera.app.ui.components.IteraButton
 import com.itera.app.ui.components.IteraCard
@@ -378,19 +380,30 @@ fun NotificationRationaleCard() {
 @Composable
 fun TimeRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, sub: String, value: String, onClick: () -> Unit) {
     val c = Itera.colors
-    Row(Modifier.fillMaxWidth().heightIn(min = 64.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-        Box(Modifier.size(40.dp).clip(RoundedCornerShape(13.dp)).background(c.surface2), contentAlignment = Alignment.Center) {
-            Icon(icon, null, tint = c.ink, modifier = Modifier.size(20.dp))
-        }
-        Column(Modifier.weight(1f)) {
-            Text(title, style = Itera.type.body, fontWeight = FontWeight.SemiBold, color = c.ink)
-            Text(sub, style = Itera.type.bodySmall, color = c.ink2)
-        }
+    val valueStyle = Itera.type.headline.copy(fontWeight = FontWeight.SemiBold)
+    val titleFit = rememberTextFit(title, Itera.type.body.copy(fontWeight = FontWeight.SemiBold))
+    val valueFit = rememberTextFit(value, valueStyle)
+    val time = @Composable { boxModifier: Modifier ->
         Box(
-            Modifier.heightIn(min = 44.dp).clip(RoundedCornerShape(14.dp)).background(c.surface2)
+            boxModifier.heightIn(min = 44.dp).clip(RoundedCornerShape(14.dp)).background(c.surface2)
                 .clickable(role = Role.Button, onClick = onClick).padding(horizontal = 14.dp),
             contentAlignment = Alignment.Center,
-        ) { Text(value, style = Itera.type.headline.copy(fontWeight = FontWeight.SemiBold), color = c.ink) }
+        ) { Text(value, style = valueStyle, color = c.ink) }
+    }
+    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // At large text the time moves under the title rather than split the title's words.
+        val stacked = maxWidth - 40.dp - 28.dp - (valueFit.full + 28.dp) < titleFit.longestWord
+        Row(Modifier.fillMaxWidth().heightIn(min = 64.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Box(Modifier.size(40.dp).clip(RoundedCornerShape(13.dp)).background(c.surface2), contentAlignment = Alignment.Center) {
+                Icon(icon, null, tint = c.ink, modifier = Modifier.size(20.dp))
+            }
+            Column(Modifier.weight(1f)) {
+                Text(title, style = Itera.type.body, fontWeight = FontWeight.SemiBold, color = c.ink)
+                Text(sub, style = Itera.type.bodySmall, color = c.ink2)
+                if (stacked) time(Modifier.padding(top = 8.dp))
+            }
+            if (!stacked) time(Modifier)
+        }
     }
 }
 
@@ -406,29 +419,48 @@ fun FirstWeekScreen(onBack: () -> Unit, onStart: () -> Unit) {
                 val day = i + 1
                 val sc = t.skill.colors(c.isDark)
                 if (day == 1) {
-                    Row(
-                        Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 14.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
-                    ) {
-                        Text(stringResource(R.string.day_n, day), style = Itera.type.caption.copy(fontWeight = FontWeight.Bold), color = c.accent, modifier = Modifier.width(52.dp))
-                        TechniqueToken(t, 40.dp)
-                        Column(Modifier.weight(1f)) {
-                            Text(stringResource(t.title), style = Itera.type.label, color = c.ink)
-                            Text(stringResource(t.skill.title), style = Itera.type.caption, color = c.ink2)
+                    val dayStyle = Itera.type.caption.copy(fontWeight = FontWeight.Bold)
+                    val dayFit = rememberTextFit(stringResource(R.string.day_n, day), dayStyle)
+                    val pillFit = rememberTextFit(stringResource(R.string.nav_today), Itera.type.caption.copy(fontWeight = FontWeight.SemiBold))
+                    val nameFit = rememberTextFit(stringResource(t.title), Itera.type.label)
+                    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+                        // At large text the day label and the Today pill join the name column rather than split the name.
+                        val stacked = maxWidth - 28.dp - maxOf(52.dp, dayFit.full) - 40.dp - (pillFit.full + 20.dp) - 42.dp < nameFit.longestWord
+                        Row(
+                            Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 14.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        ) {
+                            if (!stacked) Text(stringResource(R.string.day_n, day), style = dayStyle, color = c.accent, modifier = Modifier.widthIn(min = 52.dp))
+                            TechniqueToken(t, 40.dp)
+                            Column(Modifier.weight(1f)) {
+                                if (stacked) Text(stringResource(R.string.day_n, day), style = dayStyle, color = c.accent)
+                                Text(stringResource(t.title), style = Itera.type.label, color = c.ink)
+                                Text(stringResource(t.skill.title), style = Itera.type.caption, color = c.ink2)
+                                if (stacked) Pill(stringResource(R.string.nav_today), c.accentSoft, c.accent, Modifier.padding(top = 6.dp))
+                            }
+                            if (!stacked) Pill(stringResource(R.string.nav_today), c.accentSoft, c.accent)
                         }
-                        Pill(stringResource(R.string.nav_today), c.accentSoft, c.accent)
                     }
                 } else {
-                    Row(
-                        Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(horizontal = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
-                    ) {
-                        Text(stringResource(R.string.day_n, day), style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold), color = c.ink2, modifier = Modifier.width(52.dp))
-                        Box(Modifier.width(40.dp), contentAlignment = Alignment.Center) { Box(Modifier.size(8.dp).clip(CircleShape).background(sc.content)) }
-                        Text(
-                            stringResource(t.title) + if (day == 4) " " + stringResource(R.string.week_review_suffix) else "",
-                            style = Itera.type.body, color = c.ink,
-                        )
+                    val dayText = stringResource(R.string.day_n, day)
+                    val dayStyle = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)
+                    val name = stringResource(t.title) + if (day == 4) " " + stringResource(R.string.week_review_suffix) else ""
+                    val dayFit = rememberTextFit(dayText, dayStyle)
+                    val nameFit = rememberTextFit(name, Itera.type.body)
+                    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+                        // At large text the day label moves above the name rather than split the name.
+                        val stacked = maxWidth - 28.dp - maxOf(52.dp, dayFit.full) - 40.dp - 28.dp < nameFit.longestWord
+                        Row(
+                            Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(horizontal = 14.dp),
+                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        ) {
+                            if (!stacked) Text(dayText, style = dayStyle, color = c.ink2, modifier = Modifier.widthIn(min = 52.dp))
+                            Box(Modifier.width(40.dp), contentAlignment = Alignment.Center) { Box(Modifier.size(8.dp).clip(CircleShape).background(sc.content)) }
+                            Column {
+                                if (stacked) Text(dayText, style = dayStyle, color = c.ink2)
+                                Text(name, style = Itera.type.body, color = c.ink)
+                            }
+                        }
                     }
                 }
             }

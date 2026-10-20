@@ -7,16 +7,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -50,6 +50,7 @@ import com.wivernz.itera.R
 import com.wivernz.itera.core.designsystem.component.Divider
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.TopBar
+import com.wivernz.itera.core.designsystem.component.rememberFittingStyle
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.LocalReduceMotion
@@ -254,9 +255,11 @@ fun IteraBottomBar(current: AppRoute, onSelect: (AppRoute) -> Unit, modifier: Mo
     )
     Column(modifier.fillMaxWidth().background(c.bg).testTag("BottomBar")) {
         Divider()
+        // Four equal slots: at the largest text and display sizes a long label shrinks inside its own slot
+        // instead of pushing the last tab off screen; the bar grows rather than clip.
         Row(
-            Modifier.fillMaxWidth().navigationBarsPadding().height(
-                68.dp
+            Modifier.fillMaxWidth().navigationBarsPadding().heightIn(
+                min = 68.dp
             ).padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
@@ -264,7 +267,7 @@ fun IteraBottomBar(current: AppRoute, onSelect: (AppRoute) -> Unit, modifier: Mo
             tabs.forEach { (route, label, icon) ->
                 val selected = route == current
                 Column(
-                    Modifier.widthIn(min = 72.dp).clip(RoundedCornerShape(16.dp))
+                    Modifier.weight(1f).clip(RoundedCornerShape(16.dp))
                         .selectable(selected, role = Role.Tab) { onSelect(route) }
                         .testTag("Tab" + route::class.simpleName)
                         .padding(vertical = 6.dp, horizontal = 8.dp),
@@ -277,14 +280,22 @@ fun IteraBottomBar(current: AppRoute, onSelect: (AppRoute) -> Unit, modifier: Mo
                         tint = if (selected) c.ink else c.ink2,
                         modifier = Modifier.size(24.dp)
                     )
-                    Text(
-                        stringResource(label),
-                        style = Itera.type.caption.copy(
+                    BoxWithConstraints(
+                        Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        val text = stringResource(label)
+                        val style = Itera.type.caption.copy(
                             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
-                        ),
-                        color = if (selected) c.ink else c.ink2,
-                        maxLines = 1
-                    )
+                        )
+                        Text(
+                            text,
+                            style = rememberFittingStyle(text, style, maxWidth),
+                            color = if (selected) c.ink else c.ink2,
+                            maxLines = 1,
+                            softWrap = false
+                        )
+                    }
                 }
             }
         }

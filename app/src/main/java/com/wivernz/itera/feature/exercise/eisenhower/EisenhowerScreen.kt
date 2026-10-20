@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -59,6 +60,7 @@ import com.wivernz.itera.core.designsystem.component.IteraButton
 import com.wivernz.itera.core.designsystem.component.Pill
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.TopBar
+import com.wivernz.itera.core.designsystem.component.rememberWordFittingStyle
 import com.wivernz.itera.core.designsystem.component.title
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.colors
@@ -422,12 +424,23 @@ private fun Quadrant(
             .animateContentSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            title,
-            style = Itera.type.headline.copy(fontSize = Itera.type.label.fontSize),
-            color = fg
-        )
-        Text(sub, style = Itera.type.caption, color = c.ink2)
+        // at the largest sizes a word too long for half the board shrinks rather than split
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            val titleStyle = Itera.type.headline.copy(fontSize = Itera.type.label.fontSize)
+            val width = maxWidth
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    title,
+                    style = rememberWordFittingStyle(title, titleStyle, width),
+                    color = fg
+                )
+                Text(
+                    sub,
+                    style = rememberWordFittingStyle(sub, Itera.type.caption, width),
+                    color = c.ink2
+                )
+            }
+        }
         items.forEach {
             val on = it.id == board.selectedId
             Text(

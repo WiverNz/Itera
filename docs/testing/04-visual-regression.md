@@ -60,6 +60,9 @@ German and Spanish use the same faces and layouts as English, so they are covere
 app/src/test/screenshots/          committed goldens
   en/light/…  en/dark/…  en/light-2x/…  en/dark-2x/…
   ru/light/…
+  components/en/{light,dark}/…   one per design-system component
+  voice/{en/light,en/dark,en/light-2x,ru/light}/…   voice panels, command sheet, Settings voice
+  voice-night/en/{light,light-2x}/…                 voice panels in the always-dark host
 app/build/outputs/roborazzi/       comparison output from a failing run, ignored
 ```
 
@@ -75,6 +78,8 @@ Roborazzi over Robolectric, run on the JVM. Chosen over an instrumented screensh
 ```
 
 Configuration that must be pinned or the images are not reproducible: device spec (pixel density, size), font family (the bundled fonts, never the system fallback), locale, time zone, and `ANIMATOR_DURATION_SCALE = 0`.
+
+As recorded in 010: `w411dp-h891dp-mdpi` (small files; a 1 dp change is still a pixel change), the bundled fonts, UTC, reduced motion. Text anti-aliasing differs by at most 4/255 between Windows and Linux hosts, so comparison uses `SimpleImageComparator(maxDistance = 0.04f)` and no other threshold; goldens recorded on Windows verify on Linux. Tests: `ScreenGoldenTest`, `ComponentGoldenTest`, `VoicePanelGoldenTest`, `VoiceSheetGoldenTest`.
 
 ### Rules
 

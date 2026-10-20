@@ -204,7 +204,14 @@ internal fun AuditScreen(name: String) {
         "Train" -> TrainScreen(
             TrainUiState(
                 loading = false,
-                nodes = listOf(TrainNode(1, technique, TrainNodeState.TODAY))
+                nodes = listOf(
+                    TrainNode(
+                        1,
+                        technique.copy(name = stringResource(R.string.t_pareto_name)),
+                        TrainNodeState.TODAY
+                    ),
+                    TrainNode(14, null, TrainNodeState.FUTURE, firstCombination = true)
+                )
             ),
             {
             }

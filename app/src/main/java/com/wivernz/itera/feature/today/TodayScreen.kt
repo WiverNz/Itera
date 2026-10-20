@@ -333,7 +333,7 @@ private fun Step(step: TodayStep, onTarget: (TodayTarget) -> Unit) {
     }
     StepRow(
         state = step.state,
-        title = step.title,
+        title = if (step.reflection) stringResource(R.string.reflection_label) else step.title,
         subtitle = subtitle,
         accent = step.accent?.colors(c.isDark)?.content ?: c.line,
         onClick = step.target?.let { target -> { onTarget(target) } },

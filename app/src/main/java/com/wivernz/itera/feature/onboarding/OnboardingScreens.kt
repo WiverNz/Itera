@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -72,6 +73,7 @@ import com.wivernz.itera.core.designsystem.component.TechniqueToken
 import com.wivernz.itera.core.designsystem.component.TimePickerSheet
 import com.wivernz.itera.core.designsystem.component.TimeRow
 import com.wivernz.itera.core.designsystem.component.description
+import com.wivernz.itera.core.designsystem.component.rememberTextFit
 import com.wivernz.itera.core.designsystem.component.title
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.icon.techniqueIcon
@@ -431,63 +433,110 @@ fun FirstWeekScreen(
             rows.forEach { row ->
                 val sc = row.skill.colors(c.isDark)
                 if (row.day == 1) {
-                    Row(
-                        Modifier.fillMaxWidth().clip(
-                            RoundedCornerShape(20.dp)
-                        ).background(c.surface)
-                            .testTag("WeekRow")
-                            .semantics(mergeDescendants = true) { }
-                            .padding(horizontal = 14.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(14.dp)
-                    ) {
-                        Text(
-                            stringResource(R.string.day_n, row.day),
-                            style = Itera.type.caption.copy(fontWeight = FontWeight.Bold),
-                            color = c.accent,
-                            modifier = Modifier.width(52.dp)
-                        )
-                        TechniqueToken(row.skill, techniqueIcon(row.techniqueId), 40.dp)
-                        Column(Modifier.weight(1f)) {
-                            Text(row.name, style = Itera.type.label, color = c.ink)
-                            Text(
-                                stringResource(row.skill.title),
-                                style = Itera.type.caption,
-                                color = c.ink2
-                            )
+                    val dayStyle = Itera.type.caption.copy(fontWeight = FontWeight.Bold)
+                    val dayFit = rememberTextFit(stringResource(R.string.day_n, row.day), dayStyle)
+                    val pillFit = rememberTextFit(
+                        stringResource(R.string.nav_today),
+                        Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)
+                    )
+                    val nameFit = rememberTextFit(row.name, Itera.type.label)
+                    BoxWithConstraints(Modifier.fillMaxWidth()) {
+                        // At large text the day label and the Today pill join the name column rather than split the name.
+                        val nameWidth = maxWidth - 28.dp - maxOf(52.dp, dayFit.full) - 40.dp -
+                            (pillFit.full + 20.dp) - 42.dp
+                        val stacked = nameWidth < nameFit.longestWord
+                        Row(
+                            Modifier.fillMaxWidth().clip(
+                                RoundedCornerShape(20.dp)
+                            ).background(c.surface)
+                                .testTag("WeekRow")
+                                .semantics(mergeDescendants = true) { }
+                                .padding(horizontal = 14.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            if (!stacked) {
+                                Text(
+                                    stringResource(R.string.day_n, row.day),
+                                    style = dayStyle,
+                                    color = c.accent,
+                                    modifier = Modifier.widthIn(min = 52.dp)
+                                )
+                            }
+                            TechniqueToken(row.skill, techniqueIcon(row.techniqueId), 40.dp)
+                            Column(Modifier.weight(1f)) {
+                                if (stacked) {
+                                    Text(
+                                        stringResource(R.string.day_n, row.day),
+                                        style = dayStyle,
+                                        color = c.accent
+                                    )
+                                }
+                                Text(row.name, style = Itera.type.label, color = c.ink)
+                                Text(
+                                    stringResource(row.skill.title),
+                                    style = Itera.type.caption,
+                                    color = c.ink2
+                                )
+                                if (stacked) {
+                                    Pill(
+                                        stringResource(R.string.nav_today),
+                                        c.accentSoft,
+                                        c.accent,
+                                        Modifier.padding(top = 6.dp)
+                                    )
+                                }
+                            }
+                            if (!stacked) {
+                                Pill(
+                                    stringResource(R.string.nav_today),
+                                    c.accentSoft,
+                                    c.accent
+                                )
+                            }
                         }
-                        Pill(stringResource(R.string.nav_today), c.accentSoft, c.accent)
                     }
                 } else {
-                    Row(
-                        Modifier.fillMaxWidth().heightIn(min = 44.dp).testTag("WeekRow")
-                            .semantics(mergeDescendants = true) { }
-                            .padding(horizontal = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(14.dp)
-                    ) {
-                        Text(
-                            stringResource(R.string.day_n, row.day),
-                            style = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold),
-                            color = c.ink2,
-                            modifier = Modifier.width(52.dp)
+                    val dayText = stringResource(R.string.day_n, row.day)
+                    val dayStyle = Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)
+                    val name = if (row.withReview) {
+                        stringResource(
+                            R.string.week_row_with_review,
+                            row.name,
+                            stringResource(R.string.week_review_suffix)
                         )
-                        Box(Modifier.width(40.dp), contentAlignment = Alignment.Center) {
-                            Box(Modifier.size(8.dp).clip(CircleShape).background(sc.content))
-                        }
-                        Text(
-                            if (row.withReview) {
-                                stringResource(
-                                    R.string.week_row_with_review,
-                                    row.name,
-                                    stringResource(R.string.week_review_suffix)
+                    } else {
+                        row.name
+                    }
+                    val dayFit = rememberTextFit(dayText, dayStyle)
+                    val nameFit = rememberTextFit(name, Itera.type.body)
+                    BoxWithConstraints(Modifier.fillMaxWidth()) {
+                        // At large text the day label moves above the name rather than split the name.
+                        val stacked = maxWidth - 28.dp - maxOf(52.dp, dayFit.full) - 40.dp - 28.dp <
+                            nameFit.longestWord
+                        Row(
+                            Modifier.fillMaxWidth().heightIn(min = 44.dp).testTag("WeekRow")
+                                .semantics(mergeDescendants = true) { }
+                                .padding(horizontal = 14.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            if (!stacked) {
+                                Text(
+                                    dayText,
+                                    style = dayStyle,
+                                    color = c.ink2,
+                                    modifier = Modifier.widthIn(min = 52.dp)
                                 )
-                            } else {
-                                row.name
-                            },
-                            style = Itera.type.body,
-                            color = c.ink
-                        )
+                            }
+                            Box(Modifier.width(40.dp), contentAlignment = Alignment.Center) {
+                                Box(Modifier.size(8.dp).clip(CircleShape).background(sc.content))
+                            }
+                            Column {
+                                if (stacked) Text(dayText, style = dayStyle, color = c.ink2)
+                                Text(name, style = Itera.type.body, color = c.ink)
+                            }
+                        }
                     }
                 }
             }

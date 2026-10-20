@@ -382,6 +382,24 @@ class FocusTimerServiceTest {
         assertTrue(relaunched.launcher.updates.single() != null)
     }
 
+    @Test fun theRestoreTableRunsAfterProcessDeathRecreationNotOnlyOnAFreshStart() {
+        // Process death in the background: the system recreates the activity with saved state; only the restore
+        // table restarts the foreground service (it was skipped there before 010).
+        assertTrue("fresh start", runsFocusRestore(recreated = false, deepLink = false))
+        assertTrue(
+            "recreated after process death",
+            runsFocusRestore(recreated = true, deepLink = false)
+        )
+        assertTrue(
+            "recreated from a notification launch",
+            runsFocusRestore(recreated = true, deepLink = true)
+        )
+        assertFalse(
+            "a notification tap names its own destination",
+            runsFocusRestore(recreated = false, deepLink = true)
+        )
+    }
+
     @Test fun elapsedWhileDeadAutoCompletes() = runBlocking {
         val rig = FocusRig(h)
         val id = h.plant("pomodoro", ExerciseType.FOCUS_TIMER)

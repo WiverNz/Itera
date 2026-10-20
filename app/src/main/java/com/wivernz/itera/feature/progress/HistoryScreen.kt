@@ -8,12 +8,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -173,79 +173,92 @@ fun HistoryScreen(
                                         }.joinToString(", ")
                                     )
                                 }
-                                Box(
-                                    Modifier.weight(1f).aspectRatio(0.95f),
+                                // the 0.95 aspect ratio is a minimum: at the largest text sizes the cell grows
+                                // rather than clip its day number
+                                BoxWithConstraints(
+                                    Modifier.weight(1f),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    if (date !=
-                                        null
+                                    Box(
+                                        Modifier.fillMaxWidth().heightIn(min = maxWidth / 0.95f),
+                                        contentAlignment = Alignment.Center
                                     ) {
-                                        Column(
-                                            Modifier.fillMaxWidth().padding(
-                                                1.dp
-                                            ).heightIn(min = 44.dp).clip(RoundedCornerShape(12.dp))
-                                                .background(
-                                                    if (day?.skills?.isNotEmpty() ==
-                                                        true
+                                        if (date !=
+                                            null
+                                        ) {
+                                            Column(
+                                                Modifier.fillMaxWidth().padding(
+                                                    1.dp
+                                                ).heightIn(
+                                                    min = 44.dp
+                                                ).clip(RoundedCornerShape(12.dp))
+                                                    .background(
+                                                        if (day?.skills?.isNotEmpty() ==
+                                                            true
+                                                        ) {
+                                                            c.surface
+                                                        } else {
+                                                            Color.Transparent
+                                                        }
+                                                    )
+                                                    .then(
+                                                        if (date ==
+                                                            state.today
+                                                        ) {
+                                                            Modifier.border(
+                                                                2.dp,
+                                                                c.ink,
+                                                                RoundedCornerShape(12.dp)
+                                                            )
+                                                        } else {
+                                                            Modifier
+                                                        }
+                                                    )
+                                                    .clickable(
+                                                        enabled = day != null,
+                                                        role = Role.Button
                                                     ) {
-                                                        c.surface
-                                                    } else {
-                                                        Color.Transparent
+                                                        dayIndices[date]?.let {
+                                                            scope.launch { list.scrollToItem(it) }
+                                                        }
                                                     }
-                                                )
-                                                .then(
-                                                    if (date ==
+                                                    .padding(
+                                                        vertical = 6.dp
+                                                    ).semantics(mergeDescendants = true) {
+                                                        contentDescription =
+                                                            description
+                                                    },
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                                            ) {
+                                                Text(
+                                                    date.dayOfMonth.toString(),
+                                                    style = Itera.type.bodySmall,
+                                                    color = if (date >
                                                         state.today
                                                     ) {
-                                                        Modifier.border(
-                                                            2.dp,
-                                                            c.ink,
-                                                            RoundedCornerShape(12.dp)
-                                                        )
+                                                        c.ink3
                                                     } else {
-                                                        Modifier
+                                                        c.ink
                                                     }
                                                 )
-                                                .clickable(
-                                                    enabled = day != null,
-                                                    role = Role.Button
-                                                ) {
-                                                    dayIndices[date]?.let {
-                                                        scope.launch { list.scrollToItem(it) }
-                                                    }
-                                                }
-                                                .padding(
-                                                    vertical = 6.dp
-                                                ).semantics(mergeDescendants = true) {
-                                                    contentDescription =
-                                                        description
-                                                },
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.spacedBy(4.dp)
-                                        ) {
-                                            Text(
-                                                date.dayOfMonth.toString(),
-                                                style = Itera.type.bodySmall,
-                                                color = if (date >
-                                                    state.today
-                                                ) {
-                                                    c.ink3
-                                                } else {
-                                                    c.ink
-                                                }
-                                            )
-                                            Row(
-                                                Modifier.height(5.dp),
-                                                horizontalArrangement = Arrangement.spacedBy(2.dp)
-                                            ) {
-                                                day?.skills?.forEach { skill ->
-                                                    Box(
-                                                        Modifier.size(
-                                                            5.dp
-                                                        ).clip(
-                                                            CircleShape
-                                                        ).background(skill.colors(c.isDark).content)
+                                                Row(
+                                                    Modifier.height(5.dp),
+                                                    horizontalArrangement = Arrangement.spacedBy(
+                                                        2.dp
                                                     )
+                                                ) {
+                                                    day?.skills?.forEach { skill ->
+                                                        Box(
+                                                            Modifier.size(
+                                                                5.dp
+                                                            ).clip(
+                                                                CircleShape
+                                                            ).background(
+                                                                skill.colors(c.isDark).content
+                                                            )
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }

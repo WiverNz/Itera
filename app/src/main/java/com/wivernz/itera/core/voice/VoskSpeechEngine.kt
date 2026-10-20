@@ -27,14 +27,22 @@ import org.vosk.Recognizer
  * Vosk behind [OfflineSpeechEngine] (milestone 013). One model stays loaded app-wide for the active language, so
  * repeated taps and activity recreation reuse it; it is closed when another language is needed,
  * on [trim] (app in background) and never while a session decodes. Audio: 16 kHz mono PCM16 from Itera's own
- * `AudioRecord`, in memory only. The record buffer holds two seconds, so speech during a cold model load is kept.
+ * `AudioRecord`, in memory only, started before the session reports anything. The record buffer holds two seconds,
+ * so speech during a cold model load is kept.
  */
 @Singleton
-class VoskSpeechEngine @Inject constructor(
-    @param:ApplicationContext private val context: Context,
-    private val logger: Logger
+class VoskSpeechEngine internal constructor(
+    private val context: Context,
+    private val logger: Logger,
+    microphone: (() -> AudioRecord?)?
 ) : OfflineSpeechEngine {
+    @Inject constructor(
+        @ApplicationContext context: Context,
+        logger: Logger
+    ) : this(context, logger, null)
+
     private val main = Handler(Looper.getMainLooper())
+    private val openMicrophone: () -> AudioRecord? = microphone ?: ::openPlatformMicrophone
 
     init {
         // native diagnostics only (paths, decoder settings); never transcripts, but keep them out of logcat
@@ -54,7 +62,11 @@ class VoskSpeechEngine @Inject constructor(
         onModelFailed: (Throwable) -> Unit
     ) {
         cancel()
-        val next = Session(model, grammar, listener, onModelFailed)
+        // The microphone starts here, on the tap's own frame, so capture is already running when the controller's
+        // Listening state is first drawn: speech at the instant the panel appears is kept (010; first-syllable
+        // loss seen on a vivo, 013). The model then loads on the session thread while the record buffer fills.
+        val mic = openMicrophone()
+        val next = Session(mic, model, grammar, listener, onModelFailed)
         session = next
         Thread(next, "itera-offline-voice").apply { isDaemon = true }.start()
     }
@@ -112,6 +124,7 @@ class VoskSpeechEngine @Inject constructor(
     }
 
     private inner class Session(
+        private val microphone: AudioRecord?,
         private val model: OfflineModel,
         private val grammar: List<String>?,
         private val listener: VoiceRecognitionListener,
@@ -131,7 +144,7 @@ class VoskSpeechEngine @Inject constructor(
         }
 
         override fun run() {
-            val mic = openMicrophone() ?: return finish {
+            val mic = microphone ?: return finish {
                 logger.w(TAG, "Microphone could not be opened")
                 listener.onError(VoiceError.FAILED)
             }
@@ -199,7 +212,7 @@ class VoskSpeechEngine @Inject constructor(
     }
 
     @SuppressLint("MissingPermission") // checked just below
-    private fun openMicrophone(): AudioRecord? {
+    private fun openPlatformMicrophone(): AudioRecord? {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) !=
             PackageManager.PERMISSION_GRANTED
         ) {

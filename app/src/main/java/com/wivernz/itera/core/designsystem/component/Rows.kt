@@ -66,27 +66,35 @@ fun Group(
 @Composable
 fun ValueRow(label: String, value: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val c = Itera.colors
+    val labelStyle = Itera.type.body.copy(fontWeight = FontWeight.Medium)
+    val labelFit = rememberTextFit(label, labelStyle)
+    val valueFit = rememberTextFit(value, Itera.type.bodySmall)
     androidx.compose.foundation.layout.BoxWithConstraints(modifier.fillMaxWidth()) {
         val valueMaxWidth = maxWidth * 0.55f
+        // At large text the value moves under the label rather than split the label's words.
+        val stacked = value.isNotEmpty() &&
+            maxWidth - 16.dp - 24.dp - minOf(valueFit.full, valueMaxWidth) < labelFit.longestWord
         Row(
             Modifier.fillMaxWidth().heightIn(min = 56.dp)
                 .clickable(role = Role.Button, onClick = onClick),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                label,
-                style = Itera.type.body.copy(fontWeight = FontWeight.Medium),
-                color = c.ink,
-                modifier = Modifier.weight(1f)
-            )
-            if (value.isNotEmpty()) {
-                Text(
-                    value,
-                    style = Itera.type.bodySmall,
-                    color = c.ink2,
-                    modifier = Modifier.widthIn(max = valueMaxWidth)
-                )
+            if (stacked) {
+                Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
+                    Text(label, style = labelStyle, color = c.ink)
+                    Text(value, style = Itera.type.bodySmall, color = c.ink2)
+                }
+            } else {
+                Text(label, style = labelStyle, color = c.ink, modifier = Modifier.weight(1f))
+                if (value.isNotEmpty()) {
+                    Text(
+                        value,
+                        style = Itera.type.bodySmall,
+                        color = c.ink2,
+                        modifier = Modifier.widthIn(max = valueMaxWidth)
+                    )
+                }
             }
             Icon(IteraIcons.Chevron, null, tint = c.ink3, modifier = Modifier.size(16.dp))
         }
@@ -176,38 +184,42 @@ fun TimeRow(
     modifier: Modifier = Modifier
 ) {
     val c = Itera.colors
-    Row(
-        modifier.fillMaxWidth().heightIn(min = 64.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
+    val titleStyle = Itera.type.body.copy(fontWeight = FontWeight.SemiBold)
+    val valueStyle = Itera.type.headline.copy(fontWeight = FontWeight.SemiBold)
+    val titleFit = rememberTextFit(title, titleStyle)
+    val valueFit = rememberTextFit(value, valueStyle)
+    val time = @Composable { boxModifier: Modifier ->
         Box(
-            Modifier.size(40.dp).clip(RoundedCornerShape(13.dp)).background(c.surface2),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(icon, null, tint = c.ink, modifier = Modifier.size(20.dp))
-        }
-        Column(Modifier.weight(1f)) {
-            Text(
-                title,
-                style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold),
-                color = c.ink
-            )
-            Text(sub, style = Itera.type.bodySmall, color = c.ink2)
-        }
-        Box(
-            Modifier.heightIn(min = 44.dp).clip(RoundedCornerShape(14.dp)).background(c.surface2)
+            boxModifier.heightIn(min = 44.dp).clip(RoundedCornerShape(14.dp)).background(c.surface2)
                 .clickable(role = Role.Button, onClick = onClick).semantics {
                     contentDescription =
                         title
                 }.padding(horizontal = 14.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                value,
-                style = Itera.type.headline.copy(fontWeight = FontWeight.SemiBold),
-                color = c.ink
-            )
+            Text(value, style = valueStyle, color = c.ink)
+        }
+    }
+    androidx.compose.foundation.layout.BoxWithConstraints(modifier.fillMaxWidth()) {
+        // At large text the time moves under the title rather than split the title's words.
+        val stacked = maxWidth - 40.dp - 28.dp - (valueFit.full + 28.dp) < titleFit.longestWord
+        Row(
+            Modifier.fillMaxWidth().heightIn(min = 64.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            Box(
+                Modifier.size(40.dp).clip(RoundedCornerShape(13.dp)).background(c.surface2),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(icon, null, tint = c.ink, modifier = Modifier.size(20.dp))
+            }
+            Column(Modifier.weight(1f)) {
+                Text(title, style = titleStyle, color = c.ink)
+                Text(sub, style = Itera.type.bodySmall, color = c.ink2)
+                if (stacked) time(Modifier.padding(top = 8.dp))
+            }
+            if (!stacked) time(Modifier)
         }
     }
 }

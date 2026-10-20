@@ -18,9 +18,10 @@ This index is the implementation status entry point; each milestone owns its acc
 - **012: implemented (2026-09-27).** Required tests, build, lint and formatting pass; the full visual/device voice comparison is owned by 010 (real offline-model behaviour verified in 013). See [012](012-voice-input-and-commands.md#verification-gap).
 - **009: complete (2026-09-28).** Reminders, analytics/privacy guard and the automated accessibility/localisation sweeps are implemented and green. Remaining manual verification (TalkBack/Switch Access, maximum sizes, 005/006/012 visual comparisons, four-language walks, reboot/process death, API 26-30 if available) moved to 010. See [009](009-notifications-and-quality-passes.md).
 - **013: complete (2026-09-28).** Built-in offline voice recognition (Vosk). RU/EN/DE verified on a vivo; ES device run waived; first-syllable hardening moved to 010, APK packaging and Play Console delivery to 011. See [013](013-offline-voice-recognition.md).
-- **010-011: not started.**
+- **010: complete (2026-10-20).** Golden set (354 images) recorded and verified on Windows and Linux; instrumented CI job, schema guard, `GapIntegrationTest`, `LanguageSheetTest`; device passes for font/display size, grayscale, four languages, process death and reboot. Defects fixed: focus service not restarted after process death, offline-voice first-syllable loss, large-text layout breaks, two prototype deviations. Remaining (environment-limited): spoken TalkBack/Switch Access loops, API 26-30, real-speech and external-provider voice. See [010](010-test-hardening.md#gap-summary-2026-10-20).
+- **011: not started.**
 
-Current milestone: none in progress. Next: **010** (ready; unblocked by 009 and 013). Readiness is not authorization to start another milestone.
+Current milestone: none in progress. Next: **011** (ready; unblocked by 010). Readiness is not authorization to start another milestone.
 
 ## Index
 
@@ -30,14 +31,14 @@ Current milestone: none in progress. Next: **010** (ready; unblocked by 009 and 
 | [002](002-core-architecture-and-storage.md) | Core architecture & storage - **complete** | 001 | 002, 005, 006, 007, analytics core of 036 |
 | [003](003-design-system-and-app-shell.md) | Design system & app shell - **complete** | 002 | 003, 004, 015 |
 | [004](004-content-and-training-engine.md) | Content & training engine - **complete** | 002 | 008-014 |
-| [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow - **implemented; visual comparison pending** | 003, 004 | 016, 017, 019, 020 |
-| [006](006-exercise-system.md) | Exercise system - **implemented; visual comparison pending** | 005 | 018, 021-027 |
+| [005](005-onboarding-and-daily-flow.md) | Onboarding & daily flow - **complete** (comparison closed in 010) | 003, 004 | 016, 017, 019, 020 |
+| [006](006-exercise-system.md) | Exercise system - **complete** (comparison closed in 010; oldest-device timer check environment-limited) | 005 | 018, 021-027 |
 | [007](007-train-and-technique-library.md) | Train & technique library - **complete** | 006 | 028-030 |
 | [008](008-progress-history-and-settings.md) | Progress, history & settings - **implemented; one device check pending** | 005 | 031, 032, 034, 035 |
 | [009](009-notifications-and-quality-passes.md) | Notifications & quality passes - **complete** | 006, 007, 008, 012 | 033, rest of 036, 037, 041 |
-| [010](010-test-hardening.md) | Test hardening | 009 | 039 |
+| [010](010-test-hardening.md) | Test hardening - **complete** | 009 | 039 |
 | [011](011-release-readiness.md) | Release readiness | 010 | 040 |
-| [012](012-voice-input-and-commands.md) | Voice input & commands - **implemented; visual comparison owned by 010** | 006, 007, 008 | New scope; none |
+| [012](012-voice-input-and-commands.md) | Voice input & commands - **complete** (comparison and goldens in 010; real-provider checks environment-limited) | 006, 007, 008 | New scope; none |
 | [013](013-offline-voice-recognition.md) | Built-in offline voice recognition - **complete** | 012 | New scope; none |
 
 Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 012 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007 and must finish before 012. The solo sequence after 007 is **008, 012, 009, 010, 011**. Finish outstanding core visual acceptance before 012; numbering is not execution order.

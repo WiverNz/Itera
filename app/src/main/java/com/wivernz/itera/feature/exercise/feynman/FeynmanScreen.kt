@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -53,6 +54,7 @@ import com.wivernz.itera.core.designsystem.component.IteraCard
 import com.wivernz.itera.core.designsystem.component.Pill
 import com.wivernz.itera.core.designsystem.component.ScreenColumn
 import com.wivernz.itera.core.designsystem.component.TopBar
+import com.wivernz.itera.core.designsystem.component.rememberTextFit
 import com.wivernz.itera.core.designsystem.component.title
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
@@ -363,18 +365,27 @@ private fun CoachBox(content: Color, container: Color) {
             .padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(IteraIcons.Spark, null, tint = content, modifier = Modifier.size(20.dp))
-            Text(
-                stringResource(R.string.coach_feedback),
-                style = Itera.type.body.copy(fontWeight = FontWeight.SemiBold),
-                color = c.ink,
-                modifier = Modifier.weight(1f)
-            )
-            Pill(stringResource(R.string.coming_later), container, content)
+        val title = stringResource(R.string.coach_feedback)
+        val titleStyle = Itera.type.body.copy(fontWeight = FontWeight.SemiBold)
+        val titleFit = rememberTextFit(title, titleStyle)
+        val pillFit = rememberTextFit(
+            stringResource(R.string.coming_later),
+            Itera.type.caption.copy(fontWeight = FontWeight.SemiBold)
+        )
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            // At large text the pill moves under the title rather than split the title's words.
+            val stacked = maxWidth - 36.dp - (pillFit.full + 20.dp) < titleFit.longestWord
+            Row(
+                verticalAlignment = if (stacked) Alignment.Top else Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(IteraIcons.Spark, null, tint = content, modifier = Modifier.size(20.dp))
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(title, style = titleStyle, color = c.ink)
+                    if (stacked) Pill(stringResource(R.string.coming_later), container, content)
+                }
+                if (!stacked) Pill(stringResource(R.string.coming_later), container, content)
+            }
         }
         Text(stringResource(R.string.fey_coach_line), style = Itera.type.body, color = c.ink2)
         IteraButton(

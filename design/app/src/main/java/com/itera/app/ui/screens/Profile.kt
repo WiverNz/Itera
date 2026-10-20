@@ -29,6 +29,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
+import com.itera.app.ui.components.rememberTextFit
 import com.itera.app.ui.components.NoteField
 import com.itera.app.ui.components.SAMPLE_PROVIDER
 import com.itera.app.ui.components.TopBar
@@ -244,18 +245,29 @@ fun Group(title: String, content: @Composable ColumnScope.() -> Unit) {
 @Composable
 fun ValueRow(label: String, value: String, onClick: () -> Unit) {
     val c = Itera.colors
+    val labelStyle = Itera.type.body.copy(fontWeight = FontWeight.Medium)
+    val labelFit = rememberTextFit(label, labelStyle)
+    val valueFit = rememberTextFit(value, Itera.type.bodySmall)
     androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
         val valueMaxWidth = maxWidth * 0.55f
+        // At large text the value moves under the label rather than split the label's words.
+        val stacked = value.isNotEmpty() && maxWidth - 16.dp - 24.dp - minOf(valueFit.full, valueMaxWidth) < labelFit.longestWord
         Row(
             Modifier.fillMaxWidth().heightIn(min = 56.dp)
                 .clickable(role = Role.Button, onClick = onClick),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(label, style = Itera.type.body.copy(fontWeight = FontWeight.Medium),
-                color = c.ink, modifier = Modifier.weight(1f))
-            if (value.isNotEmpty()) Text(value, style = Itera.type.bodySmall, color = c.ink2,
-                modifier = Modifier.widthIn(max = valueMaxWidth))
+            if (stacked) {
+                Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
+                    Text(label, style = labelStyle, color = c.ink)
+                    Text(value, style = Itera.type.bodySmall, color = c.ink2)
+                }
+            } else {
+                Text(label, style = labelStyle, color = c.ink, modifier = Modifier.weight(1f))
+                if (value.isNotEmpty()) Text(value, style = Itera.type.bodySmall, color = c.ink2,
+                    modifier = Modifier.widthIn(max = valueMaxWidth))
+            }
             Icon(IteraIcons.Chevron, null, tint = c.ink3, modifier = Modifier.size(16.dp))
         }
     }
