@@ -2,7 +2,7 @@
 
 Twelve milestone issues cover the Itera MVP. Each milestone points to the specification rather than repeating it. The specification - PRD, UX, architecture, data, engines, testing, `design/` - remains authoritative. Milestone 012 adds the planned voice capability; existing milestone numbers are preserved.
 
-The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed/). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
+The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
 ## Current status (2026-09-28)
 

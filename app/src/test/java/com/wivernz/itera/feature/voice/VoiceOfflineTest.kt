@@ -291,7 +291,7 @@ class VoiceOfflineTest {
      * looked damaged (1.0.12, vivo X200 Pro: "Can't obtain peer field ID for class com.sun.jna.Pointer").
      */
     @Test fun releaseBuildsKeepJnaAndVosk() {
-        val rules = java.io.File("src/main/keepRules/vosk-jna.keep").readText()
+        val rules = File("src/main/keepRules/vosk-jna.keep").readText()
         assertTrue("-keep class com.sun.jna.** { *; }" in rules)
         assertTrue("-keep class org.vosk.** { *; }" in rules)
     }

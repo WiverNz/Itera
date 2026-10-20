@@ -27,18 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.wivernz.itera.R
 import com.wivernz.itera.core.designsystem.icon.IteraIcons
 import com.wivernz.itera.core.designsystem.theme.Itera
-import com.wivernz.itera.core.designsystem.theme.colors
-import com.wivernz.itera.domain.model.MasteryLevel
 
 @Composable
 fun Group(
@@ -105,7 +100,7 @@ fun ValueRow(label: String, value: String, onClick: () -> Unit, modifier: Modifi
 fun SwitchRow(
     label: String,
     checked: Boolean,
-    accent: androidx.compose.ui.graphics.Color,
+    accent: Color,
     sub: String? = null,
     enabled: Boolean = true,
     onChange: (Boolean) -> Unit,

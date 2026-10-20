@@ -31,6 +31,7 @@ class ComponentGoldenTest(private val sample: ComponentSample) {
 
     companion object {
         @JvmStatic
+        @Suppress("unused") // called reflectively by the parameterized runner
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")
         fun samples(): List<Array<Any>> =
             ComponentSample.entries.filter { it != ComponentSample.Skeleton }.map { arrayOf(it) }

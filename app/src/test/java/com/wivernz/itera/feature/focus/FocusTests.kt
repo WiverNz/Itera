@@ -378,7 +378,8 @@ class FocusTimerServiceTest {
         // a new controller over the same stored file stands in for the relaunched process
         val relaunched = FocusRig(h).also { it.store.state.value = rig.store.state.value }
         val restored = relaunched.controller.restore() as FocusRestoreResult.Attach
-        assertEquals(900, FocusTimer.remainingSeconds(restored.state, h.clock.instant()), 2)
+        val remaining = FocusTimer.remainingSeconds(restored.state, h.clock.instant())
+        assertTrue("$remaining not within 2 s of 15 min", kotlin.math.abs(900 - remaining) <= 2)
         assertTrue(relaunched.launcher.updates.single() != null)
     }
 
@@ -410,9 +411,4 @@ class FocusTimerServiceTest {
         assertEquals(ActivityState.COMPLETED, h.plans.activity(id)!!.state)
         assertNull(rig.controller.current())
     }
-
-    private fun assertEquals(expected: Int, actual: Int, tolerance: Int) = assertTrue(
-        "$actual not within $tolerance of $expected",
-        kotlin.math.abs(expected - actual) <= tolerance
-    )
 }

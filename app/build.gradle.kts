@@ -67,6 +67,7 @@ android {
     // All four languages must remain available for offline runtime switching.
     bundle {
         language {
+            @Suppress("UnstableApiUsage") // no stable replacement in AGP 9.4
             enableSplit = false
         }
     }

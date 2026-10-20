@@ -92,7 +92,7 @@ Exact patch versions are whatever is current at implementation time; KSP2 must s
 
 ## 5. Build plugins
 
-```toml
+```text
 [plugins]
 android-application  = { id = "com.android.application", version.ref = "agp" }        # present
 kotlin-compose       = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }  # present

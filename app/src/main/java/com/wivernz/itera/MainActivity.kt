@@ -179,7 +179,7 @@ class BootstrapFonts : PreviewParameterProvider<Int> {
 }
 
 @Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun BootstrapPreview(@PreviewParameter(BootstrapFonts::class) fontResource: Int) {
     BootstrapPlaceholder(fontResource)

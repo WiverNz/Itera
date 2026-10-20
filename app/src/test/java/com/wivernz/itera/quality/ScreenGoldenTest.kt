@@ -141,6 +141,7 @@ class ScreenGoldenTest(private val screen: String) {
 
     companion object {
         @JvmStatic
+        @Suppress("unused") // called reflectively by the parameterized runner
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")
         fun screens(): List<Array<Any>> = auditScreens.map { arrayOf(it) }
     }

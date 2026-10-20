@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -79,16 +78,13 @@ import com.wivernz.itera.core.designsystem.icon.techniqueIcon
 import com.wivernz.itera.core.designsystem.theme.Itera
 import com.wivernz.itera.core.designsystem.theme.colors
 import com.wivernz.itera.domain.model.ExerciseType
-import com.wivernz.itera.domain.model.LevelHint
 import com.wivernz.itera.domain.model.MasteryLevel
-import com.wivernz.itera.domain.model.PracticeKind
-import com.wivernz.itera.domain.model.PracticeSummary
 import com.wivernz.itera.domain.model.Skill
 import com.wivernz.itera.domain.model.Technique
-import com.wivernz.itera.domain.model.practiceSummary
 import com.wivernz.itera.feature.exercise.runner.levelHint
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import kotlin.time.Duration.Companion.milliseconds
 
 /** Train.kt's current-week path, backed by the stored program day. */
 @Composable
@@ -225,7 +221,7 @@ fun TrainScreen(state: TrainUiState, onEvent: (TrainUiEvent) -> Unit) {
 private fun TrainSkeleton() {
     var show by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        kotlinx.coroutines.delay(150)
+        kotlinx.coroutines.delay(150.milliseconds)
         show = true
     }
     if (show) {
@@ -527,7 +523,7 @@ fun TechniqueDetailScreen(
         }
         val sc = t.skill.colors(c.isDark)
         val locked = state.progress?.unlocked != true
-        val level = if (locked) MasteryLevel.NONE else state.progress?.level ?: MasteryLevel.NONE
+        val level = if (locked) MasteryLevel.NONE else state.progress.level
         TechniqueToken(t.skill, techniqueIcon(t.id.value), 64.dp)
         Eyebrow(stringResource(t.skill.title), sc.content)
         Text(t.name, style = Itera.type.hero, color = c.ink)
@@ -557,13 +553,13 @@ fun TechniqueDetailScreen(
                 Text(
                     stringResource(
                         R.string.detail_facts,
-                        state.progress?.totalUses ?: 0,
-                        state.progress?.distinctPracticeDays ?: 0
+                        state.progress.totalUses,
+                        state.progress.distinctPracticeDays
                     ),
                     style = Itera.type.caption,
                     color = c.ink2
                 )
-                levelHint(state.progress?.nextLevelHint ?: LevelHint.Unavailable)?.let {
+                levelHint(state.progress.nextLevelHint)?.let {
                     Text(it, style = Itera.type.caption, color = c.ink2)
                 }
             }
