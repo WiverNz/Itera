@@ -56,10 +56,15 @@ jobs:
           $env:ITERA_KEYSTORE_PATH = Join-Path $env:RUNNER_TEMP 'itera-release.jks'
           try {
             [IO.File]::WriteAllBytes($env:ITERA_KEYSTORE_PATH, [Convert]::FromBase64String($env:ITERA_KEYSTORE_BASE64))
-            .\gradlew.bat --no-daemon --no-configuration-cache assembleRelease bundleRelease lintRelease
-            if ($LASTEXITCODE -ne 0) { throw 'Signed release build failed.' }
-            & "$env:ANDROID_HOME\build-tools\36.0.0\apksigner.bat" verify --verbose app/build/outputs/apk/release/app-release.apk
-            if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
+            # AGP cannot split APKs per ABI and build a bundle in one invocation (issuetracker 402800800).
+            .\gradlew.bat --no-daemon --no-configuration-cache "-Pitera.abiSplits=true" assembleRelease
+            if ($LASTEXITCODE -ne 0) { throw 'Signed release APK build failed.' }
+            .\gradlew.bat --no-daemon --no-configuration-cache bundleRelease lintRelease
+            if ($LASTEXITCODE -ne 0) { throw 'Signed release bundle build failed.' }
+            foreach ($abi in 'universal', 'arm64-v8a', 'armeabi-v7a', 'x86_64') {
+              & "$env:ANDROID_HOME\build-tools\36.0.0\apksigner.bat" verify --verbose "app/build/outputs/apk/release/app-$abi-release.apk"
+              if ($LASTEXITCODE -ne 0) { throw "APK signature verification failed: $abi" }
+            }
             $signature = & "$env:JAVA_HOME\bin\jarsigner.exe" -verify app/build/outputs/bundle/release/app-release.aab
             if ($LASTEXITCODE -ne 0 -or ($signature -join ' ') -notmatch 'jar verified\.') {
               throw 'AAB signature verification failed.'
@@ -75,7 +80,11 @@ jobs:
         run: |
           $version = .\scripts\version.ps1 -Tag $env:RELEASE_TAG
           New-Item -ItemType Directory -Path release -Force | Out-Null
-          Copy-Item app/build/outputs/apk/release/app-release.apk "release/Itera-$($version.Tag).apk"
+          # The universal APK keeps the established name; each per-ABI APK is about a third of its size (libvosk.so).
+          Copy-Item app/build/outputs/apk/release/app-universal-release.apk "release/Itera-$($version.Tag).apk"
+          foreach ($abi in 'arm64-v8a', 'armeabi-v7a', 'x86_64') {
+            Copy-Item "app/build/outputs/apk/release/app-$abi-release.apk" "release/Itera-$($version.Tag)-$abi.apk"
+          }
           Copy-Item app/build/outputs/bundle/release/app-release.aab "release/Itera-$($version.Tag).aab"
           Compress-Archive -Path app/schemas -DestinationPath "release/Itera-$($version.Tag)-schemas.zip"
           Copy-Item version.properties release/version.properties

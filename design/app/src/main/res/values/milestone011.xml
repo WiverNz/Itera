@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Milestone 011: release version in the Privacy screen footer. -->
+    <string name="privacy_version">Version %1$s</string>
+</resources>

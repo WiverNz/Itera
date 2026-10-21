@@ -102,7 +102,7 @@ class NoConcatenationTest {
 class UntranslatedStringTest {
     // Proper names, shared vocabulary, units, and punctuation-only formats are intentionally identical.
     private val shared =
-        setOf("app_name", "t_pomodoro_name", "t_deep_name", "t_premortem_name", "pace_standard", "export_markdown", "theme_system", "template_option_hint", "focus_pause", "sec_coach", "feel_okay", "voice_provisional", "minutes_short", "minutes_plus", "interval_days", "focus_plus5", "export_minutes", "hero_minutes_meta", "activity_reflection", "day_ring_count", "today_count", "shell_placeholder", "week_row_with_review")
+        setOf("app_name", "t_pomodoro_name", "t_deep_name", "t_premortem_name", "pace_standard", "export_markdown", "theme_system", "template_option_hint", "focus_pause", "sec_coach", "feel_okay", "voice_provisional", "minutes_short", "minutes_plus", "interval_days", "focus_plus5", "export_minutes", "hero_minutes_meta", "activity_reflection", "day_ring_count", "today_count", "shell_placeholder", "week_row_with_review", "privacy_version")
 
     @Test fun noUnexpectedEnglishCopyRemains() {
         val base = catalogue("")

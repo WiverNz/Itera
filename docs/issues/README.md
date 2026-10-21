@@ -4,7 +4,7 @@ Twelve milestone issues cover the Itera MVP. Each milestone points to the specif
 
 The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
-## Current status (2026-09-28)
+## Current status (2026-10-21)
 
 This index is the implementation status entry point; each milestone owns its acceptance checklist and evidence.
 
@@ -19,9 +19,9 @@ This index is the implementation status entry point; each milestone owns its acc
 - **009: complete (2026-09-28).** Reminders, analytics/privacy guard and the automated accessibility/localisation sweeps are implemented and green. Remaining manual verification (TalkBack/Switch Access, maximum sizes, 005/006/012 visual comparisons, four-language walks, reboot/process death, API 26-30 if available) moved to 010. See [009](009-notifications-and-quality-passes.md).
 - **013: complete (2026-09-28).** Built-in offline voice recognition (Vosk). RU/EN/DE verified on a vivo; ES device run waived; first-syllable hardening moved to 010, APK packaging and Play Console delivery to 011. See [013](013-offline-voice-recognition.md).
 - **010: complete (2026-10-20).** Golden set (354 images) recorded and verified on Windows and Linux; instrumented CI job, schema guard, `GapIntegrationTest`, `LanguageSheetTest`; device passes for font/display size, grayscale, four languages, process death and reboot. Defects fixed: focus service not restarted after process death, offline-voice first-syllable loss, large-text layout breaks, two prototype deviations. Remaining (environment-limited): spoken TalkBack/Switch Access loops, API 26-30, real-speech and external-provider voice. See [010](010-test-hardening.md#gap-summary-2026-10-20).
-- **011: not started.**
+- **011: implemented (2026-10-21); release tag pending the owner.** Signed release build, per-ABI sideload APKs, Play base download 6.9-7.3 MB, AAB/pack validation, upgrade v1.0.16 -> v1.0.17 with real-key artifacts, release smoke on an API 36 emulator and the vivo (V2405A, API 36), Russian real-speech first-syllable check, version footer. Environment-limited or declined: API 26-30, real Play Console delivery, external provider, Spanish voice, spoken TalkBack/Switch Access loops, full two-device manual QA, Progress with 1 500 activities. See [011](011-release-readiness.md#release-record-2026-10-21).
 
-Current milestone: none in progress. Next: **011** (ready; unblocked by 010). Readiness is not authorization to start another milestone.
+Current milestone: none in progress. All MVP milestones are implemented; post-MVP work needs a user request.
 
 ## Index
 
@@ -37,7 +37,7 @@ Current milestone: none in progress. Next: **011** (ready; unblocked by 010). Re
 | [008](008-progress-history-and-settings.md) | Progress, history & settings - **implemented; one device check pending** | 005 | 031, 032, 034, 035 |
 | [009](009-notifications-and-quality-passes.md) | Notifications & quality passes - **complete** | 006, 007, 008, 012 | 033, rest of 036, 037, 041 |
 | [010](010-test-hardening.md) | Test hardening - **complete** | 009 | 039 |
-| [011](011-release-readiness.md) | Release readiness | 010 | 040 |
+| [011](011-release-readiness.md) | Release readiness - **implemented** (tag pending owner) | 010 | 040 |
 | [012](012-voice-input-and-commands.md) | Voice input & commands - **complete** (comparison and goldens in 010; real-provider checks environment-limited) | 006, 007, 008 | New scope; none |
 | [013](013-offline-voice-recognition.md) | Built-in offline voice recognition - **complete** | 012 | New scope; none |
 

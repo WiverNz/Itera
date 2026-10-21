@@ -82,7 +82,12 @@ plus test/lint reports. The PowerShell regression tests run on Windows.
 Pushing vX.Y.Z validates the tag against version.properties, runs all checks,
 then signs and verifies APK/AAB files on Windows. It archives:
 
-- Itera-vX.Y.Z.apk (installable signed APK).
+- Itera-vX.Y.Z.apk (installable signed universal APK, about 45 MB: the offline
+  recogniser's native library for four ABIs).
+- Itera-vX.Y.Z-arm64-v8a.apk, -armeabi-v7a.apk, -x86_64.apk (one ABI each, about
+  14 MB). arm64-v8a fits almost every current phone; armeabi-v7a is for older
+  32-bit phones; x86_64 for emulators and Chromebooks. All are signed with the same
+  key, so any of them updates any other install of Itera.
 - Itera-vX.Y.Z.aab (signed app bundle for distribution tooling).
 - Room schemas ZIP, version.properties, and SHA256SUMS.txt.
 - mapping.txt when R8 is enabled and generates it.

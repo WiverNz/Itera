@@ -7,8 +7,8 @@
 
 A native Android app that teaches productivity techniques through daily practice, not through another list of things to do.
 
-> **Status: in development, not yet released.**
-> Onboarding, the daily flow, every exercise, Train, the technique library, Progress, History, Settings and voice input are implemented. Reminders and notifications, the full accessibility and localisation passes, test hardening and release readiness are still in progress. The issue index has [milestone status and open acceptance checks](docs/issues/README.md#current-status-2026-09-27).
+> **Status: release candidate (1.0.18).**
+> Every MVP milestone is implemented, including release readiness (011). The first public release is tagged by the owner; see the [changelog](CHANGELOG.md) for downloads and known limitations, and the issue index for [milestone status](docs/issues/README.md#current-status-2026-10-21).
 
 ## What it is
 

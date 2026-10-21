@@ -45,6 +45,10 @@ require(
     "Release signing credentials are required"
 }
 
+// Milestone 011: sideload releases add one APK per ABI beside the universal one, because libvosk.so (about 10 MB per
+// ABI) is stored uncompressed. Opt-in, so debug and test outputs keep their single-APK names; the AAB is unaffected.
+val abiSplits = providers.gradleProperty("itera.abiSplits").orNull == "true"
+
 android {
     namespace = "com.wivernz.itera"
     compileSdk {
@@ -70,6 +74,19 @@ android {
             @Suppress("UnstableApiUsage") // no stable replacement in AGP 9.4
             enableSplit = false
         }
+    }
+
+    splits {
+        abi {
+            isEnable = abiSplits
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86_64")
+            isUniversalApk = true
+        }
+    }
+    packaging {
+        // JNA's stubs for ABIs Android no longer supports (minSdk 26); libvosk.so ships no build for them either.
+        jniLibs.excludes += setOf("lib/armeabi/**", "lib/mips/**", "lib/mips64/**")
     }
 
     signingConfigs {

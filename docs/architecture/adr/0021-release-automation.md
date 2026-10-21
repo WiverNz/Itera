@@ -33,3 +33,10 @@ the repository and are removed from the runner after signing; the signing build
 disables configuration and Gradle action caches. The operator keeps a backed-up,
 stable signing key and must not reuse codes across release branches.
 See [scripts/README.md](../../../scripts/README.md) for operation and recovery.
+
+## Amendment (2026-10-21, milestone 011)
+
+The tag build also publishes per-ABI APKs (`Itera-vX.Y.Z-arm64-v8a.apk`, `-armeabi-v7a`, `-x86_64`) next to the
+universal `Itera-vX.Y.Z.apk`, all signed and verified. The APKs come from a Gradle run with `-Pitera.abiSplits=true`
+and the AAB from a second run, because AGP cannot do both in one invocation. Rationale in
+`docs/00-source-of-truth.md`, "Milestone 011 decisions".

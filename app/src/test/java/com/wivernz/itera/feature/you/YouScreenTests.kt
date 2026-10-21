@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import com.wivernz.itera.BuildConfig
 import com.wivernz.itera.analytics.ExportRange
 import com.wivernz.itera.core.designsystem.theme.IteraTheme
 import org.junit.Assert.assertEquals
@@ -37,6 +38,16 @@ class YouScreenTest {
         assertTrue(events.isEmpty())
         compose.onNodeWithText("Erase everything").performScrollTo().performClick()
         compose.onNodeWithText("Delete all local training history", substring = true).assertExists()
+    }
+
+    @Test fun privacyFooterShowsTheReleaseVersion() {
+        compose.setContent {
+            IteraTheme { YouScreen(YouUiState(loading = false), {}, true) }
+        }
+        compose.onNodeWithText("Privacy").performScrollTo().performClick()
+        compose.onNodeWithText(
+            "Version ${BuildConfig.VERSION_NAME}"
+        ).performScrollTo().assertExists()
     }
 }
 
