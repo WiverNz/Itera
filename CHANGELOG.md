@@ -21,12 +21,14 @@ Milestone 011, release readiness. Includes every MVP milestone: 001-010, 012 and
 
 ### Which file to download
 
+The per-ABI APKs are the recommended downloads; the universal APK is a fallback.
+
 | File | For | Size |
 | --- | --- | --- |
 | `Itera-v1.0.18-arm64-v8a.apk` | Almost every phone from the last several years | about 14.7 MB |
 | `Itera-v1.0.18-armeabi-v7a.apk` | Older 32-bit phones | about 13.6 MB |
 | `Itera-v1.0.18-x86_64.apk` | Emulators and Chromebooks | about 14.9 MB |
-| `Itera-v1.0.18.apk` | Any device, if unsure | about 44.9 MB |
+| `Itera-v1.0.18.apk` | Compatibility fallback for any device, if unsure | about 44.9 MB |
 | `Itera-v1.0.18.aab` | Google Play upload only | - |
 
 Every APK is signed with the same key, so any of them installs over an earlier Itera release and keeps your data.
@@ -42,4 +44,4 @@ Every APK is signed with the same key, so any of them installs over an earlier I
 - Not tested on Android 8-11 (API 26-30) hardware or emulators.
 - The external speech-provider path (system or chosen recognition app after consent) is untested with a working provider.
 - Spanish offline voice is untested on a real device; English and German free-form dictation are best-effort with the small models.
-- Play Console on-demand delivery of the voice-model packs is verified with `bundletool` local testing only.
+- Google Play release not yet approved: Play Console on-demand delivery of the voice-model packs is verified with `bundletool` local testing only.

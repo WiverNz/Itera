@@ -1,6 +1,14 @@
 # 011 - Release readiness
 
-**Depends on** 010 | **Blocks** -
+**Status:** complete (2026-10-21) for the GitHub sideload 1.0 release. **Depends on** 010 | **Blocks** -
+
+## Release decision (2026-10-21, product owner)
+
+- **GitHub sideload release: approved.**
+- **Google Play release: not yet approved.** Real Play Console Asset Delivery of the `voice_model_<lang>` packs (Download, progress, install, Remove) has not been verified; it needs an internal-testing upload and a pass on a device before a Play release.
+- **Known verification gaps, not blockers for the GitHub 1.0 release:** API 26-30; the external speech-provider flow; Spanish Vosk on a real device; spoken TalkBack and Switch Access walkthroughs; a full two-device rerun of the manual QA checklist on the release build; long-history performance (Progress with 1 500 activities, History scroll). The acceptance items below that stay unticked are open for these reasons only.
+- **Artifacts:** the per-ABI APKs are the recommended sideload downloads; the universal APK is a compatibility fallback. The AAB is for a later Play upload.
+- **Version:** v1.0.18 is produced by `scripts/release.ps1 patch` from the committed 1.0.17; no manual edit of `version.properties`.
 
 ## Goal
 

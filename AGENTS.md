@@ -16,7 +16,7 @@ If `AGENTS.local.md` exists in this checkout, read it for machine-specific build
 
 ## What this is
 
-**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001-004, 007, 009, 010 and 013 are complete; 010 closed the visual and device checks 005, 006, 008 and 012 left open, except the environment-limited ones it records. 011 (release readiness) is implemented and awaits the owner's release tag; its environment-limited checks are recorded in the milestone file. See `docs/issues/README.md` for current status.
+**Itera** - a native Android app (Kotlin + Jetpack Compose) that teaches productivity techniques through daily practice. The specification is complete. Milestones 001-004, 007, 009, 010, 011 and 013 are complete; 010 closed the visual and device checks 005, 006, 008 and 012 left open, except the environment-limited ones it records. 011 (release readiness) is complete for the GitHub sideload 1.0 release (Google Play not yet approved); its known verification gaps are recorded in the milestone file. See `docs/issues/README.md` for current status.
 
 ## Repository layout
 

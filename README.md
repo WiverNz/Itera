@@ -8,7 +8,7 @@
 A native Android app that teaches productivity techniques through daily practice, not through another list of things to do.
 
 > **Status: release candidate (1.0.18).**
-> Every MVP milestone is implemented, including release readiness (011). The first public release is tagged by the owner; see the [changelog](CHANGELOG.md) for downloads and known limitations, and the issue index for [milestone status](docs/issues/README.md#current-status-2026-10-21).
+> Every MVP milestone is implemented and release readiness (011) is complete for the GitHub sideload release; Google Play is not yet approved. The first public release is tagged by the owner; see the [changelog](CHANGELOG.md) for downloads and known limitations, and the issue index for [milestone status](docs/issues/README.md#current-status-2026-10-21).
 
 ## What it is
 
