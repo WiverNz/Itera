@@ -2,6 +2,8 @@
 
 Not scheduled. Recorded so MVP scope arguments have somewhere to put things, and so the MVP's seams are justified.
 
+Research proposal (expanded 2026-11-26): [bounded post-MVP expansion](../proposals/prediction-testing/proposal.md), with an [evidence review](../proposals/prediction-testing/research.md) and [staged roadmap](../proposals/prediction-testing/milestone.md). Recommendation: first evaluate Environment Design examples within existing techniques, then optional Prediction Testing within Reflection; consider a no-hold breathing pause separately and defer BLUF/Communication. Preserve five skills and fourteen techniques. **Awaiting review; no implementation or curriculum change approved.** See [proposed ADR-0023](../architecture/adr/0023-prediction-testing-proposal.md). Existing paths are retained to avoid duplicating the original proposal.
+
 ## 1. Already seamed for
 
 These have a deliberate hook in the MVP and need no rework to start.
