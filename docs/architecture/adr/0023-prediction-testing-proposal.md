@@ -1,6 +1,14 @@
 # ADR-0023: Bounded post-MVP extensions before new techniques or skills
 
-Status: **proposed (2026-11-26), awaiting product review**. No implementation authorized by this ADR.
+Status: **accepted in stages (2026-11-26)**. Environment Design curriculum extensions and a Prediction Testing interactive prototype are authorized. Production Prediction Testing still requires prototype approval. Breathing pause remains future-only; BLUF remains deferred.
+
+## Approved implementation boundary
+
+Milestone 014 extends existing localized task/help copy and reflection guidance without changing technique IDs, curriculum order, completion rules, storage, or progress. Preparation is optional and distinct from performing the target behavior. Existing reflection answers, tomorrow-change carryover and journal export retain their current meaning.
+
+Prediction Testing lives only in `design/`: a separate immutable state model, progressive preparation/review screens and one local experiment stored in private preferences, excluded from backup. It survives navigation, process restart and prototype day advancement. This deliberately bounded prototype retains one reviewed record until the user explicitly replaces it; production history/export and multi-record persistence remain gated. No experiment action grants practice credit. Existing reflection drafts stay in the prototype ViewModel when visiting the extension. Keyboard input only. All new copy ships in four languages.
+
+The user requested no desktop capture. Validation uses build checks and Android emulator interaction/tests without capturing the host display. Visual sign-off and any unperformed accessibility walkthrough remain explicit review gates, not assumed passes.
 
 ## Context
 
