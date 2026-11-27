@@ -4,7 +4,7 @@ Twelve milestone issues cover the Itera MVP. Each milestone points to the specif
 
 The previous 40-issue backlog is preserved unchanged under [`docs/history/issues-detailed/`](../history/issues-detailed). Each milestone lists the detailed issues it absorbs; **read those for scope detail, implementation notes and acceptance detail.** Where a detailed issue and its milestone disagree on dependencies, verification or recording, the milestone wins.
 
-## Current status (2026-10-21)
+## Current status (2026-11-27)
 
 This index is the implementation status entry point; each milestone owns its acceptance checklist and evidence.
 
@@ -21,7 +21,9 @@ This index is the implementation status entry point; each milestone owns its acc
 - **010: complete (2026-10-20).** Golden set (354 images) recorded and verified on Windows and Linux; instrumented CI job, schema guard, `GapIntegrationTest`, `LanguageSheetTest`; device passes for font/display size, grayscale, four languages, process death and reboot. Defects fixed: focus service not restarted after process death, offline-voice first-syllable loss, large-text layout breaks, two prototype deviations. Remaining (environment-limited): spoken TalkBack/Switch Access loops, API 26-30, real-speech and external-provider voice. See [010](010-test-hardening.md#gap-summary-2026-10-20).
 - **011: complete (2026-10-21) for the GitHub sideload 1.0 release; Google Play not yet approved (Play Console Asset Delivery unverified).** Release tag v1.0.18 pending the owner. Signed release build, per-ABI sideload APKs, Play base download 6.9-7.3 MB, AAB/pack validation, upgrade v1.0.16 -> v1.0.17 with real-key artifacts, release smoke on an API 36 emulator and the vivo (V2405A, API 36), Russian real-speech first-syllable check, version footer. Known gaps, not blockers for the GitHub release: API 26-30, external provider, Spanish voice, spoken TalkBack/Switch Access loops, full two-device manual QA, Progress with 1 500 activities. See [011](011-release-readiness.md#release-record-2026-10-21).
 
-Current milestone: none in progress. All MVP milestones are implemented; post-MVP work needs a user request.
+Current post-MVP milestone: [014 — Environment Design and Prediction Testing prototype](014-environment-design-and-prediction-prototype.md), requested by the user. Production Prediction Testing is not authorized. All MVP milestones remain implemented.
+
+Milestone 014 follows the proportional 002–008 verification scope, with additional prototype persistence/interaction tests. Per user instruction, no desktop capture is used; visual approval is recorded separately from automated device checks.
 
 ## Index
 
@@ -40,6 +42,7 @@ Current milestone: none in progress. All MVP milestones are implemented; post-MV
 | [011](011-release-readiness.md) | Release readiness - **complete** (GitHub sideload; Play pending) | 010 | 040 |
 | [012](012-voice-input-and-commands.md) | Voice input & commands - **complete** (comparison and goldens in 010; real-provider checks environment-limited) | 006, 007, 008 | New scope; none |
 | [013](013-offline-voice-recognition.md) | Built-in offline voice recognition - **complete** | 012 | New scope; none |
+| [014](014-environment-design-and-prediction-prototype.md) | Environment Design and Prediction Testing prototype — **in review** | 011 | Approved post-MVP scope |
 
 Critical path: `001 -> 002 -> 004 -> 005 -> 006 -> 007 -> 012 -> 009 -> 010 -> 011`. 003 sits alongside 004; 008 runs alongside 006-007 and must finish before 012. The solo sequence after 007 is **008, 012, 009, 010, 011**. Finish outstanding core visual acceptance before 012; numbering is not execution order.
 

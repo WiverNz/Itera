@@ -49,6 +49,7 @@ class AppViewModel : ViewModel() {
     }
 
     fun resetProgram(erase: Boolean = false) {
+        clearReflectionDraft()
         log.clear(); practiceDays.clear(); integrated.clear(); completed.clear()
         programDay = 1; startDate = LocalDate.now(); lastFeeling = null; lastNote = ""; tomorrowChange = ""; carriedChange = ""
         if (erase) {
@@ -69,6 +70,10 @@ class AppViewModel : ViewModel() {
     val completed = mutableStateListOf<DayStep>()
     var lastFeeling by mutableStateOf<Feeling?>(null)
     var lastNote by mutableStateOf("")
+    var reflectionStep by mutableStateOf(0)
+    val reflectionAnswers = mutableStateListOf("", "", "")
+    val reflectionPicked = mutableStateListOf<Int>()
+
     var tomorrowChange by mutableStateOf("")
     var carriedChange by mutableStateOf("")
         private set
@@ -83,7 +88,14 @@ class AppViewModel : ViewModel() {
         technique?.let { record(it, if (step == DayStep.Exercise) lastNote else "") }
     }
 
+    private fun clearReflectionDraft() {
+        reflectionStep = 0
+        reflectionAnswers.indices.forEach { reflectionAnswers[it] = "" }
+        reflectionPicked.clear()
+    }
+
     fun startNextDay() {
+        clearReflectionDraft()
         carriedChange = tomorrowChange
         tomorrowChange = ""
         completed.clear()
@@ -131,6 +143,7 @@ class AppViewModel : ViewModel() {
     // ---- demo data
     /** Jumps to Day 9 with a realistic history, so every screen has something to show. */
     fun loadDemo() {
+        clearReflectionDraft()
         val today = LocalDate.now()
         startDate = today.minusDays(9)
         log.clear(); practiceDays.clear(); integrated.clear(); completed.clear()

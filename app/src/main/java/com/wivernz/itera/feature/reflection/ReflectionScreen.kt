@@ -235,6 +235,21 @@ fun ReflectionScreen(
                                 color = c.ink,
                                 modifier = Modifier.semantics { heading() }
                             )
+                            if (i == 0 || i == 2) {
+                                Text(
+                                    stringResource(
+                                        if (i ==
+                                            0
+                                        ) {
+                                            R.string.env_review
+                                        } else {
+                                            R.string.env_prepare
+                                        }
+                                    ),
+                                    style = Itera.type.bodySmall,
+                                    color = c.ink2
+                                )
+                            }
                             FlowRow(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)

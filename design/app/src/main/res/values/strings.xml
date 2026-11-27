@@ -259,7 +259,7 @@
 
     <!-- Habit stacking -->
     <string name="hs_sentence">After I %1$s,\nI will %2$s.</string>
-    <string name="hs_sub">Anchor it to something you already do every day. Keep the new habit so small it feels almost silly.</string>
+    <string name="hs_sub">Use a familiar daily action as your cue. Keep the new action tiny. If useful, prepare its materials beforehand, such as a book by your chair.</string>
     <string name="hs_existing">Something you already do</string>
     <string name="hs_new">A tiny new habit</string>
     <string name="hs_anchor_1">make coffee</string>
@@ -386,8 +386,8 @@
 
     <string name="t_stack_name">Habit stacking</string>
     <string name="t_stack_short">Attach a new habit to one you already have.</string>
-    <string name="t_stack_why">An existing habit is a reliable trigger. Tying a tiny new action to it removes the need to remember.</string>
-    <string name="t_stack_task">Complete one sentence: “After I [habit I already have], I will [tiny new habit].” Do it today.</string>
+    <string name="t_stack_why">A familiar action can cue a tiny new habit. Preparing what you need makes that next step easier to take.</string>
+    <string name="t_stack_task">Complete: “After I [existing habit], I will [tiny action].” If useful, put what you need within reach beforehand: a book by your chair or a notebook beside your cup. Try the action at the next opportunity.</string>
 
     <string name="t_feynman_name">Feynman technique</string>
     <string name="t_feynman_short">Explain it simply to find what you don’t know.</string>
@@ -417,7 +417,7 @@
     <string name="t_diet_name">Information diet</string>
     <string name="t_diet_short">Choose what you consume on purpose.</string>
     <string name="t_diet_why">What you consume shapes what you think about. Choosing inputs on purpose frees attention.</string>
-    <string name="t_diet_task">Pick one feed or app to skip today. Before opening anything, ask: do I need this right now?</string>
+    <string name="t_diet_task">Choose one distracting feed or app. Add a reversible obstacle: move its shortcut or sign out. Keep essential, emergency and accessibility tools available. Notice whether this helps at the next opportunity.</string>
 
     <string name="t_premortem_name">Premortem</string>
     <string name="t_premortem_short">Imagine the failure first, then prevent it.</string>
@@ -426,8 +426,8 @@
 
     <string name="t_onepct_name" formatted="false">1% improvement</string>
     <string name="t_onepct_short">Improve one small thing, every day.</string>
-    <string name="t_onepct_why">Tiny improvements are easy to repeat, and they add up over weeks.</string>
-    <string name="t_onepct_task" formatted="false">Choose one skill or habit. Make it 1% better today with one small, specific change.</string>
+    <string name="t_onepct_why">Small changes can make repetition easier. Removing one obstacle is an improvement you can try without a complete routine overhaul.</string>
+    <string name="t_onepct_task" formatted="false">Make one recurring task easier to start. Tonight, if useful, open a blank template or set out materials for its first step. Next time, notice what helped and what still got in the way. Preparation is separate from doing the task.</string>
 
     <string name="t_reflect_name">Daily reflection</string>
     <string name="t_reflect_short">Three short questions to close the day.</string>

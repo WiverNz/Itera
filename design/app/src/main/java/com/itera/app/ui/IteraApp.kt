@@ -94,6 +94,7 @@ object Routes {
     const val PREMORTEM = "premortem"
     const val HABIT_STACK = "habit-stack"
     const val COMBINATION = "combination"
+    const val PREDICTION = "prediction"
     const val REFLECTION = "reflection"
     const val DAY_COMPLETE = "day-complete"
 
@@ -136,6 +137,7 @@ fun NavController.backToToday() {
 
 @Composable
 fun IteraApp(vm: AppViewModel) {
+    val predictionVm: com.itera.app.data.PredictionViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
@@ -199,13 +201,13 @@ fun IteraApp(vm: AppViewModel) {
             composable(Routes.PROGRESS) {
                 ProgressScreen(vm, onHistory = { nav.navigate(Routes.HISTORY) }, onLibrary = { nav.navigate(Routes.LIBRARY) })
             }
-            composable(Routes.YOU) { ProfileScreen(vm) { erased -> nav.navigate(if (erased) Routes.WELCOME else Routes.TODAY) { popUpTo(nav.graph.id) { inclusive = true } } } }
+            composable(Routes.YOU) { ProfileScreen(vm) { erased -> predictionVm.erase(); nav.navigate(if (erased) Routes.WELCOME else Routes.TODAY) { popUpTo(nav.graph.id) { inclusive = true } } } }
 
             // secondary
             composable(Routes.LIBRARY) {
                 LibraryScreen(vm, onBack = { nav.popBackStack() }, onTechnique = { t -> nav.navigate(Routes.detail(t)) })
             }
-            composable(Routes.HISTORY) { HistoryScreen(vm, onBack = { nav.popBackStack() }) }
+            composable(Routes.HISTORY) { HistoryScreen(vm, onBack = { nav.popBackStack() }, onPrediction = { nav.navigate(Routes.PREDICTION) }) }
             composable(Routes.DETAIL, listOf(techArg)) { e ->
                 val t = technique(e)
                 TechniqueDetailScreen(
@@ -214,6 +216,7 @@ fun IteraApp(vm: AppViewModel) {
                     onBack = { nav.popBackStack() },
                     onPractice = { nav.navigate(Routes.intro(t)) },
                     onTechnique = { other -> nav.navigate(Routes.detail(other)) },
+                    onPrediction = { nav.navigate(Routes.PREDICTION) },
                 )
             }
 
@@ -280,9 +283,13 @@ fun IteraApp(vm: AppViewModel) {
                 )
             }
 
+            composable(Routes.PREDICTION) {
+                com.itera.app.ui.screens.PredictionRoute(onClose = { nav.popBackStack() }, vm = predictionVm)
+            }
+
             // evening
             composable(Routes.REFLECTION) {
-                ReflectionScreen(vm, onClose = { nav.popBackStack() }, onDone = {
+                ReflectionScreen(vm, onClose = { nav.popBackStack() }, onPrediction = { nav.navigate(Routes.PREDICTION) }, onDone = {
                     nav.navigate(Routes.DAY_COMPLETE) { popUpTo(Routes.TODAY) }
                 })
             }

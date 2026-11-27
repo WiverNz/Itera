@@ -10,7 +10,7 @@
     <string name="t_five_short">Zähl 5-4-3-2-1 und leg los, bevor Zweifel kommen.</string>
     <string name="t_five_why">Zögern wächst mit jeder Sekunde. Der Countdown gibt deinem Gehirn ein klares Startsignal, bevor Ausreden auftauchen.</string>
     <string name="t_stack_short">Verknüpfe eine neue Gewohnheit mit einer bestehenden.</string>
-    <string name="t_stack_why">Eine bestehende Gewohnheit ist ein zuverlässiger Auslöser. Hängst du eine winzige neue Handlung daran, musst du nicht daran denken.</string>
+    <string name="t_stack_why">Eine vertraute Handlung kann eine kleine neue Gewohnheit auslösen. Wenn das Nötige bereitliegt, fällt der nächste Schritt leichter.</string>
     <string name="t_feynman_short">Erkläre es einfach und finde heraus, was du nicht weißt.</string>
     <string name="t_feynman_why">Wer in einfachen Worten erklärt, sieht genau, wo das eigene Verständnis Lücken hat.</string>
     <string name="t_twolist_short">Entscheide, was du bewusst gerade nicht tust.</string>
@@ -26,7 +26,7 @@
     <string name="t_premortem_short">Stell dir das Scheitern vor - und verhindere es.</string>
     <string name="t_premortem_why">Wer sich das Scheitern vorab vorstellt, macht Risiken greifbar, solange noch Zeit zum Handeln ist.</string>
     <string name="t_onepct_short">Verbessere jeden Tag eine kleine Sache.</string>
-    <string name="t_onepct_why">Winzige Verbesserungen lassen sich leicht wiederholen und summieren sich über Wochen.</string>
+    <string name="t_onepct_why">Kleine Änderungen können Wiederholung erleichtern. Eine Hürde zu entfernen lässt sich ausprobieren, ohne den ganzen Alltag umzustellen.</string>
     <string name="t_reflect_short">Drei kurze Fragen zum Tagesabschluss.</string>
     <string name="t_reflect_why">Ein kurzer Blick zurück macht aus der Erfahrung eines Tages eine Lektion für morgen.</string>
     <string name="skill_focus">Fokus</string>

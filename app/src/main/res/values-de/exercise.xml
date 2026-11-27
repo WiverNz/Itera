@@ -70,7 +70,7 @@
     <string name="pm_action_hint">Ein konkreter Schritt, heute machbar</string>
     <string name="pm_cta">Zu heute hinzufügen</string>
     <string name="hs_sentence">Nachdem ich %1$s,\nwerde ich %2$s.</string>
-    <string name="hs_sub">Verknüpfe sie mit etwas, das du schon jeden Tag tust. Halte die neue Gewohnheit so klein, dass es fast albern wirkt.</string>
+    <string name="hs_sub">Nutze eine vertraute tägliche Handlung als Auslöser. Halte die neue Handlung klein. Lege bei Bedarf vorher alles bereit, etwa ein Buch am Sessel.</string>
     <string name="hs_existing">Etwas, das du schon tust</string>
     <string name="hs_new">Eine winzige neue Gewohnheit</string>
     <string name="hs_anchor_1">Kaffee gekocht habe</string>

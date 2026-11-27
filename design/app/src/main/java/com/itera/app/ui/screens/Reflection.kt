@@ -67,12 +67,12 @@ import com.itera.app.ui.theme.colors
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) {
+fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit, onPrediction: () -> Unit = {}) {
     val c = Itera.colors
     val accent = Skill.Reflection.colors(c.isDark).content
-    var step by rememberSaveable { mutableIntStateOf(0) }
-    val answers = remember { mutableStateListOf("", "", "") }
-    val picked = remember { mutableStateListOf<Int>() }
+    val step = vm.reflectionStep
+    val answers = vm.reflectionAnswers
+    val picked = vm.reflectionPicked
 
     val questions = listOf(R.string.reflection_q1, R.string.reflection_q2, R.string.reflection_q3)
     val chips = listOf(
@@ -89,7 +89,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
                 stringResource(if (step < 2) R.string.action_next else R.string.action_done),
                 onClick = {
                     if (step < 2) {
-                        step++
+                        vm.reflectionStep++
                     } else {
                         vm.tomorrowChange = answers[2]
                         vm.complete(DayStep.Reflection, Technique.DailyReflection)
@@ -105,6 +105,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
         }
         VoiceCommandPill(Modifier.align(Alignment.End))
         Text(stringResource(R.string.reflection_title), style = Itera.type.display, color = c.ink)
+        IteraButton(stringResource(R.string.pt_entry), onPrediction, kind = ButtonKind.Ghost)
         if (vm.programDay % 7 == 0) WeeklyLookBack(vm, accent)
 
         questions.forEachIndexed { i, q ->
@@ -128,6 +129,7 @@ fun ReflectionScreen(vm: AppViewModel, onClose: () -> Unit, onDone: () -> Unit) 
                         }
                         StepState.Now -> Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                             Text(stringResource(q), style = Itera.type.headline, color = c.ink)
+                            if (i == 0 || i == 2) Text(stringResource(if (i == 0) R.string.env_review else R.string.env_prepare), style = Itera.type.bodySmall, color = c.ink2)
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 chipTexts[i].forEachIndexed { j, text ->
                                     val key = i * 10 + j

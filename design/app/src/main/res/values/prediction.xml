@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pt_title">Prediction testing</string>
+    <string name="pt_predict">What do you expect?</string>
+    <string name="pt_plan">Try something small</string>
+    <string name="pt_ready">Ready when you are</string>
+    <string name="pt_actual">What happened?</string>
+    <string name="pt_compare">Compare with your prediction</string>
+    <string name="pt_learn">What will you take from this?</string>
+    <string name="pt_prediction">One task you avoid, and what you expect to happen</string>
+    <string name="pt_intro">Optional: test one everyday assumption. For example: “If I start a rough outline, I will get stuck immediately.” You can leave and return another day.</string>
+    <string name="pt_before">Confidence before · optional</string>
+    <string name="pt_after">Confidence now · optional</string>
+    <string name="pt_c0">Very unsure</string>
+    <string name="pt_c1">Unsure</string>
+    <string name="pt_c2">In between</string>
+    <string name="pt_c3">Sure</string>
+    <string name="pt_c4">Very sure</string>
+    <string name="pt_not_rated">Not rated</string>
+    <string name="pt_safe">Choose a low-risk, reversible action with a small time limit. Stop whenever you want. Avoid trauma, health risks, safety checks, money or consequential decisions.</string>
+    <string name="pt_action">Your small action and limit</string>
+    <string name="pt_evidence">What could you observe?</string>
+    <string name="pt_save_try">Save and try</string>
+    <string name="pt_record">Record what happened</string>
+    <string name="pt_return">Try this outside Itera. Come back when you have something to record, even on another day. The prediction above stays unchanged. There is no deadline.</string>
+    <string name="pt_outcome">What did you observe, including obstacles or surprises?</string>
+    <string name="pt_neutral">Any result is useful. Choose what best fits this attempt; one attempt does not settle every situation.</string>
+    <string name="pt_supported">Confirmed this time</string>
+    <string name="pt_contradicted">Contradicted this time</string>
+    <string name="pt_mixed">Mixed evidence</string>
+    <string name="pt_inconclusive">Inconclusive</string>
+    <string name="pt_lesson">What did you learn?</string>
+    <string name="pt_no_conclusion">No clear conclusion yet</string>
+    <string name="pt_learning_hint">Your confidence may stay the same, rise or fall. You can include a different next step in your note. Another experiment is optional.</string>
+    <string name="pt_finish">Save review</string>
+    <string name="pt_reviewed">Review saved</string>
+    <string name="pt_closed">Closed without an outcome</string>
+    <string name="pt_no_credit">This optional note does not change your training progress.</string>
+    <string name="pt_save_leave">Save and leave</string>
+    <string name="pt_end">Close without an outcome</string>
+    <string name="pt_end_body">Keep this record as it is, without drawing a conclusion?</string>
+    <string name="pt_replace">Start a new experiment</string>
+    <string name="pt_replace_body">This prototype keeps one record. Starting again replaces the saved prediction, outcome and lesson on this device.</string>
+    <string name="pt_cancel">Cancel</string>
+    <string name="pt_prepared_on">Prepared on %1$s</string>
+    <string name="pt_load_failed">This note could not be opened. It has not been replaced. Try opening it again.</string>
+    <string name="pt_save_failed">Not saved yet. Stay here and try Save and leave again.</string>
+    <string name="pt_retry">Try again</string>
+    <string name="pt_entry">Prediction testing · optional</string>
+    <string name="pt_history_entry">Open prediction note</string>
+</resources>
+

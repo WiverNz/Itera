@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.itera.app.R
 import com.itera.app.data.AppViewModel
+import com.itera.app.ui.components.ButtonKind
 import com.itera.app.model.Mastery
 import com.itera.app.model.Program
 import com.itera.app.model.Skill
@@ -263,6 +264,7 @@ fun TechniqueDetailScreen(
     onBack: () -> Unit,
     onPractice: () -> Unit,
     onTechnique: (Technique) -> Unit,
+    onPrediction: () -> Unit = {},
 ) {
     val c = Itera.colors
     val sc = technique.skill.colors(c.isDark)
@@ -307,6 +309,9 @@ fun TechniqueDetailScreen(
             icon = if (locked) IteraIcons.Lock else IteraIcons.Play,
             enabled = !locked,
         )
+        if (technique == Technique.DailyReflection) {
+            IteraButton(stringResource(R.string.pt_entry), onPrediction, kind = ButtonKind.Secondary)
+        }
         if (!locked) Column {
             Text(stringResource(R.string.detail_history), style = Itera.type.label, color = c.ink, modifier = Modifier.padding(bottom = 4.dp))
             if (history.isEmpty()) {

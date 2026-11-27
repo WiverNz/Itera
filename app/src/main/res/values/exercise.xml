@@ -72,7 +72,7 @@
     <string name="pm_action_hint">One concrete step, doable today</string>
     <string name="pm_cta">Add to today</string>
     <string name="hs_sentence">After I %1$s,\nI will %2$s.</string>
-    <string name="hs_sub">Anchor it to something you already do every day. Keep the new habit so small it feels almost silly.</string>
+    <string name="hs_sub">Use a familiar daily action as your cue. Keep the new action tiny. If useful, prepare its materials beforehand, such as a book by your chair.</string>
     <string name="hs_existing">Something you already do</string>
     <string name="hs_new">A tiny new habit</string>
     <string name="hs_anchor_1">make coffee</string>

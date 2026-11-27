@@ -74,3 +74,19 @@ Days 7, 14, 21, ... set a flag on that evening's reflection. The reflection open
 ## 7. Content changes
 
 Re-ordering `introDay` for an already-started user does not re-order their program: past days are never regenerated, and future days read the curriculum fresh at generation time. This means a user mid-program may get a different order than a new user. That is acceptable and documented; it is the price of never rewriting someone's history (ADR-0015).
+
+## 8. Environment Design extension (milestone 014)
+
+Content version 2 extends existing techniques without adding a day, skill or technique:
+
+| Existing content | Practical extension | Reuse |
+| --- | --- | --- |
+| Day 5 — Habit stacking | Put a book by a chair or notebook by a cup before the familiar cue | Existing anchor and tiny-action fields |
+| Day 11 — Information diet | Move a distracting shortcut or sign out; keep emergency, accessibility and essential tools available | Existing task and result note |
+| Day 13 — 1% improvement | Tonight, open a blank template or set out materials for the first step; evaluate at the next opportunity | Existing task and result note |
+| Daily reflection, question 1 | If preparation happened, did it make starting easier? No difference is useful too | Existing went-well answer; question 2 remains available for obstacles |
+| Daily reflection, question 3 | Optional document heading, packed bag or free work surface for next time | Existing tomorrow-change answer, Today carryover and export |
+
+Preparation is optional, bounded and separate from doing the target task. No automatic success, extra completion credit, required follow-up, missed-day message or new notification. Returning users receive the updated copy wherever they practice; no reset or replay of introductory days is required.
+
+Examples can combine with the existing 2-minute rule (complete a genuinely short preparation action), Pomodoro (have the document ready before starting the timer), Planning (prepare the first step of the chosen priority), or Premortem (remove a concrete anticipated obstacle). These are applications of existing actions, not additional generated combination steps. Avoid a general tidying checklist or requiring an ideal environment before starting.

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="env_review">Si preparaste algo antes, ¿fue más fácil empezar? Que no haya diferencia también es información útil.</string>
+    <string name="env_prepare">Opcional: prepara esta noche un primer paso, como el título de un documento, una mochila lista o una mesa despejada. La próxima vez, observa si ayudó. Una línea basta.</string>
+</resources>

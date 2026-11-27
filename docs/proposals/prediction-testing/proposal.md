@@ -1,6 +1,6 @@
 # Post-MVP expansion: product, UX and integration proposal
 
-Status: **draft for review, 2026-11-26**. Documentation only; no approved curriculum, production or prototype change. Read the [research](research.md), [proposed ADR-0023](../../architecture/adr/0023-prediction-testing-proposal.md) and [draft milestone](milestone.md) together.
+Status: **direction approved; staged implementation, 2026-11-27**. Stage 1 Environment Design is approved for the existing curriculum; Stage 2 Prediction Testing is approved for an interactive prototype only. Production Prediction Testing remains gated on prototype review. See [milestone 014](../../issues/014-environment-design-and-prediction-prototype.md) for implementation scope and verification. Read the [research](research.md), [ADR-0023](../../architecture/adr/0023-prediction-testing-proposal.md) and [staged roadmap](milestone.md) together.
 
 ## Combined recommendation and roadmap
 
@@ -13,7 +13,7 @@ This extends the original Prediction Testing proposal in place. Keep five skills
 | 3, conditional | Breathing pause: optional supporting tool near Focus | A brief transition before work; neither a technique to master nor a prerequisite | Some stress/mood evidence; task-performance and very-short-dose benefit unproven | Medium: timed accessible cues, interruption handling and safety review, but no Room table |
 | Defer | BLUF / Main point first: possible future Communication technique | Reader-oriented message structure is distinct from Feynman, but expands the product's scope | Established professional convention; no strong BLUF-specific efficacy evidence identified | Low for a standalone worksheet, high for a coherent sixth skill and curriculum |
 
-These are proposed sequencing decisions, not approval to build. Stage A evaluates preparation content; Stage B evaluates the existing Prediction Testing design; Stage C is a separate optional breathing-tool decision; Stage D is discovery only for communication. Each can stop independently. No stage requires all four features to ship. Do not assign milestone numbers until the owner selects scope; the former “candidate 014” label for Prediction Testing is superseded by this staged roadmap.
+The owner approved this sequence. Milestone 014 covers Stage A curriculum content and the Stage B prototype, not the Stage B production feature. Stage C remains a future optional supporting tool, with no implementation now. Stage D and a Communication category remain deferred. The production architecture below describes a later approval scope; it is not implemented by the prototype.
 
 Promotion to a new technique requires evidence of distinct repeated practice that existing techniques cannot serve. A new skill additionally needs several complementary techniques, a coherent learning goal, demonstrated user demand and an approved onboarding/progress design. Neither threshold is met by these proposals today.
 
@@ -307,7 +307,7 @@ Do not use breathing to force completion of a Prediction Testing experiment or t
 
 Keep all current IDs, skill assignments, stored result types, programDay, past plans, review ladders and mastery thresholds. Only Prediction Testing currently proposes a new Room table. Preparation uses existing authored data paths; breathing uses transient state; BLUF is deferred. None changes the first 14 days, unlock pace, Day-14 combination or later combination cadence. Do not use a database migration to re-seed training content or reset progress.
 
-No AI, backend, account, telemetry upload, new permission or external speech recognition for new fields. Existing explicit journal export remains user-controlled; authored text must never enter logs or notification bodies. All UI additions would land in `design/` with production after approval. Current documentation work changes neither. References remain developer documentation, not research claims in app copy.
+No AI, backend, account, telemetry upload, new permission or external speech recognition for new fields. Existing explicit journal export remains user-controlled; authored text must never enter logs or notification bodies. Environment Design copy/guidance is mirrored in `design/` and production. Prediction Testing remains in `design/` only until its separate review gate is passed. References remain developer documentation, not research claims in app copy.
 
 Draft labels for native-speaker review (no resource changes in this proposal):
 

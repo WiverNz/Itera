@@ -153,7 +153,7 @@ class ResetIntegrationTest {
             assertFalse(h.prefs.state.value.onboardingCompleted)
             val fresh = h.ensureToday()
             assertEquals(1, fresh.programDay)
-            assertEquals(1, h.prefs.state.value.contentVersion)
+            assertEquals(h.catalog.curriculum().version, h.prefs.state.value.contentVersion)
             assertEquals(3, fresh.activities.size)
         } finally {
             h.close()

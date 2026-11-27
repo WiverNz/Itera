@@ -147,7 +147,7 @@ fun ProgressScreen(vm: AppViewModel, onHistory: () -> Unit, onLibrary: () -> Uni
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
+fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit, onPrediction: () -> Unit = {}) {
     val c = Itera.colors
     val locale = currentLocale()
     var monthText by rememberSaveable { mutableStateOf(YearMonth.now().toString()) }
@@ -178,6 +178,7 @@ fun HistoryScreen(vm: AppViewModel, onBack: () -> Unit) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 TopBar("", onBack, IteraIcons.Back)
                 Text(stringResource(R.string.history_title), style = Itera.type.display, color = c.ink)
+                com.itera.app.ui.components.IteraButton(stringResource(R.string.pt_history_entry), onPrediction, kind = com.itera.app.ui.components.ButtonKind.Ghost)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(monthLabel, style = Itera.type.headline, color = c.ink, modifier = Modifier.weight(1f))
                     IconButton(modifier = Modifier.size(44.dp), onClick = { monthText = month.minusMonths(1).toString() }, enabled = month > YearMonth.from(vm.startDate)) { Icon(IteraIcons.Back, stringResource(R.string.history_previous), tint = if (month > YearMonth.from(vm.startDate)) c.ink else c.ink3) }

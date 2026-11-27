@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="env_review">If you prepared earlier, did it make starting easier? No difference is useful information too.</string>
+    <string name="env_prepare">Optional: prepare one first step tonight, such as a document heading, packed bag or cleared work surface. Next time, notice whether it helped. One line is enough.</string>
+</resources>

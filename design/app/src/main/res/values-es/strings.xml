@@ -243,7 +243,7 @@
     <string name="pm_cta">Añadir a hoy</string>
 
     <string name="hs_sentence">Después de %1$s,\nvoy a %2$s.</string>
-    <string name="hs_sub">Engánchalo a algo que ya haces cada día. Que el hábito nuevo sea tan pequeño que parezca casi ridículo.</string>
+    <string name="hs_sub">Usa una acción diaria conocida como señal. Haz que la nueva acción sea pequeña. Si te sirve, prepara lo necesario antes, como un libro junto al sillón.</string>
     <string name="hs_existing">Algo que ya haces</string>
     <string name="hs_new">Un hábito nuevo diminuto</string>
     <string name="hs_anchor_1">preparar el café</string>
@@ -369,8 +369,8 @@
 
     <string name="t_stack_name">Encadenar hábitos</string>
     <string name="t_stack_short">Engancha un hábito nuevo a uno que ya tienes.</string>
-    <string name="t_stack_why">Un hábito existente es un disparador fiable. Si le enganchas una acción nueva diminuta, no tendrás que acordarte.</string>
-    <string name="t_stack_task">Completa una frase: «Después de [hábito que ya tengo], voy a [hábito nuevo diminuto]». Hazlo hoy.</string>
+    <string name="t_stack_why">Una acción conocida puede servir de señal para un hábito nuevo y pequeño. Preparar lo necesario facilita el siguiente paso.</string>
+    <string name="t_stack_task">Completa: «Después de [acción habitual], haré [acción pequeña]». Si te sirve, deja lo necesario a mano: un libro junto al sillón o una libreta junto a la taza. Prueba la acción en la próxima oportunidad.</string>
 
     <string name="t_feynman_name">Técnica Feynman</string>
     <string name="t_feynman_short">Explícalo con sencillez para descubrir lo que no sabes.</string>
@@ -400,7 +400,7 @@
     <string name="t_diet_name">Dieta informativa</string>
     <string name="t_diet_short">Elige a propósito lo que consumes.</string>
     <string name="t_diet_why">Lo que consumes moldea aquello en lo que piensas. Elegir tus fuentes a propósito libera atención.</string>
-    <string name="t_diet_task">Elige un feed o una app que hoy vas a saltarte. Antes de abrir nada, pregúntate: ¿lo necesito ahora mismo?</string>
+    <string name="t_diet_task">Elige una fuente de distracción o una app. Añade un obstáculo reversible: mueve el acceso directo o cierra la sesión. Mantén disponibles las funciones esenciales, los contactos de emergencia y las herramientas de accesibilidad. Observa si ayuda en la próxima oportunidad.</string>
 
     <string name="t_premortem_name">Premortem</string>
     <string name="t_premortem_short">Imagina primero el fracaso y luego evítalo.</string>
@@ -409,8 +409,8 @@
 
     <string name="t_onepct_name" formatted="false">Mejora del 1 %</string>
     <string name="t_onepct_short">Mejora una cosa pequeña cada día.</string>
-    <string name="t_onepct_why">Las mejoras diminutas son fáciles de repetir y se suman con las semanas.</string>
-    <string name="t_onepct_task" formatted="false">Elige una habilidad o un hábito. Hazlo hoy un 1 % mejor con un cambio pequeño y concreto.</string>
+    <string name="t_onepct_why">Los pequeños cambios pueden facilitar la repetición. Puedes probar a eliminar un obstáculo sin reorganizar toda tu rutina.</string>
+    <string name="t_onepct_task" formatted="false">Facilita el inicio de una tarea habitual. Si te sirve, esta noche abre una plantilla vacía o prepara el material para el primer paso. La próxima vez, observa qué ayudó y qué siguió dificultándolo. Preparar y realizar la tarea son acciones distintas.</string>
 
     <string name="t_reflect_name">Reflexión diaria</string>
     <string name="t_reflect_short">Tres preguntas breves para cerrar el día.</string>

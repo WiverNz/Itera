@@ -17,7 +17,7 @@
 <!-- Spoken countdown, not a numeric range; preserve prototype copy. -->
     <string name="t_five_task" tools:ignore="TypographyDashes">Pick one thing you’ve been putting off. Count 5-4-3-2-1 out loud and take the first physical step at 1.</string>
 <string name="t_stack_name">Habit stacking</string>
-<string name="t_stack_task">Complete one sentence: “After I [habit I already have], I will [tiny new habit].” Do it today.</string>
+<string name="t_stack_task">Complete: “After I [existing habit], I will [tiny action].” If useful, put what you need within reach beforehand: a book by your chair or a notebook beside your cup. Try the action at the next opportunity.</string>
 <string name="t_feynman_name">Feynman technique</string>
 <string name="t_feynman_task">Pick a topic you’re learning and explain it in simple words, as if to a curious 12-year-old. No notes.</string>
 <string name="t_twolist_name">Two-list strategy</string>
@@ -29,11 +29,11 @@
 <string name="t_spaced_name">Spaced repetition</string>
 <string name="t_spaced_task">Pick something you learned this week. Recall it from memory now, then check what you missed.</string>
 <string name="t_diet_name">Information diet</string>
-<string name="t_diet_task">Pick one feed or app to skip today. Before opening anything, ask: do I need this right now?</string>
+<string name="t_diet_task">Choose one distracting feed or app. Add a reversible obstacle: move its shortcut or sign out. Keep essential, emergency and accessibility tools available. Notice whether this helps at the next opportunity.</string>
 <string name="t_premortem_name">Premortem</string>
 <string name="t_premortem_task">Imagine your project failed completely six months from now. Write down why, then pick one step to reduce the biggest risk today.</string>
 <string name="t_onepct_name" formatted="false">1% improvement</string>
-<string name="t_onepct_task" formatted="false">Choose one skill or habit. Make it 1% better today with one small, specific change.</string>
+<string name="t_onepct_task" formatted="false">Make one recurring task easier to start. Tonight, if useful, open a blank template or set out materials for its first step. Next time, notice what helped and what still got in the way. Preparation is separate from doing the task.</string>
 <string name="t_reflect_name">Daily reflection</string>
 <string name="t_reflect_task">Answer three questions: what went well, what didn’t, and what you’ll change tomorrow.</string>
 <string name="activity_program">Now · %1$d min</string>

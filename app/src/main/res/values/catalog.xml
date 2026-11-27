@@ -10,7 +10,7 @@
     <string name="t_five_short">Count 5-4-3-2-1 and move before doubt starts.</string>
     <string name="t_five_why">Hesitation grows with every second. Counting down gives your brain a clear start signal before excuses arrive.</string>
     <string name="t_stack_short">Attach a new habit to one you already have.</string>
-    <string name="t_stack_why">An existing habit is a reliable trigger. Tying a tiny new action to it removes the need to remember.</string>
+    <string name="t_stack_why">A familiar action can cue a tiny new habit. Preparing what you need makes that next step easier to take.</string>
     <string name="t_feynman_short">Explain it simply to find what you don’t know.</string>
     <string name="t_feynman_why">Explaining in plain words shows exactly where your understanding has gaps.</string>
     <string name="t_twolist_short">Decide what you’re deliberately not doing now.</string>
@@ -26,7 +26,7 @@
     <string name="t_premortem_short">Imagine the failure first, then prevent it.</string>
     <string name="t_premortem_why">Imagining failure in advance makes risks concrete while there’s still time to act.</string>
     <string name="t_onepct_short">Improve one small thing, every day.</string>
-    <string name="t_onepct_why">Tiny improvements are easy to repeat, and they add up over weeks.</string>
+    <string name="t_onepct_why">Small changes can make repetition easier. Removing one obstacle is an improvement you can try without a complete routine overhaul.</string>
     <string name="t_reflect_short">Three short questions to close the day.</string>
     <string name="t_reflect_why">A short look back turns a day of experience into a lesson for tomorrow.</string>
     <string name="skill_focus">Focus</string>

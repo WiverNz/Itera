@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pt_title">Annahme prüfen</string>
+    <string name="pt_predict">Was erwartest du?</string>
+    <string name="pt_plan">Probiere einen kleinen Schritt</string>
+    <string name="pt_ready">Wenn es für dich passt</string>
+    <string name="pt_actual">Was ist passiert?</string>
+    <string name="pt_compare">Vergleiche mit deiner Annahme</string>
+    <string name="pt_learn">Was nimmst du daraus mit?</string>
+    <string name="pt_prediction">Eine Aufgabe, die du meidest, und deine Erwartung</string>
+    <string name="pt_intro">Optional: Prüfe eine Annahme aus dem Alltag. Zum Beispiel: „Wenn ich eine grobe Gliederung beginne, komme ich sofort nicht weiter.“ Du kannst an einem anderen Tag zurückkommen.</string>
+    <string name="pt_before">Sicherheit vorher · optional</string>
+    <string name="pt_after">Sicherheit jetzt · optional</string>
+    <string name="pt_c0">Sehr unsicher</string>
+    <string name="pt_c1">Unsicher</string>
+    <string name="pt_c2">Dazwischen</string>
+    <string name="pt_c3">Sicher</string>
+    <string name="pt_c4">Sehr sicher</string>
+    <string name="pt_not_rated">Nicht bewertet</string>
+    <string name="pt_safe">Wähle eine risikoarme, umkehrbare Handlung mit kurzer Zeitgrenze. Du kannst jederzeit aufhören. Vermeide traumatische Erlebnisse, Gesundheitsrisiken, Sicherheitsprüfungen, Geld und folgenschwere Entscheidungen.</string>
+    <string name="pt_action">Dein kleiner Schritt und seine Grenze</string>
+    <string name="pt_evidence">Was könntest du beobachten?</string>
+    <string name="pt_save_try">Speichern und ausprobieren</string>
+    <string name="pt_record">Ergebnis festhalten</string>
+    <string name="pt_return">Probiere es außerhalb von Itera. Komm zurück, wenn du etwas festhalten kannst, auch an einem anderen Tag. Die Annahme oben bleibt unverändert. Es gibt keine Frist.</string>
+    <string name="pt_outcome">Was hast du beobachtet, auch Hürden oder Überraschungen?</string>
+    <string name="pt_neutral">Jedes Ergebnis ist nützlich. Wähle, was zu diesem Versuch passt; ein Versuch entscheidet nicht über jede Situation.</string>
+    <string name="pt_supported">Diesmal bestätigt</string>
+    <string name="pt_contradicted">Diesmal widerlegt</string>
+    <string name="pt_mixed">Gemischte Hinweise</string>
+    <string name="pt_inconclusive">Nicht eindeutig</string>
+    <string name="pt_lesson">Was hast du gelernt?</string>
+    <string name="pt_no_conclusion">Noch keine klare Schlussfolgerung</string>
+    <string name="pt_learning_hint">Deine Sicherheit darf gleich bleiben, steigen oder sinken. Du kannst einen anderen nächsten Schritt notieren. Ein weiterer Versuch ist optional.</string>
+    <string name="pt_finish">Rückblick speichern</string>
+    <string name="pt_reviewed">Rückblick gespeichert</string>
+    <string name="pt_closed">Ohne Ergebnis geschlossen</string>
+    <string name="pt_no_credit">Diese optionale Notiz verändert deinen Trainingsfortschritt nicht.</string>
+    <string name="pt_save_leave">Speichern und verlassen</string>
+    <string name="pt_end">Ohne Ergebnis schließen</string>
+    <string name="pt_end_body">Diesen Eintrag ohne Schlussfolgerung behalten?</string>
+    <string name="pt_replace">Neuen Versuch beginnen</string>
+    <string name="pt_replace_body">Dieser Prototyp behält einen Eintrag. Ein neuer Versuch ersetzt die gespeicherte Annahme, das Ergebnis und die Erkenntnis auf diesem Gerät.</string>
+    <string name="pt_cancel">Abbrechen</string>
+    <string name="pt_prepared_on">Vorbereitet am %1$s</string>
+    <string name="pt_load_failed">Diese Notiz konnte nicht geöffnet werden. Sie wurde nicht ersetzt. Versuche es erneut.</string>
+    <string name="pt_save_failed">Noch nicht gespeichert. Bleibe hier und versuche erneut zu speichern.</string>
+    <string name="pt_retry">Erneut versuchen</string>
+    <string name="pt_entry">Annahme prüfen · optional</string>
+    <string name="pt_history_entry">Notiz zur Annahme öffnen</string>
+</resources>
+

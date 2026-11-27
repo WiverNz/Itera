@@ -104,3 +104,11 @@ Do not copy these; they are scaffolding, not design.
 The prototype is a reference, not a dependency: production code never imports from it, and it is excluded from the production Gradle build (`settings.gradle.kts` includes only `:app`).
 
 If a design change is agreed during implementation, change the prototype too, in the same change, so it never becomes stale. A prototype that no longer matches the app is worse than no prototype.
+
+## Post-MVP prototype: Prediction Testing (014)
+
+Prototype only: `ui/screens/Prediction.kt`, route `prediction`, with `data/PredictionState.kt` and `PredictionViewModel.kt`. Entry points are Daily Reflection detail, the optional evening-reflection link and History. This route is not part of the production screen inventory and must not be ported before prototype approval.
+
+The screen uses existing Itera components, progressive preparation/review pages and local atomic draft storage excluded from backup. It preserves the pre-action prediction and allows all evidence directions. See [014](../issues/014-environment-design-and-prediction-prototype.md) for the review walkthrough, single-record prototype limitation and outstanding visual/accessibility gates. No desktop capture is used at the owner's request.
+
+Environment Design content is mirrored in the existing prototype HabitStack/intro/result and reflection surfaces; there are no additional curriculum screens.

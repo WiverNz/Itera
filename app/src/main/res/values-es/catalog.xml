@@ -10,7 +10,7 @@
     <string name="t_five_short">Cuenta 5-4-3-2-1 y muévete antes de dudar.</string>
     <string name="t_five_why">La duda crece con cada segundo. La cuenta atrás da a tu cerebro una señal de salida antes de que lleguen las excusas.</string>
     <string name="t_stack_short">Engancha un hábito nuevo a uno que ya tienes.</string>
-    <string name="t_stack_why">Un hábito existente es un disparador fiable. Si le enganchas una acción nueva diminuta, no tendrás que acordarte.</string>
+    <string name="t_stack_why">Una acción conocida puede servir de señal para un hábito nuevo y pequeño. Preparar lo necesario facilita el siguiente paso.</string>
     <string name="t_feynman_short">Explícalo con sencillez para descubrir lo que no sabes.</string>
     <string name="t_feynman_why">Explicar con palabras sencillas muestra exactamente dónde hay lagunas en lo que entiendes.</string>
     <string name="t_twolist_short">Decide qué no vas a hacer ahora, a propósito.</string>
@@ -26,7 +26,7 @@
     <string name="t_premortem_short">Imagina primero el fracaso y luego evítalo.</string>
     <string name="t_premortem_why">Imaginar el fracaso por adelantado vuelve concretos los riesgos mientras aún hay tiempo para actuar.</string>
     <string name="t_onepct_short">Mejora una cosa pequeña cada día.</string>
-    <string name="t_onepct_why">Las mejoras diminutas son fáciles de repetir y se suman con las semanas.</string>
+    <string name="t_onepct_why">Los pequeños cambios pueden facilitar la repetición. Puedes probar a eliminar un obstáculo sin reorganizar toda tu rutina.</string>
     <string name="t_reflect_short">Tres preguntas breves para cerrar el día.</string>
     <string name="t_reflect_why">Una mirada breve hacia atrás convierte la experiencia del día en una lección para mañana.</string>
     <string name="skill_focus">Enfoque</string>

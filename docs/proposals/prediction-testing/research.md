@@ -1,6 +1,6 @@
 # Post-MVP candidates: evidence review
 
-Status: research for review, not an approved product claim. Reviewed and expanded 2026-11-26. Covers Prediction Testing, Environment Design, BLUF and a breathing-based focus pause. The existing directory is retained to preserve links.
+Status: research for review, not an approved product claim. Reviewed and expanded 2026-11-26. Covers Prediction Testing, Environment Design, BLUF and a breathing-based focus pause. The existing directory is retained to preserve links. The owner has since approved Environment Design implementation and a Prediction Testing prototype; see [milestone 014](../../issues/014-environment-design-and-prediction-prototype.md). This approval does not strengthen the scientific claims or authorize production Prediction Testing.
 Companion documents: [product and technical proposal](proposal.md), [draft milestone](milestone.md), [proposed ADR](../../architecture/adr/0023-prediction-testing-proposal.md).
 
 ## Combined conclusion

@@ -1,5 +1,5 @@
 {
-  "contentVersion": 1,
+  "contentVersion": 2,
   "days": [
     { "day": 1, "newTechnique": "two_minute_rule" },
     { "day": 2, "newTechnique": "pomodoro" },

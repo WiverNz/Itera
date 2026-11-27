@@ -70,7 +70,7 @@
     <string name="pm_action_hint">Один конкретный шаг, выполнимый сегодня</string>
     <string name="pm_cta">Добавить на сегодня</string>
     <string name="hs_sentence">Когда я %1$s,\nя %2$s.</string>
-    <string name="hs_sub">Привяжи к тому, что уже делаешь каждый день. Новая привычка должна быть настолько маленькой, что это почти смешно.</string>
+    <string name="hs_sub">Выбери знакомое ежедневное действие как сигнал. Новое действие должно быть маленьким. Если удобно, подготовь нужное заранее, например положи книгу у кресла.</string>
     <string name="hs_existing">То, что ты уже делаешь</string>
     <string name="hs_new">Крошечная новая привычка</string>
     <string name="hs_anchor_1">сварю кофе</string>

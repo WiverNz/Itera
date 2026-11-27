@@ -441,3 +441,9 @@ Decisions the voice documents left to implementation; none changes a product rul
 - **Version footer.** The Privacy screen ends with "Version X.Y.Z" from `BuildConfig.VERSION_NAME` (release checklist section 2); `design/` shows its own package version in the same place.
 - **Baseline profile.** Not generated. Start-up budgets are met without one (vivo V2405A, release build: cold 220 ms, warm 62 ms median of 10); library profiles shipped by AndroidX/Compose are still packaged.
 - **`resConfigs`/`localeFilters`.** Left unset (allowed by detailed issue 040): restricting it would also drop the pseudo-locales used in debug.
+
+## Milestone 014 staged expansion decision (2026-11-27)
+
+The user approved Environment Design inside the existing curriculum and a Prediction Testing interactive prototype only. See [ADR-0023](architecture/adr/0023-prediction-testing-proposal.md) and [014](issues/014-environment-design-and-prediction-prototype.md). Production remains five skills/fourteen techniques with schema 1; content version 2 changes prose and optional reflection guidance. Existing result payloads, IDs, training days and progress rules remain unchanged.
+
+Prediction Testing uses prototype-only local atomic storage excluded from backup; it is not a production persistence precedent. It gives no training credit. Breathing pause is future-only; BLUF/Communication remain deferred. The user instructed no display capture, so Android semantic/interaction checks may proceed, while visual sign-off remains an explicit prototype approval gate.

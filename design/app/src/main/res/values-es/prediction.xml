@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pt_title">Poner a prueba una predicción</string>
+    <string name="pt_predict">¿Qué esperas que pase?</string>
+    <string name="pt_plan">Prueba algo pequeño</string>
+    <string name="pt_ready">Cuando te venga bien</string>
+    <string name="pt_actual">¿Qué pasó?</string>
+    <string name="pt_compare">Compara con tu predicción</string>
+    <string name="pt_learn">¿Qué te llevas de esto?</string>
+    <string name="pt_prediction">Una tarea que evitas y lo que esperas que pase</string>
+    <string name="pt_intro">Opcional: prueba una suposición cotidiana. Por ejemplo: «Si empiezo un esquema, me bloquearé enseguida». Puedes salir y volver otro día.</string>
+    <string name="pt_before">Confianza antes · opcional</string>
+    <string name="pt_after">Confianza ahora · opcional</string>
+    <string name="pt_c0">Muy poca</string>
+    <string name="pt_c1">Poca</string>
+    <string name="pt_c2">Intermedia</string>
+    <string name="pt_c3">Alta</string>
+    <string name="pt_c4">Muy alta</string>
+    <string name="pt_not_rated">Sin valorar</string>
+    <string name="pt_safe">Elige una acción de bajo riesgo, reversible y con un límite breve de tiempo. Puedes parar cuando quieras. Evita experiencias traumáticas, riesgos para la salud, comprobaciones de seguridad, dinero o decisiones importantes.</string>
+    <string name="pt_action">Tu pequeña acción y su límite</string>
+    <string name="pt_evidence">¿Qué podrías observar?</string>
+    <string name="pt_save_try">Guardar y probar</string>
+    <string name="pt_record">Anotar lo ocurrido</string>
+    <string name="pt_return">Pruébalo fuera de Itera. Vuelve cuando tengas algo que anotar, aunque sea otro día. La predicción de arriba no cambiará. No hay fecha límite.</string>
+    <string name="pt_outcome">¿Qué observaste, incluidos obstáculos o sorpresas?</string>
+    <string name="pt_neutral">Cualquier resultado es útil. Elige lo que encaje con este intento; uno solo no resuelve todas las situaciones.</string>
+    <string name="pt_supported">Se confirmó esta vez</string>
+    <string name="pt_contradicted">Se contradijo esta vez</string>
+    <string name="pt_mixed">Resultados mixtos</string>
+    <string name="pt_inconclusive">No concluyente</string>
+    <string name="pt_lesson">¿Qué aprendiste?</string>
+    <string name="pt_no_conclusion">Aún no hay una conclusión clara</string>
+    <string name="pt_learning_hint">Tu confianza puede mantenerse, subir o bajar. Puedes anotar un siguiente paso diferente. Otro experimento es opcional.</string>
+    <string name="pt_finish">Guardar revisión</string>
+    <string name="pt_reviewed">Revisión guardada</string>
+    <string name="pt_closed">Cerrado sin resultado</string>
+    <string name="pt_no_credit">Esta nota opcional no cambia tu progreso de práctica.</string>
+    <string name="pt_save_leave">Guardar y salir</string>
+    <string name="pt_end">Cerrar sin resultado</string>
+    <string name="pt_end_body">¿Conservar esta nota tal cual, sin sacar una conclusión?</string>
+    <string name="pt_replace">Empezar otro experimento</string>
+    <string name="pt_replace_body">Este prototipo conserva una nota. Empezar de nuevo reemplaza la predicción, el resultado y lo aprendido guardados en este dispositivo.</string>
+    <string name="pt_cancel">Cancelar</string>
+    <string name="pt_prepared_on">Preparado el %1$s</string>
+    <string name="pt_load_failed">No se pudo abrir esta nota. No se ha reemplazado. Intenta abrirla de nuevo.</string>
+    <string name="pt_save_failed">Aún no se ha guardado. Quédate aquí e intenta Guardar y salir de nuevo.</string>
+    <string name="pt_retry">Intentar de nuevo</string>
+    <string name="pt_entry">Probar una predicción · opcional</string>
+    <string name="pt_history_entry">Abrir nota de predicción</string>
+</resources>
+

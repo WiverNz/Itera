@@ -1,8 +1,8 @@
-# Draft post-MVP roadmap and milestone scopes
+# Post-MVP roadmap and milestone scopes
 
-Status: **proposed, unscheduled, not authorized for implementation** (expanded 2026-11-26). Stages A–D below are review scopes, not assigned milestone numbers. They supersede the earlier tentative “014” designation for Prediction Testing. Nothing is added to the active issue sequence.
+Status: **staged direction approved, 2026-11-27**. [Milestone 014](../../issues/014-environment-design-and-prediction-prototype.md) implements Stage A and prepares the Stage B interactive prototype for review. Stage B production work below is not authorized until prototype approval. Stage C is future-only; Stage D remains deferred.
 
-Depends on the shipped daily flow, exercise infrastructure, history/export and privacy contracts. Review [research](research.md), [proposal](proposal.md) and [ADR-0023](../../architecture/adr/0023-prediction-testing-proposal.md) first. This is a proposed implementation backlog, not a claim that acceptance criteria have passed.
+Depends on the shipped daily flow, exercise infrastructure, history/export and privacy contracts. Review [research](research.md), [proposal](proposal.md) and [ADR-0023](../../architecture/adr/0023-prediction-testing-proposal.md) first. The Stage B production backlog remains proposed; current implementation and actual checks are tracked in milestone 014.
 
 ## Roadmap and independent gates
 
@@ -17,16 +17,16 @@ No dependency requires A users to adopt B or C. B's experiment data must not bec
 
 ## Stage A: Environment Design extension
 
-Tasks after approval: review the existing Habit stacking, 1% improvement, Information diet and reflection interactions in the running prototype; author optional preparation examples in four languages; place them in existing help/detail surfaces; reuse current fields and authored-data handling; compare the approved prototype and production changes. Do not modify the authored curriculum or invent follow-up scheduling.
+Approved scope: extend Habit stacking (cue plus ready materials), Information diet (reversible friction for distractions), 1% improvement (evening first-step preparation and next-opportunity evaluation), and the existing reflection questions. Ship EN/RU/DE/ES copy in production and prototype. Keep all 14 techniques, five skills, days, completion rules and result fields. Content version advances to 2 in both assets; schema remains 1. There is no follow-up scheduler, new tracker or new practice credit.
 
 Acceptance criteria:
 
-- [ ] A user can identify one obstacle, make one bounded reversible change and express the first action/cue using existing fields.
-- [ ] Evening preparation is optional; “before the next opportunity” works for irregular schedules. No-opportunity, unchanged and harder outcomes are accepted in ordinary reflection.
-- [ ] Choosing an example never overwrites existing text without a deliberate user action, completes a target task, or creates duplicate training credit.
-- [ ] Preparation neither blocks Start focus nor introduces a required reflection question, new plan row, notification or metric.
-- [ ] Existing draft persistence, carry-over, History and export retain the note. UI does not promise automatic paired follow-up when the existing carry-over no longer surfaces it.
-- [ ] No schema change, new technique/skill, habit-formation deadline, security bypass or coercive environmental restriction.
+- [x] A user can identify one obstacle, make one bounded reversible change and express the first action/cue using existing fields.
+- [x] Evening preparation is optional; “before the next opportunity” works for irregular schedules. No-opportunity, unchanged and harder outcomes are accepted in ordinary reflection.
+- [x] Choosing an example never overwrites existing text without a deliberate user action, completes a target task, or creates duplicate training credit.
+- [x] Preparation neither blocks Start focus nor introduces a required reflection question, new plan row, notification or metric.
+- [x] Existing draft persistence, carry-over, History and export retain the note. UI does not promise automatic paired follow-up when the existing carry-over no longer surfaces it.
+- [x] No schema change, new technique/skill, habit-formation deadline, security bypass or coercive environmental restriction.
 - [ ] All copy is EN/RU/DE/ES; applicable large-text, accessibility, prototype-parity and changed-area checks pass.
 
 Evaluation: use a small voluntary usability round with a real low-risk preparation opportunity, followed by a next-opportunity interview; do not require a calendar-day return. Compare with the current generic tomorrow-change prompt. Ask what obstacle actually disappeared, whether the task was attempted, and whether the prompt added burden. No journal collection/telemetry. If added value is unclear, retain examples only or stop. These are usefulness observations, not causal efficacy evidence.
@@ -39,12 +39,13 @@ Non-goals: technique 15; curriculum edits; new mastery thresholds; automatic rec
 
 ## Stage B approval gate
 
-- [ ] Product owner reviews the recommendation, unique-value argument and evidence limits.
+- [x] Product owner approved the direction and prioritization, with prototype review before production.
 - [ ] Settle ADR-0023: Reflection placement, no independent mastery credit, one-open-record limit, reset tier, discovery location, two-phase duration wording and local-only input restriction.
 - [ ] Approve prototype evaluation and its go/no-go criteria before production work. If unsuccessful, narrow to a prompt or close the candidate.
-- [ ] On implementation approval, assign the milestone number, add it to the issue index, and update the affected authoritative specs in the same implementation change. Keep the original 14-day curriculum intact.
+- [x] Assign milestone 014 to Environment Design and prototype work only.
+- [ ] Obtain prototype approval before assigning a separate production milestone. Keep the original 14-day curriculum intact.
 
-## Stage B implementation tasks after approval
+## Stage B production tasks after prototype approval
 
 1. **Content and prototype.** Read/run `design/`, use Explore with demo data, walk Today, Daily reflection, Technique Detail, History and Premortem. Add preparation/comparison/read-only/error states using the existing components; update all four prototype locales. Conduct the bounded usability review and resolve supported/inconclusive outcomes and safety misunderstandings before production coding.
 2. **Domain and storage.** Add the experiment model, repository and pure transition/validation rules. Implement one-open-record enforcement, immutable prepared snapshot, outcome drafts, linked repeats and closed-without-outcome. Add Room migration/schema, transaction-safe writes, indexes, reset assignment and fixture coverage. Retain existing IDs and result serial names.
@@ -53,7 +54,7 @@ Non-goals: technique 15; curriculum edits; new mastery thresholds; automatic rec
 5. **History and export.** Add status-labelled experiment records, dual dates, detail view and repeat action. Extend the pure/streaming writer and range selection with one complete paired record per experiment. Preserve existing exports and techniques summary order. Update reset confirmation and export disclosure text where needed.
 6. **Compatibility and delivery.** Verify upgrades with populated v1 data and older result payloads; preserve all progress, preferences, unlocks, plans, reviews and timer state. Update relevant data/UX/architecture specs and ADR status only after approval. Document actual deviations or blocked checks, not a repository-wide re-audit.
 
-## Stage B acceptance criteria
+## Stage B future production acceptance criteria
 
 - [ ] A user can record situation, prediction, optional confidence, bounded action and observable criterion before acting; explicit save persists before showing readiness.
 - [ ] The original snapshot cannot silently change after preparation. A revised test is a linked new record with an empty outcome.

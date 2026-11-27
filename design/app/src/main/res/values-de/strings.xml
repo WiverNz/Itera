@@ -243,7 +243,7 @@
     <string name="pm_cta">Zu heute hinzufügen</string>
 
     <string name="hs_sentence">Nachdem ich %1$s,\nwerde ich %2$s.</string>
-    <string name="hs_sub">Verknüpfe sie mit etwas, das du schon jeden Tag tust. Halte die neue Gewohnheit so klein, dass es fast albern wirkt.</string>
+    <string name="hs_sub">Nutze eine vertraute tägliche Handlung als Auslöser. Halte die neue Handlung klein. Lege bei Bedarf vorher alles bereit, etwa ein Buch am Sessel.</string>
     <string name="hs_existing">Etwas, das du schon tust</string>
     <string name="hs_new">Eine winzige neue Gewohnheit</string>
     <string name="hs_anchor_1">Kaffee gekocht habe</string>
@@ -365,8 +365,8 @@
 
     <string name="t_stack_name">Habit Stacking</string>
     <string name="t_stack_short">Verknüpfe eine neue Gewohnheit mit einer bestehenden.</string>
-    <string name="t_stack_why">Eine bestehende Gewohnheit ist ein zuverlässiger Auslöser. Hängst du eine winzige neue Handlung daran, musst du nicht daran denken.</string>
-    <string name="t_stack_task">Vervollständige einen Satz: „Nachdem ich [bestehende Gewohnheit], werde ich [winzige neue Gewohnheit].“ Mach es heute.</string>
+    <string name="t_stack_why">Eine vertraute Handlung kann eine kleine neue Gewohnheit auslösen. Wenn das Nötige bereitliegt, fällt der nächste Schritt leichter.</string>
+    <string name="t_stack_task">Ergänze: „Nach [vertrauter Handlung] werde ich [kleine Handlung].“ Lege bei Bedarf vorher alles bereit: ein Buch am Sessel oder ein Notizbuch neben der Tasse. Probiere die Handlung bei der nächsten Gelegenheit.</string>
 
     <string name="t_feynman_name">Feynman-Methode</string>
     <string name="t_feynman_short">Erkläre es einfach und finde heraus, was du nicht weißt.</string>
@@ -396,7 +396,7 @@
     <string name="t_diet_name">Informationsdiät</string>
     <string name="t_diet_short">Wähle bewusst, was du konsumierst.</string>
     <string name="t_diet_why">Was du konsumierst, prägt, worüber du nachdenkst. Bewusst gewählte Quellen machen Aufmerksamkeit frei.</string>
-    <string name="t_diet_task">Wähle einen Feed oder eine App, die du heute auslässt. Frag dich vor dem Öffnen: Brauche ich das gerade?</string>
+    <string name="t_diet_task">Wähle einen ablenkenden Feed oder eine App. Schaffe eine umkehrbare Hürde: verschiebe die Verknüpfung oder melde dich ab. Wichtige Funktionen, Notfallkontakte und Bedienungshilfen bleiben erreichbar. Beobachte beim nächsten Mal, ob es hilft.</string>
 
     <string name="t_premortem_name">Premortem</string>
     <string name="t_premortem_short">Stell dir das Scheitern vor - und verhindere es.</string>
@@ -405,8 +405,8 @@
 
     <string name="t_onepct_name" formatted="false">1 % besser</string>
     <string name="t_onepct_short">Verbessere jeden Tag eine kleine Sache.</string>
-    <string name="t_onepct_why">Winzige Verbesserungen lassen sich leicht wiederholen und summieren sich über Wochen.</string>
-    <string name="t_onepct_task" formatted="false">Wähle eine Fähigkeit oder Gewohnheit. Mach sie heute 1 % besser - mit einer kleinen, konkreten Änderung.</string>
+    <string name="t_onepct_why">Kleine Änderungen können Wiederholung erleichtern. Eine Hürde zu entfernen lässt sich ausprobieren, ohne den ganzen Alltag umzustellen.</string>
+    <string name="t_onepct_task" formatted="false">Erleichtere den Einstieg in eine wiederkehrende Aufgabe. Öffne bei Bedarf heute Abend eine leere Vorlage oder lege Material für den ersten Schritt bereit. Beobachte beim nächsten Mal, was half und was noch im Weg stand. Vorbereitung und Ausführung sind getrennte Handlungen.</string>
 
     <string name="t_reflect_name">Tägliche Reflexion</string>
     <string name="t_reflect_short">Drei kurze Fragen zum Tagesabschluss.</string>

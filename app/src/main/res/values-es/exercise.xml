@@ -70,7 +70,7 @@
     <string name="pm_action_hint">Un paso concreto, posible hoy</string>
     <string name="pm_cta">Añadir a hoy</string>
     <string name="hs_sentence">Después de %1$s,\nvoy a %2$s.</string>
-    <string name="hs_sub">Engánchalo a algo que ya haces cada día. Que el hábito nuevo sea tan pequeño que parezca casi ridículo.</string>
+    <string name="hs_sub">Usa una acción diaria conocida como señal. Haz que la nueva acción sea pequeña. Si te sirve, prepara lo necesario antes, como un libro junto al sillón.</string>
     <string name="hs_existing">Algo que ya haces</string>
     <string name="hs_new">Un hábito nuevo diminuto</string>
     <string name="hs_anchor_1">preparar el café</string>

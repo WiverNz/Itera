@@ -216,7 +216,12 @@ class CatalogValidationTest {
         )
         assertTrue(
             CatalogValidator.validate(
-                good.copy(curriculum = curriculum.copy(contentVersion = 2))
+                good.copy(
+                    curriculum = curriculum.copy(
+                        contentVersion =
+                        curriculum.contentVersion + 1
+                    )
+                )
             ).isNotEmpty()
         )
     }

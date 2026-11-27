@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pt_title">Проверка предположения</string>
+    <string name="pt_predict">Чего ты ожидаешь?</string>
+    <string name="pt_plan">Попробуй небольшой шаг</string>
+    <string name="pt_ready">Можно попробовать</string>
+    <string name="pt_actual">Что произошло?</string>
+    <string name="pt_compare">Сравни с предположением</string>
+    <string name="pt_learn">Что ты из этого вынесешь?</string>
+    <string name="pt_prediction">Какой задачи ты избегаешь и что ожидаешь</string>
+    <string name="pt_intro">По желанию: проверь одно повседневное предположение. Например: «Если начну черновой план, сразу застряну». Можно выйти и вернуться в другой день.</string>
+    <string name="pt_before">Уверенность до · по желанию</string>
+    <string name="pt_after">Уверенность сейчас · по желанию</string>
+    <string name="pt_c0">Совсем не уверен</string>
+    <string name="pt_c1">Не уверен</string>
+    <string name="pt_c2">Не уверен ни в одном варианте</string>
+    <string name="pt_c3">Уверен</string>
+    <string name="pt_c4">Очень уверен</string>
+    <string name="pt_not_rated">Без оценки</string>
+    <string name="pt_safe">Выбери безопасное, обратимое действие с небольшим лимитом времени. Можно остановиться в любой момент. Не затрагивай травмирующий опыт, риски для здоровья, проверки безопасности, деньги или важные решения.</string>
+    <string name="pt_action">Небольшое действие и его предел</string>
+    <string name="pt_evidence">Что можно будет наблюдать?</string>
+    <string name="pt_save_try">Сохранить и попробовать</string>
+    <string name="pt_record">Записать результат</string>
+    <string name="pt_return">Попробуй вне Itera. Вернись, когда будет что записать, даже в другой день. Предположение выше останется неизменным. Срока нет.</string>
+    <string name="pt_outcome">Что ты заметил, включая препятствия и неожиданности?</string>
+    <string name="pt_neutral">Любой результат полезен. Выбери подходящий для этой попытки вариант: одна попытка не даёт ответа на все случаи.</string>
+    <string name="pt_supported">Подтвердилось в этот раз</string>
+    <string name="pt_contradicted">Не подтвердилось в этот раз</string>
+    <string name="pt_mixed">Смешанные результаты</string>
+    <string name="pt_inconclusive">Недостаточно данных</string>
+    <string name="pt_lesson">Что ты узнал?</string>
+    <string name="pt_no_conclusion">Пока нет ясного вывода</string>
+    <string name="pt_learning_hint">Уверенность может остаться прежней, вырасти или снизиться. Можно записать другой следующий шаг. Ещё одна попытка необязательна.</string>
+    <string name="pt_finish">Сохранить выводы</string>
+    <string name="pt_reviewed">Выводы сохранены</string>
+    <string name="pt_closed">Закрыто без результата</string>
+    <string name="pt_no_credit">Эта необязательная заметка не меняет прогресс тренировок.</string>
+    <string name="pt_save_leave">Сохранить и выйти</string>
+    <string name="pt_end">Закрыть без результата</string>
+    <string name="pt_end_body">Сохранить запись как есть, без вывода?</string>
+    <string name="pt_replace">Начать новый эксперимент</string>
+    <string name="pt_replace_body">Прототип хранит одну запись. Новый эксперимент заменит сохранённые предположение, результат и вывод на этом устройстве.</string>
+    <string name="pt_cancel">Отмена</string>
+    <string name="pt_prepared_on">Подготовлено %1$s</string>
+    <string name="pt_load_failed">Не удалось открыть заметку. Она не заменена. Попробуй открыть снова.</string>
+    <string name="pt_save_failed">Пока не сохранено. Останься здесь и попробуй «Сохранить и выйти» ещё раз.</string>
+    <string name="pt_retry">Попробовать снова</string>
+    <string name="pt_entry">Проверка предположения · по желанию</string>
+    <string name="pt_history_entry">Открыть заметку с предположением</string>
+</resources>
+

@@ -67,7 +67,7 @@ class ContentReconcilerTest {
 
     @Test fun reconcilesOnceAndRecordsTheVersion() = runTest {
         assertTrue(h.reconciler.reconcile())
-        assertEquals(1, h.prefs.state.value.contentVersion)
+        assertEquals(h.catalog.curriculum().version, h.prefs.state.value.contentVersion)
         val rows = h.states.all().associateBy { it.techniqueId.value }
         assertEquals(3, rows.getValue("eisenhower_matrix").unlockedOnProgramDay)
         assertNull(rows.getValue("five_second_rule").unlockedAt)
