@@ -59,6 +59,19 @@ When `design/` and a product rule conflict, the product rule wins and the discre
 - **If you change anything visual, change `design/` to match, in the same change.** A prototype that has drifted from the app makes every future comparison worthless.
 - **Never import from `design/` in production code.** It is a reference, not a dependency, and is not part of the production Gradle build.
 
+### Visual changes and CI verification
+
+- **Copy changes can change screenshots.** After changing visible text, layout, typography, components or resources, identify the affected golden fixtures in `app/src/test/screenshots/`. Include their baseline updates in the same change once the intended rendering has been reviewed against `design/`.
+- Re-record only the affected fixtures and inspect **every affected variant** (locale, theme and text scale). Follow `docs/testing/04-visual-regression.md`; document why the images changed. Never blindly regenerate the whole set, weaken comparison tolerances or disable tests to obtain a pass.
+- **A passing `build`, ordinary unit-test run or compare-only render does not establish strict golden verification.** Before reporting a production visual change or CI fix as validated, read the current checks in `.github/workflows/android.yml` and run that command, including `verifyRoborazziDebug`, without record/update flags. Currently:
+
+  ```bash
+  ./gradlew --no-daemon spotlessCheck lintDebug testDebugUnitTest verifyRoborazziDebug koverVerify assembleDebug
+  ```
+
+- If review or verification cannot be completed, explicitly report that the change is **not CI-ready**, naming any stale baselines or failing/unrun checks. Do not describe known golden failures as an optional follow-up while reporting validation as passed.
+- Headless renders of synthetic test fixtures do not capture the user's display. Use them when display capture is prohibited; do not infer permission for desktop/device capture.
+
 ## Non-negotiables
 
 Product decisions, not preferences. Each is enforced by a test.
